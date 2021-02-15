@@ -2,16 +2,25 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Mm]emoryCaptures/
+/NuGetImporterForUnity/[Ll]ibrary/
+/NuGetImporterForUnity/[Tt]emp/
+/NuGetImporterForUnity/[Oo]bj/
+/NuGetImporterForUnity/[Bb]uild/
+/NuGetImporterForUnity/[Bb]uilds/
+/NuGetImporterForUnity/[Ll]ogs/
+/NuGetImporterForUnity/[Mm]emoryCaptures/
+/Packager/[Ll]ibrary/
+/Packager/[Tt]emp/
+/Packager/[Oo]bj/
+/Packager/[Bb]uild/
+/Packager/[Bb]uilds/
+/Packager/[Ll]ogs/
+/Packager/[Mm]emoryCaptures/
+
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
-!/[Aa]ssets/**/*.meta
+!/NuGetImporterForUnity/[Aa]ssets/**/*.meta
+!/Packager/[Aa]ssets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
