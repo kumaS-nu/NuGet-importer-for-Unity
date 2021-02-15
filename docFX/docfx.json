@@ -1,0 +1,83 @@
+{
+    "metadata": [{
+        "src": [{
+            "files": [
+                "**/kumaS.NuGetImporter.Editor.csproj"
+            ],
+            "src": "../NuGetImporterForUnity"
+        }],
+        "dest": "api",
+        "filter": "filterConfig.yml",
+        "shouldSkipMarkup": false,
+        "disableGitFeatures": false,
+        "disableDefaultFilter": false,
+        "properties": {
+            "DefineConstants": "ZIP_AVAILABLE;"
+        }
+    }],
+    "build": {
+        "globalMetadata": {
+            "_appTitle": "NuGet importer for Unity documentation",
+            "_appFooter": "NuGet importer for Unity documentation",
+            "_enableSearch": true,
+            "_enableNewTab": true,
+            "_disableContribution": false,
+            "_gitContribute": "https://github.com/kumaS-nu/NuGet-importer-for-Unity"
+        },
+        "content": [{
+                "files": [
+                    "api/**.yml",
+                    "api/index.md"
+                ]
+            },
+            {
+                "files": [
+                    "documentation/**.md",
+                    "documentation/toc.yml",
+                    "toc.yml",
+                    "*.md"
+                ]
+            },
+            {
+                "files": [
+                    "documentation_jp/**.md",
+                    "documentation_jp/toc.yml"
+                ]
+            }
+        ],
+        "resource": [{
+            "files": [
+                "**/images/**"
+            ],
+            "src": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~"
+        }],
+        "overwrite": [{
+            "files": [
+                "apidoc/**.md"
+            ],
+            "exclude": [
+                "obj/**",
+                "**/docs"
+            ]
+        }],
+        "dest": "../docs",
+        "template": [
+            "default"
+        ],
+        "postProcessors": [],
+        "markdownEngineName": "markdig",
+        "noLangKeyword": false,
+        "keepFileLink": false,
+        "cleanupCacheHistory": false,
+        "disableGitFeatures": false,
+        "sitemap": {
+            "baseUrl": "https://kumaS-nu.github.io/NuGet-importer-for-Unity",
+            "changefreq": "weekly",
+            "fileOptions": {
+                "api/*": {
+                    "changefreq": "daily"
+                }
+            }
+        }
+    }
+}
