@@ -1,0 +1,16 @@
+{
+    "name": "org.kumas.nuget-importer",
+    "version": "1.0.0",
+    "displayName": "NuGet Importer",
+    "description": "Editor extension for importing NuGet packages.",
+    "unity": "2019.4",
+    "keywords": [
+        "NuGet"
+    ],
+    "author": {
+        "name": "kumaS",
+        "email": "kumas.kumachan@gmail.com",
+        "url": "https://github.com/kumaS-nu/NuGet-imperter-for-Unity"
+    },
+    "type": "tool"
+}

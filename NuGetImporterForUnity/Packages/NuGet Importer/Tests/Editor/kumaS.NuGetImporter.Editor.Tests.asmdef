@@ -1,0 +1,17 @@
+{
+    "name": "kumaS.NuGetImporter.Editor.Tests",
+    "references": [
+        "GUID:565f8656cac40f94690764098c03c6c4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,412 @@
+﻿
+#if ZIP_AVAILABLE
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using kumaS.NuGetImporter.Editor.DataClasses;
+
+using UnityEditor;
+
+
+namespace kumaS.NuGetImporter.Editor
+{
+    /// <summary>
+    /// <para>Class that provides a method to resolve package dependencies.</para>
+    /// <para>依存関係を解決するメソッドを提供するクラス。</para>
+    /// </summary>
+    public static class DependencySolver
+    {
+        /// <summary>
+        /// <para>Find the required packages in the installed and specified packages.</para>
+        /// <para>インストールされたパッケージと指定したパッケージを元に必要なパッケージを探す。</para>
+        /// </summary>
+        /// <param name="packageId">
+        /// <para>Package id</para>
+        /// <para>パッケージのid</para>
+        /// </param>
+        /// <param name="version">
+        /// <para>Package version</para>
+        /// <para>パッケージのバージョン</para>
+        /// </param>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Required packages include installed and specified ones.</para>
+        /// <para>インストール済みや、指定したものを含んだ必要なパッケージ。</para>
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// <para>Thrown when dependency conflict occered.</para>
+        /// <para>依存関係に衝突があるときthrowされる。</para>
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// <para>Thrown when there is a circular reference or there is no version of package.</para>
+        /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
+        /// </exception>
+        public static async Task<List<Package>> FindRequiredPackages(string packageId, string version, bool onlyStable = true)
+        {
+            if (PackageManager.RootPackage == null)
+            {
+                await PackageManager.Initialize();
+            }
+            IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>() { (packageId, version) };
+            if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
+            {
+                packageList = packageList.Concat(PackageManager.RootPackage.package.Select(package => (package.id, package.version)));
+            }
+            IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable);
+            return requiredPackages.ToList();
+        }
+
+        /// <summary>
+        /// <para>ind the required packages when change package version.</para>
+        /// <para>ッケージのバージョンを変更する時に必要なパッケージを探す。</para>
+        /// </summary>
+        /// <param name="packageId">
+        /// <para>Package id</para>
+        /// <para>パッケージのid</para>
+        /// </param>
+        /// <param name="version">
+        /// <para>Package version</para>
+        /// <para>パッケージのバージョン</para>
+        /// </param>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Required packages include installed and specified ones.</para>
+        /// <para>インストール済みや、指定したものを含んだ必要なパッケージ。</para>
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// <para>Thrown when dependency conflict occered.</para>
+        /// <para>依存関係に衝突があるときthrowされる。</para>
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// <para>Thrown when there is a circular reference or there is no version of package.</para>
+        /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
+        /// </exception>
+        public static async Task<List<Package>> FindRequiredPackagesWhenChangeVersion(string packageId, string version, bool onlyStable = true)
+        {
+            if (PackageManager.Installed == null || PackageManager.RootPackage == null)
+            {
+                await PackageManager.Initialize();
+            }
+            IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
+            if (PackageManager.RootPackage != null && PackageManager.RootPackage.package.Any())
+            {
+                packageList = PackageManager.RootPackage.package.Where(package => package.id != packageId).Select(package => (package.id, package.version));
+            }
+            packageList = packageList.Append((packageId, version)).ToArray();
+            IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable);
+            return requiredPackages.ToList();
+        }
+
+        /// <summary>
+        /// <para>Find the required packages in the installed package.</para>
+        /// <para>インストール済みのものから必要なパッケージを探す。</para>
+        /// </summary>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Required packages include installed and specified ones.</para>
+        /// <para>インストール済みや、指定したものを含んだ必要なパッケージ。</para>
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// <para>Thrown when dependency conflict occered.</para>
+        /// <para>依存関係に衝突があるときthrowされる。</para>
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// <para>Thrown when there is a circular reference or there is no version of package.</para>
+        /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
+        /// </exception>
+        public static async Task<List<Package>> CheckAllPackage(bool onlyStable = true)
+        {
+            if (PackageManager.RootPackage == null || PackageManager.Installed == null)
+            {
+                await PackageManager.Initialize();
+            }
+            IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
+            if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
+            {
+                packageList = PackageManager.RootPackage.package.Select(package => (package.id, package.version)).ToArray();
+            }
+            IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable);
+            return requiredPackages.ToList();
+        }
+
+        /// <summary>
+        /// <para>Find removable packages when the specified package is removed.</para>
+        /// <para>定のパッケージを除去した際取り除けるパッケージを探す。</para>
+        /// </summary>
+        /// <param name="removePackageId">
+        /// <para>Remove package.</para>
+        /// <para>除去するパッケージ。</para>
+        /// </param>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Removable packages.</para>
+        /// <para>除去可能なパッケージ。</para>
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// <para>Thrown when dependency conflict occered.</para>
+        /// <para>依存関係に衝突があるときthrowされる。</para>
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// <para>Thrown when there is a circular reference or there is no version of package.</para>
+        /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
+        /// </exception>
+        public static async Task<List<Package>> FindRemovablePackages(string removePackageId, bool onlyStable = true)
+        {
+            if (PackageManager.RootPackage == null || PackageManager.Installed == null)
+            {
+                await PackageManager.Initialize();
+            }
+            IEnumerable<(string packageId, string version)> installed = new List<(string packageId, string version)>();
+            if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
+            {
+                installed = PackageManager.RootPackage.package.Where(package => removePackageId != package.id).Select(package => { return (package.id, package.version); }).ToArray();
+            }
+            IEnumerable<DependencyNode> allPackages = await GetInputedDependencyList(installed, onlyStable);
+            IEnumerable<string> allPackagesName = allPackages.Select(package => package.PackageName);
+            return PackageManager.Installed.package.Where(pkg => !allPackagesName.Contains(pkg.id)).ToList();
+        }
+
+        private static async Task<IEnumerable<Package>> GetInputedRequiredPackageList(IEnumerable<(string, string)> packages, bool onlyStable = true)
+        {
+            IEnumerable<DependencyNode> dependency = await GetInputedDependencyList(packages, onlyStable);
+            return dependency.Select(package =>
+            {
+                var pkg = new Package
+                {
+                    id = package.PackageName,
+                    targetFramework = package.TragetFramework,
+                    versionField = package.Version
+                };
+                return pkg;
+            });
+        }
+
+        private static async Task<IEnumerable<DependencyNode>> GetInputedDependencyList(IEnumerable<(string, string)> packages, bool onlyStable = true)
+        {
+            var confirmedNode = new List<DependencyNode>();
+            var tasks = new List<Task>();
+            var allNode = new Dictionary<string, List<DependencyNode>>();
+
+            List<string> targetFramework;
+            switch (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
+            {
+                case ApiCompatibilityLevel.NET_4_6:
+                    targetFramework = FrameworkName.NET;
+                    break;
+                case ApiCompatibilityLevel.NET_Standard_2_0:
+                    targetFramework = FrameworkName.STANDARD;
+                    break;
+                default:
+                    throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
+            }
+            var p = packages.ToList();
+            foreach ((var packageId, var version) in packages)
+            {
+                var node = new DependencyNode(packageId, "[" + version + "]");
+                lock (tasks)
+                {
+                    tasks.Add(FindDependency(node, targetFramework, allNode, onlyStable));
+                }
+            }
+            await Task.WhenAll(tasks);
+
+            foreach (KeyValuePair<string, List<DependencyNode>> dic in allNode)
+            {
+                if (dic.Value.Count == 1 && dic.Value[0].dependedNode.Count == 0)
+                {
+                    confirmedNode.Add(dic.Value[0]);
+                }
+            }
+
+            while (confirmedNode.Count != allNode.Count)
+            {
+                IEnumerable<string> confirmedPackage = confirmedNode.Select(package => package.PackageName);
+                var topNodes = confirmedNode.SelectMany(node => node.dependingNode).GroupBy(node => node.PackageName).Select(group => group.First()).Where(node =>
+                {
+                    IEnumerable<string> topParent = node.dependedNode.Select(parent => parent.PackageName).Except(confirmedPackage);
+                    if (topParent == null || !topParent.Any())
+                    {
+                        if (confirmedPackage.Contains(node.PackageName))
+                        {
+                            return false;
+                        }
+                        return true;
+                    }
+                    return false;
+                }).ToList();
+
+                for (var i = 0; i < topNodes.Count; i++)
+                {
+                    List<DependencyNode> topNode = allNode[topNodes[i].PackageName];
+                    if (topNode.Count == 1)
+                    {
+                        confirmedNode.Add(topNode[0]);
+                    }
+                    else
+                    {
+                        var dependedPackage = new List<DependencyNode>();
+                        SemVer margedVersion = topNode[0].Version;
+                        dependedPackage.AddRange(topNode[0].dependedNode);
+                        foreach (DependencyNode top in topNode)
+                        {
+                            dependedPackage.AddRange(top.dependedNode);
+                            try
+                            {
+                                margedVersion = margedVersion.Marge(top.Version, onlyStable);
+                            }
+                            catch (ArgumentException)
+                            {
+                                throw new InvalidOperationException("Found dependency conflict. At\n" + string.Join("\n", topNode.SelectMany(node => node.dependedNode).Select(depended => depended.PackageName + " " + depended.Version.SelectedVersion)));
+                            }
+                        }
+                        var margeNode = new DependencyNode(topNode[0].PackageName, margedVersion.AllowedVersion);
+                        while (topNode != null && topNode.Count != 0)
+                        {
+                            DeleteDependency(topNode[0], allNode);
+                        }
+
+                        margeNode.dependedNode.AddRange(dependedPackage);
+                        await FindDependency(margeNode, targetFramework, allNode, onlyStable);
+                        confirmedNode.Add(margeNode);
+                    }
+                }
+            }
+
+            return confirmedNode;
+        }
+
+        private static async Task FindDependency(DependencyNode node, List<string> targetFramework, Dictionary<string, List<DependencyNode>> allNode, bool onlyStable = true)
+        {
+            var tasks = new List<Task>();
+            var isInstalled = false;
+            lock (PackageManager.installedCatalog)
+            {
+                isInstalled = PackageManager.installedCatalog.ContainsKey(node.PackageName);
+            }
+            Catalog catalog = isInstalled ? PackageManager.installedCatalog[node.PackageName] : await NuGet.GetCatalog(node.PackageName);
+            node.Version.ExistVersion = catalog.GetAllVersion();
+            node.Version.SelectedVersion = node.Version.GetSuitVersion(onlyStable);
+            lock (allNode)
+            {
+                if (allNode.TryGetValue(node.PackageName, out List<DependencyNode> samePackage))
+                {
+                    samePackage.Add(node);
+                }
+                else
+                {
+                    allNode.Add(node.PackageName, new List<DependencyNode>() { node });
+                }
+
+            }
+
+            Catalogentry catalogEntry = catalog.GetAllCatalogEntry().FirstOrDefault(entry => entry.version == node.Version.SelectedVersion);
+
+            if (catalogEntry == default)
+            {
+                throw new ArgumentException("There is no such version of that package.");
+            }
+
+            Dependencygroup[] dependencyGroup = catalogEntry.dependencyGroups;
+            if (dependencyGroup == null)
+            {
+                return;
+            }
+            IEnumerable<Dependencygroup> dependencies = dependencyGroup.Where(group => targetFramework.Contains(group.targetFramework));
+            if (dependencies == null || !dependencies.Any())
+            {
+                node.TragetFramework = "";
+            }
+            else
+            {
+                Dependencygroup dependGroup = dependencies.OrderBy(depend => targetFramework.IndexOf(depend.targetFramework)).First();
+                node.TragetFramework = dependGroup.targetFramework;
+                if (dependGroup.dependencies != null)
+                {
+                    foreach (Dependency dependency in dependGroup.dependencies)
+                    {
+                        tasks.Add(FindChildDependency(dependency.id, dependency.range, node, targetFramework, allNode, onlyStable));
+                    }
+                }
+            }
+
+            await Task.WhenAll(tasks);
+        }
+
+        private static async Task FindChildDependency(string packageName, string allowedVersion, DependencyNode parent, List<string> targetFramework, Dictionary<string, List<DependencyNode>> allNode, bool onlyStable = true)
+        {
+            var childNode = new DependencyNode(packageName, allowedVersion);
+            parent.dependingNode.Add(childNode);
+            childNode.dependedNode.Add(parent);
+            EnsureNoCircularReference(childNode);
+            await FindDependency(childNode, targetFramework, allNode, onlyStable);
+        }
+
+        private static void EnsureNoCircularReference(DependencyNode node, string targetName = "", List<string> log = null)
+        {
+            if (targetName == "")
+            {
+                targetName = node.PackageName;
+            }
+
+            if (log == null)
+            {
+                log = new List<string>() { targetName };
+            }
+
+            foreach (DependencyNode depended in node.dependedNode)
+            {
+                log.Add(depended.PackageName);
+
+                if (depended.PackageName == targetName)
+                {
+                    log.Reverse();
+                    throw new ArgumentException("Find circular reference." + log.Aggregate((now, next) => now + " -> " + next));
+                }
+
+                EnsureNoCircularReference(depended, targetName, log);
+            }
+        }
+
+        private static void DeleteDependency(DependencyNode node, Dictionary<string, List<DependencyNode>> allNode)
+        {
+            foreach (DependencyNode parent in node.dependedNode)
+            {
+                parent.dependingNode.Remove(node);
+            }
+
+            lock (allNode)
+            {
+                allNode[node.PackageName].Remove(node);
+                if (allNode[node.PackageName].Count == 0)
+                {
+                    allNode.Remove(node.PackageName);
+                }
+            }
+
+            for (var i = node.dependingNode.Count - 1; i >= 0; i--)
+            {
+                DeleteDependency(node.dependingNode[i], allNode);
+            }
+
+            node.dependedNode.Clear();
+            node.dependingNode.Clear();
+        }
+    }
+}
+
+#endif
