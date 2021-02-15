@@ -5,7 +5,9 @@ if($args.Count -ne 1){
     exit
 }
 
-$splitedVersion = $args[0] -split "\."
+$version = $args[0]
+
+$splitedVersion = $version -split "\."
 if($splitedVersion.Count -ne 3){
     Write-Host "You entered invalid version."
     exit
@@ -21,18 +23,18 @@ foreach($splited in $splitedVersion){
 
 $tags = git tag
 
-if(($null -ne $tags) -and $tags.Contains($args[0])){
+if(($null -ne $tags) -and $tags.Contains($version)){
     Write-Host "That version already exist."
     exit
 }
 
-$name = "NuGetImporterForUnity." + $args[0]
+$name = "NuGetImporterForUnity." + $version
 $packageProjectPath = Convert-Path "NuGetImporterForUnity"
 $exportProjectPath = Convert-Path "Packager"
 
 $packageDotJsonContents = `
     $(Get-Content "NuGetImporterForUnity/Packages/NuGet Importer/package.json") `
-    -replace """version"": ""\d\.\d\.\d""" , """version"": ""${args[0]}"""
+    -replace """version"": ""\d\.\d\.\d""" , """version"": ""$version"""
 $packageDotJsonContents > "NuGetImporterForUnity/Packages/NuGet Importer/package.json"
 
 $asmVersion = $splitedVersion[0] + "." + $splitedVersion[1] + ".0." + $splitedVersion[2]
@@ -65,5 +67,5 @@ Compress-Archive -Path "Release/$name/$name.unitypackage" , "Release/$name/Docum
 docfx docFX/docfx.json
 
 git add -A
-git commit -m "Release ${args[0]}"
-git tag $args[0]
+git commit -m "Release $version"
+git tag $version
