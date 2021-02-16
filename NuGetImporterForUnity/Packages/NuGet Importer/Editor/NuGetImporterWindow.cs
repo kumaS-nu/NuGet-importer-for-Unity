@@ -1,5 +1,4 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ using kumaS.NuGetImporter.Editor.DataClasses;
 using UnityEditor;
 
 using UnityEngine;
-
 
 namespace kumaS.NuGetImporter.Editor
 {
@@ -99,7 +97,7 @@ namespace kumaS.NuGetImporter.Editor
                 return;
             }
             var text = await response.Content.ReadAsStringAsync();
-            MatchCollection matchs = Regex.Matches(text, @"NuGetImporterForUnity\.(?<version>\d+\.\d+\.\d+)\.unitypackage");
+            MatchCollection matchs = Regex.Matches(text, @"NuGetImporterForUnity\.(?<version>\d+\.\d+\.\d+)\.zip");
             var versions = new List<string>();
             foreach (Match match in matchs)
             {
