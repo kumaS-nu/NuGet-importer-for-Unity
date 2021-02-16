@@ -3,7 +3,6 @@ using System.Linq;
 
 using UnityEngine;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     public class PackageSummary
@@ -39,6 +38,5 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             AllVersion = allVersion;
             StableVersion = AllVersion.Where(version => !version.Contains('-') && version[0] != '0').ToList();
         }
-
     }
 }

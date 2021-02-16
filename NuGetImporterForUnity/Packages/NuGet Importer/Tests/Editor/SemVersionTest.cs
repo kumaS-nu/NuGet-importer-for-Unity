@@ -1,5 +1,4 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using System;
 using System.Collections.Generic;
@@ -45,7 +44,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 "1.0.0-alpha"
             };
 
-#region Test of ToMathExpression
+        #region Test of ToMathExpression
 
         [Test]
         public void MathExpressionTest1()
@@ -95,9 +94,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.That(SemVer.ToMathExpression("[1.0,2.0)"), Is.EqualTo("1.0 <= v < 2.0"));
         }
 
-#endregion
+        #endregion
 
-#region Test of SortVersion
+        #region Test of SortVersion
 
         [Test]
         public void SortVersionTest()
@@ -105,9 +104,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.That(SemVer.SortVersion(setVersion), Is.EqualTo(rightVersion));
         }
 
-#endregion
+        #endregion
 
-#region Test of Marge
+        #region Test of Marge
 
         [Test]
         public void MargeTest1()
@@ -215,9 +214,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.Throws<ArgumentException>(() => semVer1.Marge(semVer2, false));
         }
 
-#endregion
+        #endregion
 
-#region Test of GetSuitVersion
+        #region Test of GetSuitVersion
 
         [Test]
         public void GetSuitVersionTest1()
@@ -283,10 +282,10 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.Throws<InvalidOperationException>(() => semVer.GetSuitVersion(true));
         }
 
-#endregion
+        #endregion
 
 
-#region Test of IsAllowedVersion
+        #region Test of IsAllowedVersion
 
         [Test]
         public void IsAllowedVersionTest1()
@@ -316,7 +315,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.IsFalse(semVer.IsAllowedVersion(new List<string>() { "1", "0", "0-alpha" }));
         }
 
-#endregion
+        #endregion
 
     }
 }

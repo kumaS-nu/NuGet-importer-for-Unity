@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     /// <summary>
@@ -89,6 +88,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 }
                 SortedVersion.Insert(index, splitedVersion);
             }
+
             return SortedVersion.Select(v => v.Aggregate((now, next) => now + "." + next)).ToList();
         }
 
@@ -496,7 +496,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             }
 
             return 0;
-
         }
     }
 }

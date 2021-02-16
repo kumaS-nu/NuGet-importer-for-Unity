@@ -1,5 +1,4 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using kumaS.NuGetImporter.Editor.DataClasses;
 using UnityEditor;
 
 using UnityEngine;
-
 
 namespace kumaS.NuGetImporter.Editor
 {
@@ -367,7 +365,6 @@ namespace kumaS.NuGetImporter.Editor
                     GUILayout.FlexibleSpace();
                 }
             }
-
 
             using (new EditorGUILayout.VerticalScope("Box"))
             {

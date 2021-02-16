@@ -2,7 +2,6 @@
 
 using UnityEngine;
 
-
 namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>

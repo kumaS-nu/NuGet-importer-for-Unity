@@ -1,5 +1,4 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using System;
 using System.Collections;
@@ -41,7 +40,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         * I 1.0.0       → G 2.0.0
         */
 
-#region SetUp
+        #region SetUp
 
         [OneTimeSetUp]
         public void SetUp()
@@ -172,9 +171,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
 
         }
 
-#endregion
+        #endregion
 
-#region Test of FindRequiredPackages
+        #region Test of FindRequiredPackages
 
         [UnityTest]
         public IEnumerator FindRequiredPackagesTest01()
@@ -433,9 +432,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.That(task.Exception.InnerException, Is.TypeOf(typeof(InvalidOperationException)));
         }
 
-#endregion
+        #endregion
 
-#region Test of FindRequiredPackagesWhenChangeVersion
+        #region Test of FindRequiredPackagesWhenChangeVersion
 
         [UnityTest]
         public IEnumerator FindRequiredPackagesWhenChangeVersionTest01()
@@ -682,9 +681,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.That(task.Exception.InnerException, Is.TypeOf(typeof(InvalidOperationException)));
         }
 
-#endregion
+        #endregion
 
-#region Test of FindRemovablePackages
+        #region Test of FindRemovablePackages
 
         [UnityTest]
         public IEnumerator FindRemovablePackagesTest01()
@@ -959,9 +958,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
             IsEqual(task.Result, expected);
         }
 
-#endregion
+        #endregion
 
-#region TearDown
+        #region TearDown
 
         [OneTimeTearDown]
         public void TearDown()
@@ -969,7 +968,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             _ = PackageManager.Initialize();
         }
 
-#endregion
+        #endregion
 
         private void IsEqual(IEnumerable<Package> condition, IEnumerable<Package> excepted)
         {

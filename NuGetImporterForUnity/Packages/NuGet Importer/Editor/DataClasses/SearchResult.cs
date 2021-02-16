@@ -4,7 +4,6 @@ using System.Linq;
 
 using UnityEngine;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     /// <summary>
@@ -74,5 +73,4 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public int downloads;
         public string nuget_id;
     }
-
 }

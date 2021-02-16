@@ -83,8 +83,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 return ret;
             }
         }
-
-
     }
 
     public enum FrameworkMaxVersion
@@ -94,5 +92,4 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         NET47,
         NET471
     }
-
 }

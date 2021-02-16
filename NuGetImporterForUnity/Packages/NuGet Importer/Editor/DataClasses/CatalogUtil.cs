@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     public partial class Catalog

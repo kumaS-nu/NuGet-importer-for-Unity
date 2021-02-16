@@ -69,6 +69,5 @@
             get => versionField.AllowedVersion;
             set => versionField.AllowedVersion = value;
         }
-
     }
 }

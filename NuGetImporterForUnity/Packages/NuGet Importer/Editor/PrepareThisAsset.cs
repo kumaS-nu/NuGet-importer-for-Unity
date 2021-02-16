@@ -5,7 +5,6 @@ using UnityEditor;
 
 using UnityEngine;
 
-
 namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
@@ -55,7 +54,6 @@ namespace kumaS.NuGetImporter.Editor
             {
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, string.Join(";", symbols));
             }
-
         }
     }
 }

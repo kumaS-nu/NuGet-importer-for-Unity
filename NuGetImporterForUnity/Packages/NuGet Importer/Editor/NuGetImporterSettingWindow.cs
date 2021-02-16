@@ -1,10 +1,8 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using UnityEditor;
 
 using UnityEngine;
-
 
 namespace kumaS.NuGetImporter.Editor
 {

@@ -2,7 +2,6 @@
 
 using UnityEngine;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     /// <summary>
@@ -110,6 +109,5 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public string range;
         public string registration;
     }
-
 }
 

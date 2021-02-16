@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     internal class DependencyNode

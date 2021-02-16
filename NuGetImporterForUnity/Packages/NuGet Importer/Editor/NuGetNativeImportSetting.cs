@@ -1,5 +1,4 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using System;
 using System.Collections.Generic;
@@ -119,7 +118,6 @@ namespace kumaS.NuGetImporter.Editor
                         native.isPreloaded = true;
                     }
                 }
-
             }
         }
     }

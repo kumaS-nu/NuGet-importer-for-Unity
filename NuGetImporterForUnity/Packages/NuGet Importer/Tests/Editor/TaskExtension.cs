@@ -20,5 +20,4 @@ namespace kumaS.NuGetImporter.Editor.Tests
             }
         }
     }
-
 }

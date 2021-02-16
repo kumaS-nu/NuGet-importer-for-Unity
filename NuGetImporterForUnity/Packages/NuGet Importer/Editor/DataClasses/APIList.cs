@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     /// <summary>
@@ -36,5 +35,4 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public string comment;
         public string clientVersion;
     }
-
 }

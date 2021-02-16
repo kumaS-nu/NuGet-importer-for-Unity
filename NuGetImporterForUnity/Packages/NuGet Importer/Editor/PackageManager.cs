@@ -1,5 +1,4 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 
 using UnityEngine;
-
 
 namespace kumaS.NuGetImporter.Editor
 {

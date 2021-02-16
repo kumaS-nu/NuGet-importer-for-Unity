@@ -1,5 +1,4 @@
-﻿
-#if ZIP_AVAILABLE
+﻿#if ZIP_AVAILABLE
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 using kumaS.NuGetImporter.Editor.DataClasses;
 
 using UnityEditor;
-
 
 namespace kumaS.NuGetImporter.Editor
 {
