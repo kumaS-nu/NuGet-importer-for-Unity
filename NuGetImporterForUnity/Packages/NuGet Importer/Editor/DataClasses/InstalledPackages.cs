@@ -1,6 +1,5 @@
 ﻿namespace kumaS.NuGetImporter.Editor.DataClasses
 {
-
     // メモ: 生成されたコードは、少なくとも .NET Framework 4.5または .NET Core/Standard 2.0 が必要な可能性があります。
     /// <remarks/>
     [System.SerializableAttribute()]
@@ -9,7 +8,6 @@
     [System.Xml.Serialization.XmlRootAttribute("packages", Namespace = "", IsNullable = false)]
     public partial class InstalledPackages
     {
-
         private Package[] packageField;
 
         /// <remarks/>
@@ -27,15 +25,12 @@
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public class Package
     {
-
         private string idField;
 
         [System.Xml.Serialization.XmlIgnore]
         public SemVer versionField = new SemVer();
 
         private string targetFrameworkField;
-
-
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -60,7 +55,6 @@
             get => targetFrameworkField;
             set => targetFrameworkField = value;
         }
-
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]

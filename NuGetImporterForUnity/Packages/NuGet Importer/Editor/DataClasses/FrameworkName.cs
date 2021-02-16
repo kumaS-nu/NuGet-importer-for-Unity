@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     public static class FrameworkName
@@ -56,7 +55,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public static List<string> STANDARD
         {
             get => new List<string>(standard20);
-
         }
 
         /// <summary>

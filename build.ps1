@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 if($args.Count -ne 1){
-    Write-Host "You need to enter the version."
+    Write-Verbose "You need to enter the version."
     exit
 }
 
@@ -9,14 +9,14 @@ $version = $args[0]
 
 $splitedVersion = $version -split "\."
 if($splitedVersion.Count -ne 3){
-    Write-Host "You entered invalid version."
+    Write-Verbose "You entered invalid version."
     exit
 }
 
 foreach($splited in $splitedVersion){
     $_num = $null
     if(-not([int]::TryParse($splited,[ref]$_num))){
-        Write-Host "You entered invalid version."
+        Write-Verbose "You entered invalid version."
         exit
     }
 }
@@ -24,7 +24,7 @@ foreach($splited in $splitedVersion){
 $tags = git tag
 
 if(($null -ne $tags) -and $tags.Contains($version)){
-    Write-Host "That version already exist."
+    Write-Verbose "That version already exist."
     exit
 }
 

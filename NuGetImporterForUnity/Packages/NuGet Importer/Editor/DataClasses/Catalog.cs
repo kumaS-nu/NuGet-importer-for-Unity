@@ -110,4 +110,3 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public string registration;
     }
 }
-

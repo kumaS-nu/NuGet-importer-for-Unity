@@ -84,8 +84,8 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     {
                         break;
                     }
-
                 }
+
                 SortedVersion.Insert(index, splitedVersion);
             }
 
@@ -118,7 +118,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         minimumVersion = value.Split('.').ToList();
                         maximumVersion = null;
                     }
-
                 }
                 else if (splitedNotion.Length == 2)
                 {
@@ -386,7 +385,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             }
 
             throw new InvalidOperationException("There is no available version.");
-
         }
 
         /// <summary>
