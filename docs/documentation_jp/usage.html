@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#20351;&#12356;&#26041; | NuGet importer for Unity documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#20351;&#12356;&#26041; | NuGet importer for Unity documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="使い方">使い方</h1>
+
+<h2 id="インストール方法">インストール方法</h2>
+<p>パッケージをインストールするには、UPM (Unity Package Manager) を利用する、または、.unitypackage をインポートするの二通りがあります。</p>
+<h3 id="upm-unity-package-manager-を使う">UPM (Unity Package Manager) を使う</h3>
+<p>UPMを使って導入するには、この Git URL を指定する。または、OpenUPM を使って導入するという二通りあります。</p>
+<h4 id="git-url-を指定する">Git URL を指定する</h4>
+<ol>
+<li>Package Manager ウィンドウを開く</li>
+<li>ステータスバーの <strong>Add</strong> (+) ボタンをクリック</li>
+<li><strong>Add package from git URL</strong> を選択</li>
+<li>「<code>https://github.com/kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer</code>」または「<code>git@github.com:kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer</code>」を入力</li>
+<li><strong>Add</strong> をクリック</li>
+</ol>
+<p>詳細は<a href="https://docs.unity3d.com/ja/2019.4/Manual/upm-ui-giturl.html">公式ページ(Git URL からのインストール - Unity)</a>をご覧ください。</p>
+<h4 id="openupm-を利用する">OpenUPM を利用する</h4>
+<ol>
+<li>OpenUPM-CLI をインストールしていない場合は、以下のコマンドで OpenUPM-CLI をインストールする。(Node.js 12が必要です。)
+<pre><code class="lang-bash">npm install -g openupm-cli
+</code></pre>
+</li>
+<li>インストールする予定のプロジェクトのフォルダへ移動する。</li>
+<li>以下のコマンドで、プロジェクトにインストールする。
+<pre><code class="lang-bash">openupm add org.kumas.nuget-importer
+</code></pre>
+</li>
+</ol>
+<p>詳細は<a href="https://openupm.com/docs/getting-started.html">公式ページ(Getting Started with OpenUPM-CLI - OpenUPM)</a>をご覧ください。</p>
+<h3 id="unitypackage-で導入する">.unitypackage で導入する</h3>
+<ol>
+<li><a href="https://github.com/kumaS-nu/NuGet-importer-for-Unity/releases">リリースページ</a>へ行き、必要なバージョンのzipファイルをダウンロードする。</li>
+<li>zipファイルを解凍し、中の .unitypackage をプロジェクトにインポートする。</li>
+</ol>
+<h2 id="unityでの使い方">Unityでの使い方</h2>
+<h3 id="メニューアイテム">メニューアイテム</h3>
+<p><img src="../images/MenuItem.png" alt="メニューアイテム"></p>
+<ul>
+<li>Manage packages ・・・ パッケージを管理するメインウィンドウを表示する。</li>
+<li>Repair packages ・・・ インストールされているパッケージの依存関係を最適化し、パッケージを修復する。</li>
+<li>Delete cache ・・・ キャッシュを削除する。（ただし、アセンブリがロードされるたびにキャッシュは消えている。）</li>
+<li>Cache settings ・・・ キャッシュに関する設定をするウィンドウを表示する。</li>
+<li>Check update ・・・ 更新があるか確認する。</li>
+<li>Go to project page ・・・ NuGet importer for Unity のページを開く。</li>
+</ul>
+<h3 id="メインウィンドウ">メインウィンドウ</h3>
+<p><img src="../images/MainWindow.png" alt="メインウィンドウ"></p>
+<ol>
+<li>NuGet から検索するときのモード。</li>
+<li>インストールされているものから検索するときのモード。</li>
+<li>フレームワークの設定。</li>
+<li>非安定版も含めるかどうか。</li>
+<li>検索語句の入力場所。（インクリメンタルサーチされる。）</li>
+<li>検索結果。</li>
+<li>パッケージの詳細情報。</li>
+<li>バージョン選択。</li>
+<li>パッケージに対する操作。</li>
+</ol>
+<h3 id="キャッシュの設定">キャッシュの設定</h3>
+<p><img src="../images/CacheSettings.png" alt="キャッシュの設定"></p>
+<ol>
+<li>検索結果のキャッシュする最大数。（0以下はキャッシュしない。）</li>
+<li>カタログのキャッシュする最大数。（0以下はキャッシュしない。）</li>
+<li>アイコンのキャッシュする最大数。（0以下はキャッシュしない。）</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            NuGet importer for Unity documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

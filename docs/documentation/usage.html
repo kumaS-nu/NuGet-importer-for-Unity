@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Usage | NuGet importer for Unity documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Usage | NuGet importer for Unity documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="usage">Usage</h1>
+
+<h2 id="getting-start">Getting Start</h2>
+<p>There are two ways to install the package: using the UPM (Unity Package Manager) or importing the .unitypackage.</p>
+<h3 id="via-upm-unity-package-manager">via UPM (Unity Package Manager)</h3>
+<p>There are two ways to install using UPM: using this Git URL, or using OpenUPM.</p>
+<h4 id="use-this-git-url">Use This Git URL</h4>
+<ol>
+<li>Open Package Manager window.</li>
+<li>Click the <strong>add</strong> (+) button in the status bar.</li>
+<li>Select <strong>Add package from git URL</strong>.</li>
+<li>Enter &quot;<code>https://github.com/kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer</code>&quot; or &quot;<code>git@github.com:kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer</code>&quot;.</li>
+<li>Click <strong>Add</strong>.</li>
+</ol>
+<p>For more information, see the <a href="https://docs.unity3d.com/Manual/upm-ui-giturl.html">Official page (Installing from a Git URL - Unity)</a>.</p>
+<h4 id="use-openupm">Use OpenUPM</h4>
+<ol>
+<li>If you have not installed OpenUPM-CLI, run the following command to install OpenUPM-CLI. (Node.js 12 is required.)
+<pre><code class="lang-bash">npm install -g openupm-cli
+</code></pre>
+</li>
+<li>Go to the unity project folder</li>
+<li>Run the following command to install &quot;NuGet importer for Unity&quot; in your project.
+<pre><code class="lang-bash">openupm add org.kumas.nuget-importer
+</code></pre>
+</li>
+</ol>
+<p>For more information, see the <a href="https://openupm.com/docs/getting-started.html">Official page (Getting Started with OpenUPM-CLI - OpenUPM)</a></p>
+<h3 id="via-unitypackage">via .unitypackage</h3>
+<ol>
+<li>Go to the <a href="https://github.com/kumaS-nu/NuGet-importer-for-Unity/releases">release page</a> and download the zip file of the version you need.</li>
+<li>Extract the zip file and import the .unitypackage into your project.</li>
+</ol>
+<h2 id="usage-in-unity">Usage in Unity</h2>
+<h3 id="menu-item">Menu item</h3>
+<p><img src="../images/MenuItem.png" alt="Menu item"></p>
+<ul>
+<li>Manage packages ・・・ Open the main window for managing packages.</li>
+<li>Repair packages ・・・ Optimize the dependencies of installed packages and repair them.</li>
+<li>Delete cache ・・・ Delete the cache. (However, the cache is deleted every time the assembly is loaded.)</li>
+<li>Cache settings ・・・ Open the window for configuring settings with cache.</li>
+<li>Check update ・・・ Check for updates.</li>
+<li>Go to project page ・・・ Open the &quot;NuGet importer for Unity&quot; page.</li>
+</ul>
+<h3 id="main-window">Main window</h3>
+<p><img src="../images/MainWindow.png" alt="Main window"></p>
+<ol>
+<li>Mode to search from NuGet.</li>
+<li>Mode to search from the installed packages.</li>
+<li>Framework settings.</li>
+<li>Whether include development version</li>
+<li>Input area for search words. (Incremental search.)</li>
+<li>Search results.</li>
+<li>Package details.</li>
+<li>Version selection.</li>
+<li>Operations on the package.</li>
+</ol>
+<h3 id="cache-settings">Cache settings</h3>
+<p><img src="../images/CacheSettings.png" alt="Cache settings"></p>
+<ol>
+<li>The maximum number of search results to cache. (0 or less is not cached.)</li>
+<li>The maximum number of catalog to cache. (0 or less is not cached.)</li>
+<li>The maximum number of icon to cache. (0 or less is not cached.)</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            NuGet importer for Unity documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

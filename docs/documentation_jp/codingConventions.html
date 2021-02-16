@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#12467;&#12540;&#12487;&#12451;&#12531;&#12464;&#35215;&#21063; | NuGet importer for Unity documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#12467;&#12540;&#12487;&#12451;&#12531;&#12464;&#35215;&#21063; | NuGet importer for Unity documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="コーディング規則">コーディング規則</h1>
+
+<p>基本的に Microsoft の<a href="https://docs.microsoft.com/ja-jp/dotnet/standard/design-guidelines/">フレームワークデザインのガイドライン</a>または <a href="https://docs.microsoft.com/ja-jp/dotnet/csharp/programming-guide/inside-a-program/coding-conventions">C# のコーディング規則</a>に則っています。また、<code>NuGetImporterForUnity/.editorconfig</code> にてこのプロジェクトで使用するコードスタイルを定義しており、この設定でコードのクリーンアップをすれば基本的には問題ありません。（守れてないところがあったら突っ込んでください）</p>
+<h2 id="命名">命名</h2>
+<p>パラメーターは Camel 記法（先頭小文字、それ以外の単語の先頭が大文字）とし、それ以外は Pascal 記法（全ての単語の先頭を大文字）としてください。命名は、読みやすい英語で短縮形を使用しないでください。
+詳細は、<a href="https://docs.microsoft.com/ja-jp/dotnet/standard/design-guidelines/naming-guidelines">名前付けのガイドライン - Microsoft</a> を参照してください。（といっても<del>日本語の翻訳がガバガバなので</del><a href="https://docs.microsoft.com/en-US/dotnet/standard/design-guidelines/naming-guidelines">英語版</a>の方が正確）</p>
+<h2 id="レイアウト">レイアウト</h2>
+<ul>
+<li>コード エディターの既定の設定（スマートインデント、4 文字インデント、タブを空白として保存）を使用します。</li>
+<li>1つの行には1つのステートメントのみを記述します。</li>
+<li>1つの行には1つの宣言のみを記述します。</li>
+<li>継続行にインデントが自動的に設定されない場合は1タブストップ（4つの空白）分のインデントを設定します。</li>
+<li>メソッド定義とプロパティ定義の間に少なくとも1行の空白行を追加します。</li>
+</ul>
+<h2 id="コメント規則">コメント規則</h2>
+<ul>
+<li>コメントは、コード行の末尾ではなく別の行に記述します。</li>
+<li>コメントのテキストは大文字で開始します。</li>
+<li>コメントのテキストは（名詞一個の場合を除き）ピリオドで終了します。</li>
+</ul>
+<h2 id="変数宣言">変数宣言</h2>
+<ul>
+<li>変数の型が割り当ての右側から明らかである場合、または厳密な型が重要でない場合は、ローカル変数の暗黙の型指定を使用します。</li>
+<li>割り当ての右側から型が明らかではない場合、var を使用しません。</li>
+<li>for ループでループ変数の型を決定するときは、暗黙の型指定を使用します。</li>
+<li>foreach ループでループ変数の型を決定するときは、暗黙の型指定を使用しません。</li>
+</ul>
+<h2 id="usingディレクティブ">usingディレクティブ</h2>
+<p>usingディレクティブは namespace の外側（基本的にはファイルの先頭）に書きます。また、usingディレクティブの順番は以下の通りとし、各グループは1行づつ開けます。</p>
+<ol>
+<li>System</li>
+<li>その他</li>
+</ol>
+<p>例えば、以下のようになります。</p>
+<pre><code class="lang-csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using kumaS.NuGetImporter.Editor.DataClasses;
+
+using UnityEditor;
+
+using UnityEngine;
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            NuGet importer for Unity documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,458 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DependencySolver
+   | NuGet importer for Unity documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DependencySolver
+   | NuGet importer for Unity documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="kumaS.NuGetImporter.Editor.DependencySolver">
+  
+  
+  <h1 id="kumaS_NuGetImporter_Editor_DependencySolver" data-uid="kumaS.NuGetImporter.Editor.DependencySolver" class="text-break">Class DependencySolver
+  </h1>
+  <div class="markdown level0 summary"><p>Class that provides a method to resolve package dependencies.</p>
+<p>依存関係を解決するメソッドを提供するクラス。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">DependencySolver</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="kumaS.NuGetImporter.Editor.html">kumaS.NuGetImporter.Editor</a></h6>
+  <h6><strong>Assembly</strong>: kumaS.NuGetImporter.Editor.dll</h6>
+  <h5 id="kumaS_NuGetImporter_Editor_DependencySolver_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class DependencySolver</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_CheckAllPackage_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.CheckAllPackage*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_CheckAllPackage_System_Boolean_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.CheckAllPackage(System.Boolean)">CheckAllPackage(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Find the required packages in the installed package.</p>
+<p>インストール済みのものから必要なパッケージを探す。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; CheckAllPackage(bool onlyStable = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><p>Required packages include installed and specified ones.</p>
+<p>インストール済みや、指定したものを含んだ必要なパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when dependency conflict occered.</p>
+<p>依存関係に衝突があるときthrowされる。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when there is a circular reference or there is no version of package.</p>
+<p>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindRemovablePackages_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRemovablePackages*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRemovablePackages_System_String_System_Boolean_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRemovablePackages(System.String,System.Boolean)">FindRemovablePackages(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Find removable packages when the specified package is removed.</p>
+<p>定のパッケージを除去した際取り除けるパッケージを探す。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; FindRemovablePackages(string removePackageId, bool onlyStable = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">removePackageId</span></td>
+        <td><p>Remove package.</p>
+<p>除去するパッケージ。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><p>Removable packages.</p>
+<p>除去可能なパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when dependency conflict occered.</p>
+<p>依存関係に衝突があるときthrowされる。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when there is a circular reference or there is no version of package.</p>
+<p>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackages_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackages*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackages_System_String_System_String_System_Boolean_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackages(System.String,System.String,System.Boolean)">FindRequiredPackages(String, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Find the required packages in the installed and specified packages.</p>
+<p>インストールされたパッケージと指定したパッケージを元に必要なパッケージを探す。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; FindRequiredPackages(string packageId, string version, bool onlyStable = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageId</span></td>
+        <td><p>Package id</p>
+<p>パッケージのid</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Package version</p>
+<p>パッケージのバージョン</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><p>Required packages include installed and specified ones.</p>
+<p>インストール済みや、指定したものを含んだ必要なパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when dependency conflict occered.</p>
+<p>依存関係に衝突があるときthrowされる。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when there is a circular reference or there is no version of package.</p>
+<p>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackagesWhenChangeVersion_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackagesWhenChangeVersion*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackagesWhenChangeVersion_System_String_System_String_System_Boolean_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackagesWhenChangeVersion(System.String,System.String,System.Boolean)">FindRequiredPackagesWhenChangeVersion(String, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>ind the required packages when change package version.</p>
+<p>ッケージのバージョンを変更する時に必要なパッケージを探す。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; FindRequiredPackagesWhenChangeVersion(string packageId, string version, bool onlyStable = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageId</span></td>
+        <td><p>Package id</p>
+<p>パッケージのid</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Package version</p>
+<p>パッケージのバージョン</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><p>Required packages include installed and specified ones.</p>
+<p>インストール済みや、指定したものを含んだ必要なパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when dependency conflict occered.</p>
+<p>依存関係に衝突があるときthrowされる。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when there is a circular reference or there is no version of package.</p>
+<p>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            NuGet importer for Unity documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

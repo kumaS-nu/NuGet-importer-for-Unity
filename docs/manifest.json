@@ -1,0 +1,631 @@
+{
+  "sitemap": {
+    "fileOptions": {
+      "api/*": {
+        "baseUrl": "https://kumaS-nu.github.io/NuGet-importer-for-Unity/",
+        "changefreq": "daily"
+      }
+    },
+    "baseUrl": "https://kumaS-nu.github.io/NuGet-importer-for-Unity/",
+    "changefreq": "weekly"
+  },
+  "homepages": [],
+  "source_base_path": "D:/Program/Unity/NuGet-importer-for-Unity/docFX",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      },
+      "is_incremental": false
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/CacheSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/CacheSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/Demo.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/Demo.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/MainWindow.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/MainWindow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/MenuItem.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/MenuItem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "KRDXn8Q8qv84VSQnnbOVBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.APIList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.APIList.html",
+          "hash": "JBxNekvWzHM1XBrHWjL0JA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Catalog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Catalog.html",
+          "hash": "R3SuTCmpMWmb1L+0FWzu5A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Catalogentry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Catalogentry.html",
+          "hash": "I0CsmHySUECLOW9KKtRqvg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Datum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Datum.html",
+          "hash": "xsStrivA2+bRbinnqxWsUg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Dependency.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Dependency.html",
+          "hash": "cRWfjB/rcLkMNxNsoUjenw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Dependencygroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Dependencygroup.html",
+          "hash": "dEewW0KlhXaV+ntg/1GwYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkMaxVersion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkMaxVersion.html",
+          "hash": "JOpmUeBNGDjE1cffs/3nQw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html",
+          "hash": "w0oC4n8CPWKcE/BPXsFR1Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html",
+          "hash": "geg5G0arS3NFa72H0YiZ9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Item.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Item.html",
+          "hash": "vrCICDjFwATnsEeKfJKVDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Item1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Item1.html",
+          "hash": "qXnKdqRG+6NHXsQsXZ2C6w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Package.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Package.html",
+          "hash": "KyauApHUmFUlukRrB0absg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.html",
+          "hash": "z/9/4y3J+zNJPB6XSF/wWQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageVersionInformation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageVersionInformation.html",
+          "hash": "+lTUa6ULI4j0PUq5w9y9aw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Packagetype.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Packagetype.html",
+          "hash": "ySdM7LvdK2g6muf8G0NpWg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Resource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Resource.html",
+          "hash": "mukkbfPx/pqufZBvs9DaxA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.SearchResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.SearchResult.html",
+          "hash": "P6TcsJWI1/COnzgH00FgNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.SemVer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.SemVer.html",
+          "hash": "vPtFNA955sX+i87LK1lQgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.html",
+          "hash": "ytDIQW4HYB9bApPnoph1uQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DependencySolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DependencySolver.html",
+          "hash": "mul/Ypqcg1qBo/76cgoycA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.GUILayoutExtention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.GUILayoutExtention.html",
+          "hash": "ySlfgqbeI8K6tSzi/OiGRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.NuGet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.NuGet.html",
+          "hash": "zct++HerU8EcCmiplxEx1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.html",
+          "hash": "aLYaCyyBPyjdugEV8VQzRQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterWindow.html",
+          "hash": "6gspE8j7rdo2rvgqIfojBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.html",
+          "hash": "ORR88ioesFYGalAlx84MOQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageDataExtentionToGUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageDataExtentionToGUI.html",
+          "hash": "3OUXlK7ks23aRynbzNj80w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageManager.html",
+          "hash": "IxeXAxHl0f7C+nl1ICwVVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PrepareThisAsset.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PrepareThisAsset.html",
+          "hash": "ndXynQjRcEgdg+3UU8se9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.html",
+          "hash": "nOe5ssLqtCtzoLht/TiFlA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "PsUeEPiezJEPErwIQzxGng=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "documentation/codingConventions.md",
+      "output": {
+        ".html": {
+          "relative_path": "documentation/codingConventions.html",
+          "hash": "VE1mIYQNBFvA4yNerSOE1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "documentation/contributing.md",
+      "output": {
+        ".html": {
+          "relative_path": "documentation/contributing.html",
+          "hash": "bqj0VLJQEfoO16a0o87hoQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "documentation/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "documentation/toc.html",
+          "hash": "UHjCtK+lhn4UGdnGHfL7oA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "documentation/usage.md",
+      "output": {
+        ".html": {
+          "relative_path": "documentation/usage.html",
+          "hash": "BORsn6HFIwXqF4W2r0p3rg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "documentation_jp/codingConventions.md",
+      "output": {
+        ".html": {
+          "relative_path": "documentation_jp/codingConventions.html",
+          "hash": "7jb+u5mgXHY1SBx4cJxGUg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "documentation_jp/contributing.md",
+      "output": {
+        ".html": {
+          "relative_path": "documentation_jp/contributing.html",
+          "hash": "znabieRy0vBNuHQi9dREiQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "documentation_jp/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "documentation_jp/toc.html",
+          "hash": "+ucj4ccG8gwRWywogTaH1w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "documentation_jp/usage.md",
+      "output": {
+        ".html": {
+          "relative_path": "documentation_jp/usage.html",
+          "hash": "fnLgVJMzUM/8BDXdhdFbQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "WD4/8cvkllN9ptgCLg2XQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "/Sfrojm9bzt6BU3K/RCnJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 8,
+          "skipped_file_count": 7
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 29,
+          "skipped_file_count": 2
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
