@@ -39,7 +39,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 return;
             }
-            if (dirName == "lib" && assetImporter.assetPath.EndsWith(".dll"))
+
+            if (dirName == "Packages" && assetImporter.assetPath.EndsWith(".dll"))
             {
                 if (validateReferences != null)
                 {

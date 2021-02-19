@@ -26,6 +26,7 @@ namespace kumaS.NuGetImporter.Editor
     public static class PackageManager
     {
         private static bool working = false;
+        private static ManagedPluginList managedPluginList;
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
         private static readonly List<string> linuxName = new List<string>() { "linux", "ubuntu", "centos", "debian" };
 
@@ -72,6 +73,13 @@ namespace kumaS.NuGetImporter.Editor
             {
                 serializer.Serialize(file, rootPackage);
             }
+
+            if(!Directory.Exists(Path.Combine(Application.dataPath, "Packages")))
+            {
+                Directory.CreateDirectory(Path.Combine(Application.dataPath, "Packages"));
+            }
+
+            File.WriteAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"), JsonUtility.ToJson(managedPluginList), Encoding.UTF8);
         }
 
         /// <summary>
@@ -106,6 +114,15 @@ namespace kumaS.NuGetImporter.Editor
             else
             {
                 rootPackage = new InstalledPackages();
+            }
+
+            if(File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
+            {
+                managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")));
+            }
+            else
+            {
+                managedPluginList = new ManagedPluginList();
             }
 
             if (File.Exists(Application.dataPath.Replace("Assets", "WillInstall.xml")))
@@ -773,13 +790,20 @@ namespace kumaS.NuGetImporter.Editor
         private static async Task InstallSelectPackage(Package package)
         {
             var topDirectory = Path.Combine(Application.dataPath, "Packages");
-            var topNupkg = Path.Combine(topDirectory, package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant() + ".nupkg");
-            var packageDirectory = Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
-            var packageNupkg = Path.Combine(packageDirectory, package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant() + ".nupkg");
+            var managedDirectory = Path.Combine(topDirectory, "Plugins");
+            var directoryName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant();
+            var topNupkg = Path.Combine(topDirectory, directoryName + ".nupkg");
+            var packageDirectory = Path.Combine(topDirectory, directoryName);
+            var packageNupkg = Path.Combine(packageDirectory, directoryName + ".nupkg");
 
-            if (!Directory.Exists(Path.Combine(Application.dataPath, "Packages")))
+            if (!Directory.Exists(topDirectory))
             {
                 Directory.CreateDirectory(topDirectory);
+            }
+
+            if (!Directory.Exists(managedDirectory))
+            {
+                Directory.CreateDirectory(managedDirectory);
             }
 
             if (File.Exists(packageNupkg))
@@ -829,9 +853,9 @@ namespace kumaS.NuGetImporter.Editor
                 default:
                     throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
             }
+
             if (Directory.Exists(Path.Combine(packageDirectory, "lib")))
             {
-                var deleteList = new List<string>();
                 var target = "";
                 var priority = int.MaxValue;
                 foreach (var lib in Directory.GetDirectories(Path.Combine(packageDirectory, "lib")))
@@ -840,40 +864,34 @@ namespace kumaS.NuGetImporter.Editor
 
                     if (targetFramework != default && targetFramework.Contains(dirName))
                     {
-                        if (target != "")
-                        {
-                            deleteList.Add(target);
-                        }
                         priority = -1;
                         target = lib;
                         package.targetFramework = frameworkDictionary.Where(framework => framework.Contains(dirName)).First()[0];
                     }
                     else if (frameworkList.Contains(dirName) && frameworkList.IndexOf(dirName) < priority)
                     {
-                        if (target != "")
-                        {
-                            deleteList.Add(target);
-                        }
                         priority = frameworkList.IndexOf(dirName);
                         target = lib;
                         package.targetFramework = frameworkDictionary.Where(framework => framework.Contains(dirName)).First()[0];
                     }
-                    else
-                    {
-                        deleteList.Add(lib);
-                    }
                 }
-                foreach (var del in deleteList)
+                if (target != "")
                 {
-                    DeleteDirectory(del);
-                }
+                    var packageManagedList = new PackageManagedPluginList();
+                    packageManagedList.packageName = directoryName;
+                    packageManagedList.fileNames = new List<string>();
 
-                if (Directory.GetDirectories(Path.Combine(packageDirectory, "lib")).Length == 0)
-                {
-                    DeleteDirectory(Path.Combine(packageDirectory, "lib"));
+                    foreach (var moveFile in Directory.GetFiles(target))
+                    {
+                        File.Move(moveFile, Path.Combine(managedDirectory, Path.GetFileName(moveFile)));
+                        packageManagedList.fileNames.Add(Path.GetFileName(moveFile));
+                    }
+
+                    managedPluginList.managedList.Add(packageManagedList);
                 }
             }
 
+            DeleteDirectory(Path.Combine(packageDirectory, "lib"));
 
             if (Directory.Exists(Path.Combine(packageDirectory, "runtimes")))
             {
@@ -975,11 +993,20 @@ namespace kumaS.NuGetImporter.Editor
 
             installed.package = installed.package.Where(package => !manageds.Any(manage => manage.id == package.id) && !natives.Any(native => native.id == package.id)).ToArray();
             rootPackage.package = rootPackage.package.Where(package => installed.package.Any(installed => installed.id == package.id)).ToArray();
+            var nativeManaged = new List<string>();
+            foreach(var native in natives)
+            {
+                var managed = managedPluginList.managedList.First(list => list.packageName == native.id.ToLowerInvariant() + "." + native.version.ToLowerInvariant());
+                managedPluginList.managedList.Remove(managed);
+                nativeManaged.AddRange(managed.fileNames.Select(file => Path.Combine(Application.dataPath, "Packages", "Plugins", file)));
+            }
             Save();
-            DeleteNative(natives.Select(package => Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant())));
+            var nativeDirectory = natives.Select(package => Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
+
+            DeleteNative(nativeDirectory.ToArray(), nativeManaged);
         }
 
-        private static void DeleteNative(IEnumerable<string> paths)
+        private static void DeleteNative(IEnumerable<string> directoryPaths, IEnumerable<string> filePaths)
         {
             AssetDatabase.SaveAssets();
             EditorSceneManager.SaveOpenScenes();
@@ -993,7 +1020,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 process.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec");
                 command.Append("/c timeout 5 && ");
-                foreach (var path in paths)
+                foreach (var path in directoryPaths)
                 {
                     command.Append("rd /s /q \"");
                     command.Append(path);
@@ -1005,13 +1032,29 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("\"");
                     command.Append(" && ");
                 }
+
+                if (filePaths != null)
+                {
+                    foreach (var path in filePaths)
+                    {
+                        command.Append("del \"");
+                        command.Append(path);
+                        command.Append("\"");
+                        command.Append(" && ");
+                        command.Append("del \"");
+                        command.Append(path);
+                        command.Append(".meta");
+                        command.Append("\"");
+                        command.Append(" && ");
+                    }
+                }
                 command.Append(Environment.CommandLine);
             }
             else
             {
                 process.StartInfo.FileName = "/bin/bash";
                 command.Append("-c \" sleep 5 && ");
-                foreach (var path in paths)
+                foreach (var path in directoryPaths)
                 {
                     command.Append("rm -rf '");
                     command.Append(path);
@@ -1022,6 +1065,22 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append(".meta");
                     command.Append("'");
                     command.Append(" && ");
+                }
+
+                if (filePaths != null)
+                {
+                    foreach (var path in filePaths)
+                    {
+                        command.Append("rm -f '");
+                        command.Append(path);
+                        command.Append("'");
+                        command.Append(" && ");
+                        command.Append("rm -f '");
+                        command.Append(path);
+                        command.Append(".meta");
+                        command.Append("'");
+                        command.Append(" && ");
+                    }
                 }
                 command.Append(Environment.CommandLine);
                 command.Append("\"");
@@ -1059,6 +1118,14 @@ namespace kumaS.NuGetImporter.Editor
         private static void UninstallPackage(Package package)
         {
             DeleteDirectory(Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
+            var managedList = managedPluginList.managedList.First(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            
+            foreach(var file in managedList.fileNames)
+            {
+                File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file));
+                File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file + ".meta"));
+            }
+
             lock (installed)
             {
                 installed.package = installed.package.Where(pkg => pkg.id != package.id).ToArray();
@@ -1066,6 +1133,10 @@ namespace kumaS.NuGetImporter.Editor
             lock (installedCatalog)
             {
                 installedCatalog.Remove(package.id);
+            }
+            lock (managedPluginList)
+            {
+                managedPluginList.managedList.Remove(managedList);
             }
         }
 
