@@ -46,6 +46,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/ForOpenUPM.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ForOpenUPM.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/MainWindow.png",
       "output": {
         "resource": {
@@ -212,11 +223,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html",
+          "hash": "+Bq65p05i5SyMRiifStFPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Package.yml",
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Package.html",
           "hash": "KyauApHUmFUlukRrB0absg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html",
+          "hash": "rQxXDx6zNQrxW/HI7LUTIw=="
         }
       },
       "is_incremental": false,
@@ -300,7 +335,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.html",
-          "hash": "ytDIQW4HYB9bApPnoph1uQ=="
+          "hash": "ZhxMoHVe2lQ73EsFWWZXaA=="
         }
       },
       "is_incremental": false,
@@ -432,7 +467,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "PsUeEPiezJEPErwIQzxGng=="
+          "hash": "KYXi4Yc6ZN1OhuQPwJJftg=="
         }
       },
       "is_incremental": false,
@@ -555,7 +590,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "WD4/8cvkllN9ptgCLg2XQg=="
+          "hash": "d18EAUW9CRjtlIJ22BEtPQ=="
         }
       },
       "is_incremental": false,
@@ -587,13 +622,13 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 8,
-          "skipped_file_count": 7
+          "skipped_file_count": 8
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 29,
-          "skipped_file_count": 2
+          "total_file_count": 31,
+          "skipped_file_count": 31
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

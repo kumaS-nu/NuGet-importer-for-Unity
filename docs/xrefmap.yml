@@ -692,6 +692,18 @@ references:
   commentId: F:kumaS.NuGetImporter.Editor.DataClasses.Item1.registration
   fullName: kumaS.NuGetImporter.Editor.DataClasses.Item1.registration
   nameWithType: Item1.registration
+- uid: kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList
+  name: ManagedPluginList
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html
+  commentId: T:kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList
+  nameWithType: ManagedPluginList
+- uid: kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.managedList
+  name: managedList
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html#kumaS_NuGetImporter_Editor_DataClasses_ManagedPluginList_managedList
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.managedList
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.managedList
+  nameWithType: ManagedPluginList.managedList
 - uid: kumaS.NuGetImporter.Editor.DataClasses.Package
   name: Package
   href: api/kumaS.NuGetImporter.Editor.DataClasses.Package.html
@@ -756,6 +768,24 @@ references:
   commentId: F:kumaS.NuGetImporter.Editor.DataClasses.Package.versionField
   fullName: kumaS.NuGetImporter.Editor.DataClasses.Package.versionField
   nameWithType: Package.versionField
+- uid: kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList
+  name: PackageManagedPluginList
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html
+  commentId: T:kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList
+  nameWithType: PackageManagedPluginList
+- uid: kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.fileNames
+  name: fileNames
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html#kumaS_NuGetImporter_Editor_DataClasses_PackageManagedPluginList_fileNames
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.fileNames
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.fileNames
+  nameWithType: PackageManagedPluginList.fileNames
+- uid: kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.packageName
+  name: packageName
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html#kumaS_NuGetImporter_Editor_DataClasses_PackageManagedPluginList_packageName
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.packageName
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.packageName
+  nameWithType: PackageManagedPluginList.packageName
 - uid: kumaS.NuGetImporter.Editor.DataClasses.PackageSummary
   name: PackageSummary
   href: api/kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.html

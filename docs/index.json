@@ -47,7 +47,7 @@
   "api/kumaS.NuGetImporter.Editor.DataClasses.html": {
     "href": "api/kumaS.NuGetImporter.Editor.DataClasses.html",
     "title": "Namespace kumaS.NuGetImporter.Editor.DataClasses | NuGet importer for Unity documentation",
-    "keywords": "Namespace kumaS.NuGetImporter.Editor.DataClasses Classes APIList List of available API 利用可能なAPIの一覧 Catalog Catalog of package. パッケージのカタログ。 Catalogentry Infomation of package. パッケージのバージョンごとの情報。 Datum Package information returned by the search 検索で返ってくるパッケージの情報。 Dependency Dependencygroup FrameworkName InstalledPackages Item Item1 Package PackageSummary Packagetype PackageVersionInformation Resource SearchResult Search results in NuGet. NuGetで検索した結果。 SemVer Simple Semantic Versioning 簡易的なセマンティックバージョニング(2.0.0) Enums FrameworkMaxVersion"
+    "keywords": "Namespace kumaS.NuGetImporter.Editor.DataClasses Classes APIList List of available API 利用可能なAPIの一覧 Catalog Catalog of package. パッケージのカタログ。 Catalogentry Infomation of package. パッケージのバージョンごとの情報。 Datum Package information returned by the search 検索で返ってくるパッケージの情報。 Dependency Dependencygroup FrameworkName InstalledPackages Item Item1 ManagedPluginList Package PackageManagedPluginList PackageSummary Packagetype PackageVersionInformation Resource SearchResult Search results in NuGet. NuGetで検索した結果。 SemVer Simple Semantic Versioning 簡易的なセマンティックバージョニング(2.0.0) Enums FrameworkMaxVersion"
   },
   "api/kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html": {
     "href": "api/kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html",
@@ -64,10 +64,20 @@
     "title": "Class Item1 | NuGet importer for Unity documentation",
     "keywords": "Class Item1 Inheritance System.Object Item1 Namespace : kumaS.NuGetImporter.Editor.DataClasses Assembly : kumaS.NuGetImporter.Editor.dll Syntax [Serializable] public class Item1 Fields catalogEntry Declaration public Catalogentry catalogEntry Field Value Type Description Catalogentry CatalogEntry CatalogEntryがこの中に入っている。 commitId Declaration public string commitId Field Value Type Description System.String commitTimeStamp Declaration public string commitTimeStamp Field Value Type Description System.String nuget_id Declaration public string nuget_id Field Value Type Description System.String nuget_type Declaration public string nuget_type Field Value Type Description System.String packageContent Declaration public string packageContent Field Value Type Description System.String registration Declaration public string registration Field Value Type Description System.String"
   },
+  "api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html": {
+    "href": "api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html",
+    "title": "Class ManagedPluginList | NuGet importer for Unity documentation",
+    "keywords": "Class ManagedPluginList Inheritance System.Object ManagedPluginList Namespace : kumaS.NuGetImporter.Editor.DataClasses Assembly : kumaS.NuGetImporter.Editor.dll Syntax [Serializable] public class ManagedPluginList Fields managedList Declaration public List<PackageManagedPluginList> managedList Field Value Type Description System.Collections.Generic.List < PackageManagedPluginList >"
+  },
   "api/kumaS.NuGetImporter.Editor.DataClasses.Package.html": {
     "href": "api/kumaS.NuGetImporter.Editor.DataClasses.Package.html",
     "title": "Class Package | NuGet importer for Unity documentation",
     "keywords": "Class Package Inheritance System.Object Package Namespace : kumaS.NuGetImporter.Editor.DataClasses Assembly : kumaS.NuGetImporter.Editor.dll Syntax [Serializable] public class Package Fields versionField Declaration public SemVer versionField Field Value Type Description SemVer Properties allowedVersions Declaration public string allowedVersions { get; set; } Property Value Type Description System.String id Declaration public string id { get; set; } Property Value Type Description System.String targetFramework Declaration public string targetFramework { get; set; } Property Value Type Description System.String version Declaration public string version { get; set; } Property Value Type Description System.String"
+  },
+  "api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html": {
+    "href": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html",
+    "title": "Class PackageManagedPluginList | NuGet importer for Unity documentation",
+    "keywords": "Class PackageManagedPluginList Inheritance System.Object PackageManagedPluginList Namespace : kumaS.NuGetImporter.Editor.DataClasses Assembly : kumaS.NuGetImporter.Editor.dll Syntax [Serializable] public class PackageManagedPluginList Fields fileNames Declaration public List<string> fileNames Field Value Type Description System.Collections.Generic.List < System.String > packageName Declaration public string packageName Field Value Type Description System.String"
   },
   "api/kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.html": {
     "href": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.html",
