@@ -74,7 +74,7 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, rootPackage);
             }
 
-            if(!Directory.Exists(Path.Combine(Application.dataPath, "Packages")))
+            if (!Directory.Exists(Path.Combine(Application.dataPath, "Packages")))
             {
                 Directory.CreateDirectory(Path.Combine(Application.dataPath, "Packages"));
             }
@@ -116,7 +116,7 @@ namespace kumaS.NuGetImporter.Editor
                 rootPackage = new InstalledPackages();
             }
 
-            if(File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
+            if (File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
             {
                 managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")));
             }
@@ -877,9 +877,11 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 if (target != "")
                 {
-                    var packageManagedList = new PackageManagedPluginList();
-                    packageManagedList.packageName = directoryName;
-                    packageManagedList.fileNames = new List<string>();
+                    var packageManagedList = new PackageManagedPluginList
+                    {
+                        packageName = directoryName,
+                        fileNames = new List<string>()
+                    };
 
                     foreach (var moveFile in Directory.GetFiles(target))
                     {
@@ -994,14 +996,21 @@ namespace kumaS.NuGetImporter.Editor
             installed.package = installed.package.Where(package => !manageds.Any(manage => manage.id == package.id) && !natives.Any(native => native.id == package.id)).ToArray();
             rootPackage.package = rootPackage.package.Where(package => installed.package.Any(installed => installed.id == package.id)).ToArray();
             var nativeManaged = new List<string>();
-            foreach(var native in natives)
+            foreach (Package native in natives)
             {
-                var managed = managedPluginList.managedList.First(list => list.packageName == native.id.ToLowerInvariant() + "." + native.version.ToLowerInvariant());
-                managedPluginList.managedList.Remove(managed);
-                nativeManaged.AddRange(managed.fileNames.Select(file => Path.Combine(Application.dataPath, "Packages", "Plugins", file)));
+                try
+                {
+                    PackageManagedPluginList managed = managedPluginList.managedList.First(list => list.packageName == native.id.ToLowerInvariant() + "." + native.version.ToLowerInvariant());
+                    managedPluginList.managedList.Remove(managed);
+                    nativeManaged.AddRange(managed.fileNames.Select(file => Path.Combine(Application.dataPath, "Packages", "Plugins", file)));
+                }
+                catch (InvalidOperationException)
+                {
+
+                }
             }
             Save();
-            var nativeDirectory = natives.Select(package => Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
+            IEnumerable<string> nativeDirectory = natives.Select(package => Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
 
             DeleteNative(nativeDirectory.ToArray(), nativeManaged);
         }
@@ -1118,12 +1127,24 @@ namespace kumaS.NuGetImporter.Editor
         private static void UninstallPackage(Package package)
         {
             DeleteDirectory(Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
-            var managedList = managedPluginList.managedList.First(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
-            
-            foreach(var file in managedList.fileNames)
+            try
             {
-                File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file));
-                File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file + ".meta"));
+                PackageManagedPluginList managedList = managedPluginList.managedList.First(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+
+                foreach (var file in managedList.fileNames)
+                {
+                    File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file));
+                    File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file + ".meta"));
+                }
+
+                lock (managedPluginList)
+                {
+                    managedPluginList.managedList.Remove(managedList);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+
             }
 
             lock (installed)
@@ -1133,10 +1154,6 @@ namespace kumaS.NuGetImporter.Editor
             lock (installedCatalog)
             {
                 installedCatalog.Remove(package.id);
-            }
-            lock (managedPluginList)
-            {
-                managedPluginList.managedList.Remove(managedList);
             }
         }
 
