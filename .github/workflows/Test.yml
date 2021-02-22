@@ -22,14 +22,14 @@ jobs:
         testMode:
           - editmode
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v1.1.0
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/cache@v2.1.4
         with:
           path: ${{ matrix.projectPath }}/Library
           key: Library-${{ matrix.projectPath }}
           restore-keys: |
             Library-
-      - uses: webbertakken/unity-test-runner@v1.4
+      - uses: webbertakken/unity-test-runner@v1.7
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         id: tests
