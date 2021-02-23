@@ -125,6 +125,11 @@ namespace kumaS.NuGetImporter.Editor
                 managedPluginList = new ManagedPluginList();
             }
 
+            if(managedPluginList.managedList == null)
+            {
+                managedPluginList.managedList = new List<PackageManagedPluginList>();
+            }
+
             if (File.Exists(Application.dataPath.Replace("Assets", "WillInstall.xml")))
             {
                 if (!File.Exists(Application.dataPath.Replace("Assets", "WillPackage.xml")) || !File.Exists(Application.dataPath.Replace("Assets", "WillRoot.xml")))
