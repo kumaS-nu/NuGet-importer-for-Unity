@@ -5,6 +5,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDescription("NuGet importer for Unity.")]
 [assembly: AssemblyCompany("kumaS")]
 [assembly: AssemblyCopyright("Apache 2.0 Copyright 2021 kumaS")]
-[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyVersion("1.0.0.2")]
 
 [assembly: InternalsVisibleTo("kumaS.NuGetImporter.Editor.Tests")]
