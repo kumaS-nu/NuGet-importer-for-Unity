@@ -104,17 +104,10 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.VerticalScope(GUILayout.MinHeight(150), GUILayout.Width(150 * sizeScale)))
                 {
                     GUILayout.FlexibleSpace();
-                    using (new EditorGUILayout.HorizontalScope(GUILayout.Height(128 * sizeScale)))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
                         GUILayout.FlexibleSpace();
-                        using (new EditorGUILayout.VerticalScope(GUILayout.Width(128 * sizeScale)))
-                        {
-                            Rect rect = GUILayoutUtility.GetRect(128 * sizeScale, 128 * sizeScale);
-                            if (data.icon != null)
-                            {
-                                EditorGUI.DrawPreviewTexture(rect, data.icon);
-                            }
-                        }
+                        EditorGUILayout.LabelField(new GUIContent(data.icon), GUILayout.Width(128 * sizeScale), GUILayout.Height(128 * sizeScale));
                         GUILayout.FlexibleSpace();
                     }
                     GUILayout.FlexibleSpace();
@@ -130,7 +123,7 @@ namespace kumaS.NuGetImporter.Editor
                     using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
                     {
                         GUILayout.Label("Author : ", bold);
-                        GUILayout.Label(string.Join(", ", data.authors));
+                        GUILayoutExtention.WrapedLabel(string.Join(", ", data.authors));
                         GUILayout.Label("Download :", bold);
                         GUILayout.Label(data.totalDownloads.ToString());
                         GUILayout.FlexibleSpace();
@@ -254,17 +247,10 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.VerticalScope(GUILayout.MinHeight(150), GUILayout.Width(150 * sizeScale)))
                 {
                     GUILayout.FlexibleSpace();
-                    using (new EditorGUILayout.HorizontalScope(GUILayout.Height(128 * sizeScale)))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
                         GUILayout.FlexibleSpace();
-                        using (new EditorGUILayout.VerticalScope(GUILayout.Width(128 * sizeScale)))
-                        {
-                            Rect rect = GUILayoutUtility.GetRect(128 * sizeScale, 128 * sizeScale);
-                            if (catalogEntry.icon != null)
-                            {
-                                EditorGUI.DrawPreviewTexture(rect, catalogEntry.icon);
-                            }
-                        }
+                        EditorGUILayout.LabelField(new GUIContent(catalogEntry.icon), GUILayout.Width(128 * sizeScale), GUILayout.Height(128 * sizeScale));
                         GUILayout.FlexibleSpace();
                     }
                     GUILayout.FlexibleSpace();
@@ -326,14 +312,14 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.Label("Version : ", bold);
-                    GUILayout.Label(selectedVersion);
+                    GUILayoutExtention.WrapedLabel(selectedVersion);
                     GUILayout.FlexibleSpace();
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.Label("Auther :", bold);
-                    GUILayout.Label(string.Join(", ", catalogEntry.authors));
+                    GUILayoutExtention.WrapedLabel(string.Join(", ", catalogEntry.authors));
                     GUILayout.FlexibleSpace();
                 }
 
@@ -347,7 +333,7 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.Label("Publish date : ", bold);
-                    GUILayout.Label(catalogEntry.published);
+                    GUILayoutExtention.WrapedLabel(catalogEntry.published);
                     GUILayout.FlexibleSpace();
                 }
 
@@ -361,7 +347,7 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.Label("Tag : ", bold);
-                    GUILayout.Label(string.Join(", ", catalogEntry.tags));
+                    GUILayoutExtention.WrapedLabel(string.Join(", ", catalogEntry.tags));
                     GUILayout.FlexibleSpace();
                 }
             }
@@ -440,17 +426,10 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.VerticalScope(GUILayout.Width(150 * sizeScale)))
                 {
                     GUILayout.FlexibleSpace();
-                    using (new EditorGUILayout.HorizontalScope(GUILayout.Height(128 * sizeScale)))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
                         GUILayout.FlexibleSpace();
-                        using (new EditorGUILayout.VerticalScope(GUILayout.Width(128 * sizeScale)))
-                        {
-                            Rect rect = GUILayoutUtility.GetRect(128 * sizeScale, 128 * sizeScale);
-                            if (summary.Image != null)
-                            {
-                                EditorGUI.DrawPreviewTexture(rect, summary.Image);
-                            }
-                        }
+                        EditorGUILayout.LabelField(new GUIContent(summary.Image), GUILayout.Width(128 * sizeScale), GUILayout.Height(128 * sizeScale));
                         GUILayout.FlexibleSpace();
                     }
                     GUILayout.FlexibleSpace();
@@ -576,8 +555,11 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task GetIcon(string url)
         {
+            var source = new Texture2D(1,1);
+            source.LoadImage(await client.GetByteArrayAsync(url));
             var texture = new Texture2D(128, 128);
-            texture.LoadImage(await client.GetByteArrayAsync(url));
+            Graphics.ConvertTexture(source, texture);
+            MonoBehaviour.DestroyImmediate(source);
             lock (iconCache)
             {
                 iconCache[url] = texture;
@@ -586,6 +568,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     var delete = iconLog[0];
                     iconLog.RemoveAt(0);
+                    MonoBehaviour.DestroyImmediate(iconCache[delete]);
                     iconCache.Remove(delete);
                 }
             }

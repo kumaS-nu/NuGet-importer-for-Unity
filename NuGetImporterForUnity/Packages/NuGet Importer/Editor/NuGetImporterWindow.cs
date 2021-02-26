@@ -113,7 +113,7 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Go to project page", false, 5)]
         private static void GoProjectPage()
         {
-            Help.BrowseURL("https://github.com/kumaS-nu/NuGetImporterForUnity");
+            Help.BrowseURL("https://github.com/kumaS-nu/NuGet-importer-for-Unity");
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace kumaS.NuGetImporter.Editor
             var sumHeight = float.MaxValue;
             using (new GUILayout.HorizontalScope(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
-                using (var packagesScrollView = new GUILayout.ScrollViewScope(packagesScroll, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MinWidth(position.width / 2)))
+                using (var packagesScrollView = new GUILayout.ScrollViewScope(packagesScroll, false, true, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MinWidth(position.width / 2)))
                 {
                     packagesScroll = packagesScrollView.scrollPosition;
                     if (selected == 0)
@@ -381,7 +381,7 @@ namespace kumaS.NuGetImporter.Editor
                     _ = SearchAditionalPackage();
                 }
 
-                using (var detealScrollView = new GUILayout.ScrollViewScope(detealScroll, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MaxWidth(position.width / 2)))
+                using (var detealScrollView = new GUILayout.ScrollViewScope(detealScroll, false, true, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MaxWidth(position.width / 2)))
                 {
                     detealScroll = detealScrollView.scrollPosition;
                     if (summary != null)

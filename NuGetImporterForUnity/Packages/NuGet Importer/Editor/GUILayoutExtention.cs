@@ -38,29 +38,24 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (style == null)
             {
-                style = new GUIStyle(EditorStyles.label);
+                style = new GUIStyle(EditorStyles.linkLabel);
             }
             if (fontSize < 0)
             {
                 fontSize = GUI.skin.label.fontSize;
             }
             GUIStyleState styleState = style.normal;
-            styleState.textColor = Color.blue;
             style.normal = styleState;
             style.fontSize = fontSize;
+            style.wordWrap = true;
 
             GUILayout.Label(text, style, options);
             Rect rect = GUILayoutUtility.GetLastRect();
-            EditorGUIUtility.AddCursorRect(rect, MouseCursor.Pan);
+            EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
             Event nowEvent = Event.current;
-            switch (nowEvent.type)
+            if (nowEvent.type == EventType.MouseDown && rect.Contains(nowEvent.mousePosition))
             {
-                case EventType.MouseDown:
-                    if (rect.Contains(nowEvent.mousePosition))
-                    {
-                        Help.BrowseURL(url);
-                    }
-                    break;
+                Help.BrowseURL(url);
             }
         }
 
@@ -88,14 +83,13 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (style == null)
             {
-                style = new GUIStyle(EditorStyles.label);
+                style = new GUIStyle(EditorStyles.wordWrappedLabel);
             }
 
             if (fontSize < 0)
             {
                 fontSize = GUI.skin.label.fontSize;
             }
-            style.wordWrap = true;
             style.fontSize = fontSize;
 
             GUILayout.Label(text, style, options);
