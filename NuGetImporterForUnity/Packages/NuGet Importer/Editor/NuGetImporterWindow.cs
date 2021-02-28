@@ -294,7 +294,7 @@ namespace kumaS.NuGetImporter.Editor
                     foreach (KeyValuePair<string, Catalog> catalog in PackageManager.installedCatalog)
                     {
                         catalogs.Add(catalog.Value);
-                        tasks.Add(catalog.Value.GetIcon());
+                        tasks.Add(catalog.Value.GetIcon(PackageManager.installed.package.First(package => package.id == catalog.Value.items[0].items[0].catalogEntry.id).version));
                     }
                 }
             }

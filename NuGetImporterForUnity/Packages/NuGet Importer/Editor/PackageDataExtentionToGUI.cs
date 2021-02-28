@@ -250,7 +250,7 @@ namespace kumaS.NuGetImporter.Editor
                     using (new EditorGUILayout.HorizontalScope())
                     {
                         GUILayout.FlexibleSpace();
-                        EditorGUILayout.LabelField(new GUIContent(catalogEntry.icon), GUILayout.Width(128 * sizeScale), GUILayout.Height(128 * sizeScale));
+                        EditorGUILayout.LabelField(new GUIContent(data.icon), GUILayout.Width(128 * sizeScale), GUILayout.Height(128 * sizeScale));
                         GUILayout.FlexibleSpace();
                     }
                     GUILayout.FlexibleSpace();
@@ -509,53 +509,52 @@ namespace kumaS.NuGetImporter.Editor
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        public static async Task GetIcon(this Catalog data)
+        public static async Task GetIcon(this Catalog data, string installedVersion)
         {
-            foreach (Catalogentry d in data.GetAllCatalogEntry())
+            var d = data.GetAllCatalogEntry().First(catalog => catalog.version == installedVersion);
+
+            if (d.iconUrl == null || d.iconUrl == "")
             {
-                if (d.iconUrl == null || d.iconUrl == "")
-                {
-                    d.icon = null;
-                    continue;
-                }
-                var haveIcon = false;
-                var isGetting = false;
-                lock (iconCache)
-                {
-                    haveIcon = iconCache.ContainsKey(d.iconUrl);
-                }
+                data.icon = null;
+            }
+            var haveIcon = false;
+            var isGetting = false;
+            lock (iconCache)
+            {
+                haveIcon = iconCache.ContainsKey(d.iconUrl);
+            }
+            lock (getting)
+            {
+                isGetting = getting.ContainsKey(d.iconUrl);
+            }
+            if (!haveIcon && !isGetting)
+            {
                 lock (getting)
                 {
-                    isGetting = getting.ContainsKey(d.iconUrl);
+                    getting.Add(d.iconUrl, GetIcon(d.iconUrl));
                 }
-                if (!haveIcon && !isGetting)
-                {
-                    lock (getting)
-                    {
-                        getting.Add(d.iconUrl, GetIcon(d.iconUrl));
-                    }
-                }
-
-                if (!haveIcon)
-                {
-                    await getting[d.iconUrl];
-                }
-                else
-                {
-                    lock (iconCache)
-                    {
-                        iconLog.Remove(d.iconUrl);
-                        iconLog.Add(d.iconUrl);
-                    }
-                }
-
-                d.icon = iconCache[d.iconUrl];
             }
+
+            if (!haveIcon)
+            {
+                await getting[d.iconUrl];
+            }
+            else
+            {
+                lock (iconCache)
+                {
+                    iconLog.Remove(d.iconUrl);
+                    iconLog.Add(d.iconUrl);
+                }
+            }
+
+            data.icon = iconCache[d.iconUrl];
         }
+
 
         private static async Task GetIcon(string url)
         {
-            var source = new Texture2D(1,1);
+            var source = new Texture2D(1, 1);
             source.LoadImage(await client.GetByteArrayAsync(url));
             var texture = new Texture2D(128, 128);
             Graphics.ConvertTexture(source, texture);
