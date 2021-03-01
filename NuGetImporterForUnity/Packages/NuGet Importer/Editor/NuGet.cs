@@ -25,6 +25,8 @@ namespace kumaS.NuGetImporter.Editor
         private static string packageBaseAddress = "https://api.nuget.org/v3-flatcontainer/";
         private static string registrationsBaseUrl = "https://api.nuget.org/v3/registration5-gz-semver2/";
         private static readonly HttpClient client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+        private static Dictionary<string, (long packageSize, FileStream downloaded)> downloading = new Dictionary<string, (long, FileStream)>();
+
 
         /// <value>
         /// <para>Limit of search cache.</para>
@@ -252,7 +254,61 @@ namespace kumaS.NuGetImporter.Editor
             using (var fileStream = new FileStream(Path.Combine(savePath, packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
             using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"))
             {
-                responseStream.CopyTo(fileStream);
+                lock (downloading)
+                {
+                    downloading[packageName] = (responseStream.Length, fileStream);
+                }
+                await responseStream.CopyToAsync(fileStream);
+                lock (downloading)
+                {
+                    downloading.Remove(packageName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// <para>Get the downloaded byte length of the package currently downloading.</para>
+        /// <para>ダウンロード中のパッケージのダウンロードしたバイト数を取得する。</para>
+        /// </summary>
+        /// <param name="packageName">
+        /// <para>Name of the package.</para>
+        /// <para>取得したいパッケージの名前。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Current downloaded byte length.</para>
+        /// <para>現在のダウンロードしたバイト数。</para>
+        /// </returns>
+        public static (long packageSize, long downloadedSize) GetDownloadingProgress(string packageName)
+        {
+            lock (downloading)
+            {
+                if (downloading.ContainsKey(packageName))
+                {
+                    return (downloading[packageName].packageSize, downloading[packageName].downloaded.Length);
+                }
+                else
+                {
+                    throw new ArgumentException(packageName + " is not downloading now.");
+                }
+            }
+        }
+
+        public static bool TryGetDownloadingProgress(string packageName, out long packageSize, out long downloadedSize)
+        {
+            lock (downloading)
+            {
+                if (downloading.ContainsKey(packageName))
+                {
+                    packageSize = downloading[packageName].packageSize;
+                    downloadedSize = downloading[packageName].downloaded.Length;
+                    return true;
+                }
+                else
+                {
+                    packageSize = -1;
+                    downloadedSize = -1;
+                    return false;
+                }
             }
         }
 

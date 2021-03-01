@@ -332,8 +332,6 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
 
-                EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages", 0.5f);
-
                 if (installPackages != null && installPackages.Any())
                 {
                     foreach (Package requiredPackage in installPackages)
@@ -341,6 +339,8 @@ namespace kumaS.NuGetImporter.Editor
                         tasks.Add(InstallSelectPackage(requiredPackage));
                     }
                 }
+
+                _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());
                 await Task.WhenAll(tasks);
                 installed.package = requiredPackages.ToArray();
                 if (rootPackage.package != null)
@@ -531,11 +531,12 @@ namespace kumaS.NuGetImporter.Editor
                     UninstallPackage(deletePackage);
                 }
 
-                EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages.", 0.33f);
                 foreach (Package requiredPackage in requiredPackages)
                 {
                     tasks.Add(InstallSelectPackage(requiredPackage));
                 }
+
+                _ = DownloadProgress(0.33f, requiredPackages.Select(package => package.id).ToArray());
                 await Task.WhenAll(tasks);
                 installed.package = requiredPackages.ToArray();
                 if (rootPackage == null || rootPackage.package == null)
@@ -769,11 +770,12 @@ namespace kumaS.NuGetImporter.Editor
                     UninstallPackage(delete);
                 }
 
-                EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages.", 0.5f);
                 foreach (Package requiredPackage in requiredPackages)
                 {
                     tasks.Add(InstallSelectPackage(requiredPackage));
                 }
+
+                _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());
                 await Task.WhenAll(tasks);
                 installed.package = requiredPackages.ToArray();
                 rootPackage.package = rootPackages;
@@ -1173,6 +1175,77 @@ namespace kumaS.NuGetImporter.Editor
             {
 
             }
+        }
+
+        private async static Task DownloadProgress(float startPos, IEnumerable<string> packageNames)
+        {
+            var allPackageSize = new Dictionary<string, long>();
+            var downloadedSumSizeLog = new LinkedList<long>();
+            while (true)
+            {
+                var downloadedSumSize = 0L;
+                var finishedCount = 0;
+                foreach (string packageName in packageNames)
+                {
+                    if(NuGet.TryGetDownloadingProgress(packageName, out long packageSize, out long downloadedSize))
+                    {
+                        allPackageSize[packageName] = packageSize;
+                        downloadedSumSize += downloadedSize;
+
+                    }
+                    else
+                    {
+                        finishedCount++;
+                        if (allPackageSize.ContainsKey(packageName))
+                        {
+                            downloadedSumSize += allPackageSize[packageName];
+                        }
+                    }
+                }
+
+                if(finishedCount == packageNames.Count())
+                {
+                    break;
+                }
+
+                var packageSumSize = 0L;
+                foreach(var packageSize in allPackageSize)
+                {
+                    packageSumSize += packageSize.Value;
+                }
+
+                var downloadSpead = 0L;
+                if(downloadedSumSizeLog.Count == 10)
+                {
+                    downloadSpead = downloadedSumSize - downloadedSumSizeLog.Last.Value;
+                }
+
+                EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize);
+
+                downloadedSumSizeLog.AddFirst(downloadedSumSize);
+                if(downloadedSumSizeLog.Count > 10)
+                {
+                    downloadedSumSizeLog.RemoveLast();
+                }
+
+                await Task.Delay(100);
+            }
+
+            EditorUtility.DisplayProgressBar("NuGet importer", "Extracting packages.", 1 - startPos / 6);
+        }
+
+        private static readonly string[] unit = new string[] { "B", "KB", "MB", "GB", "TB" };
+
+        private static string ToReadableSizeString(long size)
+        {
+            var index = 0;
+            while(size > (1 << 10))
+            {
+                size >>= 10;
+                index++;
+            }
+
+            return size + unit[index];
         }
     }
 }
