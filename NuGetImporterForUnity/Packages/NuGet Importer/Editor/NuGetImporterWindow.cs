@@ -223,6 +223,8 @@ namespace kumaS.NuGetImporter.Editor
                 Task tasks = UpdateInstalledList();
                 progress = 0.5f;
                 progressText = "Organizing datas";
+
+                // Asynchronous is only fetching images, so the catalog are all available. So, we can filter the catalog here.
                 catalogs = catalogs.Where(catalog => catalog.items[0].items[0].catalogEntry.id.IndexOf(inputText, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
                 searchPackages.Clear();
                 Repaint();
@@ -262,6 +264,10 @@ namespace kumaS.NuGetImporter.Editor
                         {
                             searchPackages.AddRange(searchResult.data);
                         }
+                    }
+                    else
+                    {
+                        return;
                     }
                     catalogs.Clear();
                 }

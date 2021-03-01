@@ -165,6 +165,7 @@ namespace kumaS.NuGetImporter.Editor
                 return;
             }
 
+            // The below code is the cache process.
             var haveIcon = false;
             var isGetting = false;
             lock (iconCache)
@@ -517,6 +518,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 data.icon = null;
             }
+
+            // The below code is the cache process.
             var haveIcon = false;
             var isGetting = false;
             lock (iconCache)
@@ -554,7 +557,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task GetIcon(string url)
         {
-            var source = new Texture2D(1, 1);
+            var source = new Texture2D(0, 0);
             source.LoadImage(await client.GetByteArrayAsync(url));
             var texture = new Texture2D(128, 128);
             Graphics.ConvertTexture(source, texture);

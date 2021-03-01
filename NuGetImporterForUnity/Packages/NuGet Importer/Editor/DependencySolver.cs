@@ -212,7 +212,8 @@ namespace kumaS.NuGetImporter.Editor
                 default:
                     throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
             }
-            var p = packages.ToList();
+
+            // First, search for packages that may be necessary.
             foreach ((var packageId, var version) in packages)
             {
                 var node = new DependencyNode(packageId, "[" + version + "]");
@@ -223,6 +224,7 @@ namespace kumaS.NuGetImporter.Editor
             }
             await Task.WhenAll(tasks);
 
+            // Find the package with the top-level dependency.
             foreach (KeyValuePair<string, List<DependencyNode>> dic in allNode)
             {
                 if (dic.Value.Count == 1 && dic.Value[0].dependedNode.Count == 0)
@@ -231,6 +233,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
+            // NuGet does not allow circular references, so we can always determine the package from the top-level dependency.
             while (confirmedNode.Count != allNode.Count)
             {
                 IEnumerable<string> confirmedPackage = confirmedNode.Select(package => package.PackageName);
@@ -396,6 +399,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
+            // Delete in reverse order so that the index doesn't change.
             for (var i = node.dependingNode.Count - 1; i >= 0; i--)
             {
                 DeleteDependency(node.dependingNode[i], allNode);

@@ -130,6 +130,7 @@ namespace kumaS.NuGetImporter.Editor
                 managedPluginList.managedList = new List<PackageManagedPluginList>();
             }
 
+            // Processing when rebooting to delete natives.
             if (File.Exists(Application.dataPath.Replace("Assets", "WillInstall.xml")))
             {
                 if (!File.Exists(Application.dataPath.Replace("Assets", "WillPackage.xml")) || !File.Exists(Application.dataPath.Replace("Assets", "WillRoot.xml")))
@@ -244,6 +245,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var tasks = new List<Task>();
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
+
+                // Find out the packages that need to be changed.
                 List<Package> requiredPackages = await DependencySolver.FindRequiredPackages(packageId, version, onlyStable);
                 Package[] installPackages = requiredPackages.Where(package => { if (installed.package == null) { return true; } return !installed.package.Any(install => install.id == package.id && install.version == package.version); }).ToArray();
                 Package[] samePackages = installed.package == null ? new Package[0] : installed.package.Where(install => requiredPackages.Any(dep => dep.id == install.id && dep.version != install.version)).ToArray();
@@ -269,7 +272,7 @@ namespace kumaS.NuGetImporter.Editor
                     rootPackages = rootPackage.package.Append(rootPackages[0]).ToArray();
                 }
 
-
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Install or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
                 {
                     return;
@@ -449,6 +452,8 @@ namespace kumaS.NuGetImporter.Editor
                     throw new InvalidOperationException("No packages installed.");
                 }
                 var onlyStable = !installed.package.Any(package => package.version.Contains('-') || package.version[0] == '0');
+
+                // Find out the packages that need to be changed.
                 List<Package> requiredPackages = await DependencySolver.CheckAllPackage(onlyStable);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
@@ -477,6 +482,7 @@ namespace kumaS.NuGetImporter.Editor
                     return;
                 }
 
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Go", "Cancel"))
                 {
                     return;
@@ -592,6 +598,8 @@ namespace kumaS.NuGetImporter.Editor
                     throw new InvalidOperationException("No packages installed.");
                 }
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
+
+                // Find out the packages that need to be changed.
                 List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(packageId, onlyStable);
                 var nativePackages = new List<Package>();
                 var managedPackages = new List<Package>();
@@ -618,6 +626,8 @@ namespace kumaS.NuGetImporter.Editor
                     EditorUtility.DisplayDialog("NuGet importer", "Selected package is depended by other package.", "OK");
                     return;
                 }
+
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)), "Uninstall", "Cancel"))
                 {
                     return;
@@ -696,6 +706,8 @@ namespace kumaS.NuGetImporter.Editor
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
 
                 var tasks = new List<Task>();
+
+                // Find out the packages that need to be changed.
                 List<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(packageId, newVersion, onlyStable);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
@@ -714,6 +726,8 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
                 Package[] rootPackages = requiredPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
+
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
                 {
                     return;
@@ -861,6 +875,7 @@ namespace kumaS.NuGetImporter.Editor
                     throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
             }
 
+            // Processing Managed Plugins.
             if (Directory.Exists(Path.Combine(packageDirectory, "lib")))
             {
                 var target = "";
@@ -902,6 +917,7 @@ namespace kumaS.NuGetImporter.Editor
 
             DeleteDirectory(Path.Combine(packageDirectory, "lib"));
 
+            // Processing Native Plugins
             if (Directory.Exists(Path.Combine(packageDirectory, "runtimes")))
             {
                 var deleteList = new List<string>();
@@ -1031,10 +1047,14 @@ namespace kumaS.NuGetImporter.Editor
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+
+            // Create and execute the command, and exit the editor.
             var command = new StringBuilder();
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 process.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec");
+
+                // Wait a moment for exit the editor.
                 command.Append("/c timeout 5 && ");
                 foreach (var path in directoryPaths)
                 {
@@ -1069,6 +1089,8 @@ namespace kumaS.NuGetImporter.Editor
             else
             {
                 process.StartInfo.FileName = "/bin/bash";
+
+                // Wait a moment for exit the editor.
                 command.Append("-c \" sleep 5 && ");
                 foreach (var path in directoryPaths)
                 {

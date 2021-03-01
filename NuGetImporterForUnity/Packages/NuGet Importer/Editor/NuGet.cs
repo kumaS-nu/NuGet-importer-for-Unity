@@ -162,6 +162,8 @@ namespace kumaS.NuGetImporter.Editor
                 concat();
                 query += "prerelease=true";
             }
+
+            // The below code is the cache process.
             lock (searchCache)
             {
                 if (searchCache.ContainsKey(query))
@@ -252,16 +254,24 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task GetPackage(string packageName, string version, string savePath)
         {
             using (var fileStream = new FileStream(Path.Combine(savePath, packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
-            using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"))
             {
+                // It takes much time for the header response, so set the package first.
                 lock (downloading)
                 {
-                    downloading[packageName] = (responseStream.Length, fileStream);
+                    downloading[packageName] = (0, fileStream);
                 }
-                await responseStream.CopyToAsync(fileStream);
-                lock (downloading)
+
+                using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"))
                 {
-                    downloading.Remove(packageName);
+                    lock (downloading)
+                    {
+                        downloading[packageName] = (responseStream.Length, fileStream);
+                    }
+                    await responseStream.CopyToAsync(fileStream);
+                    lock (downloading)
+                    {
+                        downloading.Remove(packageName);
+                    }
                 }
             }
         }
@@ -278,6 +288,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Current downloaded byte length.</para>
         /// <para>現在のダウンロードしたバイト数。</para>
         /// </returns>
+        /// <exception cref="System.ArgumentException">
+        /// <para>Thrown when the given package is not downloading.</para>
+        /// <para>与えられたパッケージがダウンロード中でないときthrowされる。</para>
+        /// </exception>
         public static (long packageSize, long downloadedSize) GetDownloadingProgress(string packageName)
         {
             lock (downloading)
@@ -326,6 +340,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task<Catalog> GetCatalog(string packageName)
         {
+            // The below code is the cache process.
             lock (catalogCache)
             {
                 if (catalogCache.ContainsKey(packageName))
