@@ -1257,7 +1257,10 @@ namespace kumaS.NuGetImporter.Editor
                     downloadSpead = downloadedSumSize - downloadedSumSizeLog.First.Value;
                 }
 
-                EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize);
+                if (working)
+                {
+                    EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize);
+                }
 
                 downloadedSumSizeLog.AddLast(downloadedSumSize);
                 if(downloadedSumSizeLog.Count > 10)
@@ -1268,7 +1271,10 @@ namespace kumaS.NuGetImporter.Editor
                 await Task.Delay(100);
             }
 
-            EditorUtility.DisplayProgressBar("NuGet importer", "Extracting packages.", 1 - startPos / 6);
+            if (working)
+            {
+                EditorUtility.DisplayProgressBar("NuGet importer", "Extracting packages.", 1 - startPos / 6);
+            }
         }
 
         private static readonly string[] unit = new string[] { "B", "KB", "MB", "GB", "TB" };
