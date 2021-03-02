@@ -130,6 +130,7 @@ namespace kumaS.NuGetImporter.Editor
                 managedPluginList.managedList = new List<PackageManagedPluginList>();
             }
 
+            // Processing when rebooting to delete natives.
             if (File.Exists(Application.dataPath.Replace("Assets", "WillInstall.xml")))
             {
                 if (!File.Exists(Application.dataPath.Replace("Assets", "WillPackage.xml")) || !File.Exists(Application.dataPath.Replace("Assets", "WillRoot.xml")))
@@ -229,10 +230,13 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
         /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        public static async Task InstallPackage(string packageId, string version, bool onlyStable)
+        public static async Task InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -244,7 +248,9 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var tasks = new List<Task>();
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
-                List<Package> requiredPackages = await DependencySolver.FindRequiredPackages(packageId, version, onlyStable);
+
+                // Find out the packages that need to be changed.
+                List<Package> requiredPackages = await DependencySolver.FindRequiredPackages(packageId, version, onlyStable, method);
                 Package[] installPackages = requiredPackages.Where(package => { if (installed.package == null) { return true; } return !installed.package.Any(install => install.id == package.id && install.version == package.version); }).ToArray();
                 Package[] samePackages = installed.package == null ? new Package[0] : installed.package.Where(install => requiredPackages.Any(dep => dep.id == install.id && dep.version != install.version)).ToArray();
                 var nativePackages = new List<Package>();
@@ -269,7 +275,7 @@ namespace kumaS.NuGetImporter.Editor
                     rootPackages = rootPackage.package.Append(rootPackages[0]).ToArray();
                 }
 
-
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Install or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
                 {
                     return;
@@ -332,8 +338,6 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
 
-                EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages", 0.5f);
-
                 if (installPackages != null && installPackages.Any())
                 {
                     foreach (Package requiredPackage in installPackages)
@@ -341,6 +345,8 @@ namespace kumaS.NuGetImporter.Editor
                         tasks.Add(InstallSelectPackage(requiredPackage));
                     }
                 }
+
+                _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());
                 await Task.WhenAll(tasks);
                 installed.package = requiredPackages.ToArray();
                 if (rootPackage.package != null)
@@ -429,10 +435,17 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Optimize and repair the package.</para>
         /// <para>パッケージの依存関係等を最適化し、修復する。</para>
         /// </summary>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        public static async Task FixPackage()
+        public static async Task FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -448,8 +461,9 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     throw new InvalidOperationException("No packages installed.");
                 }
-                var onlyStable = !installed.package.Any(package => package.version.Contains('-') || package.version[0] == '0');
-                List<Package> requiredPackages = await DependencySolver.CheckAllPackage(onlyStable);
+
+                // Find out the packages that need to be changed.
+                List<Package> requiredPackages = await DependencySolver.CheckAllPackage(onlyStable, method);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
                 Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
@@ -477,6 +491,7 @@ namespace kumaS.NuGetImporter.Editor
                     return;
                 }
 
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Go", "Cancel"))
                 {
                     return;
@@ -531,11 +546,12 @@ namespace kumaS.NuGetImporter.Editor
                     UninstallPackage(deletePackage);
                 }
 
-                EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages.", 0.33f);
                 foreach (Package requiredPackage in requiredPackages)
                 {
                     tasks.Add(InstallSelectPackage(requiredPackage));
                 }
+
+                _ = DownloadProgress(0.33f, requiredPackages.Select(package => package.id).ToArray());
                 await Task.WhenAll(tasks);
                 installed.package = requiredPackages.ToArray();
                 if (rootPackage == null || rootPackage.package == null)
@@ -573,10 +589,13 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
         /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        public static async Task UninstallPackages(string packageId, bool onlyStable)
+        public static async Task UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -591,7 +610,9 @@ namespace kumaS.NuGetImporter.Editor
                     throw new InvalidOperationException("No packages installed.");
                 }
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
-                List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(packageId, onlyStable);
+
+                // Find out the packages that need to be changed.
+                List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(packageId, onlyStable, method);
                 var nativePackages = new List<Package>();
                 var managedPackages = new List<Package>();
                 foreach (Package package in uninstallPackages)
@@ -617,6 +638,8 @@ namespace kumaS.NuGetImporter.Editor
                     EditorUtility.DisplayDialog("NuGet importer", "Selected package is depended by other package.", "OK");
                     return;
                 }
+
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)), "Uninstall", "Cancel"))
                 {
                     return;
@@ -679,10 +702,13 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
         /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>ask</para>
+        /// <para>Task</para>
         /// </returns>
-        public static async Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable)
+        public static async Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -695,7 +721,9 @@ namespace kumaS.NuGetImporter.Editor
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
 
                 var tasks = new List<Task>();
-                List<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(packageId, newVersion, onlyStable);
+
+                // Find out the packages that need to be changed.
+                List<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(packageId, newVersion, onlyStable, method);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
                 Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
@@ -713,6 +741,8 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
                 Package[] rootPackages = requiredPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
+
+                // Confirmation to the user.
                 if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
                 {
                     return;
@@ -769,11 +799,12 @@ namespace kumaS.NuGetImporter.Editor
                     UninstallPackage(delete);
                 }
 
-                EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages.", 0.5f);
                 foreach (Package requiredPackage in requiredPackages)
                 {
                     tasks.Add(InstallSelectPackage(requiredPackage));
                 }
+
+                _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());
                 await Task.WhenAll(tasks);
                 installed.package = requiredPackages.ToArray();
                 rootPackage.package = rootPackages;
@@ -859,6 +890,7 @@ namespace kumaS.NuGetImporter.Editor
                     throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
             }
 
+            // Processing Managed Plugins.
             if (Directory.Exists(Path.Combine(packageDirectory, "lib")))
             {
                 var target = "";
@@ -900,6 +932,7 @@ namespace kumaS.NuGetImporter.Editor
 
             DeleteDirectory(Path.Combine(packageDirectory, "lib"));
 
+            // Processing Native Plugins
             if (Directory.Exists(Path.Combine(packageDirectory, "runtimes")))
             {
                 var deleteList = new List<string>();
@@ -1029,10 +1062,14 @@ namespace kumaS.NuGetImporter.Editor
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+
+            // Create and execute the command, and exit the editor.
             var command = new StringBuilder();
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 process.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec");
+
+                // Wait a moment for exit the editor.
                 command.Append("/c timeout 5 && ");
                 foreach (var path in directoryPaths)
                 {
@@ -1067,6 +1104,8 @@ namespace kumaS.NuGetImporter.Editor
             else
             {
                 process.StartInfo.FileName = "/bin/bash";
+
+                // Wait a moment for exit the editor.
                 command.Append("-c \" sleep 5 && ");
                 foreach (var path in directoryPaths)
                 {
@@ -1173,6 +1212,77 @@ namespace kumaS.NuGetImporter.Editor
             {
 
             }
+        }
+
+        private async static Task DownloadProgress(float startPos, IEnumerable<string> packageNames)
+        {
+            var allPackageSize = new Dictionary<string, long>();
+            var downloadedSumSizeLog = new LinkedList<long>();
+            while (true)
+            {
+                var downloadedSumSize = 0L;
+                var finishedCount = 0;
+                foreach (string packageName in packageNames)
+                {
+                    if(NuGet.TryGetDownloadingProgress(packageName, out long packageSize, out long downloadedSize))
+                    {
+                        allPackageSize[packageName] = packageSize;
+                        downloadedSumSize += downloadedSize;
+
+                    }
+                    else
+                    {
+                        finishedCount++;
+                        if (allPackageSize.ContainsKey(packageName))
+                        {
+                            downloadedSumSize += allPackageSize[packageName];
+                        }
+                    }
+                }
+
+                if(finishedCount == packageNames.Count())
+                {
+                    break;
+                }
+
+                var packageSumSize = 0L;
+                foreach(var packageSize in allPackageSize)
+                {
+                    packageSumSize += packageSize.Value;
+                }
+
+                var downloadSpead = 0L;
+                if(downloadedSumSizeLog.Count == 10)
+                {
+                    downloadSpead = downloadedSumSize - downloadedSumSizeLog.First.Value;
+                }
+
+                EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize);
+
+                downloadedSumSizeLog.AddLast(downloadedSumSize);
+                if(downloadedSumSizeLog.Count > 10)
+                {
+                    downloadedSumSizeLog.RemoveFirst();
+                }
+
+                await Task.Delay(100);
+            }
+
+            EditorUtility.DisplayProgressBar("NuGet importer", "Extracting packages.", 1 - startPos / 6);
+        }
+
+        private static readonly string[] unit = new string[] { "B", "KB", "MB", "GB", "TB" };
+
+        private static string ToReadableSizeString(long size)
+        {
+            var index = 0;
+            while(size > (1 << 10))
+            {
+                size >>= 10;
+                index++;
+            }
+
+            return size + unit[index];
         }
     }
 }

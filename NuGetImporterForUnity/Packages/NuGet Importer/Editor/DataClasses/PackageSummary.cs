@@ -21,7 +21,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             Catalogentry catalogEntry = data.GetAllCatalogEntry().First(entry => entry.version == selectedVersion);
             PackageId = catalogEntry.id;
             Title = catalogEntry.title;
-            Image = catalogEntry.icon;
+            Image = data.icon;
             SelectedVersion = selectedVersion;
             InstalledVersion = selectedVersion;
             AllVersion = data.GetAllVersion().AsEnumerable().Reverse().ToList();

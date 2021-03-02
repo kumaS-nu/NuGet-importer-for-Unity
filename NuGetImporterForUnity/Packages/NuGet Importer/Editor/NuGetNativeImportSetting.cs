@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 using UnityEditor;
 
@@ -18,7 +17,6 @@ namespace kumaS.NuGetImporter.Editor
     {
         private static readonly BuildTarget[] allTarget = (BuildTarget[])Enum.GetValues(typeof(BuildTarget));
         private static readonly List<string> linuxName = new List<string>() { "linux", "ubuntu", "centos", "debian" };
-        private static readonly PropertyInfo validateReferences = typeof(PluginImporter).GetProperty("ValidateReferences", BindingFlags.Instance | BindingFlags.NonPublic);
 
         private void OnPreprocessAsset()
         {
@@ -37,15 +35,6 @@ namespace kumaS.NuGetImporter.Editor
             var dirName = Path.GetFileName(Path.GetDirectoryName(Path.GetDirectoryName(assetImporter.assetPath)));
             if (!assetImporter.assetPath.Contains("Packages"))
             {
-                return;
-            }
-
-            if (dirName == "Packages" && assetImporter.assetPath.EndsWith(".dll"))
-            {
-                if (validateReferences != null)
-                {
-                    validateReferences.SetValue(pluginImporter, false);
-                }
                 return;
             }
 

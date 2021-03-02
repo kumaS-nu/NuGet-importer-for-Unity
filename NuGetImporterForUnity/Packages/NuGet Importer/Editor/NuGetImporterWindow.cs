@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -19,26 +20,37 @@ namespace kumaS.NuGetImporter.Editor
     /// <para>Main window of NuGet importer.</para>
     /// <para>NuGet importerのメインウィンドウ。</para>
     /// </summary>
-    public class NuGetImporterWindow : EditorWindow
+    public class NuGetImporterWindow : EditorWindow, ISerializationCallbackReceiver
     {
-        private bool onlyStable = true;
+        private static bool onlyStable = true;
+        private static VersionSelectMethod method = VersionSelectMethod.Suit;
         private string inputText = "";
         private int selected = 0;
         private int hitPackages = 0;
         private float progress = 0;
         private string progressText = "";
+
+        /// <value>
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
+        /// </value>
+        internal static VersionSelectMethod Method { get { return method; } }
+
         private Vector2 packagesScroll = Vector2.zero;
         private Vector2 detealScroll = Vector2.zero;
-        [NonSerialized]
+
         private bool isAddingPackages = false;
         private readonly object lockAddingPackages = new object();
+
         private FrameworkMaxVersion maxVersion = FrameworkMaxVersion.NET471;
         private bool OnlyStable { get => onlyStable; set { if (onlyStable != value) { _ = UpdateData(); } onlyStable = value; } }
         private int Selected { get => selected; set { if (selected != value) { selected = value; _ = UpdateData(); } } }
         private FrameworkMaxVersion MaxVersion { get => maxVersion; set { FrameworkName.maxVersion = value; maxVersion = value; } }
         private string InputText { get => inputText; set { if (inputText != value) { inputText = value; _ = UpdateData(); } } }
+
         private readonly string[] selectedLabel = { "Search packages", "Installed packages" };
         private readonly string[] frameworkName = { ".NET Framework 4.6", ".NET Framework 4.6.1", ".NET Framework 4.7", ".NET Framework 4.7.1" };
+
         private List<Catalog> catalogs = new List<Catalog>();
         private readonly List<Datum> searchPackages = new List<Datum>();
         private PackageSummary summary;
@@ -66,7 +78,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             try
             {
-                await PackageManager.FixPackage();
+                await PackageManager.FixPackage(onlyStable, method);
                 EditorUtility.DisplayDialog("NuGet importer", "Packages repair are complete.", "OK");
             }
             catch (Exception e)
@@ -113,7 +125,7 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Go to project page", false, 5)]
         private static void GoProjectPage()
         {
-            Help.BrowseURL("https://github.com/kumaS-nu/NuGetImporterForUnity");
+            Help.BrowseURL("https://github.com/kumaS-nu/NuGet-importer-for-Unity");
         }
 
         /// <summary>
@@ -223,6 +235,8 @@ namespace kumaS.NuGetImporter.Editor
                 Task tasks = UpdateInstalledList();
                 progress = 0.5f;
                 progressText = "Organizing datas";
+
+                // Asynchronous is only fetching images, so the catalog are all available. So, we can filter the catalog here.
                 catalogs = catalogs.Where(catalog => catalog.items[0].items[0].catalogEntry.id.IndexOf(inputText, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
                 searchPackages.Clear();
                 Repaint();
@@ -263,6 +277,10 @@ namespace kumaS.NuGetImporter.Editor
                             searchPackages.AddRange(searchResult.data);
                         }
                     }
+                    else
+                    {
+                        return;
+                    }
                     catalogs.Clear();
                 }
                 Repaint();
@@ -294,7 +312,7 @@ namespace kumaS.NuGetImporter.Editor
                     foreach (KeyValuePair<string, Catalog> catalog in PackageManager.installedCatalog)
                     {
                         catalogs.Add(catalog.Value);
-                        tasks.Add(catalog.Value.GetIcon());
+                        tasks.Add(catalog.Value.GetIcon(PackageManager.installed.package.First(package => package.id == catalog.Value.items[0].items[0].catalogEntry.id).version));
                     }
                 }
             }
@@ -330,6 +348,9 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         MaxVersion = (FrameworkMaxVersion)EditorGUILayout.Popup((int)MaxVersion, frameworkName);
                     }
+                    GUILayout.Space(25);
+                    GUILayout.Label("Method to select a version : ");
+                    method = (VersionSelectMethod)EditorGUILayout.EnumPopup(method);
                     GUILayout.FlexibleSpace();
                 }
                 OnlyStable = !GUILayout.Toggle(!OnlyStable, "Include development versions");
@@ -352,7 +373,7 @@ namespace kumaS.NuGetImporter.Editor
             var sumHeight = float.MaxValue;
             using (new GUILayout.HorizontalScope(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
-                using (var packagesScrollView = new GUILayout.ScrollViewScope(packagesScroll, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MinWidth(position.width / 2)))
+                using (var packagesScrollView = new GUILayout.ScrollViewScope(packagesScroll, false, true, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MinWidth(position.width / 2)))
                 {
                     packagesScroll = packagesScrollView.scrollPosition;
                     if (selected == 0)
@@ -381,12 +402,12 @@ namespace kumaS.NuGetImporter.Editor
                     _ = SearchAditionalPackage();
                 }
 
-                using (var detealScrollView = new GUILayout.ScrollViewScope(detealScroll, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MaxWidth(position.width / 2)))
+                using (var detealScrollView = new GUILayout.ScrollViewScope(detealScroll, false, true, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MaxWidth(position.width / 2)))
                 {
                     detealScroll = detealScrollView.scrollPosition;
                     if (summary != null)
                     {
-                        tasks.Add(summary.ToGUI(bold, this, OnlyStable));
+                        tasks.Add(summary.ToGUI(bold, this, OnlyStable, method));
                     }
 
                     if (deteal != null)
@@ -457,6 +478,35 @@ namespace kumaS.NuGetImporter.Editor
             {
                 progress = 1;
                 progressText = "Finish";
+            }
+        }
+
+        public void OnBeforeSerialize()
+        {
+            File.WriteAllText(Path.Combine("Temp", "VersionSelectMode.txt"), ((int)method).ToString());
+            File.WriteAllText(Path.Combine("Temp", "OnlyStable.txt"), onlyStable.ToString());
+        }
+
+        public void OnAfterDeserialize()
+        {
+            var versionPath = Path.Combine("Temp", "VersionSelectMode.txt");
+            if (File.Exists(versionPath))
+            {
+                method = (VersionSelectMethod)int.Parse(File.ReadAllText(versionPath));
+            }
+            else
+            {
+                method = VersionSelectMethod.Suit;
+            }
+
+            var stablePath = Path.Combine("Temp", "OnlyStable.txt");
+            if (File.Exists(stablePath))
+            {
+                onlyStable = File.ReadAllText(stablePath) == true.ToString();
+            }
+            else
+            {
+                onlyStable = true;
             }
         }
     }
