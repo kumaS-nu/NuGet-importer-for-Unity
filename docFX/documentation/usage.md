@@ -57,7 +57,8 @@
 1. Mode to search from NuGet.
 1. Mode to search from the installed packages.
 1. Framework settings.
-1. Whether include development version
+1. Whether include development version.
+1. Method of selecting the version of the dependency package.
 1. Input area for search words. (Incremental search.)
 1. Search results.
 1. Package details.
