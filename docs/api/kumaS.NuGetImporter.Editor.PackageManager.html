@@ -103,14 +103,12 @@
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersion_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersion_System_String_System_String_System_Boolean_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion(System.String,System.String,System.Boolean)">ChangePackageVersion(String, String, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the version of the specified package.</p>
-<p>指定したパッケージのバージョンを変更する。</p>
-</div>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersion_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">ChangePackageVersion(String, String, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -125,23 +123,22 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">packageId</span></td>
-        <td><p>Package id.</p>
-<p>パッケージのid。</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">newVersion</span></td>
-        <td><p>Version after change.</p>
-<p>変更後のバージョン。</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">onlyStable</span></td>
-        <td><p>Whether use only stable version.</p>
-<p>安定版のみつかうか。</p>
-</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -156,23 +153,42 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>ask</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_FixPackage_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.FixPackage*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_FixPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.FixPackage">FixPackage()</h4>
-  <div class="markdown level1 summary"><p>Optimize and repair the package.</p>
-<p>パッケージの依存関係等を最適化し、修復する。</p>
-</div>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_FixPackage_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.FixPackage(System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FixPackage(Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task FixPackage()</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -184,8 +200,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Task</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -268,14 +283,12 @@ public static Task Initialize()</code></pre>
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_InstallPackage_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallPackage*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_InstallPackage_System_String_System_String_System_Boolean_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallPackage(System.String,System.String,System.Boolean)">InstallPackage(String, String, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Install the specified package.</p>
-<p>指定されたパッケージをインストールする。</p>
-</div>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_InstallPackage_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallPackage(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">InstallPackage(String, String, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task InstallPackage(string packageId, string version, bool onlyStable)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -290,23 +303,22 @@ public static Task Initialize()</code></pre>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">packageId</span></td>
-        <td><p>Package id.</p>
-<p>パッケージのid。</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">version</span></td>
-        <td><p>The version of the package to install.</p>
-<p>インストールするパッケージのバージョン。</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">onlyStable</span></td>
-        <td><p>Whether use only stable version.</p>
-<p>安定版のみつかうか。</p>
-</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -321,8 +333,7 @@ public static Task Initialize()</code></pre>
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Task</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -341,14 +352,12 @@ public static Task Initialize()</code></pre>
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_UninstallPackages_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_UninstallPackages_System_String_System_Boolean_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages(System.String,System.Boolean)">UninstallPackages(String, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Uninstall the specified package.</p>
-<p>指定したパッケージをアンインストールする。</p>
-</div>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_UninstallPackages_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">UninstallPackages(String, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task UninstallPackages(string packageId, bool onlyStable)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -363,16 +372,17 @@ public static Task Initialize()</code></pre>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">packageId</span></td>
-        <td><p>Package id.</p>
-<p>ッケージのid。</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">onlyStable</span></td>
-        <td><p>Whether use only stable version.</p>
-<p>安定版のみつかうか。</p>
-</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -387,8 +397,7 @@ public static Task Initialize()</code></pre>
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Task</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>

@@ -216,6 +216,71 @@
   </table>
   
   
+  <a id="kumaS_NuGetImporter_Editor_NuGet_GetDownloadingProgress_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetDownloadingProgress*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetDownloadingProgress_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetDownloadingProgress(System.String)">GetDownloadingProgress(String)</h4>
+  <div class="markdown level1 summary"><p>Get the downloaded byte length of the package currently downloading.</p>
+<p>ダウンロード中のパッケージのダウンロードしたバイト数を取得する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static (long packageSize, long downloadedSize) GetDownloadingProgress(string packageName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td><p>Name of the package.</p>
+<p>取得したいパッケージの名前。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Int64</span>&gt;</td>
+        <td><p>Current downloaded byte length.</p>
+<p>現在のダウンロードしたバイト数。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when the given package is not downloading.</p>
+<p>与えられたパッケージがダウンロード中でないときthrowされる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="kumaS_NuGetImporter_Editor_NuGet_GetPackage_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetPackage*"></a>
   <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetPackage_System_String_System_String_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetPackage(System.String,System.String,System.String)">GetPackage(String, String, String)</h4>
   <div class="markdown level1 summary"><p>Get the specified package.</p>
@@ -370,6 +435,58 @@ public static Task InitializeAPIEndPoint()</code></pre>
         <td><p>Search result.</p>
 <p>検索結果。</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_TryGetDownloadingProgress_" data-uid="kumaS.NuGetImporter.Editor.NuGet.TryGetDownloadingProgress*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_TryGetDownloadingProgress_System_String_System_Int64__System_Int64__" data-uid="kumaS.NuGetImporter.Editor.NuGet.TryGetDownloadingProgress(System.String,System.Int64@,System.Int64@)">TryGetDownloadingProgress(String, out Int64, out Int64)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGetDownloadingProgress(string packageName, out long packageSize, out long downloadedSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">packageSize</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">downloadedSize</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
