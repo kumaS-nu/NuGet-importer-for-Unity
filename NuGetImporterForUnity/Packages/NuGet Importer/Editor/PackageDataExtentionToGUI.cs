@@ -415,10 +415,13 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Whether only stable.</para>
         /// <para>安定版のみか。</para>
         /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        internal static async Task ToGUI(this PackageSummary summary, GUIStyle bold, NuGetImporterWindow window, bool onlyStable)
+        internal static async Task ToGUI(this PackageSummary summary, GUIStyle bold, NuGetImporterWindow window, bool onlyStable, VersionSelectMethod method)
         {
             var tasks = new List<Task>();
             var sizeScale = window.position.width / 1920;
@@ -455,7 +458,7 @@ namespace kumaS.NuGetImporter.Editor
                         {
                             if (summary.InstalledVersion == null)
                             {
-                                tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable), window, summary.PackageId, "Installation finished."));
+                                tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Installation finished."));
                             }
                             else if (isSameVersion)
                             {
@@ -463,7 +466,7 @@ namespace kumaS.NuGetImporter.Editor
                             }
                             else
                             {
-                                tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable), window, summary.PackageId, "Version change finished."));
+                                tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Version change finished."));
                             }
                         }
 

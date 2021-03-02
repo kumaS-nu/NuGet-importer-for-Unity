@@ -230,10 +230,13 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
         /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        public static async Task InstallPackage(string packageId, string version, bool onlyStable)
+        public static async Task InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -247,7 +250,7 @@ namespace kumaS.NuGetImporter.Editor
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
 
                 // Find out the packages that need to be changed.
-                List<Package> requiredPackages = await DependencySolver.FindRequiredPackages(packageId, version, onlyStable);
+                List<Package> requiredPackages = await DependencySolver.FindRequiredPackages(packageId, version, onlyStable, method);
                 Package[] installPackages = requiredPackages.Where(package => { if (installed.package == null) { return true; } return !installed.package.Any(install => install.id == package.id && install.version == package.version); }).ToArray();
                 Package[] samePackages = installed.package == null ? new Package[0] : installed.package.Where(install => requiredPackages.Any(dep => dep.id == install.id && dep.version != install.version)).ToArray();
                 var nativePackages = new List<Package>();
@@ -432,10 +435,17 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Optimize and repair the package.</para>
         /// <para>パッケージの依存関係等を最適化し、修復する。</para>
         /// </summary>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        public static async Task FixPackage()
+        public static async Task FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -451,10 +461,9 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     throw new InvalidOperationException("No packages installed.");
                 }
-                var onlyStable = !installed.package.Any(package => package.version.Contains('-') || package.version[0] == '0');
 
                 // Find out the packages that need to be changed.
-                List<Package> requiredPackages = await DependencySolver.CheckAllPackage(onlyStable);
+                List<Package> requiredPackages = await DependencySolver.CheckAllPackage(onlyStable, method);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
                 Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
@@ -580,10 +589,13 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
         /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        public static async Task UninstallPackages(string packageId, bool onlyStable)
+        public static async Task UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -600,7 +612,7 @@ namespace kumaS.NuGetImporter.Editor
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
 
                 // Find out the packages that need to be changed.
-                List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(packageId, onlyStable);
+                List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(packageId, onlyStable, method);
                 var nativePackages = new List<Package>();
                 var managedPackages = new List<Package>();
                 foreach (Package package in uninstallPackages)
@@ -690,10 +702,13 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
         /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>ask</para>
+        /// <para>Task</para>
         /// </returns>
-        public static async Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable)
+        public static async Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -708,7 +723,7 @@ namespace kumaS.NuGetImporter.Editor
                 var tasks = new List<Task>();
 
                 // Find out the packages that need to be changed.
-                List<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(packageId, newVersion, onlyStable);
+                List<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(packageId, newVersion, onlyStable, method);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
                 Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
@@ -1239,15 +1254,15 @@ namespace kumaS.NuGetImporter.Editor
                 var downloadSpead = 0L;
                 if(downloadedSumSizeLog.Count == 10)
                 {
-                    downloadSpead = downloadedSumSize - downloadedSumSizeLog.Last.Value;
+                    downloadSpead = downloadedSumSize - downloadedSumSizeLog.First.Value;
                 }
 
                 EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize);
 
-                downloadedSumSizeLog.AddFirst(downloadedSumSize);
+                downloadedSumSizeLog.AddLast(downloadedSumSize);
                 if(downloadedSumSizeLog.Count > 10)
                 {
-                    downloadedSumSizeLog.RemoveLast();
+                    downloadedSumSizeLog.RemoveFirst();
                 }
 
                 await Task.Delay(100);
