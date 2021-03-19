@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.1] - 2021-03-19
+
+- Support for Unity2020
+
 ## [1.1.0] - 2021-03-02
 
 - Add showing the download progress.
