@@ -293,7 +293,12 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         internal static void ToDetailGUI(this Catalog data, GUIStyle bold, string selectedVersion)
         {
-            Catalogentry catalogEntry = data.GetAllCatalogEntry().Where(catalog => catalog.version == selectedVersion).First();
+            IEnumerable<Catalogentry> catalogEntrys = data.GetAllCatalogEntry().Where(catalog => catalog.version == selectedVersion);
+            if (!catalogEntrys.Any())
+            {
+                return;
+            }
+            Catalogentry catalogEntry = catalogEntrys.First();
 
             using (new EditorGUILayout.VerticalScope("Box"))
             {
@@ -383,9 +388,16 @@ namespace kumaS.NuGetImporter.Editor
                     }
                     else
                     {
-                        foreach (Dependency dependency in dependencyGroup.dependencies)
+                        try
                         {
-                            GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
+                            foreach (Dependency dependency in dependencyGroup.dependencies)
+                            {
+                                GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // During execution, the number of dependencies changes and an exception occurs, so I grip it. (because it's not a problem.)
                         }
                     }
                 }
