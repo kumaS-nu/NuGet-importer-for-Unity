@@ -15,8 +15,7 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Cache settings", false, 3)]
         private static void ShowWindow()
         {
-            NuGetImporterSettingWindow window = GetWindow<NuGetImporterSettingWindow>();
-            window.titleContent = new GUIContent("Cache settings (NuGet importer)");
+            NuGetImporterSettingWindow window = GetWindow<NuGetImporterSettingWindow>("Cache settings (NuGet importer)");
         }
 
         private void OnGUI()

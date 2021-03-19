@@ -68,9 +68,12 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Manage packages", false, 0)]
         private static void ShowWindow()
         {
-            NuGetImporterWindow window = GetWindow<NuGetImporterWindow>();
+            NuGetImporterWindow window = GetWindow<NuGetImporterWindow>("NuGet importer");
+            if(window.position.width < 1175 || window.position.height < 450)
+            {
+                window.position = new Rect(0, 0, 1175, 450);
+            }
             window.minSize = new Vector2(1175, 450);
-            window.titleContent = new GUIContent("NuGet importer");
         }
 
         [MenuItem("NuGet Importer/Repair packages", false, 1)]
@@ -324,10 +327,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Draw the contents of the Window.</para>
         /// <para>ウィンドウの中身を描写。</para>
         /// </summary>
-        /// <returns>
-        /// <para>Task</para>
-        /// </returns>
-        public async Task OnGUI()
+        public async void OnGUI()
         {
             var bold = new GUIStyle(EditorStyles.label) { fontStyle = FontStyle.Bold };
             var tasks = new List<Task>();
@@ -408,11 +408,11 @@ namespace kumaS.NuGetImporter.Editor
                     if (summary != null)
                     {
                         tasks.Add(summary.ToGUI(bold, this, OnlyStable, method));
-                    }
 
-                    if (deteal != null)
-                    {
-                        deteal.ToDetailGUI(bold, summary.SelectedVersion);
+                        if (deteal != null)
+                        {
+                            deteal.ToDetailGUI(bold, summary.SelectedVersion);
+                        }
                     }
                 }
             }
