@@ -362,42 +362,44 @@ namespace kumaS.NuGetImporter.Editor
             {
                 GUILayout.Label("Dependency", bold);
 
-                var framework = new List<string>();
-                switch (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
-                {
-                    case ApiCompatibilityLevel.NET_4_6:
-                        framework = FrameworkName.NET;
-                        break;
-                    case ApiCompatibilityLevel.NET_Standard_2_0:
-                        framework = FrameworkName.STANDARD;
-                        break;
-                }
-
-                IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => framework.Contains(group.targetFramework));
-                if (dependencyGroups == null || !dependencyGroups.Any())
+                if (catalogEntry.dependencyGroups == null)
                 {
                     GUILayout.Label("    None");
                 }
                 else
                 {
-                    Dependencygroup dependencyGroup = dependencyGroups.OrderBy(group => framework.IndexOf(group.targetFramework)).First();
-                    GUILayout.Label("    " + dependencyGroup.targetFramework, bold);
-                    if (dependencyGroup.dependencies == null || dependencyGroup.dependencies.Length == 0)
+                    var framework = FrameworkName.TARGET;
+
+                    IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => framework.Contains(group.targetFramework));
+                    if (dependencyGroups == null || !dependencyGroups.Any())
                     {
-                        GUILayout.Label("        None");
+                        GUILayout.Label("    None");
                     }
                     else
                     {
-                        try
+                        Dependencygroup dependencyGroup = dependencyGroups.OrderBy(group =>
                         {
-                            foreach (Dependency dependency in dependencyGroup.dependencies)
-                            {
-                                GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
-                            }
+                            var ret = framework.IndexOf(group.targetFramework);
+                            return ret < 0 ? int.MaxValue : ret;
+                        }).First();
+                        GUILayout.Label("    " + dependencyGroup.targetFramework, bold);
+                        if (dependencyGroup.dependencies == null || dependencyGroup.dependencies.Length == 0)
+                        {
+                            GUILayout.Label("        None");
                         }
-                        catch (Exception)
+                        else
                         {
-                            // During execution, the number of dependencies changes and an exception occurs, so I grip it. (because it's not a problem.)
+                            try
+                            {
+                                foreach (Dependency dependency in dependencyGroup.dependencies)
+                                {
+                                    GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                // During execution, the number of dependencies changes and an exception occurs, so I grip it. (because it's not a problem.)
+                            }
                         }
                     }
                 }

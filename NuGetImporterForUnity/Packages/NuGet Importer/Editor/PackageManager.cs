@@ -877,18 +877,7 @@ namespace kumaS.NuGetImporter.Editor
 
             List<string[]> frameworkDictionary = FrameworkName.ALLPLATFORM;
             var targetFramework = frameworkDictionary.Where(framework => framework.Contains(package.targetFramework)).FirstOrDefault();
-            List<string> frameworkList;
-            switch (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
-            {
-                case ApiCompatibilityLevel.NET_4_6:
-                    frameworkList = FrameworkName.NET;
-                    break;
-                case ApiCompatibilityLevel.NET_Standard_2_0:
-                    frameworkList = FrameworkName.STANDARD;
-                    break;
-                default:
-                    throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
-            }
+            var frameworkList = FrameworkName.TARGET;
 
             // Processing Managed Plugins.
             if (Directory.Exists(Path.Combine(packageDirectory, "lib")))

@@ -42,19 +42,17 @@ namespace kumaS.NuGetImporter.Editor
         private bool isAddingPackages = false;
         private readonly object lockAddingPackages = new object();
 
-        private FrameworkMaxVersion maxVersion = FrameworkMaxVersion.NET471;
         private bool OnlyStable { get => onlyStable; set { if (onlyStable != value) { _ = UpdateData(); } onlyStable = value; } }
         private int Selected { get => selected; set { if (selected != value) { selected = value; _ = UpdateData(); } } }
-        private FrameworkMaxVersion MaxVersion { get => maxVersion; set { FrameworkName.maxVersion = value; maxVersion = value; } }
         private string InputText { get => inputText; set { if (inputText != value) { inputText = value; _ = UpdateData(); } } }
 
         private readonly string[] selectedLabel = { "Search packages", "Installed packages" };
-        private readonly string[] frameworkName = { ".NET Framework 4.6", ".NET Framework 4.6.1", ".NET Framework 4.7", ".NET Framework 4.7.1" };
 
         private List<Catalog> catalogs = new List<Catalog>();
         private readonly List<Datum> searchPackages = new List<Datum>();
         private PackageSummary summary;
         private Catalog deteal;
+        private bool isAddedSummary = false;
 
         private void OnEnable()
         {
@@ -202,6 +200,10 @@ namespace kumaS.NuGetImporter.Editor
                     installedVersion = installed.First().version;
                 }
             }
+            if(summary == null)
+            {
+                isAddedSummary = true;
+            }
             summary = new PackageSummary(data, installedVersion);
             deteal = await NuGet.GetCatalog(data.id);
             Repaint();
@@ -217,6 +219,10 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         internal void UpdateSelected(Catalog data)
         {
+            if (summary == null)
+            {
+                isAddedSummary = true;
+            }
             summary = new PackageSummary(data, PackageManager.Installed.package.First(package => package.id == data.items[0].items[0].catalogEntry.id).version);
             deteal = data;
             Repaint();
@@ -327,7 +333,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Draw the contents of the Window.</para>
         /// <para>ウィンドウの中身を描写。</para>
         /// </summary>
-        public async void OnGUI()
+        public void OnGUI()
         {
             var bold = new GUIStyle(EditorStyles.label) { fontStyle = FontStyle.Bold };
             var tasks = new List<Task>();
@@ -336,19 +342,6 @@ namespace kumaS.NuGetImporter.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    GUILayout.Label("Max framework version : ");
-                    if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
-                    {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            EditorGUILayout.Popup(0, new string[] { ".NET Standard2.0" });
-                        }
-                    }
-                    else
-                    {
-                        MaxVersion = (FrameworkMaxVersion)EditorGUILayout.Popup((int)MaxVersion, frameworkName);
-                    }
-                    GUILayout.Space(25);
                     GUILayout.Label("Method to select a version : ");
                     method = (VersionSelectMethod)EditorGUILayout.EnumPopup(method);
                     GUILayout.FlexibleSpace();
@@ -405,6 +398,11 @@ namespace kumaS.NuGetImporter.Editor
                 using (var detealScrollView = new GUILayout.ScrollViewScope(detealScroll, false, true, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true), GUILayout.Width(position.width / 2), GUILayout.MaxWidth(position.width / 2)))
                 {
                     detealScroll = detealScrollView.scrollPosition;
+                    if (isAddedSummary)
+                    {
+                        isAddedSummary = false;
+                        GUIUtility.ExitGUI();
+                    }
                     if (summary != null)
                     {
                         tasks.Add(summary.ToGUI(bold, this, OnlyStable, method));
@@ -416,7 +414,6 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
             }
-            await Task.WhenAll(tasks);
         }
 
         private async Task SearchAditionalPackage()
