@@ -253,7 +253,8 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task GetPackage(string packageName, string version, string savePath)
         {
-            using (var fileStream = new FileStream(Path.Combine(savePath, packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
+            var fileName = packageName.ToLowerInvariant() + "." + version.ToLowerInvariant();
+            using (var fileStream = new FileStream(Path.Combine(savePath, fileName + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 // It takes much time for the header response, so set the package first.
                 lock (downloading)
@@ -261,16 +262,45 @@ namespace kumaS.NuGetImporter.Editor
                     downloading[packageName] = (0, fileStream);
                 }
 
-                using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"))
+                string cachePath;
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 {
-                    lock (downloading)
+                    cachePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                }
+                else
+                {
+                    cachePath = "~";
+                }
+                cachePath = Path.Combine(cachePath, ".nuget", "packages", packageName.ToLowerInvariant(), version.ToLowerInvariant());
+
+                if (Directory.Exists(cachePath))
+                {
+                    using (var sourceStream = File.Open(Path.Combine(cachePath, fileName + ".nupkg"), FileMode.Open))
                     {
-                        downloading[packageName] = (responseStream.Length, fileStream);
+                        lock (downloading)
+                        {
+                            downloading[packageName] = (sourceStream.Length, fileStream);
+                        }
+                        await sourceStream.CopyToAsync(fileStream);
+                        lock (downloading)
+                        {
+                            downloading.Remove(packageName);
+                        }
                     }
-                    await responseStream.CopyToAsync(fileStream);
-                    lock (downloading)
+                }
+                else
+                {
+                    using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg"))
                     {
-                        downloading.Remove(packageName);
+                        lock (downloading)
+                        {
+                            downloading[packageName] = (responseStream.Length, fileStream);
+                        }
+                        await responseStream.CopyToAsync(fileStream);
+                        lock (downloading)
+                        {
+                            downloading.Remove(packageName);
+                        }
                     }
                 }
             }
