@@ -281,6 +281,28 @@ namespace kumaS.NuGetImporter.Editor
                     return;
                 }
 
+                IEnumerable<Package> warningPackages = new List<Package>();
+
+#if UNITY_2021_2_OR_NEWER
+                if(PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard){
+                    warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.targetFramework));
+                }
+#else
+                if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
+                {
+                    warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.targetFramework));
+                }
+#endif
+                if (warningPackages.Any())
+                {
+                    if(!EditorUtility.DisplayDialog("Warning from NuGet importer", "Now the api compatibility level for this project is " + 
+                        PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup).ToString() + 
+                        ". But below packages are builded for .NETFramework. Do you install them?" + "\n\n" + string.Join("\n", warningPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
+                    {
+                        return;
+                    }
+                }
+
                 if (installPackages != null && installPackages.Any())
                 {
                     foreach (Package installPackage in installPackages)
