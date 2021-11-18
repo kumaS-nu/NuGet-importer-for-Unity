@@ -721,7 +721,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
                 var controller = new PackageControllerAsAsset();
-                var tasks = installed.package.Select(async pkg => {
+                var tasks = installed.package.Select(async pkg =>
+                {
                     var path = await controller.GetInstallPath(pkg);
                     return HasNative(path);
                 });
@@ -754,7 +755,7 @@ namespace kumaS.NuGetImporter.Editor
 
                     var installer = new PackageControllerAsUPM();
                     var tasks2 = new List<Task>();
-                    foreach(var pkg in installed.package)
+                    foreach (var pkg in installed.package)
                     {
                         tasks2.Add(installer.InstallPackageAsync(pkg));
                     }
@@ -790,7 +791,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
                 var controller = new PackageControllerAsUPM();
-                var tasks = installed.package.Select(async pkg => {
+                var tasks = installed.package.Select(async pkg =>
+                {
                     var path = await controller.GetInstallPath(pkg);
                     return HasNative(path);
                 });
