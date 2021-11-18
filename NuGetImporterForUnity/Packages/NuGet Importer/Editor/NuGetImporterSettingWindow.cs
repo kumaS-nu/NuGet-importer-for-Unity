@@ -3,6 +3,10 @@
 using UnityEditor;
 
 using UnityEngine;
+using kumaS.NuGetImporter.Editor.DataClasses;
+using System.IO;
+using System.Threading.Tasks;
+using System;
 
 namespace kumaS.NuGetImporter.Editor
 {
@@ -15,33 +19,71 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Cache settings", false, 3)]
         private static void ShowWindow()
         {
-            NuGetImporterSettingWindow window = GetWindow<NuGetImporterSettingWindow>("Cache settings (NuGet importer)");
+            GetWindow<NuGetImporterSettingWindow>("Cache settings (NuGet importer)");
         }
 
         private void OnGUI()
         {
+            var isAssets = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsAssets;
+            if (isAssets != File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
+            {
+                if(EditorUtility.DisplayDialog("NuGet importer", "The installation method setting does not match the current installation method: UPM (recommended) or Assets ?", "UPM", "Assets")){
+                    NuGetImporterSettings.Instance.InstallMethod = InstallMethod.AsUPM;
+                    _ = Operate(PackageManager.ConvertToUPM());
+                }
+                else
+                {
+                    NuGetImporterSettings.Instance.InstallMethod = InstallMethod.AsAssets;
+                    _ = Operate(PackageManager.ConvertToAssets());
+                }
+            }
+
             using (new EditorGUILayout.VerticalScope())
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    EditorGUILayout.LabelField("install method");
+                    GUILayout.FlexibleSpace();
+                    NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
                     EditorGUILayout.LabelField("search cache count");
                     GUILayout.FlexibleSpace();
-                    NuGet.searchCacheLimit = EditorGUILayout.IntField(NuGet.searchCacheLimit);
+                    NuGetImporterSettings.Instance.SearchCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.SearchCacheLimit);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("catalog cache count");
                     GUILayout.FlexibleSpace();
-                    NuGet.catalogCacheLimit = EditorGUILayout.IntField(NuGet.catalogCacheLimit);
+                    NuGetImporterSettings.Instance.CatalogCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.CatalogCacheLimit);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("icon cache count");
                     GUILayout.FlexibleSpace();
-                    PackageDataExtentionToGUI.iconCacheLimit = EditorGUILayout.IntField(PackageDataExtentionToGUI.iconCacheLimit);
+                    NuGetImporterSettings.Instance.IconCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.IconCacheLimit);
                 }
+            }
+        }
+
+        private async Task Operate(Task<bool> operation)
+        {
+            try
+            {
+                await operation;
+                EditorUtility.DisplayDialog("NuGet importer", "Conversion is finished.", "OK");
+            }
+            catch (InvalidOperationException e)
+            {
+                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
+            }
+            catch (ArgumentException e)
+            {
+                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
             }
         }
     }

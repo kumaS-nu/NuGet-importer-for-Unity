@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -20,21 +19,13 @@ namespace kumaS.NuGetImporter.Editor
     /// <para>Main window of NuGet importer.</para>
     /// <para>NuGet importerのメインウィンドウ。</para>
     /// </summary>
-    public class NuGetImporterWindow : EditorWindow, ISerializationCallbackReceiver
+    public class NuGetImporterWindow : EditorWindow
     {
-        private static bool onlyStable = true;
-        private static VersionSelectMethod method = VersionSelectMethod.Suit;
         private string inputText = "";
         private int selected = 0;
         private int hitPackages = 0;
         private float progress = 0;
         private string progressText = "";
-
-        /// <value>
-        /// <para>Method to select a version.</para>
-        /// <para>バージョンを選択する方法。</para>
-        /// </value>
-        internal static VersionSelectMethod Method { get { return method; } }
 
         private Vector2 packagesScroll = Vector2.zero;
         private Vector2 detealScroll = Vector2.zero;
@@ -42,7 +33,6 @@ namespace kumaS.NuGetImporter.Editor
         private bool isAddingPackages = false;
         private readonly object lockAddingPackages = new object();
 
-        private bool OnlyStable { get => onlyStable; set { if (onlyStable != value) { _ = UpdateData(); } onlyStable = value; } }
         private int Selected { get => selected; set { if (selected != value) { selected = value; _ = UpdateData(); } } }
         private string InputText { get => inputText; set { if (inputText != value) { inputText = value; _ = UpdateData(); } } }
 
@@ -67,7 +57,7 @@ namespace kumaS.NuGetImporter.Editor
         private static void ShowWindow()
         {
             NuGetImporterWindow window = GetWindow<NuGetImporterWindow>("NuGet importer");
-            if(window.position.width < 1175 || window.position.height < 450)
+            if (window.position.width < 1175 || window.position.height < 450)
             {
                 window.position = new Rect(0, 0, 1175, 450);
             }
@@ -79,7 +69,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             try
             {
-                await PackageManager.FixPackage(onlyStable, method);
+                await PackageManager.FixPackage(NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method);
                 EditorUtility.DisplayDialog("NuGet importer", "Packages repair are complete.", "OK");
             }
             catch (Exception e)
@@ -200,7 +190,7 @@ namespace kumaS.NuGetImporter.Editor
                     installedVersion = installed.First().version;
                 }
             }
-            if(summary == null)
+            if (summary == null)
             {
                 isAddedSummary = true;
             }
@@ -343,10 +333,16 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.Label("Method to select a version : ");
-                    method = (VersionSelectMethod)EditorGUILayout.EnumPopup(method);
+                    NuGetImporterSettings.Instance.Method = (VersionSelectMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.Method);
                     GUILayout.FlexibleSpace();
                 }
-                OnlyStable = !GUILayout.Toggle(!OnlyStable, "Include development versions");
+                var beforeSate = NuGetImporterSettings.Instance.OnlyStable;
+                NuGetImporterSettings.Instance.OnlyStable = !GUILayout.Toggle(!NuGetImporterSettings.Instance.OnlyStable, "Include development versions");
+                if (beforeSate != NuGetImporterSettings.Instance.OnlyStable)
+                {
+                    _ = UpdateData();
+                    GUIUtility.ExitGUI();
+                }
             }
             GUILayoutExtention.WrapedLabel("Search", 18);
             Rect progressRect = GUILayoutUtility.GetLastRect();
@@ -373,7 +369,7 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         foreach (Datum search in searchPackages)
                         {
-                            tasks.Add(search.ToGUI(bold, this, summary != null && summary.PackageId == search.id, OnlyStable));
+                            tasks.Add(search.ToGUI(bold, this, summary != null && summary.PackageId == search.id, NuGetImporterSettings.Instance.OnlyStable));
                         }
                         if (searchPackages.Count > 0)
                         {
@@ -405,7 +401,7 @@ namespace kumaS.NuGetImporter.Editor
                     }
                     if (summary != null)
                     {
-                        tasks.Add(summary.ToGUI(bold, this, OnlyStable, method));
+                        tasks.Add(summary.ToGUI(bold, this, NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method));
 
                         if (deteal != null)
                         {
@@ -475,35 +471,6 @@ namespace kumaS.NuGetImporter.Editor
             {
                 progress = 1;
                 progressText = "Finish";
-            }
-        }
-
-        public void OnBeforeSerialize()
-        {
-            File.WriteAllText(Path.Combine("Temp", "VersionSelectMode.txt"), ((int)method).ToString());
-            File.WriteAllText(Path.Combine("Temp", "OnlyStable.txt"), onlyStable.ToString());
-        }
-
-        public void OnAfterDeserialize()
-        {
-            var versionPath = Path.Combine("Temp", "VersionSelectMode.txt");
-            if (File.Exists(versionPath))
-            {
-                method = (VersionSelectMethod)int.Parse(File.ReadAllText(versionPath));
-            }
-            else
-            {
-                method = VersionSelectMethod.Suit;
-            }
-
-            var stablePath = Path.Combine("Temp", "OnlyStable.txt");
-            if (File.Exists(stablePath))
-            {
-                onlyStable = File.ReadAllText(stablePath) == true.ToString();
-            }
-            else
-            {
-                onlyStable = true;
             }
         }
     }

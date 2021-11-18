@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
-using UnityEditor;
-
 namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
@@ -335,10 +333,11 @@ namespace kumaS.NuGetImporter.Editor
             }
             else
             {
-                Dependencygroup dependGroup = dependencies.OrderBy(depend => {
+                Dependencygroup dependGroup = dependencies.OrderBy(depend =>
+                {
                     var ret = targetFramework.IndexOf(depend.targetFramework);
                     return ret < 0 ? int.MaxValue : ret;
-                    }).First();
+                }).First();
                 node.TragetFramework = dependGroup.targetFramework;
                 if (dependGroup.dependencies != null)
                 {

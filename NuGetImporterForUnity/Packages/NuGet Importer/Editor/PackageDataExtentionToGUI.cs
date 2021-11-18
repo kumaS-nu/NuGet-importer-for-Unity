@@ -25,12 +25,6 @@ namespace kumaS.NuGetImporter.Editor
         private static readonly Dictionary<string, Texture2D> iconCache = new Dictionary<string, Texture2D>();
         private static readonly List<string> iconLog = new List<string>();
 
-        /// <value>
-        /// <para>Limit of icon cache.</para>
-        /// <para>アイコンのキャッシュの最大数。</para>
-        /// </value>
-        public static int iconCacheLimit = 500;
-
         /// <summary>
         /// <para>Delete icon cache.</para>
         /// <para>アイコンのキャッシュを削除する。</para>
@@ -583,7 +577,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 iconCache[url] = texture;
                 iconLog.Add(url);
-                while (iconCache.Count > iconCacheLimit && iconCache.Count > 0)
+                while (iconCache.Count > NuGetImporterSettings.Instance.IconCacheLimit && iconCache.Count > 0)
                 {
                     var delete = iconLog[0];
                     iconLog.RemoveAt(0);

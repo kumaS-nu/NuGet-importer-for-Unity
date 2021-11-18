@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ using System.Xml.Serialization;
 using kumaS.NuGetImporter.Editor.DataClasses;
 
 using UnityEditor;
-using UnityEditor.SceneManagement;
 
 using UnityEngine;
 
@@ -27,8 +25,8 @@ namespace kumaS.NuGetImporter.Editor
     {
         private static bool working = false;
         private static ManagedPluginList managedPluginList;
-        private static readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
         private static readonly List<string> linuxName = new List<string>() { "linux", "ubuntu", "centos", "debian" };
+        private static readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
 
         /// <value>
         /// <para>For Test.</para>
@@ -41,10 +39,16 @@ namespace kumaS.NuGetImporter.Editor
         internal static InstalledPackages rootPackage;
 
         /// <value>
-        /// <para>Ctalogs of installed packages.</para>
+        /// <para>Catalogs of installed packages.</para>
         /// <para>インストールされているパッケージのカタログ。</para>
         /// </value>
         internal static Dictionary<string, Catalog> installedCatalog = new Dictionary<string, Catalog>();
+
+        /// <value>
+        /// <para>Path to install. 0:UPM・1:Assets/Plugins</para>
+        /// <para>インストールする場所。0:UPM・1:Assets/Plugins</para>
+        /// </value>
+        internal static int installLocate = 0;
 
         /// <value>
         /// <para>Installed package.</para>
@@ -57,6 +61,12 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>ルートのパッケージ。</para>
         /// </summary>
         internal static InstalledPackages RootPackage { get => rootPackage; }
+
+        /// <summary>
+        /// <para>List of managed plugins.</para>
+        /// <para>マネージドプラグインのリスト。</para>
+        /// </summary>
+        internal static ManagedPluginList ManagedPluginList { get => managedPluginList; }
 
         /// <summary>
         /// <para>Save the package installation information.</para>
@@ -78,8 +88,6 @@ namespace kumaS.NuGetImporter.Editor
             {
                 Directory.CreateDirectory(Path.Combine(Application.dataPath, "Packages"));
             }
-
-            File.WriteAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"), JsonUtility.ToJson(managedPluginList), Encoding.UTF8);
         }
 
         /// <summary>
@@ -114,20 +122,6 @@ namespace kumaS.NuGetImporter.Editor
             else
             {
                 rootPackage = new InstalledPackages();
-            }
-
-            if (File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
-            {
-                managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")));
-            }
-            else
-            {
-                managedPluginList = new ManagedPluginList();
-            }
-
-            if(managedPluginList.managedList == null)
-            {
-                managedPluginList.managedList = new List<PackageManagedPluginList>();
             }
 
             // Processing when rebooting to delete natives.
@@ -167,7 +161,10 @@ namespace kumaS.NuGetImporter.Editor
                             rootPackage = (InstalledPackages)serializer.Deserialize(file);
                         }
                         EditorUtility.ClearProgressBar();
-                        EditorUtility.DisplayDialog("Nuget importer", "Installation finished.", "OK");
+                        if (tasks.Any())
+                        {
+                            EditorUtility.DisplayDialog("Nuget importer", "Installation finished.", "OK");
+                        }
                     }
                     catch (Exception e)
                     {
@@ -234,9 +231,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>Task</para>
+        /// <para>Has the operation been executed?</para>
+        /// <para>操作が行われたか。</para>
         /// </returns>
-        public static async Task InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<bool> InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -269,95 +267,29 @@ namespace kumaS.NuGetImporter.Editor
                         }
                     }
                 }
+
+                if (!await ConfirmToUser(installPackages, default, nativePackages))
+                {
+                    return false;
+                }
+
                 Package[] rootPackages = requiredPackages.Where(package => package.id == packageId).ToArray();
                 if (rootPackage.package != null && rootPackage.package.Length > 0)
                 {
                     rootPackages = rootPackage.package.Append(rootPackages[0]).ToArray();
                 }
 
-                // Confirmation to the user.
-                if (!EditorUtility.DisplayDialog("NuGet importer", "Install or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
-                {
-                    return;
-                }
-
-                IEnumerable<Package> warningPackages = new List<Package>();
-
-#if UNITY_2021_2_OR_NEWER
-                if(PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard){
-                    warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.targetFramework));
-                }
-#else
-                if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
-                {
-                    warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.targetFramework));
-                }
-#endif
-                if (warningPackages.Any())
-                {
-                    if(!EditorUtility.DisplayDialog("Warning from NuGet importer", "Now the api compatibility level for this project is " + 
-                        PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup).ToString() + 
-                        ". But below packages are builded for .NETFramework. Do you install them?" + "\n\n" + string.Join("\n", warningPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
-                    {
-                        return;
-                    }
-                }
-
-                if (installPackages != null && installPackages.Any())
-                {
-                    foreach (Package installPackage in installPackages)
-                    {
-                        var isInstalled = false;
-                        lock (installedCatalog)
-                        {
-                            if (installed.package != null)
-                            {
-                                isInstalled = installedCatalog.ContainsKey(installPackage.id);
-                            }
-                        }
-                        Catalog catalog = isInstalled ? installedCatalog[installPackage.id] : await NuGet.GetCatalog(installPackage.id);
-                        Catalogentry catalogEntry = catalog.GetAllCatalogEntry().First(entry => entry.version == installPackage.version);
-                        if (catalogEntry.requireLicenseAcceptance)
-                        {
-                            var option = EditorUtility.DisplayDialogComplex("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel", "Go url");
-                            switch (option)
-                            {
-                                case 0:
-                                    break;
-                                case 1:
-                                    return;
-                                case 2:
-                                    Help.BrowseURL(catalogEntry.licenseUrl);
-                                    if (!EditorUtility.DisplayDialog("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel"))
-                                    {
-                                        return;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
-
                 EditorUtility.DisplayProgressBar("NuGet importer", "Removing packages before upgrade.", 0.25f);
-
-                if (nativePackages.Count > 0)
+                if (nativePackages.Any())
                 {
-                    if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the deleting package. You need to restart the editor to repair packages.\n(The current project will be saved and repair packages will be resumed after a restart.)", "Restart", "Quit"))
-                    {
-                        OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    var process = OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    process.Start();
+                    EditorApplication.Exit(0);
                 }
 
                 if (samePackages != null && samePackages.Any())
                 {
-                    foreach (Package samePackage in samePackages)
-                    {
-                        UninstallPackage(samePackage);
-                    }
+                    await UninstallPackages(samePackages);
                 }
 
                 if (installPackages != null && installPackages.Any())
@@ -392,6 +324,8 @@ namespace kumaS.NuGetImporter.Editor
                 Save();
                 AssetDatabase.Refresh();
             }
+
+            return true;
         }
 
         /// <summary>
@@ -403,9 +337,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>パッケージのid。</para>
         /// </param>
         /// <returns>
-        /// <para>Task</para>
+        /// <para>Has the operation been executed?</para>
+        /// <para>操作が行われたか。</para>
         /// </returns>
-        public static async Task FixPackage(string packageId)
+        public static async Task<bool> FixPackage(string packageId)
         {
             if (working)
             {
@@ -430,11 +365,13 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the repair package. You need to restart the editor to repair packages.\n(The current project will be saved and repair packages will be resumed after a restart.)", "Restart", "Quit"))
                     {
-                        OperateWithNative(new Package[] { fix }, new Package[0], new Package[] { fix }, installed.package, rootPackage.package);
+                        var process = OperateWithNative(new Package[] { fix }, new Package[0], new Package[] { fix }, installed.package, rootPackage.package);
+                        process.Start();
+                        EditorApplication.Exit(0);
                     }
                     else
                     {
-                        return;
+                        return false;
                     }
                 }
                 await InstallSelectPackage(fix);
@@ -451,6 +388,8 @@ namespace kumaS.NuGetImporter.Editor
                 Save();
                 AssetDatabase.Refresh();
             }
+
+            return true;
         }
 
         /// <summary>
@@ -465,9 +404,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>Task</para>
+        /// <para>Has the operation been executed?</para>
+        /// <para>操作が行われたか。</para>
         /// </returns>
-        public static async Task FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<bool> FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -502,71 +442,34 @@ namespace kumaS.NuGetImporter.Editor
                         managedPackages.Add(package);
                     }
                 }
+
+                if (!deletePackages.Any() && !installPackages.Any())
+                {
+                    EditorUtility.DisplayDialog("NuGet importer", "Installed packages are already optimized.", "OK");
+                    return true;
+                }
+
+                if (!await ConfirmToUser(installPackages, uninstallPackages, nativePackages))
+                {
+                    return false;
+                }
+
                 var rootPackages = new Package[0];
                 if (rootPackage != null && rootPackage.package != null && rootPackage.package.Length != 0)
                 {
                     rootPackages = requiredPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
                 }
-                if (!deletePackages.Any() && !installPackages.Any())
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", "Packages are already installed are optimized.", "OK");
-                    return;
-                }
-
-                // Confirmation to the user.
-                if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Go", "Cancel"))
-                {
-                    return;
-                }
-
-                foreach (Package installPackage in installPackages)
-                {
-                    var isInstalled = false;
-                    lock (installedCatalog)
-                    {
-                        isInstalled = installedCatalog.ContainsKey(installPackage.id);
-                    }
-                    Catalog catalog = isInstalled ? installedCatalog[installPackage.id] : await NuGet.GetCatalog(installPackage.id);
-                    Catalogentry catalogEntry = catalog.GetAllCatalogEntry().First(entry => entry.version == installPackage.version);
-                    if (catalogEntry.requireLicenseAcceptance)
-                    {
-                        var option = EditorUtility.DisplayDialogComplex("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel", "Go url");
-                        switch (option)
-                        {
-                            case 0:
-                                break;
-                            case 1:
-                                return;
-                            case 2:
-                                Help.BrowseURL(catalogEntry.licenseUrl);
-                                if (!EditorUtility.DisplayDialog("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel"))
-                                {
-                                    return;
-                                }
-                                break;
-                        }
-                    }
-                }
-
 
                 EditorUtility.DisplayProgressBar("NuGet importer", "Removing unnecessary packages.", 0.33f);
 
-                if (nativePackages.Count > 0)
+                if (nativePackages.Any())
                 {
-                    if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the deleting package. You need to restart the editor to repair packages.\n(The current project will be saved and repair packages will be resumed after a restart.)", "Restart", "Quit"))
-                    {
-                        OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    var process = OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    process.Start();
+                    EditorApplication.Exit(0);
                 }
 
-                foreach (Package deletePackage in deletePackages)
-                {
-                    UninstallPackage(deletePackage);
-                }
+                await UninstallPackages(deletePackages);
 
                 foreach (Package requiredPackage in requiredPackages)
                 {
@@ -597,6 +500,8 @@ namespace kumaS.NuGetImporter.Editor
                 Save();
                 AssetDatabase.Refresh();
             }
+
+            return true;
         }
 
         /// <summary>
@@ -605,7 +510,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         /// <param name="packageId">
         /// <para>Package id.</para>
-        /// <para>ッケージのid。</para>
+        /// <para>パッケージのid。</para>
         /// </param>
         /// <param name="onlyStable">
         /// <para>Whether use only stable version.</para>
@@ -615,9 +520,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>Task</para>
+        /// <para>Has the operation been executed?</para>
+        /// <para>操作が行われたか。</para>
         /// </returns>
-        public static async Task UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<bool> UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -658,32 +564,25 @@ namespace kumaS.NuGetImporter.Editor
                 if (uninstallPackages == null || !uninstallPackages.Any())
                 {
                     EditorUtility.DisplayDialog("NuGet importer", "Selected package is depended by other package.", "OK");
-                    return;
+                    return true;
                 }
 
-                // Confirmation to the user.
-                if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)), "Uninstall", "Cancel"))
+                if (!await ConfirmToUser(default, uninstallPackages, nativePackages))
                 {
-                    return;
+                    return false;
                 }
+
                 EditorUtility.DisplayProgressBar("NuGet importer", "Uninstalling packges", 0.5f);
 
-                if (nativePackages.Count > 0)
+                if (nativePackages.Any())
                 {
-                    if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the deleting package. You need to restart the editor to delete package.\n(The current project will be saved.)", "Restart", "Quit"))
-                    {
-                        OperateWithNative(new Package[0], managedPackages, nativePackages, installedPackages, rootPackages);
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    var process = OperateWithNative(new Package[0], managedPackages, nativePackages, installedPackages, rootPackages);
+                    process.Start();
+                    EditorApplication.Exit(0);
                 }
 
-                foreach (Package uninstallPackage in uninstallPackages)
-                {
-                    UninstallPackage(uninstallPackage);
-                }
+                await UninstallPackages(uninstallPackages);
+
                 installed.package = installedPackages;
                 if (rootPackage == null || rootPackage.package == null)
                 {
@@ -706,6 +605,8 @@ namespace kumaS.NuGetImporter.Editor
                 Save();
                 AssetDatabase.Refresh();
             }
+
+            return true;
         }
 
         /// <summary>
@@ -728,9 +629,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>Task</para>
+        /// <para>Has the operation been executed?</para>
+        /// <para>操作が行われたか。</para>
         /// </returns>
-        public static async Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<bool> ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             if (working)
             {
@@ -762,64 +664,24 @@ namespace kumaS.NuGetImporter.Editor
                         managedPackages.Add(package);
                     }
                 }
+
+                if (!await ConfirmToUser(installPackages, uninstallPackages, nativePackages))
+                {
+                    return false;
+                }
+
                 Package[] rootPackages = requiredPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
-
-                // Confirmation to the user.
-                if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
-                {
-                    return;
-                }
-
-                if (requiredPackages != null && requiredPackages.Any())
-                {
-                    foreach (Package requiredPackage in requiredPackages)
-                    {
-                        var isInstalled = false;
-                        lock (installedCatalog)
-                        {
-                            isInstalled = installedCatalog.ContainsKey(requiredPackage.id);
-                        }
-                        Catalog catalog = isInstalled ? installedCatalog[requiredPackage.id] : await NuGet.GetCatalog(requiredPackage.id);
-                        Catalogentry catalogEntry = catalog.GetAllCatalogEntry().First(entry => entry.version == requiredPackage.version);
-                        if (catalogEntry.requireLicenseAcceptance)
-                        {
-                            var option = EditorUtility.DisplayDialogComplex("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel", "Go url");
-                            switch (option)
-                            {
-                                case 0:
-                                    break;
-                                case 1:
-                                    return;
-                                case 2:
-                                    Help.BrowseURL(catalogEntry.licenseUrl);
-                                    if (!EditorUtility.DisplayDialog("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel"))
-                                    {
-                                        return;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
 
                 EditorUtility.DisplayProgressBar("NuGet importer", "Removing unnecessary packages.", 0.25f);
 
-                if (nativePackages.Count > 0)
+                if (nativePackages.Any())
                 {
-                    if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the deleting package. You need to restart the editor to change the version.\n(The current project will be saved and version changes will be resumed after a restart.)", "Restart", "Quit"))
-                    {
-                        OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    var process = OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    process.Start();
+                    EditorApplication.Exit(0);
                 }
 
-                foreach (Package delete in deletePackages)
-                {
-                    UninstallPackage(delete);
-                }
+                await UninstallPackages(deletePackages);
 
                 foreach (Package requiredPackage in requiredPackages)
                 {
@@ -843,164 +705,213 @@ namespace kumaS.NuGetImporter.Editor
                 Save();
                 AssetDatabase.Refresh();
             }
+
+            return true;
+        }
+
+        public static async Task<bool> ConvertToUPM()
+        {
+            if (working)
+            {
+                throw new InvalidOperationException("Now other processes are in progress.");
+            }
+            working = true;
+            EditorApplication.LockReloadAssemblies();
+            try
+            {
+                EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
+                var controller = new PackageControllerAsAsset();
+                var tasks = installed.package.Select(async pkg => {
+                    var path = await controller.GetInstallPath(pkg);
+                    return HasNative(path);
+                });
+
+                var isNatives = await Task.WhenAll(tasks);
+                EditorUtility.DisplayProgressBar("NuGet importer", "Deleting packages", 0.4f);
+                if (isNatives.Any(isNative => isNative))
+                {
+                    var process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
+                    try
+                    {
+                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"));
+                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
+                    }
+                    catch (Exception) { }
+                    process.Start();
+                    EditorApplication.Exit(0);
+                }
+                else
+                {
+                    await controller.UninstallManagedPackagesAsync(installed.package);
+                    try
+                    {
+                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"));
+                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
+                    }
+                    catch (Exception) { }
+
+                    EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages", 0.5f);
+
+                    var installer = new PackageControllerAsUPM();
+                    var tasks2 = new List<Task>();
+                    foreach(var pkg in installed.package)
+                    {
+                        tasks2.Add(installer.InstallPackageAsync(pkg));
+                    }
+                    _ = DownloadProgress(0.5f, installed.package.Select(pkg => pkg.id).ToArray());
+                    await Task.WhenAll(tasks2);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                EditorApplication.UnlockReloadAssemblies();
+                working = false;
+                EditorUtility.ClearProgressBar();
+                Save();
+                AssetDatabase.Refresh();
+            }
+
+            return true;
+        }
+
+        public static async Task<bool> ConvertToAssets()
+        {
+            if (working)
+            {
+                throw new InvalidOperationException("Now other processes are in progress.");
+            }
+            working = true;
+            EditorApplication.LockReloadAssemblies();
+            try
+            {
+                EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
+                var controller = new PackageControllerAsUPM();
+                var tasks = installed.package.Select(async pkg => {
+                    var path = await controller.GetInstallPath(pkg);
+                    return HasNative(path);
+                });
+
+                var isNatives = await Task.WhenAll(tasks);
+                EditorUtility.DisplayProgressBar("NuGet importer", "Deleting packages", 0.4f);
+                if (isNatives.Any(isNative => isNative))
+                {
+                    var process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
+                    process.Start();
+                    EditorApplication.Exit(0);
+                }
+                else
+                {
+                    await controller.UninstallManagedPackagesAsync(installed.package);
+                    EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages", 0.5f);
+
+                    var installer = new PackageControllerAsAsset();
+                    var tasks2 = new List<Task>();
+                    foreach (var pkg in installed.package)
+                    {
+                        tasks2.Add(installer.InstallPackageAsync(pkg));
+                    }
+                    _ = DownloadProgress(0.5f, installed.package.Select(pkg => pkg.id).ToArray());
+                    await Task.WhenAll(tasks2);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                EditorApplication.UnlockReloadAssemblies();
+                working = false;
+                EditorUtility.ClearProgressBar();
+                Save();
+                AssetDatabase.Refresh();
+            }
+
+            return true;
+        }
+
+        private async static Task<bool> ConfirmToUser(IEnumerable<Package> installPackages, IEnumerable<Package> uninstallPackages, IEnumerable<Package> nativePackages)
+        {
+            if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "OK", "Cancel"))
+            {
+                return false;
+            }
+
+            IEnumerable<Package> warningPackages = new List<Package>();
+
+#if UNITY_2021_2_OR_NEWER
+                if(PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard){
+                    warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.targetFramework));
+                }
+#else
+            if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
+            {
+                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.targetFramework));
+            }
+#endif
+            if (warningPackages.Any())
+            {
+                if (!EditorUtility.DisplayDialog("Warning from NuGet importer", "Now the api compatibility level for this project is " +
+                    PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup).ToString() +
+                    ". But below packages are builded for .NETFramework. Do you install them?" + "\n\n" + string.Join("\n", warningPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
+                {
+                    return false;
+                }
+            }
+
+            if (installPackages != null && installPackages.Any())
+            {
+                foreach (Package installPackage in installPackages)
+                {
+                    var isInstalled = false;
+                    lock (installedCatalog)
+                    {
+                        if (installed.package != null)
+                        {
+                            isInstalled = installedCatalog.ContainsKey(installPackage.id);
+                        }
+                    }
+                    Catalog catalog = isInstalled ? installedCatalog[installPackage.id] : await NuGet.GetCatalog(installPackage.id);
+                    Catalogentry catalogEntry = catalog.GetAllCatalogEntry().First(entry => entry.version == installPackage.version);
+                    if (catalogEntry.requireLicenseAcceptance)
+                    {
+                        var option = EditorUtility.DisplayDialogComplex("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel", "Go url");
+                        switch (option)
+                        {
+                            case 0:
+                                break;
+                            case 1:
+                                return false;
+                            case 2:
+                                Help.BrowseURL(catalogEntry.licenseUrl);
+                                if (!EditorUtility.DisplayDialog("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel"))
+                                {
+                                    return false;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+
+            if (nativePackages.Any())
+            {
+                if (!EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the modifying package. You need to restart the editor to modify packages.\n(The current project will be saved and modify packages will be resumed after a restart.)", "Restart", "Cancel"))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private static async Task InstallSelectPackage(Package package)
         {
-            var topDirectory = Path.Combine(Application.dataPath, "Packages");
-            var managedDirectory = Path.Combine(topDirectory, "Plugins");
-            var directoryName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant();
-            var topNupkg = Path.Combine(topDirectory, directoryName + ".nupkg");
-            var packageDirectory = Path.Combine(topDirectory, directoryName);
-            var packageNupkg = Path.Combine(packageDirectory, directoryName + ".nupkg");
-
-            if (!Directory.Exists(topDirectory))
-            {
-                Directory.CreateDirectory(topDirectory);
-            }
-
-            if (!Directory.Exists(managedDirectory))
-            {
-                Directory.CreateDirectory(managedDirectory);
-            }
-
-            if (File.Exists(packageNupkg))
-            {
-                File.Move(packageNupkg, topNupkg);
-            }
-            else
-            {
-                await NuGet.GetPackage(package.id, package.version, topDirectory);
-            }
-
-            DeleteDirectory(packageDirectory);
-            ZipFile.ExtractToDirectory(topNupkg, packageDirectory);
-            File.Move(topNupkg, packageNupkg);
-
-            DeleteDirectory(Path.Combine(packageDirectory, "_rels"));
-            DeleteDirectory(Path.Combine(packageDirectory, "ref"));
-            DeleteDirectory(Path.Combine(packageDirectory, "package"));
-            DeleteDirectory(Path.Combine(packageDirectory, "build"));
-            DeleteDirectory(Path.Combine(packageDirectory, "buildMultiTargeting"));
-            DeleteDirectory(Path.Combine(packageDirectory, "buildTransitive"));
-            DeleteDirectory(Path.Combine(packageDirectory, "tools"));
-
-            foreach (var file in Directory.GetFiles(packageDirectory))
-            {
-                if (file.Contains(".nuspec"))
-                {
-                    File.Delete(file);
-                }
-                if (file.Contains("[Content_Types].xml"))
-                {
-                    File.Delete(file);
-                }
-            }
-
-            List<string[]> frameworkDictionary = FrameworkName.ALLPLATFORM;
-            var targetFramework = frameworkDictionary.Where(framework => framework.Contains(package.targetFramework)).FirstOrDefault();
-            var frameworkList = FrameworkName.TARGET;
-
-            // Processing Managed Plugins.
-            if (Directory.Exists(Path.Combine(packageDirectory, "lib")))
-            {
-                var target = "";
-                var priority = int.MaxValue;
-                foreach (var lib in Directory.GetDirectories(Path.Combine(packageDirectory, "lib")))
-                {
-                    var dirName = Path.GetFileName(lib);
-
-                    if (targetFramework != default && targetFramework.Contains(dirName))
-                    {
-                        priority = -1;
-                        target = lib;
-                        package.targetFramework = frameworkDictionary.Where(framework => framework.Contains(dirName)).First()[0];
-                    }
-                    else if (frameworkList.Contains(dirName) && frameworkList.IndexOf(dirName) < priority)
-                    {
-                        priority = frameworkList.IndexOf(dirName);
-                        target = lib;
-                        package.targetFramework = frameworkDictionary.Where(framework => framework.Contains(dirName)).First()[0];
-                    }
-                }
-                if (target != "")
-                {
-                    var packageManagedList = new PackageManagedPluginList
-                    {
-                        packageName = directoryName,
-                        fileNames = new List<string>()
-                    };
-
-                    foreach (var moveFile in Directory.GetFiles(target))
-                    {
-                        File.Move(moveFile, Path.Combine(managedDirectory, Path.GetFileName(moveFile)));
-                        packageManagedList.fileNames.Add(Path.GetFileName(moveFile));
-                    }
-
-                    managedPluginList.managedList.Add(packageManagedList);
-                }
-            }
-
-            DeleteDirectory(Path.Combine(packageDirectory, "lib"));
-
-            // Processing Native Plugins
-            if (Directory.Exists(Path.Combine(packageDirectory, "runtimes")))
-            {
-                var deleteList = new List<string>();
-                var target = "";
-                var priority = int.MaxValue;
-                foreach (var runtime in Directory.GetDirectories(Path.Combine(packageDirectory, "runtimes")))
-                {
-                    DeleteDirectory(Path.Combine(runtime, "lib"));
-
-                    var dirName = Path.GetFileName(runtime);
-                    if (dirName.StartsWith("win"))
-                    {
-                        if (!dirName.EndsWith("x86") && !dirName.EndsWith("64"))
-                        {
-                            deleteList.Add(runtime);
-                        }
-                        else
-                        {
-                            deleteList.AddRange(Directory.GetDirectories(runtime).Where(path => !path.EndsWith("native")));
-                        }
-                    }
-                    else if (dirName == "osx-x64")
-                    {
-                        deleteList.AddRange(Directory.GetDirectories(runtime).Where(path => !path.EndsWith("native")));
-                    }
-                    else
-                    {
-                        IEnumerable<string> osName = linuxName.Where(linux => dirName.StartsWith(linux));
-                        if (osName != null && osName.Any() && linuxName.IndexOf(osName.First()) < priority)
-                        {
-                            if (target != "")
-                            {
-                                deleteList.Add(target);
-                            }
-                            priority = linuxName.IndexOf(osName.First());
-                            target = runtime;
-                        }
-                        else
-                        {
-                            deleteList.Add(runtime);
-                        }
-                    }
-                }
-                if (target != "" && Directory.GetDirectories(target).Where(path => !path.EndsWith("native")).Any())
-                {
-                    deleteList.AddRange(Directory.GetDirectories(target).Where(path => !path.EndsWith("native")));
-                }
-                foreach (var delete in deleteList)
-                {
-                    DeleteDirectory(delete);
-                }
-                if (Directory.GetDirectories(Path.Combine(packageDirectory, "runtimes")).Length == 0)
-                {
-                    DeleteDirectory(Path.Combine(packageDirectory, "runtimes"));
-                }
-            }
-
+            var controller = GetPackageController();
+            await controller.InstallPackageAsync(package);
             Catalog catalog = await NuGet.GetCatalog(package.id);
             lock (installedCatalog)
             {
@@ -1008,157 +919,52 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        private static void OperateWithNative(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
+        private static async Task<Process> OperateWithNative(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
         {
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillInstall.xml"), false, Encoding.UTF8))
-            {
-                var write = new InstalledPackages
-                {
-                    package = installs.ToArray()
-                };
-                serializer.Serialize(file, write);
-            }
-
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillPackage.xml"), false, Encoding.UTF8))
-            {
-                var write = new InstalledPackages
-                {
-                    package = allInstalled.ToArray()
-                };
-                serializer.Serialize(file, write);
-            }
-
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillRoot.xml"), false, Encoding.UTF8))
-            {
-                var write = new InstalledPackages
-                {
-                    package = root.ToArray()
-                };
-                serializer.Serialize(file, write);
-            }
-
-            foreach (Package managed in manageds)
-            {
-                UninstallPackage(managed);
-            }
-
+            var controller = GetPackageController();
+            var process = await controller.OperateWithNativeAsync(installs, manageds, natives, allInstalled, root);
             installed.package = installed.package.Where(package => !manageds.Any(manage => manage.id == package.id) && !natives.Any(native => native.id == package.id)).ToArray();
             rootPackage.package = rootPackage.package.Where(package => installed.package.Any(installed => installed.id == package.id)).ToArray();
-            var nativeManaged = new List<string>();
-            foreach (Package native in natives)
-            {
-                try
-                {
-                    PackageManagedPluginList managed = managedPluginList.managedList.First(list => list.packageName == native.id.ToLowerInvariant() + "." + native.version.ToLowerInvariant());
-                    managedPluginList.managedList.Remove(managed);
-                    nativeManaged.AddRange(managed.fileNames.Select(file => Path.Combine(Application.dataPath, "Packages", "Plugins", file)));
-                }
-                catch (InvalidOperationException)
-                {
-
-                }
-            }
             Save();
-            IEnumerable<string> nativeDirectory = natives.Select(package => Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
-
-            DeleteNative(nativeDirectory.ToArray(), nativeManaged);
+            return process;
         }
 
-        private static void DeleteNative(IEnumerable<string> directoryPaths, IEnumerable<string> filePaths)
+        private static async Task UninstallPackages(IEnumerable<Package> packages)
         {
-            AssetDatabase.SaveAssets();
-            EditorSceneManager.SaveOpenScenes();
-            var process = new Process();
-            process.StartInfo.UseShellExecute = true;
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
-
-            // Create and execute the command, and exit the editor.
-            var command = new StringBuilder();
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            var controller = GetPackageController();
+            await controller.UninstallManagedPackagesAsync(packages);
+            lock (installed)
             {
-                process.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec");
-
-                // Wait a moment for exit the editor.
-                command.Append("/c timeout 5 && ");
-                foreach (var path in directoryPaths)
+                lock (installedCatalog)
                 {
-                    command.Append("rd /s /q \"");
-                    command.Append(path);
-                    command.Append("\"");
-                    command.Append(" && ");
-                    command.Append("del \"");
-                    command.Append(path);
-                    command.Append(".meta");
-                    command.Append("\"");
-                    command.Append(" && ");
-                }
-
-                if (filePaths != null)
-                {
-                    foreach (var path in filePaths)
+                    foreach (var package in packages)
                     {
-                        command.Append("del \"");
-                        command.Append(path);
-                        command.Append("\"");
-                        command.Append(" && ");
-                        command.Append("del \"");
-                        command.Append(path);
-                        command.Append(".meta");
-                        command.Append("\"");
-                        command.Append(" && ");
+                        installed.package = installed.package.Where(pkg => pkg.id != package.id).ToArray();
+                        installedCatalog.Remove(package.id);
                     }
                 }
-                command.Append(Environment.CommandLine);
             }
-            else
+        }
+
+        private static PackageControllerBase GetPackageController()
+        {
+            switch (NuGetImporterSettings.Instance.InstallMethod)
             {
-                process.StartInfo.FileName = "/bin/bash";
-
-                // Wait a moment for exit the editor.
-                command.Append("-c \" sleep 5 && ");
-                foreach (var path in directoryPaths)
-                {
-                    command.Append("rm -rf '");
-                    command.Append(path);
-                    command.Append("'");
-                    command.Append(" && ");
-                    command.Append("rm -f '");
-                    command.Append(path);
-                    command.Append(".meta");
-                    command.Append("'");
-                    command.Append(" && ");
-                }
-
-                if (filePaths != null)
-                {
-                    foreach (var path in filePaths)
-                    {
-                        command.Append("rm -f '");
-                        command.Append(path);
-                        command.Append("'");
-                        command.Append(" && ");
-                        command.Append("rm -f '");
-                        command.Append(path);
-                        command.Append(".meta");
-                        command.Append("'");
-                        command.Append(" && ");
-                    }
-                }
-                command.Append(Environment.CommandLine);
-                command.Append("\"");
+                case InstallMethod.AsUPM:
+                    return new PackageControllerAsUPM();
+                case InstallMethod.AsAssets:
+                    return new PackageControllerAsAsset();
+                default:
+                    throw new InvalidDataException();
             }
-            process.StartInfo.Arguments = command.ToString();
-            process.Start();
-            EditorApplication.Exit(0);
+
         }
 
         private static bool HasNative(string path)
         {
             foreach (var file in Directory.GetFiles(path))
             {
-                var plugin = AssetImporter.GetAtPath(Path.Combine("Assets", file.Replace(Application.dataPath, "").Substring(1))) as PluginImporter;
+                var plugin = AssetImporter.GetAtPath(file.Replace(Application.dataPath.Replace("Assets", ""), "").Substring(1)) as PluginImporter;
                 if (plugin != null)
                 {
                     if (plugin.isNativePlugin)
@@ -1179,52 +985,6 @@ namespace kumaS.NuGetImporter.Editor
             return false;
         }
 
-        private static void UninstallPackage(Package package)
-        {
-            DeleteDirectory(Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
-            try
-            {
-                PackageManagedPluginList managedList = managedPluginList.managedList.First(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
-
-                foreach (var file in managedList.fileNames)
-                {
-                    File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file));
-                    File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file + ".meta"));
-                }
-
-                lock (managedPluginList)
-                {
-                    managedPluginList.managedList.Remove(managedList);
-                }
-            }
-            catch (InvalidOperationException)
-            {
-
-            }
-
-            lock (installed)
-            {
-                installed.package = installed.package.Where(pkg => pkg.id != package.id).ToArray();
-            }
-            lock (installedCatalog)
-            {
-                installedCatalog.Remove(package.id);
-            }
-        }
-
-        private static void DeleteDirectory(string path)
-        {
-            try
-            {
-                Directory.Delete(path, true);
-                File.Delete(path + ".meta");
-            }
-            catch (Exception e) when (e is ArgumentException || e is DirectoryNotFoundException || e is FileNotFoundException || e is NotSupportedException)
-            {
-
-            }
-        }
-
         private async static Task DownloadProgress(float startPos, IEnumerable<string> packageNames)
         {
             var allPackageSize = new Dictionary<string, long>();
@@ -1235,7 +995,7 @@ namespace kumaS.NuGetImporter.Editor
                 var finishedCount = 0;
                 foreach (string packageName in packageNames)
                 {
-                    if(NuGet.TryGetDownloadingProgress(packageName, out long packageSize, out long downloadedSize))
+                    if (NuGet.TryGetDownloadingProgress(packageName, out long packageSize, out long downloadedSize))
                     {
                         allPackageSize[packageName] = packageSize;
                         downloadedSumSize += downloadedSize;
@@ -1251,19 +1011,19 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
 
-                if(finishedCount == packageNames.Count())
+                if (finishedCount == packageNames.Count())
                 {
                     break;
                 }
 
                 var packageSumSize = 0L;
-                foreach(var packageSize in allPackageSize)
+                foreach (var packageSize in allPackageSize)
                 {
                     packageSumSize += packageSize.Value;
                 }
 
                 var downloadSpead = 0L;
-                if(downloadedSumSizeLog.Count == 10)
+                if (downloadedSumSizeLog.Count == 10)
                 {
                     downloadSpead = downloadedSumSize - downloadedSumSizeLog.First.Value;
                 }
@@ -1274,7 +1034,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
 
                 downloadedSumSizeLog.AddLast(downloadedSumSize);
-                if(downloadedSumSizeLog.Count > 10)
+                if (downloadedSumSizeLog.Count > 10)
                 {
                     downloadedSumSizeLog.RemoveFirst();
                 }
@@ -1293,7 +1053,7 @@ namespace kumaS.NuGetImporter.Editor
         private static string ToReadableSizeString(long size)
         {
             var index = 0;
-            while(size > (1 << 10))
+            while (size > (1 << 10))
             {
                 size >>= 10;
                 index++;

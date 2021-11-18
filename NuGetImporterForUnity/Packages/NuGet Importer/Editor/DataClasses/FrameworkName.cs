@@ -56,7 +56,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 ret.AddRange(net472);
                 ret.AddRange(net471);
                 ret.AddRange(net47);
-                ret.AddRange(NET4_6);     
+                ret.AddRange(NET4_6);
                 return ret;
             }
         }

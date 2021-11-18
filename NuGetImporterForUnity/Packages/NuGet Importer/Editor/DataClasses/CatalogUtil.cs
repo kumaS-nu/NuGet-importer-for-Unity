@@ -31,4 +31,29 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             return catalogCache;
         }
     }
+
+    public partial class Catalogentry
+    {
+        public PackageJson ToPackageJson()
+        {
+            var author = new Author()
+            {
+                name = authors,
+                url = projectUrl
+            };
+
+            var packageJson = new PackageJson()
+            {
+                displayName = id,
+                version = version,
+                name = "org.nuget." + nuget_id.ToLowerInvariant(),
+                description = description,
+                unity = "2018.3",
+                keywords = tags,
+                author = author
+            };
+
+            return packageJson;
+        }
+    }
 }
