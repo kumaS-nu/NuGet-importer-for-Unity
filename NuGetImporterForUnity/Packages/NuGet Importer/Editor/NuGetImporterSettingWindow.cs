@@ -13,18 +13,13 @@ using UnityEngine;
 namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
-    /// <para>EditorWindow class to configure cache settings for NuGet importer.</para>
-    /// <para>NuGet importerのキャッシュを設定をするエディタウィンドウクラス。</para>
+    /// <para>EditorWindow class to configure settings for NuGet importer.</para>
+    /// <para>NuGet importerの設定をするエディタウィンドウクラス。</para>
     /// </summary>
     public class NuGetImporterSettingWindow : EditorWindow
     {
-        [MenuItem("NuGet Importer/Cache settings", false, 3)]
+        [MenuItem("NuGet Importer/NuGet Importer settings", false, 3)]
         private static void ShowWindow()
-        {
-            GetWindow<NuGetImporterSettingWindow>("Cache settings (NuGet importer)");
-        }
-
-        private void OnGUI()
         {
             var isAssets = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsAssets;
             if (isAssets != File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
@@ -39,15 +34,34 @@ namespace kumaS.NuGetImporter.Editor
                     NuGetImporterSettings.Instance.InstallMethod = InstallMethod.AsAssets;
                     _ = Operate(PackageManager.ConvertToAssets());
                 }
+                return;
             }
 
+            GetWindow<NuGetImporterSettingWindow>("Cache settings (NuGet importer)");
+        }
+
+        private void OnGUI()
+        {
             using (new EditorGUILayout.VerticalScope())
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    var before = NuGetImporterSettings.Instance.InstallMethod;
                     EditorGUILayout.LabelField("install method");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
+                    if(before != NuGetImporterSettings.Instance.InstallMethod)
+                    {
+                        if(NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
+                        {
+                            _ = Operate(PackageManager.ConvertToUPM());
+                        }
+                        else
+                        {
+                            _ = Operate(PackageManager.ConvertToAssets());
+                        }
+                        GUIUtility.ExitGUI();
+                    }
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
@@ -73,7 +87,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        private async Task Operate(Task<bool> operation)
+        private static async Task Operate(Task<bool> operation)
         {
             try
             {

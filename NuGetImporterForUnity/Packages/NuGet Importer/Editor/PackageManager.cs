@@ -24,8 +24,6 @@ namespace kumaS.NuGetImporter.Editor
     public static class PackageManager
     {
         private static bool working = false;
-        private static ManagedPluginList managedPluginList;
-        private static readonly List<string> linuxName = new List<string>() { "linux", "ubuntu", "centos", "debian" };
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
 
         /// <value>
@@ -61,12 +59,6 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>ルートのパッケージ。</para>
         /// </summary>
         internal static InstalledPackages RootPackage { get => rootPackage; }
-
-        /// <summary>
-        /// <para>List of managed plugins.</para>
-        /// <para>マネージドプラグインのリスト。</para>
-        /// </summary>
-        internal static ManagedPluginList ManagedPluginList { get => managedPluginList; }
 
         /// <summary>
         /// <para>Save the package installation information.</para>
@@ -268,7 +260,7 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
 
-                if (!await ConfirmToUser(installPackages, default, nativePackages))
+                if (!await ConfirmToUser(installPackages, new Package[0], nativePackages))
                 {
                     return false;
                 }
@@ -567,7 +559,7 @@ namespace kumaS.NuGetImporter.Editor
                     return true;
                 }
 
-                if (!await ConfirmToUser(default, uninstallPackages, nativePackages))
+                if (!await ConfirmToUser(new Package[0], uninstallPackages, nativePackages))
                 {
                     return false;
                 }
@@ -720,6 +712,16 @@ namespace kumaS.NuGetImporter.Editor
             try
             {
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
+                if (installed == null || installed.package == null || !installed.package.Any())
+                {
+                    try
+                    {
+                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"));
+                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
+                    }
+                    catch (Exception) { }
+                    return true;
+                }
                 var controller = new PackageControllerAsAsset();
                 var tasks = installed.package.Select(async pkg =>
                 {
@@ -790,6 +792,11 @@ namespace kumaS.NuGetImporter.Editor
             try
             {
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
+                if(installed == null || installed.package == null || !installed.package.Any())
+                {
+                    File.WriteAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"), "");
+                    return true;
+                }
                 var controller = new PackageControllerAsUPM();
                 var tasks = installed.package.Select(async pkg =>
                 {

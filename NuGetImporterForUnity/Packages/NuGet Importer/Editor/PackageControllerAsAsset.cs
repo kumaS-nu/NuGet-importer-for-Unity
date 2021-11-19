@@ -20,10 +20,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (managedPluginList == null)
             {
-                lock (managedPluginList)
-                {
-                    LoadManagedPluginList();
-                }
+                LoadManagedPluginList();
             }
             var managed = managedPluginList.managedList.First(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
             try
@@ -76,7 +73,11 @@ namespace kumaS.NuGetImporter.Editor
             };
 
             var lib = Directory.GetDirectories(Path.Combine(packageDirectory, "lib"));
-            if (lib.Length != 1)
+            if (lib.Length > 1)
+            {
+                throw new InvalidDataException();
+            }
+            if (lib.Any())
             {
                 foreach (var moveFile in Directory.GetFiles(lib[0]))
                 {
@@ -84,12 +85,14 @@ namespace kumaS.NuGetImporter.Editor
                     packageManagedList.fileNames.Add(Path.GetFileName(moveFile));
                 }
             }
+
+            if (managedPluginList == null)
+            {
+                LoadManagedPluginList();
+            }
+
             lock (managedPluginList)
             {
-                if (managedPluginList == null)
-                {
-                    LoadManagedPluginList();
-                }
                 managedPluginList.managedList.Add(packageManagedList);
                 WriteManagedPluginList();
             }
@@ -102,7 +105,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(managedPluginListPath, Encoding.UTF8));
             }
-            else
+            
+            if(managedPluginList == null)
             {
                 managedPluginList = new ManagedPluginList();
             }

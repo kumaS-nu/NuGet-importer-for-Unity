@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -56,6 +57,22 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Manage packages", false, 0)]
         private static void ShowWindow()
         {
+            var isAssets = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsAssets;
+            if (isAssets != File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
+            {
+                if (EditorUtility.DisplayDialog("NuGet importer", "The installation method setting does not match the current installation method: UPM (recommended) or Assets ?", "UPM", "Assets"))
+                {
+                    NuGetImporterSettings.Instance.InstallMethod = InstallMethod.AsUPM;
+                    _ = Operate(PackageManager.ConvertToUPM());
+                }
+                else
+                {
+                    NuGetImporterSettings.Instance.InstallMethod = InstallMethod.AsAssets;
+                    _ = Operate(PackageManager.ConvertToAssets());
+                }
+                return;
+            }
+
             NuGetImporterWindow window = GetWindow<NuGetImporterWindow>("NuGet importer");
             if (window.position.width < 1175 || window.position.height < 450)
             {
@@ -471,6 +488,23 @@ namespace kumaS.NuGetImporter.Editor
             {
                 progress = 1;
                 progressText = "Finish";
+            }
+        }
+
+        private static async Task Operate(Task<bool> operation)
+        {
+            try
+            {
+                await operation;
+                EditorUtility.DisplayDialog("NuGet importer", "Conversion is finished.", "OK");
+            }
+            catch (InvalidOperationException e)
+            {
+                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
+            }
+            catch (ArgumentException e)
+            {
+                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
             }
         }
     }
