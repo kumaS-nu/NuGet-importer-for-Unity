@@ -347,15 +347,9 @@ namespace kumaS.NuGetImporter.Editor
             Selected = GUILayout.Toolbar(Selected, selectedLabel);
             using (new EditorGUILayout.VerticalScope("Box"))
             {
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    GUILayout.Label("Method to select a version : ");
-                    NuGetImporterSettings.Instance.Method = (VersionSelectMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.Method);
-                    GUILayout.FlexibleSpace();
-                }
-                var beforeSate = NuGetImporterSettings.Instance.OnlyStable;
+                var beforeState = NuGetImporterSettings.Instance.OnlyStable;
                 NuGetImporterSettings.Instance.OnlyStable = !GUILayout.Toggle(!NuGetImporterSettings.Instance.OnlyStable, "Include development versions");
-                if (beforeSate != NuGetImporterSettings.Instance.OnlyStable)
+                if (beforeState != NuGetImporterSettings.Instance.OnlyStable)
                 {
                     _ = UpdateData();
                     GUIUtility.ExitGUI();
