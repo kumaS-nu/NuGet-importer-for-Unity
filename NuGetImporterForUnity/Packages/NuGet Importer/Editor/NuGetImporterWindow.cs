@@ -361,7 +361,6 @@ namespace kumaS.NuGetImporter.Editor
             {
                 progressRect.x = 100;
                 progressRect.width = position.width - progressRect.x - 20;
-                progressRect.y = 70;
                 progressRect.height = 21;
                 EditorGUI.ProgressBar(progressRect, progress, progressText);
             }
@@ -389,10 +388,18 @@ namespace kumaS.NuGetImporter.Editor
                     }
                     else
                     {
-                        foreach (Catalog catalog in catalogs)
+                        if (PackageManager.Installed.package != null)
                         {
-                            var id = catalog.items[0].items[0].catalogEntry.id;
-                            catalog.ToGUI(bold, this, summary != null && summary.PackageId == id, PackageManager.Installed.package.Where(package => package.id == id).First().version);
+                            foreach (Catalog catalog in catalogs)
+                            {
+                                var id = catalog.items[0].items[0].catalogEntry.id;
+                                var installedPkg = PackageManager.Installed.package.Where(package => package.id == id);
+                                if (installedPkg.Count() != 1)
+                                {
+                                    GUIUtility.ExitGUI();
+                                }
+                                catalog.ToGUI(bold, this, summary != null && summary.PackageId == id, installedPkg.First().version);
+                            }
                         }
                     }
                 }

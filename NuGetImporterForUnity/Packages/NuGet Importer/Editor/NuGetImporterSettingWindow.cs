@@ -66,7 +66,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    GUILayout.Label("Method to select a version : ");
+                    EditorGUILayout.LabelField("Method to select a version");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.Method = (VersionSelectMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.Method);
                 }

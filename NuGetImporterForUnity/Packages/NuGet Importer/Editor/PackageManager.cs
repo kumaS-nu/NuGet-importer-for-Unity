@@ -142,7 +142,9 @@ namespace kumaS.NuGetImporter.Editor
                             {
                                 tasks.Add(InstallSelectPackage(package));
                             }
+                            _ = DownloadProgress(0.25f, install.package.Select(pkg => pkg.id).ToArray());
                         }
+
                         await Task.WhenAll(tasks);
                         using (var file = new StreamReader(Application.dataPath.Replace("Assets", "WillPackage.xml")))
                         {
@@ -186,20 +188,15 @@ namespace kumaS.NuGetImporter.Editor
 
             if (installed.package != null)
             {
-                var tasks = new List<Task>();
-                foreach (Package package in installed.package)
+                var tasks = installed.package.Select(pkg => NuGet.GetCatalog(pkg.id));
+                var catalogs = await Task.WhenAll(tasks);
+                lock (installedCatalog)
                 {
-                    tasks.Add(Task.Run(async () =>
+                    foreach (var catalog in catalogs)
                     {
-                        Catalog catalog = await NuGet.GetCatalog(package.id);
-                        lock (installedCatalog)
-                        {
-                            installedCatalog.Add(package.id, catalog);
-                        }
-                    }));
+                        installedCatalog[catalog.nuget_id] = catalog;
+                    }
                 }
-
-                await Task.WhenAll(tasks);
             }
         }
 
@@ -249,7 +246,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     foreach (Package package in samePackages)
                     {
-                        if (HasNative(Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant())))
+                        if (await HasNativeAsync(package))
                         {
                             nativePackages.Add(package);
                         }
@@ -274,7 +271,7 @@ namespace kumaS.NuGetImporter.Editor
                 EditorUtility.DisplayProgressBar("NuGet importer", "Removing packages before upgrade.", 0.25f);
                 if (nativePackages.Any())
                 {
-                    var process = OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
                     process.Start();
                     EditorApplication.Exit(0);
                 }
@@ -286,9 +283,9 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (installPackages != null && installPackages.Any())
                 {
-                    foreach (Package requiredPackage in installPackages)
+                    foreach (Package installPackage in installPackages)
                     {
-                        tasks.Add(InstallSelectPackage(requiredPackage));
+                        tasks.Add(InstallSelectPackage(installPackage));
                     }
                 }
 
@@ -353,11 +350,11 @@ namespace kumaS.NuGetImporter.Editor
                     throw new ArgumentException(packageId + " is not installed.");
                 }
                 Package fix = fixPackage.First();
-                if (HasNative(Path.Combine(Application.dataPath, "Packages", fix.id.ToLowerInvariant() + "." + fix.version.ToLowerInvariant())))
+                if (await HasNativeAsync(fix))
                 {
                     if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the repair package. You need to restart the editor to repair packages.\n(The current project will be saved and repair packages will be resumed after a restart.)", "Restart", "Quit"))
                     {
-                        var process = OperateWithNative(new Package[] { fix }, new Package[0], new Package[] { fix }, installed.package, rootPackage.package);
+                        var process = await OperateWithNativeAsync(new Package[] { fix }, new Package[0], new Package[] { fix }, installed.package, rootPackage.package);
                         process.Start();
                         EditorApplication.Exit(0);
                     }
@@ -425,7 +422,7 @@ namespace kumaS.NuGetImporter.Editor
                 var managedPackages = new List<Package>();
                 foreach (Package package in deletePackages)
                 {
-                    if (HasNative(Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant())))
+                    if (await HasNativeAsync(package))
                     {
                         nativePackages.Add(package);
                     }
@@ -456,16 +453,16 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (nativePackages.Any())
                 {
-                    var process = OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
                     process.Start();
                     EditorApplication.Exit(0);
                 }
 
                 await UninstallPackages(deletePackages);
 
-                foreach (Package requiredPackage in requiredPackages)
+                foreach (Package installPackage in installPackages)
                 {
-                    tasks.Add(InstallSelectPackage(requiredPackage));
+                    tasks.Add(InstallSelectPackage(installPackage));
                 }
 
                 _ = DownloadProgress(0.33f, requiredPackages.Select(package => package.id).ToArray());
@@ -537,7 +534,7 @@ namespace kumaS.NuGetImporter.Editor
                 var managedPackages = new List<Package>();
                 foreach (Package package in uninstallPackages)
                 {
-                    if (HasNative(Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant())))
+                    if (await HasNativeAsync(package))
                     {
                         nativePackages.Add(package);
                     }
@@ -568,7 +565,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (nativePackages.Any())
                 {
-                    var process = OperateWithNative(new Package[0], managedPackages, nativePackages, installedPackages, rootPackages);
+                    var process = await OperateWithNativeAsync(new Package[0], managedPackages, nativePackages, installedPackages, rootPackages);
                     process.Start();
                     EditorApplication.Exit(0);
                 }
@@ -647,7 +644,7 @@ namespace kumaS.NuGetImporter.Editor
                 var managedPackages = new List<Package>();
                 foreach (Package package in deletePackages)
                 {
-                    if (HasNative(Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant())))
+                    if (await HasNativeAsync(package))
                     {
                         nativePackages.Add(package);
                     }
@@ -668,16 +665,16 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (nativePackages.Any())
                 {
-                    var process = OperateWithNative(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
                     process.Start();
                     EditorApplication.Exit(0);
                 }
 
                 await UninstallPackages(deletePackages);
 
-                foreach (Package requiredPackage in requiredPackages)
+                foreach (Package installPackage in installPackages)
                 {
-                    tasks.Add(InstallSelectPackage(requiredPackage));
+                    tasks.Add(InstallSelectPackage(installPackage));
                 }
 
                 _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());
@@ -792,7 +789,7 @@ namespace kumaS.NuGetImporter.Editor
             try
             {
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
-                if(installed == null || installed.package == null || !installed.package.Any())
+                if (installed == null || installed.package == null || !installed.package.Any())
                 {
                     File.WriteAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"), "");
                     return true;
@@ -928,7 +925,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        private static async Task<Process> OperateWithNative(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
+        private static async Task<Process> OperateWithNativeAsync(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
         {
             var controller = GetPackageController();
             var process = await controller.OperateWithNativeAsync(installs, manageds, natives, allInstalled, root);
@@ -969,11 +966,23 @@ namespace kumaS.NuGetImporter.Editor
 
         }
 
+        private static async Task<bool> HasNativeAsync(Package package)
+        {
+            var controller = GetPackageController();
+            var path = await controller.GetInstallPath(package);
+            return HasNative(path);
+        }
+
         private static bool HasNative(string path)
         {
+            if (!Directory.Exists(path))
+            {
+                return false;
+            }
+
             foreach (var file in Directory.GetFiles(path))
             {
-                var plugin = AssetImporter.GetAtPath(file.Replace(Application.dataPath.Replace("Assets", ""), "").Substring(1)) as PluginImporter;
+                var plugin = AssetImporter.GetAtPath(file.Replace(Application.dataPath.Replace("Assets", ""), "")) as PluginImporter;
                 if (plugin != null)
                 {
                     if (plugin.isNativePlugin)

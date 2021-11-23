@@ -17,7 +17,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             var catalog = await NuGet.GetCatalog(package.id);
             var selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
-            return Path.Combine(Application.dataPath.Replace("Assets", "Packages"), selectedCatalog.id);
+            return Path.Combine(dataPath.Replace("Assets", "Packages"), selectedCatalog.id);
         }
 
         internal override async Task InstallPackageAsync(Package package)

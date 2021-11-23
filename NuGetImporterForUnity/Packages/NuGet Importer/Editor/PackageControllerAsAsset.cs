@@ -13,27 +13,31 @@ namespace kumaS.NuGetImporter.Editor
     internal sealed class PackageControllerAsAsset : PackageControllerBase
     {
         private static ManagedPluginList managedPluginList;
+        private static readonly object managedPluginListLock = new object();
         private readonly static string managedPluginListPath = Path.Combine(Application.dataPath, "Packages", "managedPluginList.json");
 
         /// <inheritdoc/>
         internal override void DeletePluginsOutOfDirectory(Package package)
         {
-            if (managedPluginList == null)
+            lock (managedPluginListLock)
             {
-                LoadManagedPluginList();
+                if (managedPluginList == null)
+                {
+                    LoadManagedPluginList();
+                }
             }
             var managed = managedPluginList.managedList.First(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
             try
             {
                 foreach (var file in managed.fileNames)
                 {
-                    File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file));
-                    File.Delete(Path.Combine(Application.dataPath, "Packages", "Plugins", file + ".meta"));
+                    File.Delete(Path.Combine(dataPath, "Packages", "Plugins", file));
+                    File.Delete(Path.Combine(dataPath, "Packages", "Plugins", file + ".meta"));
                 }
             }
             catch (InvalidDataException) { }
 
-            lock (managedPluginList)
+            lock (managedPluginListLock)
             {
                 managedPluginList.managedList.Remove(managed);
                 WriteManagedPluginList();
@@ -44,14 +48,14 @@ namespace kumaS.NuGetImporter.Editor
         /// <inheritdoc/>
         internal override async Task<string> GetInstallPath(Package package)
         {
-            return Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            return Path.Combine(dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
         }
 #pragma warning restore CS1998
 
         /// <inheritdoc/>
         internal override async Task InstallPackageAsync(Package package)
         {
-            var topDirectory = Path.Combine(Application.dataPath, "Packages");
+            var topDirectory = Path.Combine(dataPath, "Packages");
             var managedDirectory = Path.Combine(topDirectory, "Plugins");
             var directoryName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant();
             var packageDirectory = Path.Combine(topDirectory, directoryName);
@@ -72,27 +76,34 @@ namespace kumaS.NuGetImporter.Editor
                 fileNames = new List<string>()
             };
 
-            var lib = Directory.GetDirectories(Path.Combine(packageDirectory, "lib"));
-            if (lib.Length > 1)
+            if (Directory.Exists(Path.Combine(packageDirectory, "lib")))
             {
-                throw new InvalidDataException();
-            }
-            if (lib.Any())
-            {
-                foreach (var moveFile in Directory.GetFiles(lib[0]))
+                var lib = Directory.GetDirectories(Path.Combine(packageDirectory, "lib"));
+                if (lib.Length > 1)
                 {
-                    File.Move(moveFile, Path.Combine(managedDirectory, Path.GetFileName(moveFile)));
-                    packageManagedList.fileNames.Add(Path.GetFileName(moveFile));
+                    throw new InvalidDataException();
+                }
+                if (lib.Any())
+                {
+                    foreach (var moveFile in Directory.GetFiles(lib[0]))
+                    {
+                        var destPath = Path.Combine(managedDirectory, Path.GetFileName(moveFile));
+                        if (File.Exists(destPath))
+                        {
+                            File.Delete(destPath);
+                        }
+                        File.Move(moveFile, destPath);
+                        packageManagedList.fileNames.Add(Path.GetFileName(moveFile));
+                    }
                 }
             }
 
-            if (managedPluginList == null)
+            lock (managedPluginListLock)
             {
-                LoadManagedPluginList();
-            }
-
-            lock (managedPluginList)
-            {
+                if (managedPluginList == null)
+                {
+                    LoadManagedPluginList();
+                }
                 managedPluginList.managedList.Add(packageManagedList);
                 WriteManagedPluginList();
             }
@@ -119,7 +130,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private void WriteManagedPluginList()
         {
-            File.WriteAllText(managedPluginListPath, JsonUtility.ToJson(managedPluginList), Encoding.UTF8);
+            File.WriteAllText(managedPluginListPath, JsonUtility.ToJson(managedPluginList, true), Encoding.UTF8);
         }
     }
 }

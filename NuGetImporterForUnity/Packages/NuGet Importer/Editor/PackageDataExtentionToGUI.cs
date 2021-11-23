@@ -491,12 +491,18 @@ namespace kumaS.NuGetImporter.Editor
             await Task.WhenAll(tasks);
         }
 
-        private static async Task PackageOperation(Task operation, NuGetImporterWindow window, string packageId, string message)
+        private static async Task PackageOperation(Task<bool> operation, NuGetImporterWindow window, string packageId, string message)
         {
             try
             {
-                await operation;
-                EditorUtility.DisplayDialog("NuGet importer", message, "OK");
+                if (await operation)
+                {
+                    EditorUtility.DisplayDialog("NuGet importer", message, "OK");
+                }
+                else
+                {
+                    EditorUtility.DisplayDialog("NuGet importer", "Operation is canceled.", "OK");
+                }
             }
             catch (InvalidOperationException e)
             {

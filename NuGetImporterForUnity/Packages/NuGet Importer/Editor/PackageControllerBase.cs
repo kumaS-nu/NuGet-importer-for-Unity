@@ -19,6 +19,7 @@ namespace kumaS.NuGetImporter.Editor
 {
     internal abstract class PackageControllerBase
     {
+        protected readonly static string dataPath = Application.dataPath;
         private readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
         private readonly string[] windowsArchs = new string[] { "x86", "x64" };
         private readonly string[] osxArchs = new string[] { "x64"
@@ -77,11 +78,7 @@ namespace kumaS.NuGetImporter.Editor
             var tasks = new List<Task>();
             foreach (var package in packages)
             {
-                tasks.Add(Task.Run(async () =>
-                {
-                    DeleteDirectory(await GetInstallPath(package));
-                    DeletePluginsOutOfDirectory(package);
-                }));
+                tasks.Add(UninstallManagedPackageAsync(package));
             }
             await Task.WhenAll(tasks);
         }
@@ -244,12 +241,7 @@ namespace kumaS.NuGetImporter.Editor
 
                     void AddDeleteDirectory(string[] arch)
                     {
-                        if (splitedDirName.Length < 2)
-                        {
-                            deleteList.Add(runtime);
-                        }
-
-                        if (arch.Contains(splitedDirName[1]))
+                        if (splitedDirName.Length > 1 && arch.Contains(splitedDirName[1]))
                         {
                             deleteList.AddRange(Directory.GetDirectories(runtime).Where(path => !path.EndsWith("native")));
                         }
@@ -311,14 +303,31 @@ namespace kumaS.NuGetImporter.Editor
         }
 
         /// <summary>
-        /// <para>Delete directory without native plugins.</para>
-        /// <para>ディレクトリを削除する。（ネイティブプラグインのない）</para>
+        /// <para>Uninstall the managed plugin package.</para>
+        /// <para>マネージドプラグインのパッケージをアンインストールする。</para>
         /// </summary>
-        /// <param name="path">
-        /// <para>Directory path to delete.</para>
-        /// <para>削除するディレクトリのパス。</para>
+        /// <param name="packages">
+        /// <para>Package to be uninstalled.</para>
+        /// <para>アンインストールするパッケージ。</para>
         /// </param>
-        protected void DeleteDirectory(string path)
+        private async Task UninstallManagedPackageAsync(Package package)
+        {
+            var path = await GetInstallPath(package);
+            var tasks = new List<Task>();
+            tasks.Add(Task.Run(() => DeleteDirectory(path)));
+            tasks.Add(Task.Run(() => DeletePluginsOutOfDirectory(package)));
+            await Task.WhenAll(tasks);
+        }
+
+            /// <summary>
+            /// <para>Delete directory without native plugins.</para>
+            /// <para>ディレクトリを削除する。（ネイティブプラグインのない）</para>
+            /// </summary>
+            /// <param name="path">
+            /// <para>Directory path to delete.</para>
+            /// <para>削除するディレクトリのパス。</para>
+            /// </param>
+            protected void DeleteDirectory(string path)
         {
             try
             {
