@@ -28,7 +28,7 @@ namespace kumaS.NuGetImporter.Editor
                     instance = new NuGetImporterSettings();
                     return instance;
                 }
-                var str = File.ReadAllText(path, Encoding.UTF8);
+                var str = File.ReadAllText(path);
                 instance = JsonUtility.FromJson<NuGetImporterSettings>(str);
                 return instance;
             }
@@ -37,7 +37,7 @@ namespace kumaS.NuGetImporter.Editor
         private void Save()
         {
             var path = Path.Combine(Application.dataPath.Replace("Assets", "ProjectSettings"), "NuGetImporterSettings.json");
-            File.WriteAllText(path, JsonUtility.ToJson(this, true), Encoding.UTF8);
+            File.WriteAllText(path, JsonUtility.ToJson(this, true));
         }
 
         [SerializeField]

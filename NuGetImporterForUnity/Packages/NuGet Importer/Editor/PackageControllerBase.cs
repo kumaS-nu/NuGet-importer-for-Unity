@@ -112,7 +112,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         internal async Task<Process> OperateWithNativeAsync(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
         {
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillInstall.xml"), false, Encoding.UTF8))
+            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillInstall.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -121,7 +121,7 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, write);
             }
 
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillPackage.xml"), false, Encoding.UTF8))
+            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillPackage.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -130,7 +130,7 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, write);
             }
 
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillRoot.xml"), false, Encoding.UTF8))
+            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillRoot.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -145,7 +145,9 @@ namespace kumaS.NuGetImporter.Editor
                 DeletePluginsOutOfDirectory(native);
             }
 
-            IEnumerable<string> nativeDirectory = natives.Select(package => Path.Combine(Application.dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
+            var tasks = natives.Select(package => GetInstallPath(package));
+            IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
+
             return CreateDeleteNativeProcess(nativeDirectory.ToArray());
         }
 
@@ -319,15 +321,15 @@ namespace kumaS.NuGetImporter.Editor
             await Task.WhenAll(tasks);
         }
 
-            /// <summary>
-            /// <para>Delete directory without native plugins.</para>
-            /// <para>ディレクトリを削除する。（ネイティブプラグインのない）</para>
-            /// </summary>
-            /// <param name="path">
-            /// <para>Directory path to delete.</para>
-            /// <para>削除するディレクトリのパス。</para>
-            /// </param>
-            protected void DeleteDirectory(string path)
+        /// <summary>
+        /// <para>Delete directory without native plugins.</para>
+        /// <para>ディレクトリを削除する。（ネイティブプラグインのない）</para>
+        /// </summary>
+        /// <param name="path">
+        /// <para>Directory path to delete.</para>
+        /// <para>削除するディレクトリのパス。</para>
+        /// </param>
+        protected void DeleteDirectory(string path)
         {
             try
             {

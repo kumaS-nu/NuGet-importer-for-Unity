@@ -28,7 +28,7 @@ namespace kumaS.NuGetImporter.Editor
             var catalog = await task;
             var installPath = await task2;
             var selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
-            File.WriteAllText(Path.Combine(installPath, "package.json"), JsonUtility.ToJson(selectedCatalog.ToPackageJson()), Encoding.UTF8);
+            File.WriteAllText(Path.Combine(installPath, "package.json"), JsonUtility.ToJson(selectedCatalog.ToPackageJson(), true));
         }
     }
 }

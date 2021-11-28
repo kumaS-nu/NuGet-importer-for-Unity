@@ -66,12 +66,12 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         public static void Save()
         {
-            using (var file = new StreamWriter(Path.Combine(Application.dataPath, "packages.config"), false, Encoding.UTF8))
+            using (var file = new StreamWriter(Path.Combine(Application.dataPath, "packages.config"), false))
             {
                 serializer.Serialize(file, installed);
             }
 
-            using (var file = new StreamWriter(Path.Combine(Application.dataPath, "rootPackages.xml"), false, Encoding.UTF8))
+            using (var file = new StreamWriter(Path.Combine(Application.dataPath, "rootPackages.xml"), false))
             {
                 serializer.Serialize(file, rootPackage);
             }
@@ -143,6 +143,24 @@ namespace kumaS.NuGetImporter.Editor
                                 tasks.Add(InstallSelectPackage(package));
                             }
                             _ = DownloadProgress(0.25f, install.package.Select(pkg => pkg.id).ToArray());
+                        }
+
+                        if(NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
+                        {
+                            var dirs = Directory.GetDirectories(Path.Combine(Application.dataPath, "Packages"));
+                            var files = Directory.GetFiles(Path.Combine(Application.dataPath, "Packages"));
+                            if (dirs.Length < 2 && files.Length < 2)
+                            {
+                                if ((dirs.Length == 0 || Path.GetFileName(dirs[0]) == "Plugins") && (files.Length == 0 || Path.GetFileName(files[0]) == "Plugins.meta"))
+                                {
+                                    try
+                                    {
+                                        Directory.Delete(Path.Combine(Application.dataPath, "Packages"), true);
+                                        File.Delete(Path.Combine(Application.dataPath, "Packages.meta"));
+                                    }
+                                    catch (Exception) { }
+                                }
+                            }
                         }
 
                         await Task.WhenAll(tasks);
@@ -717,6 +735,21 @@ namespace kumaS.NuGetImporter.Editor
                         File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
                     }
                     catch (Exception) { }
+
+                    var dirs = Directory.GetDirectories(Path.Combine(Application.dataPath, "Packages"));
+                    var files = Directory.GetFiles(Path.Combine(Application.dataPath, "Packages"));
+                    if (dirs.Length < 2 && files.Length < 2)
+                    {
+                        if ((dirs.Length == 0 || Path.GetFileName(dirs[0]) == "Plugins") && (files.Length == 0 || Path.GetFileName(files[0]) == "Plugins.meta"))
+                        {
+                            try
+                            {
+                                Directory.Delete(Path.Combine(Application.dataPath, "Packages"), true);
+                                File.Delete(Path.Combine(Application.dataPath, "Packages.meta"));
+                            }
+                            catch (Exception) { }
+                        }
+                    }
                     return true;
                 }
                 var controller = new PackageControllerAsAsset();
@@ -749,6 +782,20 @@ namespace kumaS.NuGetImporter.Editor
                         File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
                     }
                     catch (Exception) { }
+
+                    var dirs = Directory.GetDirectories(Path.Combine(Application.dataPath, "Packages"));
+                    var files = Directory.GetFiles(Path.Combine(Application.dataPath, "Packages"));
+                    if (dirs.Length < 2 && files.Length < 2)
+                    {
+                        if((dirs.Length == 0 || Path.GetFileName(dirs[0]) == "Plugins") && (files.Length == 0 || Path.GetFileName(files[0]) == "Plugins.meta"))
+                        {
+                            try
+                            {
+                                Directory.Delete(Path.Combine(Application.dataPath, "Packages"), true);
+                                File.Delete(Path.Combine(Application.dataPath, "Packages.meta"));
+                            }catch (Exception) { }
+                        }
+                    }
 
                     EditorUtility.DisplayProgressBar("NuGet importer", "Installing packages", 0.5f);
 
@@ -798,7 +845,19 @@ namespace kumaS.NuGetImporter.Editor
                 var tasks = installed.package.Select(async pkg =>
                 {
                     var path = await controller.GetInstallPath(pkg);
-                    return HasNative(path);
+                    var packageId = "";
+                    var jsonPath = Path.Combine(path, "package.json");
+                    if (File.Exists(jsonPath))
+                    {
+                        var jsonString = File.ReadAllText(jsonPath);
+                        try
+                        {
+                            var json = JsonUtility.FromJson<PackageJson>(jsonString);
+                            packageId = json.name;
+                        }
+                        catch (Exception) { }
+                    }
+                    return HasNative(path, packageId);
                 });
 
                 var isNatives = await Task.WhenAll(tasks);
@@ -970,10 +1029,27 @@ namespace kumaS.NuGetImporter.Editor
         {
             var controller = GetPackageController();
             var path = await controller.GetInstallPath(package);
-            return HasNative(path);
+            var packageId = "";
+            if(NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
+            {
+                var jsonPath = Path.Combine(path, "package.json");
+                if (File.Exists(jsonPath))
+                {
+                    var jsonString = File.ReadAllText(jsonPath);
+                    try
+                    {
+                        var json = JsonUtility.FromJson<PackageJson>(jsonString);
+                        packageId = json.name;
+                    }
+                    catch (Exception) { } 
+                }
+            }
+            return HasNative(path, packageId);
         }
 
-        private static bool HasNative(string path)
+        private readonly static string rootPath = Application.dataPath.Replace("Assets", "");
+
+        private static bool HasNative(string path, string packageId = "")
         {
             if (!Directory.Exists(path))
             {
@@ -982,7 +1058,14 @@ namespace kumaS.NuGetImporter.Editor
 
             foreach (var file in Directory.GetFiles(path))
             {
-                var plugin = AssetImporter.GetAtPath(file.Replace(Application.dataPath.Replace("Assets", ""), "")) as PluginImporter;
+                var filePath = file.Replace(rootPath, "");
+                if(packageId != "")
+                {
+                    var splited = filePath.Split('/', '\\');
+                    splited[1] = packageId;
+                    filePath = string.Join("/", splited);
+                }
+                var plugin = AssetImporter.GetAtPath(filePath) as PluginImporter;
                 if (plugin != null)
                 {
                     if (plugin.isNativePlugin)
@@ -994,7 +1077,7 @@ namespace kumaS.NuGetImporter.Editor
 
             foreach (var directory in Directory.GetDirectories(path))
             {
-                if (HasNative(directory))
+                if (HasNative(directory, packageId))
                 {
                     return true;
                 }

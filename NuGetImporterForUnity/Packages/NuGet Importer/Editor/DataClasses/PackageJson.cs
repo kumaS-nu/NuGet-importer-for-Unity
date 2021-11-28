@@ -9,13 +9,13 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     [Serializable]
     public class PackageJson
     {
-        public string name { get; set; }
-        public string version { get; set; }
-        public string displayName { get; set; }
-        public string description { get; set; }
-        public string unity { get; set; }
-        public string[] keywords { get; set; }
-        public Author author { get; set; }
+        public string name;
+        public string version;
+        public string displayName;
+        public string description;
+        public string unity;
+        public string[] keywords;
+        public Author author;
     }
 
     /// <summary>
@@ -25,8 +25,8 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     [Serializable]
     public class Author
     {
-        public string name { get; set; }
-        public string email { get; set; }
-        public string url { get; set; }
+        public string name;
+        public string email;
+        public string url;
     }
 }

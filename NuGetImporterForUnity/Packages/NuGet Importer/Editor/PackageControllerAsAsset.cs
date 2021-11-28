@@ -114,7 +114,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (File.Exists(managedPluginListPath))
             {
-                managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(managedPluginListPath, Encoding.UTF8));
+                managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(managedPluginListPath));
             }
             
             if(managedPluginList == null)
@@ -130,7 +130,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private void WriteManagedPluginList()
         {
-            File.WriteAllText(managedPluginListPath, JsonUtility.ToJson(managedPluginList, true), Encoding.UTF8);
+            File.WriteAllText(managedPluginListPath, JsonUtility.ToJson(managedPluginList, true));
         }
     }
 }
