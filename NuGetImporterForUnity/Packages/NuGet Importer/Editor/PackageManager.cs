@@ -12,6 +12,8 @@ using System.Xml.Serialization;
 using kumaS.NuGetImporter.Editor.DataClasses;
 
 using UnityEditor;
+using UnityEditor.Compilation;
+using UnityEditor.PackageManager;
 
 using UnityEngine;
 
@@ -126,9 +128,11 @@ namespace kumaS.NuGetImporter.Editor
                 else
                 {
                     working = true;
-                    EditorApplication.LockReloadAssemblies();
                     try
                     {
+                        EditorApplication.LockReloadAssemblies();
+                        AssetDatabase.StartAssetEditing();
+
                         EditorUtility.DisplayProgressBar("Nuget importer", "Installing packages", 0.25f);
                         InstalledPackages install = default;
                         using (var file = new StreamReader(Application.dataPath.Replace("Assets", "WillInstall.xml")))
@@ -185,11 +189,17 @@ namespace kumaS.NuGetImporter.Editor
                     finally
                     {
                         File.Delete(Application.dataPath.Replace("Assets", "WillInstall.xml"));
-                        EditorApplication.UnlockReloadAssemblies();
                         working = false;
                         EditorUtility.ClearProgressBar();
                         Save();
+                        AssetDatabase.StopAssetEditing();
                         AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                        Client.Resolve();
+#endif
+                        EditorApplication.RepaintProjectWindow();
+                        EditorApplication.UnlockReloadAssemblies();
+                        CompilationPipeline.RequestScriptCompilation();
                     }
                 }
             }
@@ -216,6 +226,8 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
             }
+
+            NuGetImporterWindow.Initialize();
         }
 
         /// <summary>
@@ -248,9 +260,12 @@ namespace kumaS.NuGetImporter.Editor
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
             working = true;
-            EditorApplication.LockReloadAssemblies();
+
             try
             {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
+
                 var tasks = new List<Task>();
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
 
@@ -325,11 +340,17 @@ namespace kumaS.NuGetImporter.Editor
             }
             finally
             {
-                EditorApplication.UnlockReloadAssemblies();
                 working = false;
                 EditorUtility.ClearProgressBar();
                 Save();
+                AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
             }
 
             return true;
@@ -354,9 +375,11 @@ namespace kumaS.NuGetImporter.Editor
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
             working = true;
-            EditorApplication.LockReloadAssemblies();
+
             try
             {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
                 EditorUtility.DisplayProgressBar("NuGet importer", "Reinstalling package", 0);
                 if (installed == null || installed.package == null)
                 {
@@ -389,11 +412,17 @@ namespace kumaS.NuGetImporter.Editor
             }
             finally
             {
-                EditorApplication.UnlockReloadAssemblies();
                 working = false;
                 EditorUtility.ClearProgressBar();
                 Save();
+                AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
             }
 
             return true;
@@ -421,9 +450,11 @@ namespace kumaS.NuGetImporter.Editor
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
             working = true;
-            EditorApplication.LockReloadAssemblies();
+
             try
             {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
                 var tasks = new List<Task>();
                 if (installed == null || installed.package == null || installed.package.Length == 0)
@@ -501,11 +532,17 @@ namespace kumaS.NuGetImporter.Editor
             }
             finally
             {
-                EditorApplication.UnlockReloadAssemblies();
                 working = false;
                 EditorUtility.ClearProgressBar();
                 Save();
+                AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
             }
 
             return true;
@@ -537,9 +574,11 @@ namespace kumaS.NuGetImporter.Editor
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
             working = true;
-            EditorApplication.LockReloadAssemblies();
             try
             {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
+
                 if (installed == null || installed.package == null || installed.package.Length == 0)
                 {
                     throw new InvalidOperationException("No packages installed.");
@@ -606,11 +645,17 @@ namespace kumaS.NuGetImporter.Editor
             }
             finally
             {
-                EditorApplication.UnlockReloadAssemblies();
                 working = false;
                 EditorUtility.ClearProgressBar();
                 Save();
+                AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
             }
 
             return true;
@@ -646,9 +691,12 @@ namespace kumaS.NuGetImporter.Editor
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
             working = true;
-            EditorApplication.LockReloadAssemblies();
+
             try
             {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
+
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
 
                 var tasks = new List<Task>();
@@ -706,11 +754,17 @@ namespace kumaS.NuGetImporter.Editor
             }
             finally
             {
-                EditorApplication.UnlockReloadAssemblies();
                 working = false;
                 EditorUtility.ClearProgressBar();
                 Save();
+                AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
             }
 
             return true;
@@ -723,9 +777,12 @@ namespace kumaS.NuGetImporter.Editor
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
             working = true;
-            EditorApplication.LockReloadAssemblies();
+
             try
             {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
+
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
                 if (installed == null || installed.package == null || !installed.package.Any())
                 {
@@ -815,11 +872,17 @@ namespace kumaS.NuGetImporter.Editor
             }
             finally
             {
-                EditorApplication.UnlockReloadAssemblies();
                 working = false;
                 EditorUtility.ClearProgressBar();
                 Save();
+                AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
             }
 
             return true;
@@ -832,9 +895,12 @@ namespace kumaS.NuGetImporter.Editor
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
             working = true;
-            EditorApplication.LockReloadAssemblies();
+
             try
             {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
+
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
                 if (installed == null || installed.package == null || !installed.package.Any())
                 {
@@ -889,11 +955,17 @@ namespace kumaS.NuGetImporter.Editor
             }
             finally
             {
-                EditorApplication.UnlockReloadAssemblies();
                 working = false;
                 EditorUtility.ClearProgressBar();
                 Save();
+                AssetDatabase.StopAssetEditing();
                 AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
             }
 
             return true;

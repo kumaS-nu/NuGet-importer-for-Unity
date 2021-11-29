@@ -54,6 +54,15 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
+        internal static void Initialize()
+        {
+            var instance = Resources.FindObjectsOfTypeAll<NuGetImporterWindow>();
+            if (instance.Length > 0)
+            {
+                _ = instance[0].UpdateData();
+            }
+        }
+
         [MenuItem("NuGet Importer/Manage packages", false, 0)]
         private static void ShowWindow()
         {
@@ -319,12 +328,13 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         internal async Task UpdateInstalledList()
         {
-            catalogs.Clear();
             var tasks = new List<Task>();
             lock (PackageManager.installedCatalog)
             {
                 lock (catalogs)
                 {
+                    catalogs.Clear();
+
                     foreach (KeyValuePair<string, Catalog> catalog in PackageManager.installedCatalog)
                     {
                         catalogs.Add(catalog.Value);
