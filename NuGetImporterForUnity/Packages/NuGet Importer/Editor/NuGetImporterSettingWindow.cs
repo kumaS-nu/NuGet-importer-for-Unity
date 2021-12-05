@@ -50,9 +50,9 @@ namespace kumaS.NuGetImporter.Editor
                     EditorGUILayout.LabelField("install method");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
-                    if(before != NuGetImporterSettings.Instance.InstallMethod)
+                    if (before != NuGetImporterSettings.Instance.InstallMethod)
                     {
-                        if(NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
+                        if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
                         {
                             _ = Operate(PackageManager.ConvertToUPM());
                         }

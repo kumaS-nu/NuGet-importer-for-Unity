@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
@@ -53,7 +52,7 @@ namespace kumaS.NuGetImporter.Editor
 #pragma warning restore CS1998
 
         /// <inheritdoc/>
-        internal override async Task InstallPackageAsync(Package package)
+        internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
             var topDirectory = Path.Combine(dataPath, "Packages");
             var managedDirectory = Path.Combine(topDirectory, "Plugins");
@@ -68,7 +67,21 @@ namespace kumaS.NuGetImporter.Editor
                 Directory.CreateDirectory(managedDirectory);
             }
 
+            var task = GetInstallPath(package);
             await ExtractPackageAsync(package);
+            var installPath = await task;
+            var asm = new PackageManagedPluginList
+            {
+                packageName = package.id,
+                fileNames = new List<string>()
+            };
+            GetLoadableAsmInPackage(installPath, asm);
+
+            if (asm.fileNames.Intersect(loadedAsmName).Any())
+            {
+                DeleteDirectory(installPath);
+                return (true, package, asm);
+            }
 
             var packageManagedList = new PackageManagedPluginList
             {
@@ -108,6 +121,8 @@ namespace kumaS.NuGetImporter.Editor
                 WriteManagedPluginList();
             }
             DeleteDirectory(Path.Combine(packageDirectory, "lib"));
+
+            return (false, package, asm);
         }
 
         private void LoadManagedPluginList()
@@ -116,8 +131,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(managedPluginListPath));
             }
-            
-            if(managedPluginList == null)
+
+            if (managedPluginList == null)
             {
                 managedPluginList = new ManagedPluginList();
             }

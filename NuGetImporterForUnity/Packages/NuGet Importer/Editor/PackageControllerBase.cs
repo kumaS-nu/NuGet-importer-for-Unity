@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -53,7 +54,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Package to install.</para>
         /// <para>インストールするパッケージ。</para>
         /// </param>
-        internal abstract Task InstallPackageAsync(Package package);
+        internal abstract Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName);
 
         /// <summary>
         /// <para>Remove plugins outside the specified directory.</para>
@@ -151,6 +152,38 @@ namespace kumaS.NuGetImporter.Editor
             return CreateDeleteNativeProcess(nativeDirectory.ToArray());
         }
 
+        /// <summary>
+        /// <para>Get the loadable assemblies in the package.</para>
+        /// <para>パッケージにあるロード可能なアセンブリを取得。</para>
+        /// </summary>
+        /// <param name="searchPath">
+        /// <para>Extract path.</para>
+        /// <para>展開したパス。</para>
+        /// </param>
+        /// <param name="asm">
+        /// <para>Loadable assemblies.</para>
+        /// <para>ロード可能なアセンブリ。</para>
+        /// </param>
+        protected void GetLoadableAsmInPackage(string searchPath, PackageManagedPluginList asm)
+        {
+            foreach (var file in Directory.GetFiles(searchPath))
+            {
+                if (!file.EndsWith(".dll"))
+                {
+                    continue;
+                }
+                try
+                {
+                    asm.fileNames.Add(AssemblyName.GetAssemblyName(file).Name);
+                }
+                catch (Exception) { }
+            }
+
+            foreach (var dir in Directory.GetDirectories(searchPath))
+            {
+                GetLoadableAsmInPackage(dir, asm);
+            }
+        }
 
         /// <summary>
         /// <para>Extract the package to the specified directory.</para>

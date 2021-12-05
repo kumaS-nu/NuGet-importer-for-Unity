@@ -275,7 +275,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         /// <param name="data">
         /// <para>Package infomation.</para>
-        /// <para>ッケージ情報。</para>
+        /// <para>パッケージ情報。</para>
         /// </param>
         /// <param name="bold">
         /// <para>Bold GUIStyle.</para>

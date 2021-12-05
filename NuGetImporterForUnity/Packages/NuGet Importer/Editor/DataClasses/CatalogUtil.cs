@@ -43,12 +43,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             };
 
             var splited = version.Split('.').ToList();
-            while(splited.Count < 3)
+            while (splited.Count < 3)
             {
                 splited.Append("0");
             }
 
-            while(splited.Count > 3)
+            while (splited.Count > 3)
             {
                 splited.RemoveAt(splited.Count - 1);
             }
