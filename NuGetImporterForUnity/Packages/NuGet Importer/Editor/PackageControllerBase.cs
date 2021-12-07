@@ -11,9 +11,6 @@ using System.Xml.Serialization;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
-using UnityEditor;
-using UnityEditor.SceneManagement;
-
 using UnityEngine;
 
 namespace kumaS.NuGetImporter.Editor
@@ -410,8 +407,6 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         private Process CreateDeleteNativeProcess(IEnumerable<string> directoryPaths)
         {
-            AssetDatabase.SaveAssets();
-            EditorSceneManager.SaveOpenScenes();
             var process = new Process();
             process.StartInfo.UseShellExecute = true;
             process.StartInfo.CreateNoWindow = true;

@@ -55,7 +55,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
             var packageJson = new PackageJson()
             {
-                displayName = title,
+                displayName = title != null && title != "" ? title : id,
                 version = string.Join(".", splited),
                 name = "org.nuget." + id.ToLowerInvariant(),
                 description = description,

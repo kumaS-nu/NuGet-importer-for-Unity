@@ -13,6 +13,7 @@ using kumaS.NuGetImporter.Editor.DataClasses;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEditor.PackageManager;
+using UnityEditor.SceneManagement;
 
 using UnityEngine;
 
@@ -224,11 +225,14 @@ namespace kumaS.NuGetImporter.Editor
                 using (var file = new StreamReader(Application.dataPath.Replace("Assets", "WillInstall.xml")))
                 {
                     var install = (InstalledPackages)serializer.Deserialize(file);
-                    var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                    loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
-                    var task = InstallSelectPackages(install.package, loadedAsmNames);
-                    _ = DownloadProgress(0.25f, install.package.Select(pkg => pkg.id).ToArray());
-                    skipped = await task;
+                    if (install != null && install.package != null && install.package.Any())
+                    {
+                        var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
+                        loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
+                        var task = InstallSelectPackages(install.package, loadedAsmNames);
+                        _ = DownloadProgress(0.25f, install.package.Select(pkg => pkg.id).ToArray());
+                        skipped = await task;
+                    }
                 }
 
                 if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
@@ -240,10 +244,30 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     installed = (InstalledPackages)serializer.Deserialize(file);
                 }
+
+                if (installed == null)
+                {
+                    installed = new InstalledPackages();
+                }
+                if (installed.package == null)
+                {
+                    installed.package = new Package[0];
+                }
+
                 using (var file = new StreamReader(Application.dataPath.Replace("Assets", "WillRoot.xml")))
                 {
                     rootPackage = (InstalledPackages)serializer.Deserialize(file);
                 }
+
+                if (rootPackage == null)
+                {
+                    rootPackage = new InstalledPackages();
+                }
+                if (rootPackage.package == null)
+                {
+                    rootPackage.package = new Package[0];
+                }
+
                 EditorUtility.ClearProgressBar();
                 if (skipped != null)
                 {
@@ -280,18 +304,18 @@ namespace kumaS.NuGetImporter.Editor
 
         private static void DeleteAsAssetDirectory()
         {
-            var dirs = Directory.GetDirectories(Path.Combine(Application.dataPath, "Packages"));
-            var files = Directory.GetFiles(Path.Combine(Application.dataPath, "Packages"));
-            if (dirs.Length != files.Length)
-            {
-                return;
-            }
-            if (dirs.Length != 0 && Path.GetFileName(dirs[0]) != "Plugins")
-            {
-                return;
-            }
             try
             {
+                var dirs = Directory.GetDirectories(Path.Combine(Application.dataPath, "Packages"));
+                var files = Directory.GetFiles(Path.Combine(Application.dataPath, "Packages"));
+                if (dirs.Length != files.Length)
+                {
+                    return;
+                }
+                if (dirs.Length != 0 && Path.GetFileName(dirs[0]) != "Plugins")
+                {
+                    return;
+                }
                 Directory.Delete(Path.Combine(Application.dataPath, "Packages"), true);
                 File.Delete(Path.Combine(Application.dataPath, "Packages.meta"));
             }
@@ -372,6 +396,8 @@ namespace kumaS.NuGetImporter.Editor
                         rootPackages = rootPackages.Append(addRootPackage.First());
                     }
                     var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages.ToArray());
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
                     process.Start();
                     EditorApplication.Exit(0);
                 }
@@ -461,6 +487,8 @@ namespace kumaS.NuGetImporter.Editor
                     if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the repair package. You need to restart the editor to repair packages.\n(The current project will be saved and repair packages will be resumed after a restart.)", "Restart", "Quit"))
                     {
                         var process = await OperateWithNativeAsync(new Package[] { fix }, new Package[0], new Package[] { fix }, installed.package, rootPackage.package);
+                        AssetDatabase.SaveAssets();
+                        EditorSceneManager.SaveOpenScenes();
                         process.Start();
                         EditorApplication.Exit(0);
                     }
@@ -569,6 +597,8 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     var rootPackages = requiredPackages.Where(pkg => rootPackage.package.Any(root => root.id == pkg.id)).ToArray();
                     var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
                     process.Start();
                     EditorApplication.Exit(0);
                 }
@@ -669,7 +699,7 @@ namespace kumaS.NuGetImporter.Editor
                 Package[] installedPackages = installed.package.Where(package => !uninstallPackages.Any(uninstall => uninstall.id == package.id)).ToArray();
                 var rootPackages = installedPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
 
-                if (uninstallPackages == null || !uninstallPackages.Any())
+                if (!uninstallPackages.Any())
                 {
                     EditorUtility.DisplayDialog("NuGet importer", "Selected package is depended by other package.", "OK");
                     return true;
@@ -686,6 +716,8 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     var process = await OperateWithNativeAsync(new Package[0], managedPackages, nativePackages, installedPackages, rootPackages);
                     process.Start();
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
                     EditorApplication.Exit(0);
                 }
 
@@ -789,6 +821,8 @@ namespace kumaS.NuGetImporter.Editor
                 if (nativePackages.Any())
                 {
                     var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
                     process.Start();
                     EditorApplication.Exit(0);
                 }
@@ -872,6 +906,7 @@ namespace kumaS.NuGetImporter.Editor
                 EditorUtility.DisplayProgressBar("NuGet importer", "Deleting packages", 0.4f);
                 if (isNatives.Any(isNative => isNative))
                 {
+                    EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
                     var process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
                     try
                     {
@@ -879,6 +914,8 @@ namespace kumaS.NuGetImporter.Editor
                         File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
                     }
                     catch (Exception) { }
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
                     process.Start();
                     EditorApplication.Exit(0);
                 }
@@ -977,7 +1014,10 @@ namespace kumaS.NuGetImporter.Editor
                 EditorUtility.DisplayProgressBar("NuGet importer", "Deleting packages", 0.4f);
                 if (isNatives.Any(isNative => isNative))
                 {
+                    EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
                     var process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
                     process.Start();
                     EditorApplication.Exit(0);
                 }
