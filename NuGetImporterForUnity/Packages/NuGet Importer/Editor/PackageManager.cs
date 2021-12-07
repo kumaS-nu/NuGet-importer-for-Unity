@@ -947,6 +947,10 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (!installed.package.Any())
                 {
+                    if (!Directory.Exists(Path.Combine(Application.dataPath, "Packages")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(Application.dataPath, "Packages"));
+                    }
                     File.WriteAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"), "");
                     return true;
                 }
