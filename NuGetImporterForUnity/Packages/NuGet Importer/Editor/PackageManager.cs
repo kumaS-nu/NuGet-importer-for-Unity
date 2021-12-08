@@ -403,7 +403,8 @@ namespace kumaS.NuGetImporter.Editor
                 }
 
                 var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
+                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
+
                 if (samePackages.Any())
                 {
                     await UninstallPackages(samePackages);
@@ -607,7 +608,7 @@ namespace kumaS.NuGetImporter.Editor
                 await UninstallPackages(uninstallPackages);
 
                 var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
+                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
 
                 await UninstallPackages(upgradePackages);
 
@@ -835,7 +836,7 @@ namespace kumaS.NuGetImporter.Editor
                 await UninstallPackages(uninstallPackages);
 
                 var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
+                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
 
                 await UninstallPackages(upgradePackages);
 
