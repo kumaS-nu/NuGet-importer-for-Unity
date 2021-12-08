@@ -403,11 +403,11 @@ namespace kumaS.NuGetImporter.Editor
                 }
 
                 var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
+                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
                 if (samePackages.Any())
                 {
                     await UninstallPackages(samePackages);
                 }
-                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
 
                 var task = InstallSelectPackages(installPackages, loadedAsmNames);
 
@@ -563,6 +563,7 @@ namespace kumaS.NuGetImporter.Editor
                 IEnumerable<Package> requiredPackages = await DependencySolver.CheckAllPackage(onlyStable, method);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
+                Package[] upgradePackages = deletePackages.Where(package => installed.package.Any(install => install.id == package.id)).ToArray();
 
                 requiredPackages = requiredPackages.Where(package => !existingPackage.package.Any(exist => package.id == exist.id)).ToArray();
                 Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
@@ -603,10 +604,13 @@ namespace kumaS.NuGetImporter.Editor
                     EditorApplication.Exit(0);
                 }
 
-                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                await UninstallPackages(deletePackages);
+                await UninstallPackages(uninstallPackages);
 
+                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
                 loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
+
+                await UninstallPackages(upgradePackages);
+
                 var task = InstallSelectPackages(installPackages, loadedAsmNames);
 
                 _ = DownloadProgress(0.33f, requiredPackages.Select(package => package.id).ToArray());
@@ -792,6 +796,7 @@ namespace kumaS.NuGetImporter.Editor
                 IEnumerable<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(packageId, newVersion, onlyStable, method);
                 Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
                 Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
+                Package[] upgradePackages = deletePackages.Where(package => installed.package.Any(install => install.id == package.id)).ToArray();
 
                 requiredPackages = requiredPackages.Where(package => !existingPackage.package.Any(exist => package.id == exist.id)).ToArray();
                 Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
@@ -827,10 +832,13 @@ namespace kumaS.NuGetImporter.Editor
                     EditorApplication.Exit(0);
                 }
 
-                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                await UninstallPackages(deletePackages);
+                await UninstallPackages(uninstallPackages);
 
+                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
                 loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
+
+                await UninstallPackages(upgradePackages);
+
                 var tasks = InstallSelectPackages(installPackages, loadedAsmNames);
 
                 _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());

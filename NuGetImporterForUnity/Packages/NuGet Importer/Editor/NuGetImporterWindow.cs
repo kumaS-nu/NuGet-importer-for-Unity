@@ -376,9 +376,15 @@ namespace kumaS.NuGetImporter.Editor
             }
             var searchStyle = new GUIStyle(EditorStyles.textField)
             {
-                fontSize = 24
+                fontSize = 20,
+                alignment = TextAnchor.MiddleLeft
             };
-            InputText = EditorGUILayout.TextField(InputText, searchStyle, GUILayout.Height(30));
+            using(new EditorGUILayout.HorizontalScope())
+            {
+                var icon = EditorGUIUtility.IconContent("Search Icon");
+                GUILayout.Box(icon, GUILayout.Width(30), GUILayout.Height(30));
+                InputText = EditorGUILayout.TextField(InputText, searchStyle, GUILayout.Height(30), GUILayout.ExpandWidth(true));
+            }
             var sumHeight = float.MaxValue;
             using (new GUILayout.HorizontalScope(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
