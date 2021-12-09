@@ -221,6 +221,7 @@ namespace kumaS.NuGetImporter.Editor
                 isAddedSummary = true;
             }
             summary = new PackageSummary(data, installedVersion);
+            deteal = null;
             deteal = await NuGet.GetCatalog(data.id);
             Repaint();
         }
@@ -435,7 +436,7 @@ namespace kumaS.NuGetImporter.Editor
                     }
                     if (summary != null)
                     {
-                        tasks.Add(summary.ToGUI(bold, this, NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method));
+                        tasks.Add(summary.ToGUI(bold, this, deteal != null, NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method));
 
                         if (deteal != null)
                         {

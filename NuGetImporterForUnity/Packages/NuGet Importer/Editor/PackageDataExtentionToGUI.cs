@@ -429,10 +429,11 @@ namespace kumaS.NuGetImporter.Editor
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        internal static async Task ToGUI(this PackageSummary summary, GUIStyle bold, NuGetImporterWindow window, bool onlyStable, VersionSelectMethod method)
+        internal static async Task ToGUI(this PackageSummary summary, GUIStyle bold, NuGetImporterWindow window, bool isReady, bool onlyStable, VersionSelectMethod method)
         {
             var tasks = new List<Task>();
             var sizeScale = window.position.width / 1920;
+            var isExist = PackageManager.ExiestingPackage.package.Any(package => package.id == summary.PackageId);
             using (new EditorGUILayout.HorizontalScope(GUILayout.Height(150)))
             {
                 using (new EditorGUILayout.VerticalScope(GUILayout.Width(150 * sizeScale)))
@@ -462,28 +463,39 @@ namespace kumaS.NuGetImporter.Editor
                         summary.SelectedVersion = versions[EditorGUILayout.Popup(index, versions.ToArray(), GUILayout.ExpandWidth(true))];
                         var isSameVersion = summary.SelectedVersion == summary.InstalledVersion;
                         var installText = summary.InstalledVersion == null ? "Install" : isSameVersion ? "Repair" : "Change Version";
-                        if (GUILayout.Button(installText, GUILayout.ExpandWidth(true)))
+                        using (new EditorGUI.DisabledGroupScope(!isReady || isExist))
                         {
-                            if (summary.InstalledVersion == null)
+                            if (GUILayout.Button(installText, GUILayout.ExpandWidth(true)))
                             {
-                                tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Installation finished."));
+                                if (summary.InstalledVersion == null)
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Installation finished."));
+                                }
+                                else if (isSameVersion)
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId, "The repair finished."));
+                                }
+                                else
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Version change finished."));
+                                }
                             }
-                            else if (isSameVersion)
+
+                            using (new EditorGUI.DisabledScope(!isSameVersion))
                             {
-                                tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId, "The repair finished."));
-                            }
-                            else
-                            {
-                                tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Version change finished."));
+                                if (GUILayout.Button("Uninstall", GUILayout.ExpandWidth(true)))
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId, "Uninstallation finished."));
+                                }
                             }
                         }
+                    }
 
-                        using (new EditorGUI.DisabledScope(!isSameVersion))
+                    if(isExist)
+                    {
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            if (GUILayout.Button("Uninstall", GUILayout.ExpandWidth(true)))
-                            {
-                                tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId, "Uninstallation finished."));
-                            }
+                            GUILayout.Label("This package exists out of control in this project.");
                         }
                     }
                 }

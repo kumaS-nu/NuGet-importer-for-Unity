@@ -78,6 +78,12 @@ namespace kumaS.NuGetImporter.Editor
         internal static InstalledPackages RootPackage { get => rootPackage; }
 
         /// <summary>
+        /// <para>Packages that are not under control within a project.</para>
+        /// <para>プロジェクト内で監理外にあるパッケージ。</para>
+        /// </summary>
+        internal static InstalledPackages ExiestingPackage { get => existingPackage; }
+
+        /// <summary>
         /// <para>Save the package installation information.</para>
         /// <para>パッケージのインストール情報を保存する。</para>
         /// </summary>
