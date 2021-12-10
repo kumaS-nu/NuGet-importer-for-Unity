@@ -367,9 +367,7 @@ namespace kumaS.NuGetImporter.Editor
                 File.Delete(path + ".meta");
             }
             catch (Exception e) when (e is ArgumentException || e is DirectoryNotFoundException || e is FileNotFoundException || e is NotSupportedException)
-            {
-
-            }
+            { }
         }
 
         /// <summary>
@@ -388,9 +386,7 @@ namespace kumaS.NuGetImporter.Editor
                 File.Delete(path + ".meta");
             }
             catch (Exception e) when (e is ArgumentException || e is FileNotFoundException || e is NotSupportedException)
-            {
-
-            }
+            { }
         }
 
         /// <summary>
