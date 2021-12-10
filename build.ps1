@@ -53,7 +53,7 @@ Copy-Item -Path "NuGetImporterForUnity/Library/ScriptAssemblies/kumaS.NuGetImpor
 
 New-Item -Path "Release/$name" -ItemType Directory
 
-Start-Process -FilePath $env:UNITY_2019_4_14f1 `
+Start-Process -FilePath $env:UNITY_2019_4_32f1 `
     -ArgumentList "-projectPath ""${exportProjectPath}"" -batchmode -nographics -exportPackage ""Assets/NuGet Importer"" ""../Release/$name/$name.unitypackage"" -quit" `
     -Wait
 
