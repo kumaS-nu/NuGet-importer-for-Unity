@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PackageManager
    | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -108,7 +108,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -152,7 +152,57 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToAssets_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToAssets*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToAssets" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToAssets">ConvertToAssets()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; ConvertToAssets()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToUPM_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToUPM*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToUPM" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToUPM">ConvertToUPM()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; ConvertToUPM()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -165,7 +215,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -199,7 +249,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -214,7 +264,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task FixPackage(string packageId)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; FixPackage(string packageId)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -245,8 +295,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>Task</p>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Has the operation been executed?</p>
+<p>操作が行われたか。</p>
 </td>
       </tr>
     </tbody>
@@ -262,7 +313,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[InitializeOnLoadMethod]
-public static Task Initialize()</code></pre>
+public static async Task Initialize()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -288,7 +339,7 @@ public static Task Initialize()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -332,7 +383,7 @@ public static Task Initialize()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -357,7 +408,7 @@ public static Task Initialize()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -396,7 +447,7 @@ public static Task Initialize()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>

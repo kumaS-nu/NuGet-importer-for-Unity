@@ -8,7 +8,7 @@
     <title>&#20351;&#12356;&#26041; | NuGet importer for Unity documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="&#20351;&#12356;&#26041; | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -116,32 +116,38 @@
 <ul>
 <li>Manage packages ・・・ パッケージを管理するメインウィンドウを表示する。</li>
 <li>Repair packages ・・・ インストールされているパッケージの依存関係を最適化し、パッケージを修復する。</li>
-<li>Delete cache ・・・ キャッシュを削除する。（ただし、アセンブリがロードされるたびにキャッシュは消えている。）</li>
-<li>Cache settings ・・・ キャッシュに関する設定をするウィンドウを表示する。</li>
+<li>Delete cache ・・・ キャッシュを削除する。（ただし、アセンブリがロードされるたびにキャッシュは消える。）</li>
+<li>NuGet importer settings ・・・ NuGet importer に関する設定をするウィンドウを表示する。</li>
 <li>Check update ・・・ 更新があるか確認する。</li>
-<li>Go to project page ・・・ NuGet importer for Unity のページを開く。</li>
+<li>Go to project page ・・・ NuGet importer for Unity の Web ページを開く。</li>
 </ul>
 <h3 id="メインウィンドウ">メインウィンドウ</h3>
 <p><img src="../images/MainWindow.png" alt="メインウィンドウ"></p>
 <ol>
 <li>NuGet から検索するときのモード。</li>
 <li>インストールされているものから検索するときのモード。</li>
-<li>フレームワークの設定。</li>
 <li>非安定版も含めるかどうか。</li>
-<li>依存関係のパッケージのバージョンの選択方法。</li>
 <li>検索語句の入力場所。（インクリメンタルサーチされる。）</li>
 <li>検索結果。</li>
 <li>パッケージの詳細情報。</li>
 <li>バージョン選択。</li>
 <li>パッケージに対する操作。</li>
 </ol>
-<h3 id="キャッシュの設定">キャッシュの設定</h3>
-<p><img src="../images/CacheSettings.png" alt="キャッシュの設定"></p>
+<h3 id="nuget-importer-の設定">NuGet importer の設定</h3>
+<p><img src="../images/Settings.png" alt="NuGet importer の設定"></p>
 <ol>
+<li>インストール先を指定する。（UPMを推奨。）</li>
+<li>依存関係のバージョン決定方法を指定する。（Suitを推奨。）</li>
 <li>検索結果のキャッシュする最大数。（0以下はキャッシュしない。）</li>
 <li>カタログのキャッシュする最大数。（0以下はキャッシュしない。）</li>
 <li>アイコンのキャッシュする最大数。（0以下はキャッシュしない。）</li>
 </ol>
+<h2 id="注意点">注意点</h2>
+<p>このパッケージを導入する際、以下の変更を加えます。</p>
+<ul>
+<li><code>PlayerSettings -&gt; assemblyVersionValidation</code> をオフに。（NuGet と同様にアセンブリ参照のバージョンの同一性をチェックしなくさせるため。）</li>
+<li><code>System.IO.Compression.FileSystem.dll</code> を参照に追加。（NuGet importer for Unity が Zip ファイルを扱うため。）</li>
+</ul>
 </article>
           </div>
           

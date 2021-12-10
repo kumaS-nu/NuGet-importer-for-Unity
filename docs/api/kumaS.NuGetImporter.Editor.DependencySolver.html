@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DependencySolver
    | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -108,7 +108,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; CheckAllPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; CheckAllPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -152,12 +152,12 @@
   <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindRemovablePackages_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRemovablePackages*"></a>
   <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRemovablePackages_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRemovablePackages(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindRemovablePackages(String, Boolean, VersionSelectMethod)</h4>
   <div class="markdown level1 summary"><p>Find removable packages when the specified package is removed.</p>
-<p>定のパッケージを除去した際取り除けるパッケージを探す。</p>
+<p>特定のパッケージを除去した際取り除けるパッケージを探す。</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; FindRemovablePackages(string removePackageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRemovablePackages(string removePackageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -240,7 +240,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; FindRequiredPackages(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRequiredPackages(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -297,7 +297,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;List&lt;Package&gt;&gt; FindRequiredPackagesWhenChangeVersion(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRequiredPackagesWhenChangeVersion(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

@@ -8,7 +8,7 @@
     <title>Usage | NuGet importer for Unity documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Usage | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -117,31 +117,37 @@
 <li>Manage packages ・・・ Open the main window for managing packages.</li>
 <li>Repair packages ・・・ Optimize the dependencies of installed packages and repair them.</li>
 <li>Delete cache ・・・ Delete the cache. (However, the cache is deleted every time the assembly is loaded.)</li>
-<li>Cache settings ・・・ Open the window for configuring settings with cache.</li>
+<li>NuGet importer settings ・・・ Open the window for configuring settings with NuGet importer.</li>
 <li>Check update ・・・ Check for updates.</li>
-<li>Go to project page ・・・ Open the &quot;NuGet importer for Unity&quot; page.</li>
+<li>Go to project page ・・・ Open the &quot;NuGet importer for Unity&quot; web page.</li>
 </ul>
 <h3 id="main-window">Main window</h3>
 <p><img src="../images/MainWindow.png" alt="Main window"></p>
 <ol>
 <li>Mode to search from NuGet.</li>
 <li>Mode to search from the installed packages.</li>
-<li>Framework settings.</li>
 <li>Whether include development version.</li>
-<li>Method of selecting the version of the dependency package.</li>
 <li>Input area for search words. (Incremental search.)</li>
 <li>Search results.</li>
 <li>Package details.</li>
 <li>Version selection.</li>
 <li>Operations on the package.</li>
 </ol>
-<h3 id="cache-settings">Cache settings</h3>
-<p><img src="../images/CacheSettings.png" alt="Cache settings"></p>
+<h3 id="nuget-importer-settings">NuGet importer settings</h3>
+<p><img src="../images/Settings.png" alt="NuGet importer settings"></p>
 <ol>
+<li>Specify the installation location. （It is recommended to use UPM.)</li>
+<li>Specify the method for determining the package version when solve dependency. (Suit is recommended.)</li>
 <li>The maximum number of search results to cache. (0 or less is not cached.)</li>
 <li>The maximum number of catalog to cache. (0 or less is not cached.)</li>
 <li>The maximum number of icon to cache. (0 or less is not cached.)</li>
 </ol>
+<h2 id="note">Note</h2>
+<p>When importing this package into your project, make the following changes</p>
+<ul>
+<li>Turn off <code>PlayerSettings -&gt; assemblyVersionValidation</code>. (To make Unity not check version of assembly as NuGet does.)</li>
+<li>Add reference <code>System.IO.Compression.FileSystem.dll</code>. (NuGet importer for Unity handles Zip files.)</li>
+</ul>
 </article>
           </div>
           
