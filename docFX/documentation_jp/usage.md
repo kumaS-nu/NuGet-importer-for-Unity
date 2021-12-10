@@ -45,10 +45,10 @@
 
 - Manage packages ・・・ パッケージを管理するメインウィンドウを表示する。
 - Repair packages ・・・ インストールされているパッケージの依存関係を最適化し、パッケージを修復する。
-- Delete cache ・・・ キャッシュを削除する。（ただし、アセンブリがロードされるたびにキャッシュは消えている。）
-- Cache settings ・・・ キャッシュに関する設定をするウィンドウを表示する。
+- Delete cache ・・・ キャッシュを削除する。（ただし、アセンブリがロードされるたびにキャッシュは消える。）
+- NuGet importer settings ・・・ NuGet importer に関する設定をするウィンドウを表示する。
 - Check update ・・・ 更新があるか確認する。
-- Go to project page ・・・ NuGet importer for Unity のページを開く。
+- Go to project page ・・・ NuGet importer for Unity の Web ページを開く。
 
 ### メインウィンドウ
 
@@ -56,9 +56,7 @@
 
 1. NuGet から検索するときのモード。
 1. インストールされているものから検索するときのモード。
-1. フレームワークの設定。
 1. 非安定版も含めるかどうか。
-1. 依存関係のパッケージのバージョンの選択方法。
 1. 検索語句の入力場所。（インクリメンタルサーチされる。）
 1. 検索結果。
 1. パッケージの詳細情報。
@@ -66,10 +64,18 @@
 1. パッケージに対する操作。
 
 
-### キャッシュの設定
+### NuGet importer の設定
 
-![キャッシュの設定](../images/CacheSettings.png)
+![NuGet importer の設定](../images/Settings.png)
 
+1. インストール先を指定する。（UPMを推奨。）
+1. 依存関係のバージョン決定方法を指定する。（Suitを推奨。）
 1. 検索結果のキャッシュする最大数。（0以下はキャッシュしない。）
 1. カタログのキャッシュする最大数。（0以下はキャッシュしない。）
 1. アイコンのキャッシュする最大数。（0以下はキャッシュしない。）
+
+## 注意点
+
+このパッケージを導入する際、以下の変更を加えます。
+- `PlayerSettings -> assemblyVersionValidation` をオフに。（NuGet と同様にアセンブリ参照のバージョンの同一性をチェックしなくさせるため。）
+- `System.IO.Compression.FileSystem.dll` を参照に追加。（NuGet importer for Unity が Zip ファイルを扱うため。）
