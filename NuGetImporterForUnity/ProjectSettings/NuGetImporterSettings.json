@@ -1,0 +1,8 @@
+{
+    "searchCacheLimit": 500,
+    "catalogCacheLimit": 300,
+    "iconCacheLimit": 500,
+    "method": 0,
+    "onlyStable": true,
+    "installMethod": 0
+}

@@ -55,5 +55,11 @@ namespace kumaS.NuGetImporter.Editor
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, string.Join(";", symbols));
             }
         }
+
+        [InitializeOnLoadMethod]
+        private static void SetAssemblyVersionValidation()
+        {
+            PlayerSettings.assemblyVersionValidation = false;
+        }
     }
 }

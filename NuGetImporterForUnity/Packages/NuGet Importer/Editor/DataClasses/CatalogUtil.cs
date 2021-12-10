@@ -31,4 +31,40 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             return catalogCache;
         }
     }
+
+    public partial class Catalogentry
+    {
+        public PackageJson ToPackageJson()
+        {
+            var author = new Author()
+            {
+                name = authors,
+                url = projectUrl
+            };
+
+            var splited = version.Split('.').ToList();
+            while (splited.Count < 3)
+            {
+                splited.Append("0");
+            }
+
+            while (splited.Count > 3)
+            {
+                splited.RemoveAt(splited.Count - 1);
+            }
+
+            var packageJson = new PackageJson()
+            {
+                displayName = title != null && title != "" ? title : id,
+                version = string.Join(".", splited),
+                name = "org.nuget." + id.ToLowerInvariant(),
+                description = description,
+                unity = "2018.3",
+                keywords = tags,
+                author = author
+            };
+
+            return packageJson;
+        }
+    }
 }

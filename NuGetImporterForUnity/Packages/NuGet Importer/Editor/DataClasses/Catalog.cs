@@ -67,7 +67,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     /// <para>パッケージのバージョンごとの情報。</para>
     /// </summary>
     [Serializable]
-    public class Catalogentry
+    public partial class Catalogentry
     {
         public string nuget_id;
         public string nuget_type;

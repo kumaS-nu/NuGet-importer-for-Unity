@@ -326,9 +326,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         {
             switch (method)
             {
-                case VersionSelectMethod.Suit: return GetSuitVersion(onlyStable);
-                case VersionSelectMethod.Highest: return GetHighestVersion(onlyStable);
-                case VersionSelectMethod.Lowest: return GetLowestVersion(onlyStable);
+                case VersionSelectMethod.Suit:
+                    return GetSuitVersion(onlyStable);
+                case VersionSelectMethod.Highest:
+                    return GetHighestVersion(onlyStable);
+                case VersionSelectMethod.Lowest:
+                    return GetLowestVersion(onlyStable);
             }
 
             throw new ArgumentException("method : " + method + " is invalid");
@@ -336,7 +339,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
         private string GetHighestVersion(bool onlyStable)
         {
-            List<string> maxVersion = maximumVersion != null ? maximumVersion : existVersion.First();
+            List<string> maxVersion = maximumVersion ?? existVersion.First();
             foreach (List<string> version in existVersion.SkipWhile(ver => ver.Aggregate((now, next) => now + next) != maxVersion.Aggregate((now, next) => now + next)).ToArray())
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
@@ -380,7 +383,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
         private string GetLowestVersion(bool onlyStable)
         {
-            List<string> minVersion = minimumVersion != null ? minimumVersion : existVersion.Last();
+            List<string> minVersion = minimumVersion ?? existVersion.Last();
             foreach (List<string> version in existVersion.AsEnumerable().Reverse().SkipWhile(ver => ver.Aggregate((now, next) => now + next) != minVersion.Aggregate((now, next) => now + next)).ToArray())
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))

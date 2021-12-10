@@ -25,23 +25,11 @@ namespace kumaS.NuGetImporter.Editor
         private static string packageBaseAddress = "https://api.nuget.org/v3-flatcontainer/";
         private static string registrationsBaseUrl = "https://api.nuget.org/v3/registration5-gz-semver2/";
         private static readonly HttpClient client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
-        private static Dictionary<string, (long packageSize, FileStream downloaded)> downloading = new Dictionary<string, (long, FileStream)>();
+        private static readonly Dictionary<string, (long packageSize, FileStream downloaded)> downloading = new Dictionary<string, (long, FileStream)>();
 
-
-        /// <value>
-        /// <para>Limit of search cache.</para>
-        /// <para>検索のキャッシュの最大数。</para>
-        /// </value>
-        public static int searchCacheLimit = 500;
         private static readonly Dictionary<string, SearchResult> searchCache = new Dictionary<string, SearchResult>();
         private static readonly List<string> searchLog = new List<string>();
         private static readonly Dictionary<string, Task> gettingSearchs = new Dictionary<string, Task>();
-
-        /// <value>
-        /// <para>Limit of catalog cache.</para>
-        /// <para>カタログのキャッシュの最大数。</para>
-        /// </value>
-        public static int catalogCacheLimit = 300;
 
         /// <value>
         /// <para>For test.</para>
@@ -135,10 +123,10 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<SearchResult> SearchPackage(string q = "", int skip = -1, int take = -1, bool prerelease = false)
         {
             var query = "";
-            Action concat = () =>
+            void concat()
             {
                 query += query == "" ? "?" : "&";
-            };
+            }
 
             if (q != "")
             {
@@ -208,7 +196,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     searchCache.Add(query, result);
                     searchLog.Add(query);
-                    while (searchCache.Count > searchCacheLimit && searchCache.Count > 0)
+                    while (searchCache.Count > NuGetImporterSettings.Instance.SearchCacheLimit && searchCache.Count > 0)
                     {
                         var delete = searchLog[0];
                         searchLog.RemoveAt(0);
@@ -253,7 +241,8 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task GetPackage(string packageName, string version, string savePath)
         {
-            using (var fileStream = new FileStream(Path.Combine(savePath, packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
+            var fileName = packageName.ToLowerInvariant() + "." + version.ToLowerInvariant();
+            using (var fileStream = new FileStream(Path.Combine(savePath, fileName + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 // It takes much time for the header response, so set the package first.
                 lock (downloading)
@@ -261,16 +250,45 @@ namespace kumaS.NuGetImporter.Editor
                     downloading[packageName] = (0, fileStream);
                 }
 
-                using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + packageName.ToLowerInvariant() + "." + version.ToLowerInvariant() + ".nupkg"))
+                string cachePath;
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 {
-                    lock (downloading)
+                    cachePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                }
+                else
+                {
+                    cachePath = "~";
+                }
+                cachePath = Path.Combine(cachePath, ".nuget", "packages", packageName.ToLowerInvariant(), version.ToLowerInvariant());
+
+                if (Directory.Exists(cachePath))
+                {
+                    using (var sourceStream = File.Open(Path.Combine(cachePath, fileName + ".nupkg"), FileMode.Open))
                     {
-                        downloading[packageName] = (responseStream.Length, fileStream);
+                        lock (downloading)
+                        {
+                            downloading[packageName] = (sourceStream.Length, fileStream);
+                        }
+                        await sourceStream.CopyToAsync(fileStream);
+                        lock (downloading)
+                        {
+                            downloading.Remove(packageName);
+                        }
                     }
-                    await responseStream.CopyToAsync(fileStream);
-                    lock (downloading)
+                }
+                else
+                {
+                    using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg"))
                     {
-                        downloading.Remove(packageName);
+                        lock (downloading)
+                        {
+                            downloading[packageName] = (responseStream.Length, fileStream);
+                        }
+                        await responseStream.CopyToAsync(fileStream);
+                        lock (downloading)
+                        {
+                            downloading.Remove(packageName);
+                        }
                     }
                 }
             }
@@ -383,7 +401,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     catalogCache[packageName] = catalog;
                     catalogLog.Add(packageName);
-                    while (catalogCache.Count > catalogCacheLimit && catalogCache.Count > 0)
+                    while (catalogCache.Count > NuGetImporterSettings.Instance.CatalogCacheLimit && catalogCache.Count > 0)
                     {
                         var delete = catalogLog[0];
                         catalogLog.RemoveAt(0);

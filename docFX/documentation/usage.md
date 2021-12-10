@@ -46,9 +46,9 @@
 - Manage packages ・・・ Open the main window for managing packages.
 - Repair packages ・・・ Optimize the dependencies of installed packages and repair them.
 - Delete cache ・・・ Delete the cache. (However, the cache is deleted every time the assembly is loaded.)
-- Cache settings ・・・ Open the window for configuring settings with cache.
+- NuGet importer settings ・・・ Open the window for configuring settings with NuGet importer.
 - Check update ・・・ Check for updates.
-- Go to project page ・・・ Open the "NuGet importer for Unity" page.
+- Go to project page ・・・ Open the "NuGet importer for Unity" web page.
 
 ### Main window
 
@@ -56,19 +56,25 @@
 
 1. Mode to search from NuGet.
 1. Mode to search from the installed packages.
-1. Framework settings.
 1. Whether include development version.
-1. Method of selecting the version of the dependency package.
 1. Input area for search words. (Incremental search.)
 1. Search results.
 1. Package details.
 1. Version selection.
 1. Operations on the package.
 
-### Cache settings
+### NuGet importer settings
 
-![Cache settings](../images/CacheSettings.png)
+![NuGet importer settings](../images/Settings.png)
 
+1. Specify the installation location. （It is recommended to use UPM.)
+1. Specify the method for determining the package version when solve dependency. (Suit is recommended.)
 1. The maximum number of search results to cache. (0 or less is not cached.)
 1. The maximum number of catalog to cache. (0 or less is not cached.)
 1. The maximum number of icon to cache. (0 or less is not cached.)
+
+## Note
+
+When importing this package into your project, make the following changes
+- Turn off `PlayerSettings -> assemblyVersionValidation`. (To make Unity not check version of assembly as NuGet does.)
+- Add reference `System.IO.Compression.FileSystem.dll`. (NuGet importer for Unity handles Zip files.)

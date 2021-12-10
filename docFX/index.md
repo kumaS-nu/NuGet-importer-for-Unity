@@ -21,7 +21,7 @@ This is also fully support for native plugins.
 
 ## Environment
 
- This works with Unity2019 and later.
+ This works with Unity2020 and later. This even works with Unity2019, but it is not recommended due to some specification issues.
 
 ## API
 
@@ -69,7 +69,7 @@ Each package in NuGet is governed by the terms that are included with the packag
 
 ## 動作環境
 
- Unity2019以降であれば動きます。
+ Unity2020以降であれば動きます。Unity2019でも動作しますが、仕様上の問題より推奨しません。
 
 ## API
 

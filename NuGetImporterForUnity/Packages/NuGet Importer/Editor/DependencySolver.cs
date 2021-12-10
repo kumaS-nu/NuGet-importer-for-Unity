@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
-using UnityEditor;
-
 namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
@@ -64,8 +62,8 @@ namespace kumaS.NuGetImporter.Editor
         }
 
         /// <summary>
-        /// <para>ind the required packages when change package version.</para>
-        /// <para>ッケージのバージョンを変更する時に必要なパッケージを探す。</para>
+        /// <para>Find the required packages when change package version.</para>
+        /// <para>パッケージのバージョンを変更する時に必要なパッケージを探す。</para>
         /// </summary>
         /// <param name="packageId">
         /// <para>Package id</para>
@@ -150,7 +148,7 @@ namespace kumaS.NuGetImporter.Editor
 
         /// <summary>
         /// <para>Find removable packages when the specified package is removed.</para>
-        /// <para>定のパッケージを除去した際取り除けるパッケージを探す。</para>
+        /// <para>特定のパッケージを除去した際取り除けるパッケージを探す。</para>
         /// </summary>
         /// <param name="removePackageId">
         /// <para>Remove package.</para>
@@ -212,19 +210,7 @@ namespace kumaS.NuGetImporter.Editor
             var confirmedNode = new List<DependencyNode>();
             var tasks = new List<Task>();
             var allNode = new Dictionary<string, List<DependencyNode>>();
-
-            List<string> targetFramework;
-            switch (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
-            {
-                case ApiCompatibilityLevel.NET_4_6:
-                    targetFramework = FrameworkName.NET;
-                    break;
-                case ApiCompatibilityLevel.NET_Standard_2_0:
-                    targetFramework = FrameworkName.STANDARD;
-                    break;
-                default:
-                    throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
-            }
+            var targetFramework = FrameworkName.TARGET;
 
             // First, search for packages that may be necessary.
             foreach ((var packageId, var version) in packages)
@@ -347,7 +333,11 @@ namespace kumaS.NuGetImporter.Editor
             }
             else
             {
-                Dependencygroup dependGroup = dependencies.OrderBy(depend => targetFramework.IndexOf(depend.targetFramework)).First();
+                Dependencygroup dependGroup = dependencies.OrderBy(depend =>
+                {
+                    var ret = targetFramework.IndexOf(depend.targetFramework);
+                    return ret < 0 ? int.MaxValue : ret;
+                }).First();
                 node.TragetFramework = dependGroup.targetFramework;
                 if (dependGroup.dependencies != null)
                 {

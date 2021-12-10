@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using UnityEditor;
 
@@ -30,9 +29,6 @@ namespace kumaS.NuGetImporter.Editor
             {
                 return;
             }
-
-            BuildTarget target = BuildTarget.NoTarget;
-            var dirName = Path.GetFileName(Path.GetDirectoryName(Path.GetDirectoryName(assetImporter.assetPath)));
             if (!assetImporter.assetPath.Contains("Packages"))
             {
                 return;
@@ -42,36 +38,106 @@ namespace kumaS.NuGetImporter.Editor
             {
                 return;
             }
-            if (dirName.StartsWith("win"))
-            {
-                if (dirName.EndsWith("x86"))
-                {
-                    target = BuildTarget.StandaloneWindows;
-                }
-                else if (dirName.EndsWith("64"))
-                {
-                    target = BuildTarget.StandaloneWindows64;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else if (dirName == "osx-x64")
-            {
-                target = BuildTarget.StandaloneOSX;
-            }
-            else if (linuxName.Any(linux => dirName.StartsWith(linux)))
-            {
-                target = BuildTarget.StandaloneLinux64;
-            }
-            else
+
+            BuildTarget target = BuildTarget.NoTarget;
+            var targetCPU = "";
+            var enableOnEditor = false;
+            var dirName = Path.GetFileName(Path.GetDirectoryName(Path.GetDirectoryName(assetImporter.assetPath)));
+            var splitedDirName = dirName.Split('-');
+            if (splitedDirName.Length < 2)
             {
                 return;
             }
 
+            switch (splitedDirName[0])
+            {
+                case "win":
+                    enableOnEditor = true;
+                    switch (splitedDirName[1])
+                    {
+                        case "x64":
+                            target = BuildTarget.StandaloneWindows64;
+                            targetCPU = "x86_64";
+                            break;
+                        case "x86":
+                            target = BuildTarget.StandaloneWindows;
+                            targetCPU = "x86";
+                            break;
+                        default:
+                            return;
+                    }
+                    break;
+                case "osx":
+                    target = BuildTarget.StandaloneOSX;
+                    switch (splitedDirName[1])
+                    {
+                        case "x64":
+                            enableOnEditor = true;
+                            targetCPU = "x86_64";
+                            break;
+#if UNITY_2020_2_OR_NEWER
+                        case "arm64":
+                            enableOnEditor = true;
+                            targetCPU = "ARM64";
+                            break;
+#endif
+                        default:
+                            return;
+                    }
+                    break;
+                case "android":
+                    target = BuildTarget.Android;
+                    switch (splitedDirName[1])
+                    {
+                        case "arm":
+                            targetCPU = "ARMv7";
+                            break;
+                        case "arm64":
+                            targetCPU = "ARM64";
+                            break;
+                        case "x64":
+                            targetCPU = "x86_64";
+                            break;
+                        case "x86":
+                            targetCPU = "x86";
+                            break;
+                        default:
+                            return;
+                    }
+                    break;
+                case "ios":
+                    target = BuildTarget.iOS;
+                    switch (splitedDirName[1])
+                    {
+                        case "arm":
+                            targetCPU = "ARMv7";
+                            break;
+                        case "arm64":
+                            targetCPU = "ARM64";
+                            break;
+                        case "x64":
+                            targetCPU = "X64";
+                            break;
+                        default:
+                            return;
+                    }
+                    break;
+                default:
+                    enableOnEditor = true;
+                    if (linuxName.Contains(splitedDirName[0]))
+                    {
+                        target = BuildTarget.StandaloneLinux64;
+                        targetCPU = "x86_64";
+                    }
+                    else
+                    {
+                        return;
+                    }
+                    break;
+            }
+
             pluginImporter.SetCompatibleWithAnyPlatform(false);
-            pluginImporter.SetCompatibleWithEditor(true);
+            pluginImporter.SetCompatibleWithEditor(enableOnEditor);
             foreach (BuildTarget tar in allTarget)
             {
                 pluginImporter.SetCompatibleWithPlatform(tar, false);
@@ -81,18 +147,20 @@ namespace kumaS.NuGetImporter.Editor
             {
                 case BuildTarget.StandaloneLinux64:
                     pluginImporter.SetEditorData("OS", "Linux");
+                    pluginImporter.SetEditorData("CPU", targetCPU);
                     pluginImporter.SetPlatformData(BuildTarget.StandaloneOSX, "CPU", "None");
                     break;
                 case BuildTarget.StandaloneOSX:
                     pluginImporter.SetEditorData("OS", "OSX");
+                    pluginImporter.SetEditorData("CPU", targetCPU);
                     break;
                 case BuildTarget.StandaloneWindows:
                 case BuildTarget.StandaloneWindows64:
                     pluginImporter.SetEditorData("OS", "Windows");
+                    pluginImporter.SetEditorData("CPU", targetCPU);
                     break;
             }
-            pluginImporter.SetEditorData("CPU", target == BuildTarget.StandaloneWindows ? "x86" : "x86_64");
-            pluginImporter.SetPlatformData(target, "CPU", target == BuildTarget.StandaloneWindows ? "x86" : "x86_64");
+            pluginImporter.SetPlatformData(target, "CPU", targetCPU);
         }
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)

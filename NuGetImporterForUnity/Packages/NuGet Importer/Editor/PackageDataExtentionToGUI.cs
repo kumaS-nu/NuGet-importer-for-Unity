@@ -25,12 +25,6 @@ namespace kumaS.NuGetImporter.Editor
         private static readonly Dictionary<string, Texture2D> iconCache = new Dictionary<string, Texture2D>();
         private static readonly List<string> iconLog = new List<string>();
 
-        /// <value>
-        /// <para>Limit of icon cache.</para>
-        /// <para>アイコンのキャッシュの最大数。</para>
-        /// </value>
-        public static int iconCacheLimit = 500;
-
         /// <summary>
         /// <para>Delete icon cache.</para>
         /// <para>アイコンのキャッシュを削除する。</para>
@@ -281,7 +275,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         /// <param name="data">
         /// <para>Package infomation.</para>
-        /// <para>ッケージ情報。</para>
+        /// <para>パッケージ情報。</para>
         /// </param>
         /// <param name="bold">
         /// <para>Bold GUIStyle.</para>
@@ -362,42 +356,44 @@ namespace kumaS.NuGetImporter.Editor
             {
                 GUILayout.Label("Dependency", bold);
 
-                var framework = new List<string>();
-                switch (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
-                {
-                    case ApiCompatibilityLevel.NET_4_6:
-                        framework = FrameworkName.NET;
-                        break;
-                    case ApiCompatibilityLevel.NET_Standard_2_0:
-                        framework = FrameworkName.STANDARD;
-                        break;
-                }
-
-                IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => framework.Contains(group.targetFramework));
-                if (dependencyGroups == null || !dependencyGroups.Any())
+                if (catalogEntry.dependencyGroups == null)
                 {
                     GUILayout.Label("    None");
                 }
                 else
                 {
-                    Dependencygroup dependencyGroup = dependencyGroups.OrderBy(group => framework.IndexOf(group.targetFramework)).First();
-                    GUILayout.Label("    " + dependencyGroup.targetFramework, bold);
-                    if (dependencyGroup.dependencies == null || dependencyGroup.dependencies.Length == 0)
+                    var framework = FrameworkName.TARGET;
+
+                    IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => framework.Contains(group.targetFramework));
+                    if (dependencyGroups == null || !dependencyGroups.Any())
                     {
-                        GUILayout.Label("        None");
+                        GUILayout.Label("    None");
                     }
                     else
                     {
-                        try
+                        Dependencygroup dependencyGroup = dependencyGroups.OrderBy(group =>
                         {
-                            foreach (Dependency dependency in dependencyGroup.dependencies)
-                            {
-                                GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
-                            }
+                            var ret = framework.IndexOf(group.targetFramework);
+                            return ret < 0 ? int.MaxValue : ret;
+                        }).First();
+                        GUILayout.Label("    " + dependencyGroup.targetFramework, bold);
+                        if (dependencyGroup.dependencies == null || dependencyGroup.dependencies.Length == 0)
+                        {
+                            GUILayout.Label("        None");
                         }
-                        catch (Exception)
+                        else
                         {
-                            // During execution, the number of dependencies changes and an exception occurs, so I grip it. (because it's not a problem.)
+                            try
+                            {
+                                foreach (Dependency dependency in dependencyGroup.dependencies)
+                                {
+                                    GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                // During execution, the number of dependencies changes and an exception occurs, so I grip it. (because it's not a problem.)
+                            }
                         }
                     }
                 }
@@ -433,10 +429,11 @@ namespace kumaS.NuGetImporter.Editor
         /// <returns>
         /// <para>Task</para>
         /// </returns>
-        internal static async Task ToGUI(this PackageSummary summary, GUIStyle bold, NuGetImporterWindow window, bool onlyStable, VersionSelectMethod method)
+        internal static async Task ToGUI(this PackageSummary summary, GUIStyle bold, NuGetImporterWindow window, bool isReady, bool onlyStable, VersionSelectMethod method)
         {
             var tasks = new List<Task>();
             var sizeScale = window.position.width / 1920;
+            var isExist = PackageManager.ExiestingPackage.package.Any(package => package.id == summary.PackageId);
             using (new EditorGUILayout.HorizontalScope(GUILayout.Height(150)))
             {
                 using (new EditorGUILayout.VerticalScope(GUILayout.Width(150 * sizeScale)))
@@ -466,28 +463,39 @@ namespace kumaS.NuGetImporter.Editor
                         summary.SelectedVersion = versions[EditorGUILayout.Popup(index, versions.ToArray(), GUILayout.ExpandWidth(true))];
                         var isSameVersion = summary.SelectedVersion == summary.InstalledVersion;
                         var installText = summary.InstalledVersion == null ? "Install" : isSameVersion ? "Repair" : "Change Version";
-                        if (GUILayout.Button(installText, GUILayout.ExpandWidth(true)))
+                        using (new EditorGUI.DisabledGroupScope(!isReady || isExist))
                         {
-                            if (summary.InstalledVersion == null)
+                            if (GUILayout.Button(installText, GUILayout.ExpandWidth(true)))
                             {
-                                tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Installation finished."));
+                                if (summary.InstalledVersion == null)
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Installation finished."));
+                                }
+                                else if (isSameVersion)
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId, "The repair finished."));
+                                }
+                                else
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Version change finished."));
+                                }
                             }
-                            else if (isSameVersion)
+
+                            using (new EditorGUI.DisabledScope(!isSameVersion))
                             {
-                                tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId, "The repair finished."));
-                            }
-                            else
-                            {
-                                tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Version change finished."));
+                                if (GUILayout.Button("Uninstall", GUILayout.ExpandWidth(true)))
+                                {
+                                    tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId, "Uninstallation finished."));
+                                }
                             }
                         }
+                    }
 
-                        using (new EditorGUI.DisabledScope(!isSameVersion))
+                    if(isExist)
+                    {
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            if (GUILayout.Button("Uninstall", GUILayout.ExpandWidth(true)))
-                            {
-                                tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId, "Uninstallation finished."));
-                            }
+                            GUILayout.Label("This package exists out of control in this project.");
                         }
                     }
                 }
@@ -495,12 +503,18 @@ namespace kumaS.NuGetImporter.Editor
             await Task.WhenAll(tasks);
         }
 
-        private static async Task PackageOperation(Task operation, NuGetImporterWindow window, string packageId, string message)
+        private static async Task PackageOperation(Task<bool> operation, NuGetImporterWindow window, string packageId, string message)
         {
             try
             {
-                await operation;
-                EditorUtility.DisplayDialog("NuGet importer", message, "OK");
+                if (await operation)
+                {
+                    EditorUtility.DisplayDialog("NuGet importer", message, "OK");
+                }
+                else
+                {
+                    EditorUtility.DisplayDialog("NuGet importer", "Operation is canceled.", "OK");
+                }
             }
             catch (InvalidOperationException e)
             {
@@ -581,7 +595,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 iconCache[url] = texture;
                 iconLog.Add(url);
-                while (iconCache.Count > iconCacheLimit && iconCache.Count > 0)
+                while (iconCache.Count > NuGetImporterSettings.Instance.IconCacheLimit && iconCache.Count > 0)
                 {
                     var delete = iconLog[0];
                     iconLog.RemoveAt(0);
