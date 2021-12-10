@@ -18,7 +18,7 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class NuGetImporterSettingWindow : EditorWindow
     {
-        [MenuItem("NuGet Importer/NuGet Importer settings", false, 3)]
+        [MenuItem("NuGet Importer/NuGet importer settings", false, 3)]
         private static void ShowWindow()
         {
             var isAssets = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsAssets;
@@ -37,7 +37,7 @@ namespace kumaS.NuGetImporter.Editor
                 return;
             }
 
-            GetWindow<NuGetImporterSettingWindow>("Cache settings (NuGet importer)");
+            GetWindow<NuGetImporterSettingWindow>("NuGet importer settings");
         }
 
         private void OnGUI()

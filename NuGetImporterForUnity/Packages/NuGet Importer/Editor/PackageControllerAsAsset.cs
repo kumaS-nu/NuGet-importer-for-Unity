@@ -25,13 +25,23 @@ namespace kumaS.NuGetImporter.Editor
                     LoadManagedPluginList();
                 }
             }
-            var managed = managedPluginList.managedList.First(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            var _managed = managedPluginList.managedList.Where(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            if (!_managed.Any())
+            {
+                return;
+            }
+            var managed = _managed.First();
             try
             {
                 foreach (var file in managed.fileNames)
                 {
                     File.Delete(Path.Combine(dataPath, "Packages", "Plugins", file));
                     File.Delete(Path.Combine(dataPath, "Packages", "Plugins", file + ".meta"));
+                }
+
+                if(!Directory.GetFiles(Path.Combine(dataPath, "Packages", "Plugins")).Any())
+                {
+                    DeleteDirectory(Path.Combine(dataPath, "Packages", "Plugins"));
                 }
             }
             catch (InvalidDataException) { }
@@ -55,16 +65,10 @@ namespace kumaS.NuGetImporter.Editor
         internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
             var topDirectory = Path.Combine(dataPath, "Packages");
-            var managedDirectory = Path.Combine(topDirectory, "Plugins");
             var directoryName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant();
-            var packageDirectory = Path.Combine(topDirectory, directoryName);
             if (!Directory.Exists(topDirectory))
             {
                 Directory.CreateDirectory(topDirectory);
-            }
-            if (!Directory.Exists(managedDirectory))
-            {
-                Directory.CreateDirectory(managedDirectory);
             }
 
             var task = GetInstallPath(package);
@@ -82,45 +86,6 @@ namespace kumaS.NuGetImporter.Editor
                 DeleteDirectory(installPath);
                 return (true, package, asm);
             }
-
-            var packageManagedList = new PackageManagedPluginList
-            {
-                packageName = directoryName,
-                fileNames = new List<string>()
-            };
-
-            if (Directory.Exists(Path.Combine(packageDirectory, "lib")))
-            {
-                var lib = Directory.GetDirectories(Path.Combine(packageDirectory, "lib"));
-                if (lib.Length > 1)
-                {
-                    throw new InvalidDataException();
-                }
-                if (lib.Any())
-                {
-                    foreach (var moveFile in Directory.GetFiles(lib[0]))
-                    {
-                        var destPath = Path.Combine(managedDirectory, Path.GetFileName(moveFile));
-                        if (File.Exists(destPath))
-                        {
-                            File.Delete(destPath);
-                        }
-                        File.Move(moveFile, destPath);
-                        packageManagedList.fileNames.Add(Path.GetFileName(moveFile));
-                    }
-                }
-            }
-
-            lock (managedPluginListLock)
-            {
-                if (managedPluginList == null)
-                {
-                    LoadManagedPluginList();
-                }
-                managedPluginList.managedList.Add(packageManagedList);
-                WriteManagedPluginList();
-            }
-            DeleteDirectory(Path.Combine(packageDirectory, "lib"));
 
             return (false, package, asm);
         }
