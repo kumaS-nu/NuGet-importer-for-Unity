@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.1] - 2021-12-26
+
+- Fixed a bug caused by wrong ZIP_AVAILABLE.
+
+## [2.0.0] - 2021-12-10
+
+- Add new install location as UPM.
+- Correct dependency resolution.
+- Use NuGet's cache.
+- Update UI.
+
 ## [1.1.1] - 2021-03-19
 
 - Support for Unity2020
