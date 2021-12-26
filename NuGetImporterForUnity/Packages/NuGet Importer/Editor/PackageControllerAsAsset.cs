@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if ZIP_AVAILABLE
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -114,3 +116,5 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
+
+# endif
