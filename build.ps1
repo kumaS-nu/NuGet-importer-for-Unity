@@ -43,7 +43,7 @@ $AssemblyInfoContents = `
     -replace "\[assembly: AssemblyVersion\(""\d\.\d\.\d\.\d""\)\]" , "[assembly: AssemblyVersion(""$asmVersion"")]"
 $AssemblyInfoContents > "NuGetImporterForUnity/Packages/NuGet Importer/Editor/AssemblyInfo.cs"
 
-Start-Process -FilePath $env:UNITY_2019_4_32f1 `
+Start-Process -FilePath $env:UNITY_2020_3_25f1 `
     -ArgumentList "-projectPath ""${packageProjectPath}"" -batchmode -nographics -quit" `
     -Wait
 
@@ -53,7 +53,7 @@ Copy-Item -Path "NuGetImporterForUnity/Library/ScriptAssemblies/kumaS.NuGetImpor
 
 New-Item -Path "Release/$name" -ItemType Directory
 
-Start-Process -FilePath $env:UNITY_2019_4_32f1 `
+Start-Process -FilePath $env:UNITY_2020_3_25f1 `
     -ArgumentList "-projectPath ""${exportProjectPath}"" -batchmode -nographics -exportPackage ""Assets/NuGet Importer"" ""../Release/$name/$name.unitypackage"" -quit" `
     -Wait
 
