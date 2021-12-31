@@ -149,8 +149,9 @@ namespace kumaS.NuGetImporter.Editor
 
             var tasks = natives.Select(package => GetInstallPath(package));
             IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
+            var nativeNugetDirectory = natives.Select(package => Path.Combine(dataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
 
-            return CreateDeleteNativeProcess(nativeDirectory.ToArray());
+            return CreateDeleteNativeProcess(nativeDirectory.ToArray(), nativeNugetDirectory.ToArray());
         }
 
         /// <summary>
@@ -499,11 +500,15 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Directory paths to delete.</para>
         /// <para>削除するディレクトリのパス。</para>
         /// </param>
+        /// <param name="nugetDirectoryPaths">
+        /// <para>Directory paths to delete in NuGet/.</para>
+        /// <para>削除するNuGet内のディレクトリのパス。</para>
+        /// </param>
         /// <returns>
         /// <para>The process of removing native plugins.</para>
         /// <para>ネイティブプラグインを削除するプロセス。</para>
         /// </returns>
-        private Process CreateDeleteNativeProcess(IEnumerable<string> directoryPaths)
+        private Process CreateDeleteNativeProcess(IEnumerable<string> directoryPaths, IEnumerable<string> nugetDirectoryPaths)
         {
             var process = new Process();
             process.StartInfo.UseShellExecute = true;
@@ -531,6 +536,13 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("\"");
                     command.Append(" && ");
                 }
+                foreach (var path in nugetDirectoryPaths)
+                {
+                    command.Append("rd /s /q \"");
+                    command.Append(path);
+                    command.Append("\"");
+                    command.Append(" && ");
+                }
                 command.Append(Environment.CommandLine);
             }
             else
@@ -548,6 +560,13 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("rm -f '");
                     command.Append(path);
                     command.Append(".meta");
+                    command.Append("'");
+                    command.Append(" && ");
+                }
+                foreach (var path in nugetDirectoryPaths)
+                {
+                    command.Append("rm -rf '");
+                    command.Append(path);
                     command.Append("'");
                     command.Append(" && ");
                 }
