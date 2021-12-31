@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace kumaS.NuGetImporter.Editor
     {
         protected readonly static string dataPath = Application.dataPath;
         private readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
+        private readonly string[] deleteDirectories = new string[] { "_rels", "package", "build", "buildMultiTargeting", "buildTransitive" };
         private readonly string[] windowsArchs = new string[] { "x86", "x64" };
         private readonly string[] osxArchs = new string[] { "x64"
 #if UNITY_2020_2_OR_NEWER
@@ -112,7 +114,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         internal async Task<Process> OperateWithNativeAsync(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
         {
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillInstall.xml"), false))
+            using (var file = new StreamWriter(dataPath.Replace("Assets", "WillInstall.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -121,7 +123,7 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, write);
             }
 
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillPackage.xml"), false))
+            using (var file = new StreamWriter(dataPath.Replace("Assets", "WillPackage.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -130,7 +132,7 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, write);
             }
 
-            using (var file = new StreamWriter(Application.dataPath.Replace("Assets", "WillRoot.xml"), false))
+            using (var file = new StreamWriter(dataPath.Replace("Assets", "WillRoot.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -147,8 +149,9 @@ namespace kumaS.NuGetImporter.Editor
 
             var tasks = natives.Select(package => GetInstallPath(package));
             IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
+            var nativeNugetDirectory = natives.Select(package => Path.Combine(dataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
 
-            return CreateDeleteNativeProcess(nativeDirectory.ToArray());
+            return CreateDeleteNativeProcess(nativeDirectory.ToArray(), nativeNugetDirectory.ToArray());
         }
 
         /// <summary>
@@ -200,21 +203,30 @@ namespace kumaS.NuGetImporter.Editor
         {
             var extractPath = await GetInstallPath(package);
             var nupkgName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant() + ".nupkg";
-            var tempPath = Application.dataPath.Replace("Assets", "Temp");
+            var tempPath = dataPath.Replace("Assets", "Temp");
             var downloadPath = Path.Combine(tempPath, nupkgName);
+            var nugetPath = dataPath.Replace("Assets", "NuGet");
+            var nugetPackagePath = Path.Combine(nugetPath, package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+
             if (!File.Exists(downloadPath))
             {
                 await NuGet.GetPackage(package.id, package.version, tempPath);
             }
+            if (!Directory.Exists(nugetPath))
+            {
+                Directory.CreateDirectory(nugetPath);
+            }
+            if (Directory.Exists(nugetPackagePath))
+            {
+                DeleteDirectory(nugetPackagePath);
+            }
+            Directory.CreateDirectory(nugetPackagePath);
             DeleteDirectory(extractPath);
             ZipFile.ExtractToDirectory(downloadPath, extractPath);
-            DeleteDirectory(Path.Combine(extractPath, "_rels"));
-            DeleteDirectory(Path.Combine(extractPath, "ref"));
-            DeleteDirectory(Path.Combine(extractPath, "package"));
-            DeleteDirectory(Path.Combine(extractPath, "build"));
-            DeleteDirectory(Path.Combine(extractPath, "buildMultiTargeting"));
-            DeleteDirectory(Path.Combine(extractPath, "buildTransitive"));
-            DeleteDirectory(Path.Combine(extractPath, "tools"));
+            foreach (var del in deleteDirectories)
+            {
+                DeleteDirectory(Path.Combine(extractPath, del));
+            }
 
             foreach (var file in Directory.GetFiles(extractPath))
             {
@@ -256,6 +268,39 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         DeleteDirectory(lib);
                     }
+                }
+
+                var groupedDirectories = GroupLocalizedDirectory(Directory.GetDirectories(managedPath)[0]);
+                var currentCulture = CultureInfo.CurrentUICulture;
+                foreach (var grouped in groupedDirectories)
+                {
+                    if (grouped.Count == 1)
+                    {
+                        continue;
+                    }
+
+                    foreach (var localized in grouped)
+                    {
+                        var localizedName = Path.GetFileName(localized);
+                        if (!currentCulture.Equals(CultureInfo.CreateSpecificCulture(localizedName)))
+                        {
+                            var platformName = Path.GetFileName(Path.GetDirectoryName(localized));
+                            if (!Directory.Exists(Path.Combine(nugetPackagePath, "lib")))
+                            {
+                                Directory.CreateDirectory(Path.Combine(nugetPackagePath, "lib"));
+                            }
+                            if (!Directory.Exists(Path.Combine(nugetPackagePath, "lib", platformName)))
+                            {
+                                Directory.CreateDirectory(Path.Combine(nugetPackagePath, "lib", platformName));
+                            }
+                            Directory.Move(localized, Path.Combine(nugetPackagePath, "lib", platformName, localizedName));
+                        }
+                    }
+                }
+
+                if (!Directory.GetDirectories(managedPath).Any() && !Directory.GetFiles(managedPath).Any())
+                {
+                    DeleteDirectory(managedPath);
                 }
             }
 
@@ -329,11 +374,65 @@ namespace kumaS.NuGetImporter.Editor
                     DeleteDirectory(delete);
                 }
 
-                if (Directory.GetDirectories(nativePath).Length == 0)
+                if (!Directory.GetDirectories(nativePath).Any())
                 {
                     DeleteDirectory(nativePath);
                 }
             }
+
+            foreach (var moveDir in Directory.GetDirectories(extractPath))
+            {
+                var dirName = Path.GetFileName(moveDir);
+                if (dirName == "lib" || dirName == "runtimes")
+                {
+                    continue;
+                }
+                Directory.Move(moveDir, Path.Combine(nugetPackagePath, dirName));
+            }
+        }
+
+        /// <summary>
+        /// <para>Group localization with the same resources.</para>
+        /// <para>同じリソースのローカライズをグループ化する。</para>
+        /// </summary>
+        /// <param name="managedPath">
+        /// <para>Path of the managed plugin.</para>
+        /// <para>マネージドプラグインのパス。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Grouped directories.</para>
+        /// <para>グループ化されたディレクトリ。</para>
+        /// </returns>
+        private List<List<string>> GroupLocalizedDirectory(string managedPath)
+        {
+            var ret = new List<List<string>>();
+            var localizedFileNames = new List<List<string>>();
+            foreach (var localizedDir in Directory.GetDirectories(managedPath))
+            {
+                var localizedFiles = Directory.GetFiles(localizedDir, "*.dll", SearchOption.AllDirectories).Select(file => Path.GetFileName(file)).ToList();
+                int addIndex = 0;
+                foreach (var localizedFile in localizedFileNames)
+                {
+                    if (localizedFile.Intersect(localizedFiles).Any())
+                    {
+                        break;
+                    }
+                    addIndex++;
+                }
+
+                if (addIndex == ret.Count)
+                {
+                    localizedFileNames.Add(localizedFiles);
+                    ret.Add(new List<string> { localizedDir });
+                }
+                else
+                {
+                    localizedFileNames[addIndex] = localizedFileNames[addIndex].Union(localizedFiles).ToList();
+                    ret[addIndex].Add(localizedDir);
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -347,7 +446,9 @@ namespace kumaS.NuGetImporter.Editor
         private async Task UninstallManagedPackageAsync(Package package)
         {
             var path = await GetInstallPath(package);
+            var nugetPackagePath = Path.Combine(dataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
             var tasks = new List<Task>();
+            tasks.Add(Task.Run(() => DeleteDirectory(nugetPackagePath)));
             tasks.Add(Task.Run(() => DeleteDirectory(path)));
             tasks.Add(Task.Run(() => DeletePluginsOutOfDirectory(package)));
             await Task.WhenAll(tasks);
@@ -399,11 +500,15 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Directory paths to delete.</para>
         /// <para>削除するディレクトリのパス。</para>
         /// </param>
+        /// <param name="nugetDirectoryPaths">
+        /// <para>Directory paths to delete in NuGet/.</para>
+        /// <para>削除するNuGet内のディレクトリのパス。</para>
+        /// </param>
         /// <returns>
         /// <para>The process of removing native plugins.</para>
         /// <para>ネイティブプラグインを削除するプロセス。</para>
         /// </returns>
-        private Process CreateDeleteNativeProcess(IEnumerable<string> directoryPaths)
+        private Process CreateDeleteNativeProcess(IEnumerable<string> directoryPaths, IEnumerable<string> nugetDirectoryPaths)
         {
             var process = new Process();
             process.StartInfo.UseShellExecute = true;
@@ -431,6 +536,13 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("\"");
                     command.Append(" && ");
                 }
+                foreach (var path in nugetDirectoryPaths)
+                {
+                    command.Append("rd /s /q \"");
+                    command.Append(path);
+                    command.Append("\"");
+                    command.Append(" && ");
+                }
                 command.Append(Environment.CommandLine);
             }
             else
@@ -448,6 +560,13 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("rm -f '");
                     command.Append(path);
                     command.Append(".meta");
+                    command.Append("'");
+                    command.Append(" && ");
+                }
+                foreach (var path in nugetDirectoryPaths)
+                {
+                    command.Append("rm -rf '");
+                    command.Append(path);
                     command.Append("'");
                     command.Append(" && ");
                 }

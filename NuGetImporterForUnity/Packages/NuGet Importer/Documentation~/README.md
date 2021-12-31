@@ -51,7 +51,7 @@ This is also fully support for native plugins.
 
 ### NuGet importer settings
 
-![NuGet importer settings](images/CacheSettings.png)
+![NuGet importer settings](images/Settings.png)
 
 1. Specify the installation location. （It is recommended to use UPM.)
 1. Specify the method for determining the package version when solve dependency. (Suit is recommended.)
@@ -60,6 +60,8 @@ This is also fully support for native plugins.
 1. The maximum number of icon to cache. (0 or less is not cached.)
 
 ## Note
+
+Files that are not required at runtime (e.g. analyzers, documentationn, etc.) are installed to `(your project)/NuGet`. If you want to reference them, add them reference manually.
 
 When importing this package into your project, make the following changes
 - Turn off `PlayerSettings -> assemblyVersionValidation`. (To make Unity not check version of assembly as NuGet does.)

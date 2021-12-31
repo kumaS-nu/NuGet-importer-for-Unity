@@ -75,6 +75,8 @@
 
 ## Note
 
+Files that are not required at runtime (e.g. analyzers, documentationn, etc.) are installed to `(your project)/NuGet`. If you want to reference them, add them reference manually.
+
 When importing this package into your project, make the following changes
 - Turn off `PlayerSettings -> assemblyVersionValidation`. (To make Unity not check version of assembly as NuGet does.)
 - Add reference `System.IO.Compression.FileSystem.dll`. (NuGet importer for Unity handles Zip files.)

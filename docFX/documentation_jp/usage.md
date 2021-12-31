@@ -76,6 +76,8 @@
 
 ## 注意点
 
+実行時に必要なファイル以外（例：アナライザーやドキュメントなど）は `(your project)/NuGet` 以下に配置されます。参照する際は手動で追加してください。
+
 このパッケージを導入する際、以下の変更を加えます。
 - `PlayerSettings -> assemblyVersionValidation` をオフに。（NuGet と同様にアセンブリ参照のバージョンの同一性をチェックしなくさせるため。）
 - `System.IO.Compression.FileSystem.dll` を参照に追加。（NuGet importer for Unity が Zip ファイルを扱うため。）
