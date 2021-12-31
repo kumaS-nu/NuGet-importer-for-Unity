@@ -23,61 +23,6 @@
       "is_incremental": false
     },
     {
-      "type": "Resource",
-      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/Demo.gif",
-      "output": {
-        "resource": {
-          "relative_path": "images/Demo.gif"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/ForOpenUPM.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/ForOpenUPM.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/MainWindow.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/MainWindow.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/MenuItem.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/MenuItem.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~/images/Settings.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/Settings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
       "type": "Conceptual",
       "source_relative_path": "api/index.md",
       "output": {
@@ -561,15 +506,12 @@
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Conceptual",
       "source_relative_path": "documentation/usage.md",
       "output": {
         ".html": {
           "relative_path": "documentation/usage.html",
-          "hash": "jva6aQ7objxMieUd8Lz97POi0Bx3hj8gpiqtF+Mq35A="
+          "hash": "Sw7QrJJgezskXEDL8eedovTKsMxGq35phFiSeREv9mI="
         }
       },
       "is_incremental": false,
@@ -615,15 +557,67 @@
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Conceptual",
       "source_relative_path": "documentation_jp/usage.md",
       "output": {
         ".html": {
           "relative_path": "documentation_jp/usage.html",
-          "hash": "28BDNiogEckv9hjnXmlaUKzCOnjO7F4UmNRvIx8vZF0="
+          "hash": "Ddf9gmBgbF7QjOJjeVirE06R5gm/AGPnumAsIfWmzCE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Demo.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/Demo.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ForOpenUPM.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ForOpenUPM.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/MainWindow.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/MainWindow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/MenuItem.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/MenuItem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Settings.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Settings.png"
         }
       },
       "is_incremental": false,

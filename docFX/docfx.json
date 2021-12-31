@@ -48,8 +48,7 @@
         "resource": [{
             "files": [
                 "**/images/**"
-            ],
-            "src": "../NuGetImporterForUnity/Packages/NuGet Importer/Documentation~"
+            ]
         }],
         "overwrite": [{
             "files": [
