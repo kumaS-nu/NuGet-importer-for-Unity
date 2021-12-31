@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.0] - 2021-12-31
+
+- Support for localized package and analyzer
+
 ## [2.0.1] - 2021-12-26
 
 - Fixed a bug caused by wrong ZIP_AVAILABLE.

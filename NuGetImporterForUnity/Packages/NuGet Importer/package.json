@@ -12,5 +12,8 @@
         "email": "kumas.kumachan@gmail.com",
         "url": "https://github.com/kumaS-nu/NuGet-imperter-for-Unity"
     },
-    "type": "tool"
+    "changelogUrl": "https://github.com/kumaS-nu/NuGet-importer-for-Unity/blob/2.0.1/NuGetImporterForUnity/Packages/NuGet%20Importer/CHANGELOG.md",
+    "documentationUrl": "https://github.com/kumaS-nu/NuGet-importer-for-Unity/tree/2.0.1/NuGetImporterForUnity/Packages/NuGet%20Importer/Documentation~",
+    "license": "Apache-2.0",
+    "licensesUrl": "https://github.com/kumaS-nu/NuGet-importer-for-Unity/blob/2.0.1/NuGetImporterForUnity/Packages/NuGet%20Importer/LICENSE.md"
 }
