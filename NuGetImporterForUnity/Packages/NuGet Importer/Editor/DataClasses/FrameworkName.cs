@@ -108,8 +108,8 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         ret = STANDARD2_0;
                         ret.AddRange(NET4_6);
                         break;
-#if UNITY_2021_2_OR_NEWER
-                    case ApiCompatibilityLevel.NET_4_8:
+#if UNITY_2021_2_1_OR_NEWER
+                    case ApiCompatibilityLevel.NET_Unity_4_8:
                         ret = NET4_8;
                         ret.AddRange(STANDARD2_1);
                         break;
