@@ -586,9 +586,9 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task GetIcon(string url)
         {
-            var source = new Texture2D(0, 0);
+            var source = new Texture2D(0, 0, TextureFormat.RGBA32, false);
             source.LoadImage(await client.GetByteArrayAsync(url));
-            var texture = new Texture2D(128, 128);
+            var texture = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Graphics.ConvertTexture(source, texture);
             MonoBehaviour.DestroyImmediate(source);
             lock (iconCache)
