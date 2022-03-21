@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEditor;
 
@@ -152,6 +153,15 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 };
                 return ret;
             }
+        }
+
+        /// <summary>
+        /// <para>All framework name</para>
+        /// <para>全てのフレームワークの名前</para>
+        /// </summary>
+        public static List<string> ALLFLATPLATFORM
+        {
+            get => ALLPLATFORM.SelectMany(p => p).ToList();
         }
     }
 }

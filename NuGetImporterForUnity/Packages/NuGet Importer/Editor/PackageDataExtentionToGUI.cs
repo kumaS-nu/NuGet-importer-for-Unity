@@ -364,20 +364,39 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     var framework = FrameworkName.TARGET;
 
-                    IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => framework.Contains(group.targetFramework));
+                    IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => group.targetFramework == null || group.targetFramework == "" || framework.Contains(group.targetFramework));
                     if (dependencyGroups == null || !dependencyGroups.Any())
                     {
                         GUILayout.Label("    None");
                     }
                     else
                     {
-                        Dependencygroup dependencyGroup = dependencyGroups.OrderBy(group =>
+                        var dependencies = new List<Dependency>();
+                        var targetFramework = framework.First();
+                        var dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
+                        if (dependAllGroup.Any())
+                        {
+                            dependencies.AddRange(dependAllGroup.First().dependencies);
+                        }
+
+                        var dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(group =>
                         {
                             var ret = framework.IndexOf(group.targetFramework);
                             return ret < 0 ? int.MaxValue : ret;
-                        }).First();
-                        GUILayout.Label("    " + dependencyGroup.targetFramework, bold);
-                        if (dependencyGroup.dependencies == null || dependencyGroup.dependencies.Length == 0)
+                        });
+
+                        if (dependGroups.Any() && dependGroups.First().dependencies != null)
+                        {
+                            var dependGroup = dependGroups.First();
+                            dependencies.AddRange(dependGroup.dependencies);
+                            if (dependGroup.dependencies.Any())
+                            {
+                                targetFramework = dependGroup.targetFramework;
+                            }
+                        }
+
+                        GUILayout.Label("    " + targetFramework, bold);
+                        if (!dependencies.Any())
                         {
                             GUILayout.Label("        None");
                         }
@@ -385,7 +404,7 @@ namespace kumaS.NuGetImporter.Editor
                         {
                             try
                             {
-                                foreach (Dependency dependency in dependencyGroup.dependencies)
+                                foreach (Dependency dependency in dependencies)
                                 {
                                     GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
                                 }
@@ -491,7 +510,7 @@ namespace kumaS.NuGetImporter.Editor
                         }
                     }
 
-                    if(isExist)
+                    if (isExist)
                     {
                         using (new EditorGUILayout.HorizontalScope())
                         {
