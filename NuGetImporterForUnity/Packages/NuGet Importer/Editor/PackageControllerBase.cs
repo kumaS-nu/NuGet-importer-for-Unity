@@ -245,11 +245,37 @@ namespace kumaS.NuGetImporter.Editor
                 var frameworkList = FrameworkName.TARGET;
                 var target = "";
                 var priority = int.MaxValue;
+
+                if (targetFramework == default)
+                {
+                    targetFramework = frameworkDictionary.First(dic => dic.Contains(frameworkList.First()));
+                }
+
                 foreach (var lib in Directory.GetDirectories(managedPath))
                 {
                     var dirName = Path.GetFileName(lib);
 
-                    if (targetFramework != default && targetFramework.Contains(dirName))
+                    if (dirName.ToLowerInvariant() == "unity")
+                    {
+                        priority = int.MaxValue;
+                        foreach (var framework in Directory.GetDirectories(lib))
+                        {
+                            var frameworkName = Path.GetFileName(framework);
+                            if (targetFramework.Contains(frameworkName))
+                            {
+                                priority = -1;
+                                target = framework;
+                            }
+                            else if (frameworkList.Contains(frameworkName) && frameworkList.IndexOf(frameworkName) < priority)
+                            {
+                                priority = frameworkList.IndexOf(frameworkName);
+                                target = framework;
+                                package.targetFramework = frameworkDictionary.Where(dic => dic.Contains(frameworkName)).First()[0];
+                            }
+                        }
+                        break;
+                    }
+                    else if (targetFramework.Contains(dirName))
                     {
                         priority = -1;
                         target = lib;
@@ -264,7 +290,17 @@ namespace kumaS.NuGetImporter.Editor
 
                 foreach (var lib in Directory.GetDirectories(managedPath))
                 {
-                    if (lib != target)
+                    if (Path.GetFileName(lib).ToLowerInvariant() == "unity")
+                    {
+                        foreach (var framework in Directory.GetDirectories(lib))
+                        {
+                            if (framework != target)
+                            {
+                                DeleteDirectory(framework);
+                            }
+                        }
+                    }
+                    else if (lib != target)
                     {
                         DeleteDirectory(lib);
                     }
@@ -306,7 +342,12 @@ namespace kumaS.NuGetImporter.Editor
 
             // Processing Native Plugins
             var nativePath = Path.Combine(extractPath, "runtimes");
-            if (Directory.Exists(nativePath))
+            var directories = Directory.GetDirectories(extractPath).Select(path => Path.GetFileName(path).ToLowerInvariant());
+            if (directories.Any(dir => dir == "unity"))
+            {
+                DeleteDirectory(nativePath);
+            }
+            else if (Directory.Exists(nativePath))
             {
                 var deleteList = new List<string>();
                 var target = "";
@@ -383,7 +424,7 @@ namespace kumaS.NuGetImporter.Editor
             foreach (var moveDir in Directory.GetDirectories(extractPath))
             {
                 var dirName = Path.GetFileName(moveDir);
-                if (dirName == "lib" || dirName == "runtimes")
+                if (dirName == "lib" || dirName == "runtimes" || dirName.ToLowerInvariant() == "unity")
                 {
                     continue;
                 }
