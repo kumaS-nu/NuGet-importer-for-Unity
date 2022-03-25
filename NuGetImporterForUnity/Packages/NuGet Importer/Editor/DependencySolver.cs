@@ -367,7 +367,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 else
                 {
-                    node.TragetFramework = "";
+                    node.TragetFramework = targetFramework.First();
                 }
             }
 

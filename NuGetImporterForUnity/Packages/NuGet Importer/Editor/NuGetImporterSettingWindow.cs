@@ -73,6 +73,13 @@ namespace kumaS.NuGetImporter.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    EditorGUILayout.LabelField("Auto package placement check");
+                    GUILayout.FlexibleSpace();
+                    NuGetImporterSettings.Instance.AutoPackagePlacementCheck = EditorGUILayout.Toggle(NuGetImporterSettings.Instance.AutoPackagePlacementCheck);
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
                     EditorGUILayout.LabelField("search cache count");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.SearchCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.SearchCacheLimit);

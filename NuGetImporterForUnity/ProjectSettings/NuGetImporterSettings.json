@@ -4,5 +4,6 @@
     "iconCacheLimit": 500,
     "method": 0,
     "onlyStable": false,
-    "installMethod": 0
+    "installMethod": 0,
+    "autoPackagePlacementCheck": true
 }

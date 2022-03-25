@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
 using UnityEditor;
+
 using UnityEngine;
 
 namespace kumaS.NuGetImporter.Editor
@@ -21,6 +23,27 @@ namespace kumaS.NuGetImporter.Editor
         private static void SetProjectSettingsPath()
         {
             projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
+            if (Instance.AutoPackagePlacementCheck)
+            {
+                _ = CheckPackagePlacement();
+            }
+        }
+
+        private static async Task CheckPackagePlacement()
+        {
+            try
+            {
+                if (await PackageManager.IsNeedToFix(Instance.OnlyStable, Instance.Method))
+                {
+                    if (EditorUtility.DisplayDialog("NuGet importer", "We find packages that are not installed. Do you install these packages?", "Yes", "No"))
+                    {
+                        var result = await PackageManager.FixPackages(Instance.OnlyStable, Instance.Method);
+                        EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
+                    }
+                }
+            }
+            catch (InvalidOperationException)
+            { }
         }
 
         public static NuGetImporterSettings Instance
@@ -169,6 +192,27 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var changed = installMethod != value;
                 installMethod = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private bool autoPackagePlacementCheck = true;
+
+        /// <summary>
+        /// <para>Is package placement checked at startup?</para>
+        /// <para>起動時にパッケージの配置をチェックするか。</para>
+        /// </summary>
+        public bool AutoPackagePlacementCheck
+        {
+            get => autoPackagePlacementCheck;
+            set
+            {
+                var changed = autoPackagePlacementCheck != value;
+                autoPackagePlacementCheck = value;
                 if (changed)
                 {
                     Save();

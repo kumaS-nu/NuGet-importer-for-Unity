@@ -488,15 +488,15 @@ namespace kumaS.NuGetImporter.Editor
                             {
                                 if (summary.InstalledVersion == null)
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Installation finished."));
+                                    tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
                                 }
                                 else if (isSameVersion)
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId, "The repair finished."));
+                                    tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId));
                                 }
                                 else
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Version change finished."));
+                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
                                 }
                             }
 
@@ -504,7 +504,7 @@ namespace kumaS.NuGetImporter.Editor
                             {
                                 if (GUILayout.Button("Uninstall", GUILayout.ExpandWidth(true)))
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId, "Uninstallation finished."));
+                                    tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId));
                                 }
                             }
                         }
@@ -522,27 +522,10 @@ namespace kumaS.NuGetImporter.Editor
             await Task.WhenAll(tasks);
         }
 
-        private static async Task PackageOperation(Task<bool> operation, NuGetImporterWindow window, string packageId, string message)
+        private static async Task PackageOperation(Task<OperationResult> operation, NuGetImporterWindow window, string packageId)
         {
-            try
-            {
-                if (await operation)
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", message, "OK");
-                }
-                else
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", "Operation is canceled.", "OK");
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
-            catch (ArgumentException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
+            var result = await operation;
+            EditorUtility.DisplayDialog("NuGet  importer", result.Message, "OK");
             await window.UpdateInstalledList();
             await window.UpdateSelected(packageId);
         }
