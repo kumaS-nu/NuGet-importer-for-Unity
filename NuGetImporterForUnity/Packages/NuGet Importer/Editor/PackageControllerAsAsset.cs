@@ -41,7 +41,7 @@ namespace kumaS.NuGetImporter.Editor
                     File.Delete(Path.Combine(PackageManager.DataPath, "Packages", "Plugins", file + ".meta"));
                 }
 
-                if(!Directory.GetFiles(Path.Combine(PackageManager.DataPath, "Packages", "Plugins")).Any())
+                if (!Directory.GetFiles(Path.Combine(PackageManager.DataPath, "Packages", "Plugins")).Any())
                 {
                     DeleteDirectory(Path.Combine(PackageManager.DataPath, "Packages", "Plugins"));
                 }
@@ -117,4 +117,4 @@ namespace kumaS.NuGetImporter.Editor
     }
 }
 
-# endif
+#endif

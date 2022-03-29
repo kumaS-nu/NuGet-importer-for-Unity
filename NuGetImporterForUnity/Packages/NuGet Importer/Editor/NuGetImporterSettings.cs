@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
@@ -22,7 +21,7 @@ namespace kumaS.NuGetImporter.Editor
         [InitializeOnLoadMethod]
         private static void SetProjectSettingsPath()
         {
-            projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");         
+            projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
         }
 
         public static NuGetImporterSettings Instance

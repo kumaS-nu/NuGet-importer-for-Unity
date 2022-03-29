@@ -14,8 +14,6 @@ using System.Xml.Serialization;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
-using UnityEngine;
-
 namespace kumaS.NuGetImporter.Editor
 {
     internal abstract class PackageControllerBase
