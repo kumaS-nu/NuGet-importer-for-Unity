@@ -37,6 +37,20 @@
 1. [リリースページ](https://github.com/kumaS-nu/NuGet-importer-for-Unity/releases)へ行き、必要なバージョンのzipファイルをダウンロードする。
 1. zipファイルを解凍し、中の .unitypackage をプロジェクトにインポートする。
 
+## .gitignoreの設定
+
+インストールしたパッケージは Git の監理外にしたいと思います。その場合は、`.gitignore`に以下を追加してください。インストールしたパッケージ一覧は`Asset/package.config`で管理され、このファイルを共有すればパッケージの復元ができます。
+```bash
+# NuGet importer
+/[Aa]ssets/[Pp]ackages.meta
+/[Aa]ssets/[Pp]ackages/
+
+/[Nn]u[Gg]et/
+
+/[Pp]ackages/*/
+!/[Pp]ackages/your embedded package to share with git/
+```
+
 ## Unityでの使い方
 
 ### メニューアイテム
@@ -44,7 +58,7 @@
 ![メニューアイテム](../images/MenuItem.png)
 
 - Manage packages ・・・ パッケージを管理するメインウィンドウを表示する。
-- Repair packages ・・・ インストールされているパッケージの依存関係を最適化し、パッケージを修復する。
+- Repair packages ・・・ インストールされていないパッケージを修復する。
 - Delete cache ・・・ キャッシュを削除する。（ただし、アセンブリがロードされるたびにキャッシュは消える。）
 - NuGet importer settings ・・・ NuGet importer に関する設定をするウィンドウを表示する。
 - Check update ・・・ 更新があるか確認する。
@@ -70,6 +84,7 @@
 
 1. インストール先を指定する。（UPMを推奨。）
 1. 依存関係のバージョン決定方法を指定する。（Suitを推奨。）
+1. 起動時にパッケージがインストールされているか確認するか。パッケージのディレクトリが存在すればインストール済みと判断。インストールされていないパッケージを見つけた場合、自動的に修復する。（オンを推奨。）
 1. 検索結果のキャッシュする最大数。（0以下はキャッシュしない。）
 1. カタログのキャッシュする最大数。（0以下はキャッシュしない。）
 1. アイコンのキャッシュする最大数。（0以下はキャッシュしない。）
