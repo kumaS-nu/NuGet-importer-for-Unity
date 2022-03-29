@@ -93,7 +93,7 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Repair packages", false, 1)]
         private static async Task FixPackages()
         {
-            var result = await PackageManager.FixPackages(NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method);
+            var result = await PackageManager.FixPackagesAsync(false);
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
 

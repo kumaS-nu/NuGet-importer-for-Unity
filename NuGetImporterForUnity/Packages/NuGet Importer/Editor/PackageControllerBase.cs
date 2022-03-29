@@ -20,7 +20,6 @@ namespace kumaS.NuGetImporter.Editor
 {
     internal abstract class PackageControllerBase
     {
-        protected readonly static string dataPath = Application.dataPath;
         private readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
         private readonly string[] deleteDirectories = new string[] { "_rels", "package", "build", "buildMultiTargeting", "buildTransitive" };
         private readonly string[] windowsArchs = new string[] { "x86", "x64" };
@@ -114,7 +113,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         internal async Task<Process> OperateWithNativeAsync(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
         {
-            using (var file = new StreamWriter(dataPath.Replace("Assets", "WillInstall.xml"), false))
+            using (var file = new StreamWriter(PackageManager.DataPath.Replace("Assets", "WillInstall.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -123,7 +122,7 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, write);
             }
 
-            using (var file = new StreamWriter(dataPath.Replace("Assets", "WillPackage.xml"), false))
+            using (var file = new StreamWriter(PackageManager.DataPath.Replace("Assets", "WillPackage.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -132,7 +131,7 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, write);
             }
 
-            using (var file = new StreamWriter(dataPath.Replace("Assets", "WillRoot.xml"), false))
+            using (var file = new StreamWriter(PackageManager.DataPath.Replace("Assets", "WillRoot.xml"), false))
             {
                 var write = new InstalledPackages
                 {
@@ -149,7 +148,7 @@ namespace kumaS.NuGetImporter.Editor
 
             var tasks = natives.Select(package => GetInstallPath(package));
             IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
-            var nativeNugetDirectory = natives.Select(package => Path.Combine(dataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
+            var nativeNugetDirectory = natives.Select(package => Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
 
             return CreateDeleteNativeProcess(nativeDirectory.ToArray(), nativeNugetDirectory.ToArray());
         }
@@ -203,9 +202,9 @@ namespace kumaS.NuGetImporter.Editor
         {
             var extractPath = await GetInstallPath(package);
             var nupkgName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant() + ".nupkg";
-            var tempPath = dataPath.Replace("Assets", "Temp");
+            var tempPath = PackageManager.DataPath.Replace("Assets", "Temp");
             var downloadPath = Path.Combine(tempPath, nupkgName);
-            var nugetPath = dataPath.Replace("Assets", "NuGet");
+            var nugetPath = PackageManager.DataPath.Replace("Assets", "NuGet");
             var nugetPackagePath = Path.Combine(nugetPath, package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
 
             if (!File.Exists(downloadPath))
@@ -487,7 +486,7 @@ namespace kumaS.NuGetImporter.Editor
         private async Task UninstallManagedPackageAsync(Package package)
         {
             var path = await GetInstallPath(package);
-            var nugetPackagePath = Path.Combine(dataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            var nugetPackagePath = Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
             var tasks = new List<Task>();
             tasks.Add(Task.Run(() => DeleteDirectory(nugetPackagePath)));
             tasks.Add(Task.Run(() => DeleteDirectory(path)));

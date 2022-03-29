@@ -2546,7 +2546,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         [OneTimeTearDown]
         public void TearDown()
         {
-            _ = PackageManager.Initialize();
+            PackageManager.Load();
         }
 
         #endregion

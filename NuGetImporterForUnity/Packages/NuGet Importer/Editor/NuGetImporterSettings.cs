@@ -22,28 +22,7 @@ namespace kumaS.NuGetImporter.Editor
         [InitializeOnLoadMethod]
         private static void SetProjectSettingsPath()
         {
-            projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
-            if (Instance.AutoPackagePlacementCheck)
-            {
-                _ = CheckPackagePlacement();
-            }
-        }
-
-        private static async Task CheckPackagePlacement()
-        {
-            try
-            {
-                if (await PackageManager.IsNeedToFix(Instance.OnlyStable, Instance.Method))
-                {
-                    if (EditorUtility.DisplayDialog("NuGet importer", "We find packages that are not installed. Do you install these packages?", "Yes", "No"))
-                    {
-                        var result = await PackageManager.FixPackages(Instance.OnlyStable, Instance.Method);
-                        EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
-                    }
-                }
-            }
-            catch (InvalidOperationException)
-            { }
+            projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");         
         }
 
         public static NuGetImporterSettings Instance

@@ -488,15 +488,15 @@ namespace kumaS.NuGetImporter.Editor
                             {
                                 if (summary.InstalledVersion == null)
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
+                                    tasks.Add(PackageOperation(PackageManager.InstallPackageAsync(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
                                 }
                                 else if (isSameVersion)
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId));
+                                    tasks.Add(PackageOperation(PackageManager.FixPackageAsync(summary.PackageId, false), window, summary.PackageId));
                                 }
                                 else
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
+                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersionAsync(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
                                 }
                             }
 
@@ -504,7 +504,7 @@ namespace kumaS.NuGetImporter.Editor
                             {
                                 if (GUILayout.Button("Uninstall", GUILayout.ExpandWidth(true)))
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId));
+                                    tasks.Add(PackageOperation(PackageManager.UninstallPackagesAsync(summary.PackageId, onlyStable), window, summary.PackageId));
                                 }
                             }
                         }

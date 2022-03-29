@@ -50,7 +50,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.RootPackage == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>() { (packageId, version) };
             if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
@@ -96,7 +96,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.Installed == null || PackageManager.RootPackage == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
             if (PackageManager.RootPackage != null && PackageManager.RootPackage.package.Any())
@@ -135,7 +135,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.RootPackage == null || PackageManager.Installed == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
             if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
@@ -178,7 +178,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.RootPackage == null || PackageManager.Installed == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> installed = new List<(string packageId, string version)>();
             if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())

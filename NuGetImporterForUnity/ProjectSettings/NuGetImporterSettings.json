@@ -3,7 +3,7 @@
     "catalogCacheLimit": 300,
     "iconCacheLimit": 500,
     "method": 0,
-    "onlyStable": false,
+    "onlyStable": true,
     "installMethod": 0,
     "autoPackagePlacementCheck": true
 }

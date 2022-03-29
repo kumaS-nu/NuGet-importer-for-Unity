@@ -15,7 +15,7 @@ namespace kumaS.NuGetImporter.Editor
     {
         private static ManagedPluginList managedPluginList;
         private static readonly object managedPluginListLock = new object();
-        private readonly static string managedPluginListPath = Path.Combine(Application.dataPath, "Packages", "managedPluginList.json");
+        private readonly static string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
 
         /// <inheritdoc/>
         internal override void DeletePluginsOutOfDirectory(Package package)
@@ -37,13 +37,13 @@ namespace kumaS.NuGetImporter.Editor
             {
                 foreach (var file in managed.fileNames)
                 {
-                    File.Delete(Path.Combine(dataPath, "Packages", "Plugins", file));
-                    File.Delete(Path.Combine(dataPath, "Packages", "Plugins", file + ".meta"));
+                    File.Delete(Path.Combine(PackageManager.DataPath, "Packages", "Plugins", file));
+                    File.Delete(Path.Combine(PackageManager.DataPath, "Packages", "Plugins", file + ".meta"));
                 }
 
-                if(!Directory.GetFiles(Path.Combine(dataPath, "Packages", "Plugins")).Any())
+                if(!Directory.GetFiles(Path.Combine(PackageManager.DataPath, "Packages", "Plugins")).Any())
                 {
-                    DeleteDirectory(Path.Combine(dataPath, "Packages", "Plugins"));
+                    DeleteDirectory(Path.Combine(PackageManager.DataPath, "Packages", "Plugins"));
                 }
             }
             catch (InvalidDataException) { }
@@ -59,14 +59,14 @@ namespace kumaS.NuGetImporter.Editor
         /// <inheritdoc/>
         internal override async Task<string> GetInstallPath(Package package)
         {
-            return Path.Combine(dataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            return Path.Combine(PackageManager.DataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
         }
 #pragma warning restore CS1998
 
         /// <inheritdoc/>
         internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
-            var topDirectory = Path.Combine(dataPath, "Packages");
+            var topDirectory = Path.Combine(PackageManager.DataPath, "Packages");
             var directoryName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant();
             if (!Directory.Exists(topDirectory))
             {
