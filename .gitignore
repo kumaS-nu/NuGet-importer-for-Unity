@@ -68,3 +68,12 @@ sysinfo.txt
 crashlytics-build.properties
 
 /Release/
+
+# NuGet importer
+/NuGetImporterForUnity/[Aa]ssets/[Pp]ackages.meta
+/NuGetImporterForUnity/[Aa]ssets/[Pp]ackages/
+
+/NuGetImporterForUnity/[Nn]u[Gg]et/
+
+/NuGetImporterForUnity/[Pp]ackages/*/
+!/NuGetImporterForUnity/[Pp]ackages/[Nn]u[Gg]et [Ii]mporter/

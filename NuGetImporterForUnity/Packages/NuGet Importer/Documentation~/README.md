@@ -55,9 +55,24 @@ This is also fully support for native plugins.
 
 1. Specify the installation location. （It is recommended to use UPM.)
 1. Specify the method for determining the package version when solve dependency. (Suit is recommended.)
+1. Specifies whether the package is installed at startup. If the package directory exists, it is determined that the package is already installed. If missing packages are found, they are automatically installed. ( It is recommended to turn it on.)
 1. The maximum number of search results to cache. (0 or less is not cached.)
 1. The maximum number of catalog to cache. (0 or less is not cached.)
 1. The maximum number of icon to cache. (0 or less is not cached.)
+
+## Configure of .gitignore
+
+You may want to keep installed packages to out of git's tracking. In that case, you can add the following to `.gitignore`. The list of installed packages is managed in `Asset/package.config`, and you can restore packages by sharing this file.
+```bash
+# NuGet importer
+/[Aa]ssets/[Pp]ackages.meta
+/[Aa]ssets/[Pp]ackages/
+
+/[Nn]u[Gg]et/
+
+/[Pp]ackages/*/
+!/[Pp]ackages/your embedded package to share with git/
+```
 
 ## Note
 

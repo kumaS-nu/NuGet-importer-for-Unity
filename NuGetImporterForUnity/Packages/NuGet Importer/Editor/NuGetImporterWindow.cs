@@ -93,15 +93,8 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Repair packages", false, 1)]
         private static async Task FixPackages()
         {
-            try
-            {
-                await PackageManager.FixPackage(NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method);
-                EditorUtility.DisplayDialog("NuGet importer", "Packages repair are complete.", "OK");
-            }
-            catch (Exception e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", "An error occured!\n\n" + e.Message, "OK");
-            }
+            var result = await PackageManager.FixPackagesAsync(false);
+            EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
 
         [MenuItem("NuGet Importer/Delete cache", false, 2)]
@@ -380,7 +373,7 @@ namespace kumaS.NuGetImporter.Editor
                 fontSize = 20,
                 alignment = TextAnchor.MiddleLeft
             };
-            using(new EditorGUILayout.HorizontalScope())
+            using (new EditorGUILayout.HorizontalScope())
             {
                 var icon = EditorGUIUtility.IconContent("Search Icon");
                 GUILayout.Box(icon, GUILayout.Width(30), GUILayout.Height(30));
@@ -400,7 +393,14 @@ namespace kumaS.NuGetImporter.Editor
                         }
                         if (searchPackages.Count > 0)
                         {
-                            sumHeight = GUILayoutUtility.GetLastRect().yMax;
+                            try
+                            {
+                                sumHeight = GUILayoutUtility.GetLastRect().yMax;
+                            }
+                            catch (Exception)
+                            {
+                                // When only the stable version is displayed, the exception is gripped because there may be no more packages to display.
+                            }
                         }
                     }
                     else

@@ -364,20 +364,39 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     var framework = FrameworkName.TARGET;
 
-                    IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => framework.Contains(group.targetFramework));
+                    IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => group.targetFramework == null || group.targetFramework == "" || framework.Contains(group.targetFramework));
                     if (dependencyGroups == null || !dependencyGroups.Any())
                     {
                         GUILayout.Label("    None");
                     }
                     else
                     {
-                        Dependencygroup dependencyGroup = dependencyGroups.OrderBy(group =>
+                        var dependencies = new List<Dependency>();
+                        var targetFramework = framework.First();
+                        var dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
+                        if (dependAllGroup.Any())
+                        {
+                            dependencies.AddRange(dependAllGroup.First().dependencies);
+                        }
+
+                        var dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(group =>
                         {
                             var ret = framework.IndexOf(group.targetFramework);
                             return ret < 0 ? int.MaxValue : ret;
-                        }).First();
-                        GUILayout.Label("    " + dependencyGroup.targetFramework, bold);
-                        if (dependencyGroup.dependencies == null || dependencyGroup.dependencies.Length == 0)
+                        });
+
+                        if (dependGroups.Any() && dependGroups.First().dependencies != null)
+                        {
+                            var dependGroup = dependGroups.First();
+                            dependencies.AddRange(dependGroup.dependencies);
+                            if (dependGroup.dependencies.Any())
+                            {
+                                targetFramework = dependGroup.targetFramework;
+                            }
+                        }
+
+                        GUILayout.Label("    " + targetFramework, bold);
+                        if (!dependencies.Any())
                         {
                             GUILayout.Label("        None");
                         }
@@ -385,7 +404,7 @@ namespace kumaS.NuGetImporter.Editor
                         {
                             try
                             {
-                                foreach (Dependency dependency in dependencyGroup.dependencies)
+                                foreach (Dependency dependency in dependencies)
                                 {
                                     GUILayout.Label("        " + dependency.id + "  (" + SemVer.ToMathExpression(dependency.range) + ")");
                                 }
@@ -469,15 +488,15 @@ namespace kumaS.NuGetImporter.Editor
                             {
                                 if (summary.InstalledVersion == null)
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.InstallPackage(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Installation finished."));
+                                    tasks.Add(PackageOperation(PackageManager.InstallPackageAsync(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
                                 }
                                 else if (isSameVersion)
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.FixPackage(summary.PackageId), window, summary.PackageId, "The repair finished."));
+                                    tasks.Add(PackageOperation(PackageManager.FixPackageAsync(summary.PackageId, false), window, summary.PackageId));
                                 }
                                 else
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersion(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId, "Version change finished."));
+                                    tasks.Add(PackageOperation(PackageManager.ChangePackageVersionAsync(summary.PackageId, summary.SelectedVersion, onlyStable, method), window, summary.PackageId));
                                 }
                             }
 
@@ -485,13 +504,13 @@ namespace kumaS.NuGetImporter.Editor
                             {
                                 if (GUILayout.Button("Uninstall", GUILayout.ExpandWidth(true)))
                                 {
-                                    tasks.Add(PackageOperation(PackageManager.UninstallPackages(summary.PackageId, onlyStable), window, summary.PackageId, "Uninstallation finished."));
+                                    tasks.Add(PackageOperation(PackageManager.UninstallPackagesAsync(summary.PackageId, onlyStable), window, summary.PackageId));
                                 }
                             }
                         }
                     }
 
-                    if(isExist)
+                    if (isExist)
                     {
                         using (new EditorGUILayout.HorizontalScope())
                         {
@@ -503,27 +522,10 @@ namespace kumaS.NuGetImporter.Editor
             await Task.WhenAll(tasks);
         }
 
-        private static async Task PackageOperation(Task<bool> operation, NuGetImporterWindow window, string packageId, string message)
+        private static async Task PackageOperation(Task<OperationResult> operation, NuGetImporterWindow window, string packageId)
         {
-            try
-            {
-                if (await operation)
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", message, "OK");
-                }
-                else
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", "Operation is canceled.", "OK");
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
-            catch (ArgumentException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
+            var result = await operation;
+            EditorUtility.DisplayDialog("NuGet  importer", result.Message, "OK");
             await window.UpdateInstalledList();
             await window.UpdateSelected(packageId);
         }

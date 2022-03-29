@@ -3,6 +3,8 @@ using System.IO;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
+using UnityEditor;
+
 using UnityEngine;
 
 namespace kumaS.NuGetImporter.Editor
@@ -13,6 +15,15 @@ namespace kumaS.NuGetImporter.Editor
         [NonSerialized]
         private static NuGetImporterSettings instance;
 
+        [NonSerialized]
+        private static string projectSettingsPath;
+
+        [InitializeOnLoadMethod]
+        private static void SetProjectSettingsPath()
+        {
+            projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
+        }
+
         public static NuGetImporterSettings Instance
         {
             get
@@ -21,7 +32,8 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     return instance;
                 }
-                var path = Path.Combine(Application.dataPath.Replace("Assets", "ProjectSettings"), "NuGetImporterSettings.json");
+
+                var path = Path.Combine(projectSettingsPath, "NuGetImporterSettings.json");
                 if (!File.Exists(path))
                 {
                     instance = new NuGetImporterSettings();
@@ -35,7 +47,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private void Save()
         {
-            var path = Path.Combine(Application.dataPath.Replace("Assets", "ProjectSettings"), "NuGetImporterSettings.json");
+            var path = Path.Combine(projectSettingsPath, "NuGetImporterSettings.json");
             File.WriteAllText(path, JsonUtility.ToJson(this, true));
         }
 
@@ -158,6 +170,27 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var changed = installMethod != value;
                 installMethod = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private bool autoPackagePlacementCheck = true;
+
+        /// <summary>
+        /// <para>Is package placement checked at startup?</para>
+        /// <para>起動時にパッケージの配置をチェックするか。</para>
+        /// </summary>
+        public bool AutoPackagePlacementCheck
+        {
+            get => autoPackagePlacementCheck;
+            set
+            {
+                var changed = autoPackagePlacementCheck != value;
+                autoPackagePlacementCheck = value;
                 if (changed)
                 {
                     Save();

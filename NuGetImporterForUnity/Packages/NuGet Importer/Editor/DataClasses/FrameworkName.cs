@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEditor;
 
@@ -21,6 +22,13 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public static readonly string[] net40 = { ".NETFramework4.0", "net40" };
         public static readonly string[] standard21 = { ".NETStandard2.1", "netstandard2.1" };
         public static readonly string[] standard20 = { ".NETStandard2.0", "netstandard2.0" };
+        public static readonly string[] standard16 = { ".NETStandard1.6", "netstandard1.6" };
+        public static readonly string[] standard15 = { ".NETStandard1.5", "netstandard1.5" };
+        public static readonly string[] standard14 = { ".NETStandard1.4", "netstandard1.4" };
+        public static readonly string[] standard13 = { ".NETStandard1.3", "netstandard1.3" };
+        public static readonly string[] standard12 = { ".NETStandard1.2", "netstandard1.2" };
+        public static readonly string[] standard11 = { ".NETStandard1.1", "netstandard1.1" };
+        public static readonly string[] standard10 = { ".NETStandard1.0", "netstandard1.0" };
 
         /// <summary>
         /// <para>Available .NETFramework4.6 or lower names</para>
@@ -67,7 +75,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// </summary>
         public static List<string> STANDARD2_0
         {
-            get => new List<string>(standard20);
+            get
+            {
+                var ret = new List<string>();
+                ret.AddRange(standard20);
+                return ret;
+            }
         }
 
         /// <summary>
@@ -80,7 +93,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             {
                 var ret = new List<string>();
                 ret.AddRange(standard21);
-                ret.AddRange(standard20);
+                ret.AddRange(STANDARD2_0);
                 return ret;
             }
         }
@@ -152,6 +165,15 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 };
                 return ret;
             }
+        }
+
+        /// <summary>
+        /// <para>All framework name</para>
+        /// <para>全てのフレームワークの名前</para>
+        /// </summary>
+        public static List<string> ALLFLATPLATFORM
+        {
+            get => ALLPLATFORM.SelectMany(p => p).ToList();
         }
     }
 }

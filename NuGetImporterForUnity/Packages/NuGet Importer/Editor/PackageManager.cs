@@ -26,12 +26,14 @@ namespace kumaS.NuGetImporter.Editor
     public static class PackageManager
     {
         private static bool working = false;
+        private static string dataPath;
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
-        private static readonly string projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
-        private static readonly string packagePath = Path.Combine(Application.dataPath, "packages.config");
-        private static readonly string rootPackagePath = Path.Combine(projectSettingsPath, "rootPackages.xml");
-        private static readonly string existingPackagePath = Path.Combine(projectSettingsPath, "existingPackages.xml");
-        private static readonly string packageAsmNamesPath = Path.Combine(projectSettingsPath, "packageAsmNames.json");
+
+        private static string ProjectSettingsPath { get => DataPath.Replace("Assets", "ProjectSettings"); }
+        private static string PackagePath { get => Path.Combine(DataPath, "packages.config"); }
+        private static string RootPackagePath { get => Path.Combine(ProjectSettingsPath, "rootPackages.xml"); }
+        private static string ExistingPackagePath { get => Path.Combine(ProjectSettingsPath, "existingPackages.xml"); }
+        private static string PackageAsmNamesPath { get => Path.Combine(ProjectSettingsPath, "packageAsmNames.json"); }
 
         /// <value>
         /// <para>For Test.</para>
@@ -84,42 +86,44 @@ namespace kumaS.NuGetImporter.Editor
         internal static InstalledPackages ExiestingPackage { get => existingPackage; }
 
         /// <summary>
+        /// <para>Thread-safe Application.dataPath.</para>
+        /// <para>スレッドセーフなApplication.dataPath。</para>
+        /// </summary>
+        public static string DataPath { get => dataPath; }
+
+        /// <summary>
         /// <para>Save the package installation information.</para>
         /// <para>パッケージのインストール情報を保存する。</para>
         /// </summary>
         public static void Save()
         {
-            using (var file = new StreamWriter(packagePath, false))
+            using (var file = new StreamWriter(PackagePath, false))
             {
                 serializer.Serialize(file, installed);
             }
 
-            using (var file = new StreamWriter(rootPackagePath, false))
+            using (var file = new StreamWriter(RootPackagePath, false))
             {
                 serializer.Serialize(file, rootPackage);
             }
 
-            using (var file = new StreamWriter(existingPackagePath, false))
+            using (var file = new StreamWriter(ExistingPackagePath, false))
             {
                 serializer.Serialize(file, existingPackage);
             }
 
-            File.WriteAllText(packageAsmNamesPath, JsonUtility.ToJson(packageAsmNames, true));
+            File.WriteAllText(PackageAsmNamesPath, JsonUtility.ToJson(packageAsmNames, true));
         }
 
         /// <summary>
-        /// <para>Initialize.</para>
-        /// <para>初期化する。</para>
+        /// <para>Load the package installation information.</para>
+        /// <para>パッケージのインストール情報を読み込む。</para>
         /// </summary>
-        /// <returns>
-        /// <para>Task</para>
-        /// </returns>
-        [InitializeOnLoadMethod]
-        public static async Task Initialize()
+        public static void Load()
         {
-            if (File.Exists(packagePath))
+            if (File.Exists(PackagePath))
             {
-                using (var file = new StreamReader(packagePath))
+                using (var file = new StreamReader(PackagePath))
                 {
                     installed = (InstalledPackages)serializer.Deserialize(file);
                 }
@@ -134,22 +138,22 @@ namespace kumaS.NuGetImporter.Editor
                 installed.package = new Package[0];
             }
 
-            if (File.Exists(Path.Combine(Application.dataPath, "rootPackages.xml")))
+            if (File.Exists(Path.Combine(dataPath, "rootPackages.xml")))
             {
-                using (var file = new StreamReader(Path.Combine(Application.dataPath, "rootPackages.xml")))
+                using (var file = new StreamReader(Path.Combine(dataPath, "rootPackages.xml")))
                 {
                     rootPackage = (InstalledPackages)serializer.Deserialize(file);
                 }
                 try
                 {
-                    File.Move(Path.Combine(Application.dataPath, "rootPackages.xml"), rootPackagePath);
-                    File.Delete(Path.Combine(Application.dataPath, "rootPackages.xml.meta"));
+                    File.Move(Path.Combine(dataPath, "rootPackages.xml"), RootPackagePath);
+                    File.Delete(Path.Combine(dataPath, "rootPackages.xml.meta"));
                 }
                 catch (Exception) { }
             }
-            else if (File.Exists(rootPackagePath))
+            else if (File.Exists(RootPackagePath))
             {
-                using (var file = new StreamReader(rootPackagePath))
+                using (var file = new StreamReader(RootPackagePath))
                 {
                     rootPackage = (InstalledPackages)serializer.Deserialize(file);
                 }
@@ -164,9 +168,9 @@ namespace kumaS.NuGetImporter.Editor
                 rootPackage.package = new Package[0];
             }
 
-            if (File.Exists(existingPackagePath))
+            if (File.Exists(ExistingPackagePath))
             {
-                using (var file = new StreamReader(existingPackagePath))
+                using (var file = new StreamReader(ExistingPackagePath))
                 {
                     existingPackage = (InstalledPackages)serializer.Deserialize(file);
                 }
@@ -181,9 +185,9 @@ namespace kumaS.NuGetImporter.Editor
                 existingPackage.package = new Package[0];
             }
 
-            if (File.Exists(packageAsmNamesPath))
+            if (File.Exists(PackageAsmNamesPath))
             {
-                packageAsmNames = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(packageAsmNamesPath));
+                packageAsmNames = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(PackageAsmNamesPath));
             }
 
             if (packageAsmNames == null)
@@ -195,8 +199,14 @@ namespace kumaS.NuGetImporter.Editor
             {
                 packageAsmNames.managedList = new List<PackageManagedPluginList>();
             }
+        }
 
-            await RebootProcess();
+        [InitializeOnLoadMethod]
+        public static async Task Boot()
+        {
+            dataPath = Application.dataPath;
+
+            await RebootProcessAsync();
 
             if (installed.package != null)
             {
@@ -214,97 +224,135 @@ namespace kumaS.NuGetImporter.Editor
             NuGetImporterWindow.Initialize();
         }
 
-        private static async Task RebootProcess()
+        private static async Task RebootProcessAsync()
         {
-            if (!File.Exists(Application.dataPath.Replace("Assets", "WillInstall.xml")))
+            if (!File.Exists(DataPath.Replace("Assets", "WillInstall.xml")))
             {
+                if (NuGetImporterSettings.Instance.AutoPackagePlacementCheck)
+                {
+                    try
+                    {
+                        if (await IsNeedToFix())
+                        {
+                            if (EditorUtility.DisplayDialog("NuGet importer", "We find packages that are not installed. Do you install these packages?", "Yes", "No"))
+                            {
+                                var fixResult = await FixPackagesAsync(false);
+                                EditorUtility.DisplayDialog("NuGet importer", fixResult.Message, "OK");
+                            }
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    { }
+                }
+
+                Load();
                 return;
             }
-            working = true;
-            try
+            var operation = new RebootProcess();
+            var result = await operation.Operate();
+
+            if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
             {
-                EditorApplication.LockReloadAssemblies();
-                AssetDatabase.StartAssetEditing();
-
-                EditorUtility.DisplayProgressBar("Nuget importer", "Installing packages", 0.25f);
-                IEnumerable<Package> skipped = default;
-                using (var file = new StreamReader(Application.dataPath.Replace("Assets", "WillInstall.xml")))
-                {
-                    var install = (InstalledPackages)serializer.Deserialize(file);
-                    if (install != null && install.package != null && install.package.Any())
-                    {
-                        var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                        loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames));
-                        var task = InstallSelectPackages(install.package, loadedAsmNames);
-                        _ = DownloadProgress(0.25f, install.package.Select(pkg => pkg.id).ToArray());
-                        skipped = await task;
-                    }
-                }
-
-                if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
-                {
-                    DeleteAsAssetDirectory();
-                }
-
-                using (var file = new StreamReader(Application.dataPath.Replace("Assets", "WillPackage.xml")))
-                {
-                    installed = (InstalledPackages)serializer.Deserialize(file);
-                }
-
-                if (installed == null)
-                {
-                    installed = new InstalledPackages();
-                }
-                if (installed.package == null)
-                {
-                    installed.package = new Package[0];
-                }
-
-                using (var file = new StreamReader(Application.dataPath.Replace("Assets", "WillRoot.xml")))
-                {
-                    rootPackage = (InstalledPackages)serializer.Deserialize(file);
-                }
-
-                if (rootPackage == null)
-                {
-                    rootPackage = new InstalledPackages();
-                }
-                if (rootPackage.package == null)
-                {
-                    rootPackage.package = new Package[0];
-                }
-
-                EditorUtility.ClearProgressBar();
-                if (skipped != null)
-                {
-                    if (skipped.Any())
-                    {
-                        EditorUtility.DisplayDialog("NuGet importer", "The below packages are existing in your project so we skipped installing them.\n\n" +
-                            skipped.Select(pkg => pkg.id).Aggregate((now, next) => now + "\n" + next), "OK");
-                    }
-                    EditorUtility.DisplayDialog("Nuget importer", "Installation finished.", "OK");
-                }
+                DeleteAsAssetDirectory();
             }
-            catch (Exception e)
+
+            EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
+        }
+
+        internal class RebootProcess : OperatePackage
+        {
+            protected override string FinishMessage { get => "The package operation finished."; }
+
+            public RebootProcess()
             {
-                EditorUtility.DisplayDialog("Nuget importer", e.Message, "OK");
+                isConfirmToUser = false;
             }
-            finally
+
+            internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
             {
-                File.Delete(Application.dataPath.Replace("Assets", "WillInstall.xml"));
-                File.Delete(Application.dataPath.Replace("Assets", "WillPackage.xml"));
-                File.Delete(Application.dataPath.Replace("Assets", "WillRoot.xml"));
-                working = false;
-                EditorUtility.ClearProgressBar();
-                Save();
-                AssetDatabase.StopAssetEditing();
-                AssetDatabase.Refresh();
-#if UNITY_2020_1_OR_NEWER
-                Client.Resolve();
-#endif
-                EditorApplication.RepaintProjectWindow();
-                EditorApplication.UnlockReloadAssemblies();
-                CompilationPipeline.RequestScriptCompilation();
+                InstalledPackages install;
+                using (var file = new StreamReader(DataPath.Replace("Assets", "WillInstall.xml")))
+                {
+                    install = (InstalledPackages)serializer.Deserialize(file);
+                }
+
+                if (install == null || install.package == null || !install.package.Any())
+                {
+                    File.Delete(DataPath.Replace("Assets", "WillInstall.xml"));
+                    File.Delete(DataPath.Replace("Assets", "WillPackage.xml"));
+                    File.Delete(DataPath.Replace("Assets", "WillRoot.xml"));
+                    if (File.Exists(DataPath.Replace("Assets", "RollBackPackage.xml")))
+                    {
+                        File.Delete(DataPath.Replace("Assets", "RollBackPackage.xml"));
+                        File.Delete(DataPath.Replace("Assets", "RollBackRoot.xml"));
+                    }
+                    return (new OperationResult(OperationState.Success, "Uninstallation finished."), default, default, default);
+                }
+
+                InstalledPackages root;
+                using (var file = new StreamReader(DataPath.Replace("Assets", "WillRoot.xml")))
+                {
+                    root = (InstalledPackages)serializer.Deserialize(file);
+                }
+
+                if (root == null)
+                {
+                    root = new InstalledPackages();
+                }
+                if (root.package == null)
+                {
+                    root.package = new Package[0];
+                }
+
+                File.Delete(DataPath.Replace("Assets", "WillInstall.xml"));
+                File.Delete(DataPath.Replace("Assets", "WillPackage.xml"));
+                File.Delete(DataPath.Replace("Assets", "WillRoot.xml"));
+
+                IEnumerable<Package> deletePackages = new List<Package>();
+                InstalledPackages rollBackPackage = default;
+                if (File.Exists(DataPath.Replace("Assets", "RollBackPackage.xml")))
+                {
+                    using (var file = new StreamReader(DataPath.Replace("Assets", "RollBackPackage.xml")))
+                    {
+                        rollBackPackage = (InstalledPackages)serializer.Deserialize(file);
+                    }
+                    File.Delete(DataPath.Replace("Assets", "RollBackPackage.xml"));
+
+                    if (rollBackPackage == null)
+                    {
+                        rollBackPackage = new InstalledPackages();
+                    }
+                    if (rollBackPackage.package == null)
+                    {
+                        rollBackPackage.package = new Package[0];
+                    }
+
+                    deletePackages = rollBackPackage.package.Where(rollback => !installed.package.Any(pkg => pkg.id == rollback.id)).ToArray();
+                    installed = rollBackPackage;
+                }
+
+                InstalledPackages rollBackRoot = default;
+                if (File.Exists(DataPath.Replace("Assets", "RollBackRoot.xml")))
+                {
+                    using (var file = new StreamReader(DataPath.Replace("Assets", "RollBackRoot.xml")))
+                    {
+                        rollBackRoot = (InstalledPackages)serializer.Deserialize(file);
+                    }
+                    File.Delete(DataPath.Replace("Assets", "RollBackRoot.xml"));
+
+                    if (rollBackRoot == null)
+                    {
+                        rollBackRoot = new InstalledPackages();
+                    }
+                    if (rollBackRoot.package == null)
+                    {
+                        rollBackRoot.package = new Package[0];
+                    }
+
+                    root = rollBackRoot;
+                }
+
+                return (new OperationResult(OperationState.Progress, ""), root.package, install.package, deletePackages);
             }
         }
 
@@ -312,8 +360,8 @@ namespace kumaS.NuGetImporter.Editor
         {
             try
             {
-                var dirs = Directory.GetDirectories(Path.Combine(Application.dataPath, "Packages"));
-                var files = Directory.GetFiles(Path.Combine(Application.dataPath, "Packages"));
+                var dirs = Directory.GetDirectories(Path.Combine(DataPath, "Packages"));
+                var files = Directory.GetFiles(Path.Combine(DataPath, "Packages"));
                 if (dirs.Length != files.Length)
                 {
                     return;
@@ -322,8 +370,8 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     return;
                 }
-                Directory.Delete(Path.Combine(Application.dataPath, "Packages"), true);
-                File.Delete(Path.Combine(Application.dataPath, "Packages.meta"));
+                Directory.Delete(Path.Combine(DataPath, "Packages"), true);
+                File.Delete(Path.Combine(DataPath, "Packages.meta"));
             }
             catch (Exception) { }
         }
@@ -348,112 +396,50 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>Has the operation been executed?</para>
-        /// <para>操作が行われたか。</para>
+        /// <para>Operation result.</para>
+        /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<bool> InstallPackage(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static Task<OperationResult> InstallPackageAsync(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
-            if (working)
-            {
-                throw new InvalidOperationException("Now other processes are in progress.");
-            }
-            working = true;
-
-            try
-            {
-                EditorApplication.LockReloadAssemblies();
-                AssetDatabase.StartAssetEditing();
-
-                EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
-
-                await Initialize();
-
-                // Find out the packages that need to be changed.
-                IEnumerable<Package> requiredPackages = await DependencySolver.FindRequiredPackages(packageId, version, onlyStable, method);
-                requiredPackages = requiredPackages.Where(package => !existingPackage.package.Any(exist => package.id == exist.id)).ToArray();
-                Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
-                Package[] samePackages = installed.package.Where(install => requiredPackages.Any(dep => dep.id == install.id && dep.version != install.version)).ToArray();
-                var nativePackages = new List<Package>();
-                var managedPackages = new List<Package>();
-                foreach (Package package in samePackages)
-                {
-                    if (await HasNativeAsync(package))
-                    {
-                        nativePackages.Add(package);
-                    }
-                    else
-                    {
-                        managedPackages.Add(package);
-                    }
-                }
-
-                if (!await ConfirmToUser(installPackages, new Package[0], nativePackages))
-                {
-                    return false;
-                }
-
-                var addRootPackage = requiredPackages.Where(pkg => pkg.id == packageId);
-                EditorUtility.DisplayProgressBar("NuGet importer", "Removing packages before upgrade.", 0.25f);
-                if (nativePackages.Any())
-                {
-                    var rootPackages = requiredPackages.Where(pkg => rootPackage.package.Any(root => root.id == pkg.id));
-                    if (addRootPackage.Any())
-                    {
-                        rootPackages = rootPackages.Append(addRootPackage.First());
-                    }
-                    var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages.ToArray());
-                    AssetDatabase.SaveAssets();
-                    EditorSceneManager.SaveOpenScenes();
-                    process.Start();
-                    EditorApplication.Exit(0);
-                }
-
-                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
-
-                if (samePackages.Any())
-                {
-                    await UninstallPackages(samePackages);
-                }
-
-                var task = InstallSelectPackages(installPackages, loadedAsmNames);
-
-                _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());
-                var skipped = await task;
-                installed.package = requiredPackages.Where(pkg => !skipped.Any(skip => skip.id == pkg.id)).ToArray();
-                rootPackage.package = requiredPackages.Where(pkg => rootPackage.package.Any(root => root.id == pkg.id)).ToArray();
-                if (addRootPackage.Any() && !skipped.Any(pkg => pkg.id == addRootPackage.First().id))
-                {
-                    rootPackage.package = rootPackage.package.Append(addRootPackage.First()).ToArray();
-                }
-
-                if (skipped.Any())
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", "The below packages are existing in your project so we skipped installing them.\n\n" +
-                        skipped.Select(pkg => pkg.id).Aggregate((now, next) => now + "\n" + next), "OK");
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                working = false;
-                EditorUtility.ClearProgressBar();
-                Save();
-                AssetDatabase.StopAssetEditing();
-                AssetDatabase.Refresh();
-#if UNITY_2020_1_OR_NEWER
-                Client.Resolve();
-#endif
-                EditorApplication.RepaintProjectWindow();
-                EditorApplication.UnlockReloadAssemblies();
-                CompilationPipeline.RequestScriptCompilation();
-            }
-
-            return true;
+            var operation = new InstallPackage(packageId, version, onlyStable, method);
+            return operation.Operate();
         }
+
+        /// <summary>
+        /// <para>Install the package.</para>
+        /// <para>パッケージをインストールする。</para>
+        /// </summary>
+        internal class InstallPackage : OperatePackage
+        {
+            private readonly string id;
+            private readonly string version;
+            private readonly bool onlyStable = true;
+            private readonly VersionSelectMethod method = VersionSelectMethod.Suit;
+
+            protected override string FinishMessage { get => "Installation finished."; }
+
+            public InstallPackage(string packageId, string installVersion, bool isOnlyStable = true, VersionSelectMethod versionSelect = VersionSelectMethod.Suit)
+            {
+                onlyStable = isOnlyStable;
+                method = versionSelect;
+                id = packageId;
+                version = installVersion;
+            }
+
+            /// <inheritdoc/>
+            internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
+            {
+                IEnumerable<Package> requiredPackages = await DependencySolver.FindRequiredPackages(id, version, onlyStable, method);
+                requiredPackages = requiredPackages.Where(package => !existingPackage.package.Any(exist => package.id == exist.id)).ToArray();
+
+                Package[] rootPackages = requiredPackages.Where(req => rootPackage.package.Any(root => root.id == req.id)).Concat(requiredPackages.Where(req => req.id == id)).ToArray();
+                Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
+                Package[] deletePackages = installed.package.Where(install => requiredPackages.Any(dep => dep.id == install.id && dep.version != install.version)).ToArray();
+
+                return (new OperationResult(OperationState.Progress, ""), rootPackages, installPackages, deletePackages);
+            }
+        }
+
 
         /// <summary>
         /// <para>Repair the specified package.</para>
@@ -463,194 +449,98 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Package id.</para>
         /// <para>パッケージのid。</para>
         /// </param>
+        /// <param name="confirm">
+        /// <para>Confirm to user.</para>
+        /// <para>確認を行うか。</para>
+        /// </param>
         /// <returns>
-        /// <para>Has the operation been executed?</para>
-        /// <para>操作が行われたか。</para>
+        /// <para>Operation result.</para>
+        /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<bool> FixPackage(string packageId)
+        public static Task<OperationResult> FixPackageAsync(string packageId, bool confirm = true)
         {
-            if (working)
-            {
-                throw new InvalidOperationException("Now other processes are in progress.");
-            }
-            working = true;
-
-            try
-            {
-                EditorApplication.LockReloadAssemblies();
-                AssetDatabase.StartAssetEditing();
-                EditorUtility.DisplayProgressBar("NuGet importer", "Reinstalling package", 0);
-
-                await Initialize();
-
-                IEnumerable<Package> fixPackage = installed.package.Where(package => package.id == packageId);
-                if (!fixPackage.Any())
-                {
-                    throw new ArgumentException(packageId + " is not installed.");
-                }
-                Package fix = fixPackage.First();
-                if (await HasNativeAsync(fix))
-                {
-                    if (EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the repair package. You need to restart the editor to repair packages.\n(The current project will be saved and repair packages will be resumed after a restart.)", "Restart", "Quit"))
-                    {
-                        var process = await OperateWithNativeAsync(new Package[] { fix }, new Package[0], new Package[] { fix }, installed.package, rootPackage.package);
-                        AssetDatabase.SaveAssets();
-                        EditorSceneManager.SaveOpenScenes();
-                        process.Start();
-                        EditorApplication.Exit(0);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                var task = InstallSelectPackages(new Package[] { fix }, new string[0]);
-                _ = DownloadProgress(0.25f, new string[] { fix.id });
-                await task;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                working = false;
-                EditorUtility.ClearProgressBar();
-                Save();
-                AssetDatabase.StopAssetEditing();
-                AssetDatabase.Refresh();
-#if UNITY_2020_1_OR_NEWER
-                Client.Resolve();
-#endif
-                EditorApplication.RepaintProjectWindow();
-                EditorApplication.UnlockReloadAssemblies();
-                CompilationPipeline.RequestScriptCompilation();
-            }
-
-            return true;
+            var operateion = new FixPackage(packageId, confirm);
+            return operateion.Operate();
         }
 
         /// <summary>
-        /// <para>Optimize and repair the package.</para>
-        /// <para>パッケージの依存関係等を最適化し、修復する。</para>
+        /// <para>Repair the specified package.</para>
+        /// <para>指定されたパッケージを修復する。</para>
         /// </summary>
-        /// <param name="onlyStable">
-        /// <para>Whether use only stable version.</para>
-        /// <para>安定版のみつかうか。</para>
-        /// </param>
-        /// <param name="method">
-        /// <para>Method to select a version.</para>
-        /// <para>バージョンを選択する方法。</para>
-        /// <returns>
-        /// <para>Has the operation been executed?</para>
-        /// <para>操作が行われたか。</para>
-        /// </returns>
-        public static async Task<bool> FixPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        internal class FixPackage : OperatePackage
         {
-            if (working)
+            private readonly string id;
+
+            protected override string FinishMessage { get => "The repair finished."; }
+
+            public FixPackage(string packageId, bool confirm = true)
             {
-                throw new InvalidOperationException("Now other processes are in progress.");
-            }
-            working = true;
-
-            try
-            {
-                EditorApplication.LockReloadAssemblies();
-                AssetDatabase.StartAssetEditing();
-                EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
-
-                await Initialize();
-
-                if (installed.package.Length == 0)
-                {
-                    throw new InvalidOperationException("No packages installed.");
-                }
-
-                // Find out the packages that need to be changed.
-                IEnumerable<Package> requiredPackages = await DependencySolver.CheckAllPackage(onlyStable, method);
-                Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
-                Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
-                Package[] upgradePackages = deletePackages.Where(package => installed.package.Any(install => install.id == package.id)).ToArray();
-
-                requiredPackages = requiredPackages.Where(package => !existingPackage.package.Any(exist => package.id == exist.id)).ToArray();
-                Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
-                var nativePackages = new List<Package>();
-                var managedPackages = new List<Package>();
-                foreach (Package package in deletePackages)
-                {
-                    if (await HasNativeAsync(package))
-                    {
-                        nativePackages.Add(package);
-                    }
-                    else
-                    {
-                        managedPackages.Add(package);
-                    }
-                }
-
-                if (!deletePackages.Any() && !installPackages.Any())
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", "Installed packages are already optimized.", "OK");
-                    return true;
-                }
-
-                if (!await ConfirmToUser(installPackages, uninstallPackages, nativePackages))
-                {
-                    return false;
-                }
-
-                EditorUtility.DisplayProgressBar("NuGet importer", "Removing unnecessary packages.", 0.33f);
-
-                if (nativePackages.Any())
-                {
-                    var rootPackages = requiredPackages.Where(pkg => rootPackage.package.Any(root => root.id == pkg.id)).ToArray();
-                    var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
-                    AssetDatabase.SaveAssets();
-                    EditorSceneManager.SaveOpenScenes();
-                    process.Start();
-                    EditorApplication.Exit(0);
-                }
-
-                await UninstallPackages(uninstallPackages);
-
-                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
-
-                await UninstallPackages(upgradePackages);
-
-                var task = InstallSelectPackages(installPackages, loadedAsmNames);
-
-                _ = DownloadProgress(0.33f, requiredPackages.Select(package => package.id).ToArray());
-                var skipped = await task;
-                installed.package = requiredPackages.Where(pkg => !skipped.Any(skip => skip.id == pkg.id)).ToArray();
-                rootPackage.package = requiredPackages.Where(pkg => rootPackage.package.Any(root => root.id == pkg.id)).Where(pkg => !skipped.Any(skip => skip.id == pkg.id)).ToArray();
-
-                if (skipped.Any())
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", "The below packages are existing in your project so we skipped installing them.\n\n" +
-                        skipped.Select(pkg => pkg.id).Aggregate((now, next) => now + "\n" + next), "OK");
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                working = false;
-                EditorUtility.ClearProgressBar();
-                Save();
-                AssetDatabase.StopAssetEditing();
-                AssetDatabase.Refresh();
-#if UNITY_2020_1_OR_NEWER
-                Client.Resolve();
-#endif
-                EditorApplication.RepaintProjectWindow();
-                EditorApplication.UnlockReloadAssemblies();
-                CompilationPipeline.RequestScriptCompilation();
+                id = packageId;
+                isConfirmToUser = confirm;
             }
 
-            return true;
+            /// <inheritdoc/>
+            internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
+            {
+                IEnumerable<Package> fixPackage = installed.package.Where(package => package.id == id).ToArray();
+                if (!fixPackage.Any())
+                {
+                    return (new OperationResult(OperationState.Cancel, id + " is not installed."), default, default, default);
+                }
+
+                return (new OperationResult(OperationState.Progress, ""), rootPackage.package, fixPackage, fixPackage);
+            }
+        }
+
+        /// <summary>
+        /// <para>Fix as follows in package.config.</para>
+        /// <para>package.configの通りに修復する。</para>
+        /// </summary>
+        /// <param name="confirm">
+        /// <para>Confirm to user.</para>
+        /// <para>確認を行うか。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Operation result.</para>
+        /// <para>操作結果。</para>
+        /// </returns>
+        public static Task<OperationResult> FixPackagesAsync(bool confirm = true)
+        {
+            var operateion = new FixPackages(confirm);
+            return operateion.Operate();
+        }
+
+        /// <summary>
+        /// <para>Fix as follows in package.config.</para>
+        /// <para>package.configの通りに修復する。</para>
+        /// </summary>
+        internal class FixPackages : OperatePackage
+        {
+            protected override string FinishMessage { get => "The repair finished."; }
+
+            public FixPackages(bool confirm = true)
+            {
+                isConfirmToUser = confirm;
+            }
+
+            /// <inheritdoc/>
+            internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
+            {
+                var isInstalled = Installed.package.Select(async pkg =>
+                {
+                    var controller = GetPackageController();
+                    var installPath = await controller.GetInstallPath(pkg);
+                    return (Directory.Exists(installPath), pkg);
+                });
+                var isInstalled_ = await Task.WhenAll(isInstalled);
+                var notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
+
+                if (!notInstalled.Any())
+                {
+                    return (new OperationResult(OperationState.Cancel, "No packages to repair.\n(If you want to repair the contents of a package, please repair the package individually.)"), default, default, default);
+                }
+                return (new OperationResult(OperationState.Progress, ""), rootPackage.package, notInstalled, notInstalled);
+            }
         }
 
         /// <summary>
@@ -669,94 +559,52 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>Has the operation been executed?</para>
-        /// <para>操作が行われたか。</para>
+        /// <para>Operation result.</para>
+        /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<bool> UninstallPackages(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static Task<OperationResult> UninstallPackagesAsync(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
-            if (working)
+            var operateion = new UninstallPackages(packageId, onlyStable, method);
+            return operateion.Operate();
+        }
+
+        /// <summary>
+        /// <para>Uninstall the specified package.</para>
+        /// <para>指定したパッケージをアンインストールする。</para>
+        /// </summary>
+        internal class UninstallPackages : OperatePackage
+        {
+            private readonly string id;
+            private readonly bool onlyStable = true;
+            private readonly VersionSelectMethod method = VersionSelectMethod.Suit;
+
+            protected override string FinishMessage { get => "Uninstallation finished."; }
+
+            public UninstallPackages(string packageId, bool isOnlyStable = true, VersionSelectMethod versionSelect = VersionSelectMethod.Suit)
             {
-                throw new InvalidOperationException("Now other processes are in progress.");
+                id = packageId;
+                onlyStable = isOnlyStable;
+                method = versionSelect;
             }
-            working = true;
-            try
+
+            /// <inheritdoc/>
+            internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
             {
-                EditorApplication.LockReloadAssemblies();
-                AssetDatabase.StartAssetEditing();
-
-                if (installed.package.Length == 0)
+                if (!installed.package.Any(pkg => pkg.id == id))
                 {
-                    throw new InvalidOperationException("No packages installed.");
+                    return (new OperationResult(OperationState.Cancel, "Selected package is not installed."), default, default, default);
                 }
-                EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
 
-                await Initialize();
-
-                // Find out the packages that need to be changed.
-                List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(packageId, onlyStable, method);
-                var nativePackages = new List<Package>();
-                var managedPackages = new List<Package>();
-                foreach (Package package in uninstallPackages)
-                {
-                    if (await HasNativeAsync(package))
-                    {
-                        nativePackages.Add(package);
-                    }
-                    else
-                    {
-                        managedPackages.Add(package);
-                    }
-                }
-                Package[] installedPackages = installed.package.Where(package => !uninstallPackages.Any(uninstall => uninstall.id == package.id)).ToArray();
-                var rootPackages = installedPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
+                List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(id, onlyStable, method);
+                var rootPackages = installed.package.Where(package => !uninstallPackages.Any(uninstall => uninstall.id == package.id)).Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
 
                 if (!uninstallPackages.Any())
                 {
-                    EditorUtility.DisplayDialog("NuGet importer", "Selected package is depended by other package.", "OK");
-                    return true;
+                    return (new OperationResult(OperationState.Cancel, "Selected package is depended by other package."), default, default, default);
                 }
 
-                if (!await ConfirmToUser(new Package[0], uninstallPackages, nativePackages))
-                {
-                    return false;
-                }
-
-                EditorUtility.DisplayProgressBar("NuGet importer", "Uninstalling packges", 0.5f);
-
-                if (nativePackages.Any())
-                {
-                    var process = await OperateWithNativeAsync(new Package[0], managedPackages, nativePackages, installedPackages, rootPackages);
-                    process.Start();
-                    AssetDatabase.SaveAssets();
-                    EditorSceneManager.SaveOpenScenes();
-                    EditorApplication.Exit(0);
-                }
-
-                await UninstallPackages(uninstallPackages);
-
-                installed.package = installedPackages;
-                rootPackage.package = rootPackages;
+                return (new OperationResult(OperationState.Progress, ""), rootPackages, new Package[0], uninstallPackages);
             }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                working = false;
-                EditorUtility.ClearProgressBar();
-                Save();
-                AssetDatabase.StopAssetEditing();
-                AssetDatabase.Refresh();
-#if UNITY_2020_1_OR_NEWER
-                Client.Resolve();
-#endif
-                EditorApplication.RepaintProjectWindow();
-                EditorApplication.UnlockReloadAssemblies();
-                CompilationPipeline.RequestScriptCompilation();
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -779,10 +627,68 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
-        /// <para>Has the operation been executed?</para>
-        /// <para>操作が行われたか。</para>
+        /// <para>Operation result.</para>
+        /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<bool> ChangePackageVersion(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static Task<OperationResult> ChangePackageVersionAsync(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        {
+            var operateion = new ChangePackageVersion(packageId, newVersion, onlyStable, method);
+            return operateion.Operate();
+        }
+
+        /// <summary>
+        /// <para>Change the version of the specified package.</para>
+        /// <para>指定したパッケージのバージョンを変更する。</para>
+        /// </summary>
+        internal class ChangePackageVersion : OperatePackage
+        {
+            private readonly string id;
+            private readonly string version;
+            private readonly bool onlyStable = true;
+            private readonly VersionSelectMethod method = VersionSelectMethod.Suit;
+
+            protected override string FinishMessage { get => "Version change finished."; }
+
+            public ChangePackageVersion(string packageId, string installVersion, bool isOnlyStable = true, VersionSelectMethod versionSelect = VersionSelectMethod.Suit)
+            {
+                onlyStable = isOnlyStable;
+                method = versionSelect;
+                id = packageId;
+                version = installVersion;
+            }
+
+            /// <inheritdoc/>
+            internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
+            {
+                IEnumerable<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(id, version, onlyStable, method);
+
+                requiredPackages = requiredPackages.Where(package => !existingPackage.package.Any(exist => package.id == exist.id)).ToArray();
+                Package[] rootPackages = requiredPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
+                Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
+                Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
+
+                return (new OperationResult(OperationState.Progress, ""), rootPackages, installPackages, deletePackages);
+            }
+        }
+
+
+        /// <summary>
+        /// <para>Check that the packages listed in package.config are installed.</para>
+        /// <para>package.configに記載されているパッケージがインストールされているか確認する。</para>
+        /// </summary>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Is need to fix?</para>
+        /// <para>全てインストールされておらず修復の必要があるか。</para>
+        /// </returns>
+        public static async Task<bool> IsNeedToFix()
         {
             if (working)
             {
@@ -792,72 +698,15 @@ namespace kumaS.NuGetImporter.Editor
 
             try
             {
-                EditorApplication.LockReloadAssemblies();
-                AssetDatabase.StartAssetEditing();
-
-                EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
-
-                await Initialize();
-
-                // Find out the packages that need to be changed.
-                IEnumerable<Package> requiredPackages = await DependencySolver.FindRequiredPackagesWhenChangeVersion(packageId, newVersion, onlyStable, method);
-                Package[] deletePackages = installed.package.Where(package => !requiredPackages.Any(req => req.id == package.id && req.version == package.version)).ToArray();
-                Package[] uninstallPackages = deletePackages.Where(package => !installed.package.Any(install => install.id == package.id)).ToArray();
-                Package[] upgradePackages = deletePackages.Where(package => installed.package.Any(install => install.id == package.id)).ToArray();
-
-                requiredPackages = requiredPackages.Where(package => !existingPackage.package.Any(exist => package.id == exist.id)).ToArray();
-                Package[] installPackages = requiredPackages.Where(package => !installed.package.Any(install => install.id == package.id && install.version == package.version)).ToArray();
-                var nativePackages = new List<Package>();
-                var managedPackages = new List<Package>();
-                foreach (Package package in deletePackages)
+                Load();
+                var installed = await Task.WhenAll(Installed.package.Select(async pkg =>
                 {
-                    if (await HasNativeAsync(package))
-                    {
-                        nativePackages.Add(package);
-                    }
-                    else
-                    {
-                        managedPackages.Add(package);
-                    }
-                }
+                    var controller = GetPackageController();
+                    var installPath = await controller.GetInstallPath(pkg);
+                    return Directory.Exists(installPath);
+                }));
 
-                if (!await ConfirmToUser(installPackages, uninstallPackages, nativePackages))
-                {
-                    return false;
-                }
-
-                var rootPackages = requiredPackages.Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
-
-                EditorUtility.DisplayProgressBar("NuGet importer", "Removing unnecessary packages.", 0.25f);
-
-                if (nativePackages.Any())
-                {
-                    var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, requiredPackages, rootPackages);
-                    AssetDatabase.SaveAssets();
-                    EditorSceneManager.SaveOpenScenes();
-                    process.Start();
-                    EditorApplication.Exit(0);
-                }
-
-                await UninstallPackages(uninstallPackages);
-
-                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
-
-                await UninstallPackages(upgradePackages);
-
-                var tasks = InstallSelectPackages(installPackages, loadedAsmNames);
-
-                _ = DownloadProgress(0.5f, requiredPackages.Select(package => package.id).ToArray());
-                var skipped = await tasks;
-                installed.package = requiredPackages.Where(pkg => !skipped.Any(skip => skip.id == pkg.id)).ToArray();
-                rootPackage.package = rootPackages.Where(pkg => !skipped.Any(skip => skip.id == pkg.id)).ToArray();
-
-                if (skipped.Any())
-                {
-                    EditorUtility.DisplayDialog("NuGet importer", "The below packages are existing in your project so we skipped installing them.\n\n" +
-                        skipped.Select(pkg => pkg.id).Aggregate((now, next) => now + "\n" + next), "OK");
-                }
+                return !installed.All(b => b);
             }
             catch (Exception)
             {
@@ -866,19 +715,368 @@ namespace kumaS.NuGetImporter.Editor
             finally
             {
                 working = false;
+            }
+        }
+
+
+        /// <summary>
+        /// <para>Fix as follows in package.config.</para>
+        /// <para>package.configの通りに修復する。</para>
+        /// </summary>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Operation result.</para>
+        /// <para>操作結果。</para>
+        /// </returns>
+        private static async Task<OperationResult> FixPackagesInternal()
+        {
+            var ret = OperationState.Progress;
+            try
+            {
+                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
+                loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
+
+                var isInstalled = Installed.package.Select(async pkg =>
+                {
+                    var controller = GetPackageController();
+                    var installPath = await controller.GetInstallPath(pkg);
+                    return (Directory.Exists(installPath), pkg);
+                });
+                var isInstalled_ = await Task.WhenAll(isInstalled);
+                var notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
+
+                if (!notInstalled.Any())
+                {
+                    ret = OperationState.Cancel;
+                    return new OperationResult(ret, "No packages to repair.\n(If you want to repair the contents of a package, please repair the package individually.)");
+                }
+
+                var task = InstallSelectPackages(notInstalled, loadedAsmNames);
+
+                _ = DownloadProgress(0, notInstalled.Select(package => package.id).ToArray());
+                _ = await task;
+                if (task.IsFaulted)
+                {
+                    ret = OperationState.Failure;
+                    return new OperationResult(ret, "Error occured!\n" + task.Exception.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                ret = OperationState.Failure;
+                return new OperationResult(ret, "Error occured!\n" + e.Message);
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+
+            ret = OperationState.Success;
+            return new OperationResult(ret, "The repair finished.");
+        }
+
+        /// <summary>
+        /// <para>Base class for operating packages. Implement FindOperatePackages when operating on packages. Remember to change onlyStable and method.</para>
+        /// <para>パッケージを操作する際の基底クラス。パッケージを操作する際は FindOperatePackages を実装。onlyStable, method の変更を忘れないように。</para>
+        /// </summary>
+        internal abstract class OperatePackage
+        {
+            private bool isOperated = false;
+            protected bool isConfirmToUser = true;
+
+            protected virtual string FinishMessage { get => "Operateion finished."; }
+
+            /// <summary>
+            /// <para>Perform operations to packages.</para>
+            /// <para>パッケージの操作を行う。</para>
+            /// </summary>
+            /// <returns>
+            /// <para>Operation result.</para>
+            /// <para>操作結果。</para>
+            /// </returns>
+            /// <exception cref="InvalidOperationException">
+            /// <para>It is thrown if the operation has already been performed in this instance.</para>
+            /// <para>既にこのインスタンスで操作済みの場合スローされる。</para>
+            /// </exception>
+            public async Task<OperationResult> Operate()
+            {
+                if (isOperated)
+                {
+                    throw new InvalidOperationException("It has already been operated in this instance.");
+                }
+
+                var ret = OperationState.Progress;
+                var installingPackages = new List<Package>();
+
+                if (working)
+                {
+                    ret = OperationState.Cancel;
+                    return new OperationResult(ret, "Now other processes are in progress.");
+                }
+                working = true;
+
+                try
+                {
+                    EditorApplication.LockReloadAssemblies();
+                    AssetDatabase.StartAssetEditing();
+
+                    EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
+                    Load();
+                    var (result, rootPackages, installPackages, deletePackages) = await FindOperatePackages();
+                    if (result.State != OperationState.Progress)
+                    {
+                        return result;
+                    }
+                    installingPackages = installPackages.ToList();
+                    var uninstallPackages = deletePackages.Where(package => !installPackages.Any(install => install.id == package.id)).ToArray();
+                    var changePackages = deletePackages.Where(package => installPackages.Any(install => install.id == package.id)).ToArray();
+                    var allinstallPackages = installed.package.Where(package => !deletePackages.Any(uninstall => uninstall.id == package.id)).Concat(installPackages).ToArray();
+
+                    var nativePackages = new List<Package>();
+                    var managedPackages = new List<Package>();
+                    foreach (Package package in deletePackages)
+                    {
+                        if (await HasNativeAsync(package))
+                        {
+                            nativePackages.Add(package);
+                        }
+                        else
+                        {
+                            managedPackages.Add(package);
+                        }
+                    }
+
+                    if (isConfirmToUser)
+                    {
+                        if (!await ConfirmToUser(installPackages, uninstallPackages, nativePackages))
+                        {
+                            ret = OperationState.Cancel;
+                            return new OperationResult(ret, "Operation is canceled.");
+                        }
+                    }
+
+                    if (deletePackages.Any())
+                    {
+                        EditorUtility.DisplayProgressBar("NuGet importer", "Removing unnecessary packages.", 0.25f);
+
+                        if (nativePackages.Any())
+                        {
+                            var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, allinstallPackages, rootPackages);
+                            AssetDatabase.SaveAssets();
+                            EditorSceneManager.SaveOpenScenes();
+                            process.Start();
+                            EditorApplication.Exit(0);
+                        }
+
+                        if (uninstallPackages.Any())
+                        {
+                            await UninstallSelectedPackages(uninstallPackages);
+                        }
+                    }
+
+                    var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
+                    loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
+
+                    if (changePackages.Any())
+                    {
+                        await UninstallSelectedPackages(changePackages);
+                    }
+
+                    IEnumerable<Package> skipped = new List<Package>();
+                    if (installPackages.Any())
+                    {
+                        var tasks = InstallSelectPackages(installPackages, loadedAsmNames);
+
+                        _ = DownloadProgress(0.5f, installPackages.Select(package => package.id).ToArray());
+                        skipped = await tasks;
+                        if (tasks.IsFaulted)
+                        {
+                            ret = OperationState.Failure;
+                            EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + tasks.Exception.Message, "OK");
+                            await Rollback(installingPackages);
+                            return new OperationResult(ret, "Rollback to before operation is complete.");
+                        }
+                    }
+
+                    installed.package = allinstallPackages.Where(pkg => !skipped.Any(skip => skip.id == pkg.id)).ToArray();
+                    rootPackage.package = rootPackages.Where(pkg => !skipped.Any(skip => skip.id == pkg.id)).ToArray();
+
+                    if (skipped.Any())
+                    {
+                        EditorUtility.DisplayDialog("NuGet importer", "The below packages are existing in your project so we skipped installing them.\n\n" +
+                            skipped.Select(pkg => pkg.id).Aggregate((now, next) => now + "\n" + next), "OK");
+                    }
+                }
+                catch (Exception e)
+                {
+                    ret = OperationState.Failure;
+                    EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + e.Message, "OK");
+                    await Rollback(installingPackages);
+                    return new OperationResult(ret, "Rollback to before operation is complete.");
+                }
+                finally
+                {
+                    FinalizeProcess(ret);
+                }
+
+                ret = OperationState.Success;
+                return new OperationResult(ret, FinishMessage);
+            }
+
+            /// <summary>
+            /// <para>Confirm the package change to the user.</para>
+            /// <para>ユーザーへパッケージ変更の確認を行う。</para>
+            /// </summary>
+            /// <param name="installPackages">
+            /// <para>New package to be installed.</para>
+            /// <para>新たにインストールするパッケージ。</para>
+            /// </param>
+            /// <param name="uninstallPackages">
+            /// <para>Package to uninstall.</para>
+            /// <para>アンインストールするパッケージ。</para>
+            /// </param>
+            /// <param name="nativePackages">
+            /// <para>Packages that include native plug-ins in the package to be deleted.</para>
+            /// <para>削除するパッケージの中でネイティブプラグインを含むパッケージ。</para>
+            /// </param>
+            /// <returns>
+            /// <para>Return true when the user agrees.</para>
+            /// <para>ユーザーが了解したか。</para>
+            /// </returns>
+            private async Task<bool> ConfirmToUser(IEnumerable<Package> installPackages, IEnumerable<Package> uninstallPackages, IEnumerable<Package> nativePackages)
+            {
+                if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "OK", "Cancel"))
+                {
+                    return false;
+                }
+
+                IEnumerable<Package> warningPackages = new List<Package>();
+
+#if UNITY_2021_2_OR_NEWER
+            if(PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard){
+                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.targetFramework));
+            }
+#else
+                if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
+                {
+                    warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.targetFramework));
+                }
+#endif
+                if (warningPackages.Any())
+                {
+                    if (!EditorUtility.DisplayDialog("Warning from NuGet importer", "Now the api compatibility level for this project is " +
+                        PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup).ToString() +
+                        ". But below packages are builded for .NETFramework. Do you install them?" + "\n\n" + string.Join("\n", warningPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
+                    {
+                        return false;
+                    }
+                }
+
+                if (installPackages != null && installPackages.Any())
+                {
+                    foreach (Package installPackage in installPackages)
+                    {
+                        var isInstalled = false;
+                        lock (installedCatalog)
+                        {
+                            if (installed.package != null)
+                            {
+                                isInstalled = installedCatalog.ContainsKey(installPackage.id);
+                            }
+                        }
+                        Catalog catalog = isInstalled ? installedCatalog[installPackage.id] : await NuGet.GetCatalog(installPackage.id);
+                        Catalogentry catalogEntry = catalog.GetAllCatalogEntry().First(entry => entry.version == installPackage.version);
+                        if (catalogEntry.requireLicenseAcceptance)
+                        {
+                            var option = EditorUtility.DisplayDialogComplex("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel", "Go url");
+                            switch (option)
+                            {
+                                case 0:
+                                    break;
+                                case 1:
+                                    return false;
+                                case 2:
+                                    Help.BrowseURL(catalogEntry.licenseUrl);
+                                    if (!EditorUtility.DisplayDialog("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel"))
+                                    {
+                                        return false;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                if (nativePackages.Any())
+                {
+                    if (!EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the modifying package. You need to restart the editor to modify packages.\n(The current project will be saved and modify packages will be resumed after a restart.)", "Restart", "Cancel"))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            /// <summary>
+            /// <para>Rollback for this operation.</para>
+            /// <para>この操作に対するロールバックを行う。</para>
+            /// </summary>
+            /// <param name="installingPackages">
+            /// <para>Package to be installed by this operation.</para>
+            /// <para>この操作でインストールするパッケージ。</para>
+            /// </param>
+            private async Task Rollback(IEnumerable<Package> installingPackages)
+            {
+                await UninstallSelectedPackages(installingPackages);
+                await FixPackagesInternal();
+            }
+
+            /// <summary>
+            /// <para>Package operation finalize processing.</para>
+            /// <para>パッケージ操作終了処理。</para>
+            /// </summary>
+            /// <param name="ret">
+            /// <para>Operation result.</para>
+            /// <para>操作結果。</para>
+            /// </param>
+            private void FinalizeProcess(OperationState ret)
+            {
+                working = false;
+                isOperated = true;
                 EditorUtility.ClearProgressBar();
                 Save();
                 AssetDatabase.StopAssetEditing();
-                AssetDatabase.Refresh();
+                if (ret != OperationState.Cancel)
+                {
+                    AssetDatabase.Refresh();
 #if UNITY_2020_1_OR_NEWER
-                Client.Resolve();
+                    Client.Resolve();
 #endif
+                }
                 EditorApplication.RepaintProjectWindow();
                 EditorApplication.UnlockReloadAssemblies();
-                CompilationPipeline.RequestScriptCompilation();
+                if (ret != OperationState.Cancel)
+                {
+                    CompilationPipeline.RequestScriptCompilation();
+                }
             }
 
-            return true;
+            /// <summary>
+            /// <para>Find packages to be operated on.</para>
+            /// <para>操作対象のパッケージを探す。</para>
+            /// </summary>
+            /// <returns>
+            /// <para>Operation result, root package, Packages to install, packages to remove.</para>
+            /// <para>操作結果、ルートのパッケージ、インストールするパッケージ、削除するパッケージ。</para>
+            /// </returns>
+            internal protected abstract Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages();
         }
 
         public static async Task<bool> ConvertToUPM()
@@ -896,14 +1094,14 @@ namespace kumaS.NuGetImporter.Editor
 
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
 
-                await Initialize();
+                Load();
 
                 if (!installed.package.Any())
                 {
                     try
                     {
-                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"));
-                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
+                        File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json"));
+                        File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json.meta"));
                     }
                     catch (Exception) { }
                     DeleteAsAssetDirectory();
@@ -925,8 +1123,8 @@ namespace kumaS.NuGetImporter.Editor
                     var process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
                     try
                     {
-                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"));
-                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
+                        File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json"));
+                        File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json.meta"));
                     }
                     catch (Exception) { }
                     AssetDatabase.SaveAssets();
@@ -939,8 +1137,8 @@ namespace kumaS.NuGetImporter.Editor
                     await controller.UninstallManagedPackagesAsync(installed.package);
                     try
                     {
-                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"));
-                        File.Delete(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json.meta"));
+                        File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json"));
+                        File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json.meta"));
                     }
                     catch (Exception) { }
                     DeleteAsAssetDirectory();
@@ -995,15 +1193,15 @@ namespace kumaS.NuGetImporter.Editor
 
                 EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
 
-                await Initialize();
+                Load();
 
                 if (!installed.package.Any())
                 {
-                    if (!Directory.Exists(Path.Combine(Application.dataPath, "Packages")))
+                    if (!Directory.Exists(Path.Combine(DataPath, "Packages")))
                     {
-                        Directory.CreateDirectory(Path.Combine(Application.dataPath, "Packages"));
+                        Directory.CreateDirectory(Path.Combine(DataPath, "Packages"));
                     }
-                    File.WriteAllText(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json"), "");
+                    File.WriteAllText(Path.Combine(DataPath, "Packages", "managedPluginList.json"), "");
                     return true;
                 }
                 var controller = new PackageControllerAsUPM();
@@ -1074,80 +1272,6 @@ namespace kumaS.NuGetImporter.Editor
             return true;
         }
 
-        private async static Task<bool> ConfirmToUser(IEnumerable<Package> installPackages, IEnumerable<Package> uninstallPackages, IEnumerable<Package> nativePackages)
-        {
-            if (!EditorUtility.DisplayDialog("NuGet importer", "Uninstalling below packages\n\n" + string.Join("\n", uninstallPackages.Select(package => package.id + " " + package.version)) + "\n\nInstall or upgrade / downgrade below packages\n\n" + string.Join("\n", installPackages.Select(package => package.id + " " + package.version)), "OK", "Cancel"))
-            {
-                return false;
-            }
-
-            IEnumerable<Package> warningPackages = new List<Package>();
-
-#if UNITY_2021_2_OR_NEWER
-                if(PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard){
-                    warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.targetFramework));
-                }
-#else
-            if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
-            {
-                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.targetFramework));
-            }
-#endif
-            if (warningPackages.Any())
-            {
-                if (!EditorUtility.DisplayDialog("Warning from NuGet importer", "Now the api compatibility level for this project is " +
-                    PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup).ToString() +
-                    ". But below packages are builded for .NETFramework. Do you install them?" + "\n\n" + string.Join("\n", warningPackages.Select(package => package.id + " " + package.version)), "Install", "Cancel"))
-                {
-                    return false;
-                }
-            }
-
-            if (installPackages != null && installPackages.Any())
-            {
-                foreach (Package installPackage in installPackages)
-                {
-                    var isInstalled = false;
-                    lock (installedCatalog)
-                    {
-                        if (installed.package != null)
-                        {
-                            isInstalled = installedCatalog.ContainsKey(installPackage.id);
-                        }
-                    }
-                    Catalog catalog = isInstalled ? installedCatalog[installPackage.id] : await NuGet.GetCatalog(installPackage.id);
-                    Catalogentry catalogEntry = catalog.GetAllCatalogEntry().First(entry => entry.version == installPackage.version);
-                    if (catalogEntry.requireLicenseAcceptance)
-                    {
-                        var option = EditorUtility.DisplayDialogComplex("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel", "Go url");
-                        switch (option)
-                        {
-                            case 0:
-                                break;
-                            case 1:
-                                return false;
-                            case 2:
-                                Help.BrowseURL(catalogEntry.licenseUrl);
-                                if (!EditorUtility.DisplayDialog("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel"))
-                                {
-                                    return false;
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
-
-            if (nativePackages.Any())
-            {
-                if (!EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the modifying package. You need to restart the editor to modify packages.\n(The current project will be saved and modify packages will be resumed after a restart.)", "Restart", "Cancel"))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         private static async Task<IEnumerable<Package>> InstallSelectPackages(IEnumerable<Package> packages, IEnumerable<string> loadAssembliesFullName)
         {
             var controller = GetPackageController();
@@ -1191,6 +1315,16 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task<Process> OperateWithNativeAsync(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
         {
+            using (var file = new StreamWriter(DataPath.Replace("Assets", "RollBackPackage.xml")))
+            {
+                serializer.Serialize(file, installed);
+            }
+
+            using (var file = new StreamWriter(DataPath.Replace("Assets", "RollBackRoot.xml")))
+            {
+                serializer.Serialize(file, rootPackage);
+            }
+
             var controller = GetPackageController();
             var process = await controller.OperateWithNativeAsync(installs, manageds, natives, allInstalled, root);
             installed.package = installed.package.Where(package => !manageds.Any(manage => manage.id == package.id) && !natives.Any(native => native.id == package.id)).ToArray();
@@ -1200,7 +1334,7 @@ namespace kumaS.NuGetImporter.Editor
             return process;
         }
 
-        private static async Task UninstallPackages(IEnumerable<Package> packages)
+        private static async Task UninstallSelectedPackages(IEnumerable<Package> packages)
         {
             var controller = GetPackageController();
             await controller.UninstallManagedPackagesAsync(packages);
@@ -1257,7 +1391,7 @@ namespace kumaS.NuGetImporter.Editor
             return HasNative(path, packageId);
         }
 
-        private readonly static string rootPath = Application.dataPath.Replace("Assets", "");
+        private static string RootPath { get => DataPath.Replace("Assets", ""); }
 
         private static bool HasNative(string path, string packageId = "")
         {
@@ -1268,7 +1402,7 @@ namespace kumaS.NuGetImporter.Editor
 
             foreach (var file in Directory.GetFiles(path))
             {
-                var filePath = file.Replace(rootPath, "");
+                var filePath = file.Replace(RootPath, "");
                 if (packageId != "")
                 {
                     var splited = filePath.Split('/', '\\');
@@ -1310,7 +1444,6 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         allPackageSize[packageName] = packageSize;
                         downloadedSumSize += downloadedSize;
-
                     }
                     else
                     {

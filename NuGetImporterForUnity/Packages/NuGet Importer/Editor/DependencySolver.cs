@@ -50,7 +50,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.RootPackage == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>() { (packageId, version) };
             if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
@@ -96,7 +96,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.Installed == null || PackageManager.RootPackage == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
             if (PackageManager.RootPackage != null && PackageManager.RootPackage.package.Any())
@@ -135,7 +135,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.RootPackage == null || PackageManager.Installed == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
             if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
@@ -178,7 +178,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (PackageManager.RootPackage == null || PackageManager.Installed == null)
             {
-                await PackageManager.Initialize();
+                PackageManager.Load();
             }
             IEnumerable<(string packageId, string version)> installed = new List<(string packageId, string version)>();
             if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
@@ -324,27 +324,54 @@ namespace kumaS.NuGetImporter.Editor
             Dependencygroup[] dependencyGroup = catalogEntry.dependencyGroups;
             if (dependencyGroup == null)
             {
+                node.TragetFramework = targetFramework.First();
                 return;
             }
-            IEnumerable<Dependencygroup> dependencies = dependencyGroup.Where(group => targetFramework.Contains(group.targetFramework));
-            if (dependencies == null || !dependencies.Any())
+            IEnumerable<Dependencygroup> dependencyGroups = dependencyGroup.Where(group => group.targetFramework == null || group.targetFramework == "" || targetFramework.Contains(group.targetFramework));
+            if (dependencyGroups == null || !dependencyGroups.Any())
             {
-                node.TragetFramework = "";
+                node.TragetFramework = targetFramework.First();
             }
             else
             {
-                Dependencygroup dependGroup = dependencies.OrderBy(depend =>
+                var dependencies = new List<Dependency>();
+                var dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
+                if (dependAllGroup.Any())
+                {
+                    dependencies.AddRange(dependAllGroup.First().dependencies);
+                    node.TragetFramework = targetFramework.First();
+                }
+
+                var dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(depend =>
                 {
                     var ret = targetFramework.IndexOf(depend.targetFramework);
                     return ret < 0 ? int.MaxValue : ret;
-                }).First();
-                node.TragetFramework = dependGroup.targetFramework;
-                if (dependGroup.dependencies != null)
+                });
+
+                if (dependGroups.Any())
                 {
-                    foreach (Dependency dependency in dependGroup.dependencies)
+                    var dependGroup = dependGroups.First();
+                    node.TragetFramework = dependGroup.targetFramework;
+                    if (dependGroups.First().dependencies != null)
+                    {
+                        foreach (Dependency dependency in dependGroup.dependencies)
+                        {
+                            dependencies.AddRange(dependGroup.dependencies);
+                        }
+                    }
+                }
+
+                if (dependencies.Any())
+                {
+                    foreach (Dependency dependency in dependencies)
                     {
                         tasks.Add(FindChildDependency(dependency.id, dependency.range, node, targetFramework, allNode, onlyStable, method));
                     }
+                }
+
+                if (node.TragetFramework == null || node.TragetFramework == "")
+                {
+                    node.TragetFramework = targetFramework.First();
                 }
             }
 
