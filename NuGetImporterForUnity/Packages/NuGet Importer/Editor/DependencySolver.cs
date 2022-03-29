@@ -348,13 +348,16 @@ namespace kumaS.NuGetImporter.Editor
                     return ret < 0 ? int.MaxValue : ret;
                 });
 
-                if (dependGroups.Any() && dependGroups.First().dependencies != null)
+                if (dependGroups.Any())
                 {
                     var dependGroup = dependGroups.First();
                     node.TragetFramework = dependGroup.targetFramework;
-                    foreach (Dependency dependency in dependGroup.dependencies)
+                    if (dependGroups.First().dependencies != null)
                     {
-                        dependencies.AddRange(dependGroup.dependencies);
+                        foreach (Dependency dependency in dependGroup.dependencies)
+                        {
+                            dependencies.AddRange(dependGroup.dependencies);
+                        }
                     }
                 }
 
@@ -365,7 +368,8 @@ namespace kumaS.NuGetImporter.Editor
                         tasks.Add(FindChildDependency(dependency.id, dependency.range, node, targetFramework, allNode, onlyStable, method));
                     }
                 }
-                else
+
+                if (node.TragetFramework == null || node.TragetFramework == "")
                 {
                     node.TragetFramework = targetFramework.First();
                 }
