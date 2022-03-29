@@ -467,6 +467,19 @@ references:
   commentId: T:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName
   fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName
   nameWithType: FrameworkName
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.ALLFLATPLATFORM
+  name: ALLFLATPLATFORM
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_ALLFLATPLATFORM
+  commentId: P:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.ALLFLATPLATFORM
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.ALLFLATPLATFORM
+  nameWithType: FrameworkName.ALLFLATPLATFORM
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.ALLFLATPLATFORM*
+  name: ALLFLATPLATFORM
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_ALLFLATPLATFORM_
+  commentId: Overload:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.ALLFLATPLATFORM
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.ALLFLATPLATFORM
+  nameWithType: FrameworkName.ALLFLATPLATFORM
 - uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.ALLPLATFORM
   name: ALLPLATFORM
   href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_ALLPLATFORM
@@ -578,6 +591,48 @@ references:
   commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.net48
   fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.net48
   nameWithType: FrameworkName.net48
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard10
+  name: standard10
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_standard10
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard10
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard10
+  nameWithType: FrameworkName.standard10
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard11
+  name: standard11
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_standard11
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard11
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard11
+  nameWithType: FrameworkName.standard11
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard12
+  name: standard12
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_standard12
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard12
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard12
+  nameWithType: FrameworkName.standard12
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard13
+  name: standard13
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_standard13
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard13
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard13
+  nameWithType: FrameworkName.standard13
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard14
+  name: standard14
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_standard14
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard14
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard14
+  nameWithType: FrameworkName.standard14
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard15
+  name: standard15
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_standard15
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard15
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard15
+  nameWithType: FrameworkName.standard15
+- uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard16
+  name: standard16
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_standard16
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard16
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.standard16
+  nameWithType: FrameworkName.standard16
 - uid: kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.STANDARD2_0
   name: STANDARD2_0
   href: api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html#kumaS_NuGetImporter_Editor_DataClasses_FrameworkName_STANDARD2_0
@@ -786,6 +841,81 @@ references:
   commentId: F:kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.managedList
   fullName: kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.managedList
   nameWithType: ManagedPluginList.managedList
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationResult
+  name: OperationResult
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html
+  commentId: T:kumaS.NuGetImporter.Editor.DataClasses.OperationResult
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationResult
+  nameWithType: OperationResult
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.#ctor(kumaS.NuGetImporter.Editor.DataClasses.OperationState,System.String)
+  name: OperationResult(OperationState, String)
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html#kumaS_NuGetImporter_Editor_DataClasses_OperationResult__ctor_kumaS_NuGetImporter_Editor_DataClasses_OperationState_System_String_
+  commentId: M:kumaS.NuGetImporter.Editor.DataClasses.OperationResult.#ctor(kumaS.NuGetImporter.Editor.DataClasses.OperationState,System.String)
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.OperationResult(kumaS.NuGetImporter.Editor.DataClasses.OperationState, System.String)
+  nameWithType: OperationResult.OperationResult(OperationState, String)
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.#ctor*
+  name: OperationResult
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html#kumaS_NuGetImporter_Editor_DataClasses_OperationResult__ctor_
+  commentId: Overload:kumaS.NuGetImporter.Editor.DataClasses.OperationResult.#ctor
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.OperationResult
+  nameWithType: OperationResult.OperationResult
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.Message
+  name: Message
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html#kumaS_NuGetImporter_Editor_DataClasses_OperationResult_Message
+  commentId: P:kumaS.NuGetImporter.Editor.DataClasses.OperationResult.Message
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.Message
+  nameWithType: OperationResult.Message
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.Message*
+  name: Message
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html#kumaS_NuGetImporter_Editor_DataClasses_OperationResult_Message_
+  commentId: Overload:kumaS.NuGetImporter.Editor.DataClasses.OperationResult.Message
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.Message
+  nameWithType: OperationResult.Message
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.State
+  name: State
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html#kumaS_NuGetImporter_Editor_DataClasses_OperationResult_State
+  commentId: P:kumaS.NuGetImporter.Editor.DataClasses.OperationResult.State
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.State
+  nameWithType: OperationResult.State
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.State*
+  name: State
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html#kumaS_NuGetImporter_Editor_DataClasses_OperationResult_State_
+  commentId: Overload:kumaS.NuGetImporter.Editor.DataClasses.OperationResult.State
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationResult.State
+  nameWithType: OperationResult.State
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationState
+  name: OperationState
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html
+  commentId: T:kumaS.NuGetImporter.Editor.DataClasses.OperationState
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationState
+  nameWithType: OperationState
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Cancel
+  name: Cancel
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html#kumaS_NuGetImporter_Editor_DataClasses_OperationState_Cancel
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.OperationState.Cancel
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Cancel
+  nameWithType: OperationState.Cancel
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Failure
+  name: Failure
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html#kumaS_NuGetImporter_Editor_DataClasses_OperationState_Failure
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.OperationState.Failure
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Failure
+  nameWithType: OperationState.Failure
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Progress
+  name: Progress
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html#kumaS_NuGetImporter_Editor_DataClasses_OperationState_Progress
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.OperationState.Progress
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Progress
+  nameWithType: OperationState.Progress
+- uid: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Success
+  name: Success
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html#kumaS_NuGetImporter_Editor_DataClasses_OperationState_Success
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.OperationState.Success
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.OperationState.Success
+  nameWithType: OperationState.Success
 - uid: kumaS.NuGetImporter.Editor.DataClasses.Package
   name: Package
   href: api/kumaS.NuGetImporter.Editor.DataClasses.Package.html
@@ -1439,6 +1569,19 @@ references:
   commentId: T:kumaS.NuGetImporter.Editor.NuGetImporterSettings
   fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings
   nameWithType: NuGetImporterSettings
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.AutoPackagePlacementCheck
+  name: AutoPackagePlacementCheck
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_AutoPackagePlacementCheck
+  commentId: P:kumaS.NuGetImporter.Editor.NuGetImporterSettings.AutoPackagePlacementCheck
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.AutoPackagePlacementCheck
+  nameWithType: NuGetImporterSettings.AutoPackagePlacementCheck
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.AutoPackagePlacementCheck*
+  name: AutoPackagePlacementCheck
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_AutoPackagePlacementCheck_
+  commentId: Overload:kumaS.NuGetImporter.Editor.NuGetImporterSettings.AutoPackagePlacementCheck
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.AutoPackagePlacementCheck
+  nameWithType: NuGetImporterSettings.AutoPackagePlacementCheck
 - uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.CatalogCacheLimit
   name: CatalogCacheLimit
   href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_CatalogCacheLimit
@@ -1605,19 +1748,32 @@ references:
   commentId: T:kumaS.NuGetImporter.Editor.PackageManager
   fullName: kumaS.NuGetImporter.Editor.PackageManager
   nameWithType: PackageManager
-- uid: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  name: ChangePackageVersion(String, String, Boolean, VersionSelectMethod)
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersion_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_
-  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion(System.String, System.String, System.Boolean, kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  nameWithType: PackageManager.ChangePackageVersion(String, String, Boolean, VersionSelectMethod)
-- uid: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion*
-  name: ChangePackageVersion
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersion_
-  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion
+- uid: kumaS.NuGetImporter.Editor.PackageManager.Boot
+  name: Boot()
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_Boot
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.Boot
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.Boot()
+  nameWithType: PackageManager.Boot()
+- uid: kumaS.NuGetImporter.Editor.PackageManager.Boot*
+  name: Boot
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_Boot_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.Boot
   isSpec: "True"
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersion
-  nameWithType: PackageManager.ChangePackageVersion
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.Boot
+  nameWithType: PackageManager.Boot
+- uid: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  name: ChangePackageVersionAsync(String, String, Boolean, VersionSelectMethod)
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersionAsync_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync(System.String, System.String, System.Boolean, kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  nameWithType: PackageManager.ChangePackageVersionAsync(String, String, Boolean, VersionSelectMethod)
+- uid: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync*
+  name: ChangePackageVersionAsync
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersionAsync_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync
+  nameWithType: PackageManager.ChangePackageVersionAsync
 - uid: kumaS.NuGetImporter.Editor.PackageManager.ConvertToAssets
   name: ConvertToAssets()
   href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_ConvertToAssets
@@ -1644,51 +1800,84 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.PackageManager.ConvertToUPM
   nameWithType: PackageManager.ConvertToUPM
-- uid: kumaS.NuGetImporter.Editor.PackageManager.FixPackage(System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  name: FixPackage(Boolean, VersionSelectMethod)
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_FixPackage_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_
-  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.FixPackage(System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.FixPackage(System.Boolean, kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  nameWithType: PackageManager.FixPackage(Boolean, VersionSelectMethod)
-- uid: kumaS.NuGetImporter.Editor.PackageManager.FixPackage(System.String)
-  name: FixPackage(String)
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_FixPackage_System_String_
-  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.FixPackage(System.String)
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.FixPackage(System.String)
-  nameWithType: PackageManager.FixPackage(String)
-- uid: kumaS.NuGetImporter.Editor.PackageManager.FixPackage*
-  name: FixPackage
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_FixPackage_
-  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.FixPackage
+- uid: kumaS.NuGetImporter.Editor.PackageManager.DataPath
+  name: DataPath
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_DataPath
+  commentId: P:kumaS.NuGetImporter.Editor.PackageManager.DataPath
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.DataPath
+  nameWithType: PackageManager.DataPath
+- uid: kumaS.NuGetImporter.Editor.PackageManager.DataPath*
+  name: DataPath
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_DataPath_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.DataPath
   isSpec: "True"
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.FixPackage
-  nameWithType: PackageManager.FixPackage
-- uid: kumaS.NuGetImporter.Editor.PackageManager.Initialize
-  name: Initialize()
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_Initialize
-  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.Initialize
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.Initialize()
-  nameWithType: PackageManager.Initialize()
-- uid: kumaS.NuGetImporter.Editor.PackageManager.Initialize*
-  name: Initialize
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_Initialize_
-  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.Initialize
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.DataPath
+  nameWithType: PackageManager.DataPath
+- uid: kumaS.NuGetImporter.Editor.PackageManager.FixPackageAsync(System.String,System.Boolean)
+  name: FixPackageAsync(String, Boolean)
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_FixPackageAsync_System_String_System_Boolean_
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.FixPackageAsync(System.String,System.Boolean)
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.FixPackageAsync(System.String, System.Boolean)
+  nameWithType: PackageManager.FixPackageAsync(String, Boolean)
+- uid: kumaS.NuGetImporter.Editor.PackageManager.FixPackageAsync*
+  name: FixPackageAsync
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_FixPackageAsync_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.FixPackageAsync
   isSpec: "True"
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.Initialize
-  nameWithType: PackageManager.Initialize
-- uid: kumaS.NuGetImporter.Editor.PackageManager.InstallPackage(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  name: InstallPackage(String, String, Boolean, VersionSelectMethod)
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_InstallPackage_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_
-  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.InstallPackage(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.InstallPackage(System.String, System.String, System.Boolean, kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  nameWithType: PackageManager.InstallPackage(String, String, Boolean, VersionSelectMethod)
-- uid: kumaS.NuGetImporter.Editor.PackageManager.InstallPackage*
-  name: InstallPackage
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_InstallPackage_
-  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.InstallPackage
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.FixPackageAsync
+  nameWithType: PackageManager.FixPackageAsync
+- uid: kumaS.NuGetImporter.Editor.PackageManager.FixPackagesAsync(System.Boolean)
+  name: FixPackagesAsync(Boolean)
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_FixPackagesAsync_System_Boolean_
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.FixPackagesAsync(System.Boolean)
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.FixPackagesAsync(System.Boolean)
+  nameWithType: PackageManager.FixPackagesAsync(Boolean)
+- uid: kumaS.NuGetImporter.Editor.PackageManager.FixPackagesAsync*
+  name: FixPackagesAsync
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_FixPackagesAsync_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.FixPackagesAsync
   isSpec: "True"
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.InstallPackage
-  nameWithType: PackageManager.InstallPackage
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.FixPackagesAsync
+  nameWithType: PackageManager.FixPackagesAsync
+- uid: kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  name: InstallPackageAsync(String, String, Boolean, VersionSelectMethod)
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_InstallPackageAsync_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync(System.String, System.String, System.Boolean, kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  nameWithType: PackageManager.InstallPackageAsync(String, String, Boolean, VersionSelectMethod)
+- uid: kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync*
+  name: InstallPackageAsync
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_InstallPackageAsync_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync
+  nameWithType: PackageManager.InstallPackageAsync
+- uid: kumaS.NuGetImporter.Editor.PackageManager.IsNeedToFix
+  name: IsNeedToFix()
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_IsNeedToFix
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.IsNeedToFix
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.IsNeedToFix()
+  nameWithType: PackageManager.IsNeedToFix()
+- uid: kumaS.NuGetImporter.Editor.PackageManager.IsNeedToFix*
+  name: IsNeedToFix
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_IsNeedToFix_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.IsNeedToFix
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.IsNeedToFix
+  nameWithType: PackageManager.IsNeedToFix
+- uid: kumaS.NuGetImporter.Editor.PackageManager.Load
+  name: Load()
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_Load
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.Load
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.Load()
+  nameWithType: PackageManager.Load()
+- uid: kumaS.NuGetImporter.Editor.PackageManager.Load*
+  name: Load
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_Load_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.Load
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.Load
+  nameWithType: PackageManager.Load
 - uid: kumaS.NuGetImporter.Editor.PackageManager.Save
   name: Save()
   href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_Save
@@ -1702,19 +1891,19 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.PackageManager.Save
   nameWithType: PackageManager.Save
-- uid: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  name: UninstallPackages(String, Boolean, VersionSelectMethod)
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_UninstallPackages_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_
-  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages(System.String, System.Boolean, kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
-  nameWithType: PackageManager.UninstallPackages(String, Boolean, VersionSelectMethod)
-- uid: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages*
-  name: UninstallPackages
-  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_UninstallPackages_
-  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages
+- uid: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  name: UninstallPackagesAsync(String, Boolean, VersionSelectMethod)
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_UninstallPackagesAsync_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_
+  commentId: M:kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync(System.String, System.Boolean, kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)
+  nameWithType: PackageManager.UninstallPackagesAsync(String, Boolean, VersionSelectMethod)
+- uid: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync*
+  name: UninstallPackagesAsync
+  href: api/kumaS.NuGetImporter.Editor.PackageManager.html#kumaS_NuGetImporter_Editor_PackageManager_UninstallPackagesAsync_
+  commentId: Overload:kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync
   isSpec: "True"
-  fullName: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackages
-  nameWithType: PackageManager.UninstallPackages
+  fullName: kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync
+  nameWithType: PackageManager.UninstallPackagesAsync
 - uid: kumaS.NuGetImporter.Editor.PrepareThisAsset
   name: PrepareThisAsset
   href: api/kumaS.NuGetImporter.Editor.PrepareThisAsset.html

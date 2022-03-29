@@ -124,7 +124,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html",
-          "hash": "e7AX75pg6CiSTzsfTEOCJvOi3Kn4IEghSITq2qcmhic="
+          "hash": "l/d2NJ3EWaRcFSdwpyDNy5O4GjHbnS6bwVGq4F1vdNk="
         }
       },
       "is_incremental": false,
@@ -185,6 +185,30 @@
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html",
           "hash": "trGUlpkkKRsHi0WYgFI7lTU+3xX2Aw6DJuwMEaywL7o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html",
+          "hash": "PIddOyfA2dCaN+uPDkel6nxoJXL2wbIIY0QaLZqZrX4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html",
+          "hash": "ZIbTrOVOTPKBCXw9ASGKJg4hsLQRMooN4Sz1DiCGAAU="
         }
       },
       "is_incremental": false,
@@ -316,7 +340,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.html",
-          "hash": "jUteewfunqcOFpFulxzVHPD5j2uhguepiie7jrhPCfs="
+          "hash": "lAnbNnieweoDfGRjzP15Efv9HZp5RnL7cN/ItAWJFQI="
         }
       },
       "is_incremental": false,
@@ -376,7 +400,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html",
-          "hash": "GPluskKVCHygXeOi2h2i80jEQsYNffdGV0BJZHTC2cU="
+          "hash": "nwySANJWLTIX1clBUfXTWM8aScBIKq06CpyB25XqNHw="
         }
       },
       "is_incremental": false,
@@ -424,7 +448,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.PackageManager.html",
-          "hash": "agDENR7JoLeBIcqTU8vO2TMKTGubTFNrtyaRuQC1g6Y="
+          "hash": "edQqWt8DDjXpmefQ11J0wkO+phgHIzysb2lV93kVVk8="
         }
       },
       "is_incremental": false,
@@ -460,7 +484,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "qGytwZKNcKIetYbUWgP8K9RrhRMp93B00pR92olLHn8="
+          "hash": "5L41cElY5GzObm+LihugRZAcT2FklM7j/QtK1O2Imbc="
         }
       },
       "is_incremental": false,
@@ -511,7 +535,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/usage.html",
-          "hash": "F1yv2obuporBI5VD00ITdlv0ewX0W5eIw2WpeM5V6dU="
+          "hash": "5wAmWSYH8UPQvyCjUKE9xYIB3h7MLfDMXNwmgauBH8g="
         }
       },
       "is_incremental": false,
@@ -562,7 +586,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation_jp/usage.html",
-          "hash": "AjUlo/QmwGbTyufJJYyby4+I6CD65PlOrmPKt+DDA14="
+          "hash": "9RaFx/bNKSe04S5No/2QiNWtNAbH50UICkeVIwW6cL8="
         }
       },
       "is_incremental": false,
@@ -664,13 +688,13 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 8,
-          "skipped_file_count": 8
+          "skipped_file_count": 6
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 35,
-          "skipped_file_count": 35
+          "total_file_count": 37,
+          "skipped_file_count": 29
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
