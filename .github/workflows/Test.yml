@@ -18,9 +18,9 @@ jobs:
         projectPath:
           - NuGetImporterForUnity
         unityVersion:
-          - 2019.4.33f1
-          - 2020.3.24f1
-          - 2021.2.9f1
+          - 2019.4.37f1
+          - 2020.3.33f1
+          - 2021.2.19f1
         testMode:
           - editmode
     steps:
@@ -31,7 +31,7 @@ jobs:
           key: Library-${{ matrix.projectPath }}
           restore-keys: |
             Library-
-      - uses: webbertakken/unity-test-runner@v2.0.0-alpha-7
+      - uses: webbertakken/unity-test-runner@v2.0.0
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         id: tests
