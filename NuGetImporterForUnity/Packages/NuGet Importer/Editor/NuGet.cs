@@ -278,11 +278,12 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 else
                 {
-                    using (Stream responseStream = await client.GetStreamAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg"))
+                    var response = await client.GetAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg", HttpCompletionOption.ResponseHeadersRead);
+                    using (Stream responseStream = await response.Content.ReadAsStreamAsync())
                     {
                         lock (downloading)
                         {
-                            downloading[packageName] = (responseStream.Length, fileStream);
+                            downloading[packageName] = (response.Content.Headers.ContentLength.GetValueOrDefault(), fileStream);
                         }
                         await responseStream.CopyToAsync(fileStream);
                         lock (downloading)
@@ -376,6 +377,10 @@ namespace kumaS.NuGetImporter.Editor
             if (isGetting)
             {
                 await gettingCatalogs[packageName];
+                while (gettingCatalogs.ContainsKey(packageName))
+                {
+                    await Task.Delay(100);
+                }
                 return catalogCache[packageName];
             }
 
