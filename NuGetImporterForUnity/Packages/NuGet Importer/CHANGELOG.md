@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.1] - 2022-05-12
+
+- Improved stability.
+- Fixed a bug about package downloading.
+
+## [2.2.0] - 2022-03-30
+
+- Support for packages that have a component for Unity
+- Add rollback when installation fails
+- Add features for git
+- Change to not re-compile when cancel operation
+- Fix a bug in the package framework estimation
+- Fix a bug that search results are not displayed when reloading assemblies
+
 ## [2.1.0] - 2021-12-31
 
 - Support for localized package and analyzer

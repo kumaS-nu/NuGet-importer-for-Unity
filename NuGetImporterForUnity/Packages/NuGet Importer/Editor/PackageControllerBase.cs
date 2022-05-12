@@ -205,10 +205,11 @@ namespace kumaS.NuGetImporter.Editor
             var nugetPath = PackageManager.DataPath.Replace("Assets", "NuGet");
             var nugetPackagePath = Path.Combine(nugetPath, package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
 
-            if (!File.Exists(downloadPath))
+            if (File.Exists(downloadPath))
             {
-                await NuGet.GetPackage(package.id, package.version, tempPath);
+                File.Delete(downloadPath);
             }
+            await NuGet.GetPackage(package.id, package.version, tempPath);
             if (!Directory.Exists(nugetPath))
             {
                 Directory.CreateDirectory(nugetPath);
