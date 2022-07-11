@@ -419,10 +419,50 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
+            var analyzerLocalizePath = Path.Combine(extractPath, "analyzers", "dotnet", "cs");
+            if (Directory.Exists(analyzerLocalizePath))
+            {
+                var localDir = Directory.GetDirectories(analyzerLocalizePath);
+                if (localDir.Length != 0)
+                {
+                    var groupedDirectories = GroupLocalizedDirectory(analyzerLocalizePath);
+                    var currentCulture = CultureInfo.CurrentUICulture;
+                    foreach (var grouped in groupedDirectories)
+                    {
+                        if (grouped.Count == 1)
+                        {
+                            continue;
+                        }
+
+                        foreach (var localized in grouped)
+                        {
+                            var localizedName = Path.GetFileName(localized);
+                            if (!currentCulture.Equals(CultureInfo.CreateSpecificCulture(localizedName)))
+                            {
+                                var platformName = Path.GetFileName(Path.GetDirectoryName(localized));
+                                if (!Directory.Exists(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs")))
+                                {
+                                    Directory.CreateDirectory(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs"));
+                                }
+                                if (!Directory.Exists(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", platformName)))
+                                {
+                                    Directory.CreateDirectory(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", platformName));
+                                }
+                                Directory.Move(localized, Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", platformName, localizedName));
+                            }
+                        }
+                    }
+                }
+            }
+
             foreach (var moveDir in Directory.GetDirectories(extractPath))
             {
                 var dirName = Path.GetFileName(moveDir);
                 if (dirName == "lib" || dirName == "runtimes" || dirName.ToLowerInvariant() == "unity")
+                {
+                    continue;
+                }
+                if (NuGetAnalyzerImportSetting.HasAnalyzerSupport && dirName == "analyzers")
                 {
                     continue;
                 }
