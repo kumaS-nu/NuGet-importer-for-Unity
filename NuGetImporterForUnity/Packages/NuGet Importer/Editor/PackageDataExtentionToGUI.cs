@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
@@ -370,7 +369,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 else
                 {
-                    var framework = FrameworkName.TARGET;
+                    List<string> framework = FrameworkName.TARGET;
 
                     IEnumerable<Dependencygroup> dependencyGroups = catalogEntry.dependencyGroups.Where(group => group.targetFramework == null || group.targetFramework == "" || framework.Contains(group.targetFramework));
                     if (dependencyGroups == null || !dependencyGroups.Any())
@@ -381,13 +380,13 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         var dependencies = new List<Dependency>();
                         var targetFramework = framework.First();
-                        var dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
+                        IEnumerable<Dependencygroup> dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
                         if (dependAllGroup.Any())
                         {
                             dependencies.AddRange(dependAllGroup.First().dependencies);
                         }
 
-                        var dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(group =>
+                        IOrderedEnumerable<Dependencygroup> dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(group =>
                         {
                             var ret = framework.IndexOf(group.targetFramework);
                             return ret < 0 ? int.MaxValue : ret;
@@ -395,7 +394,7 @@ namespace kumaS.NuGetImporter.Editor
 
                         if (dependGroups.Any() && dependGroups.First().dependencies != null)
                         {
-                            var dependGroup = dependGroups.First();
+                            Dependencygroup dependGroup = dependGroups.First();
                             dependencies.AddRange(dependGroup.dependencies);
                             if (dependGroup.dependencies.Any())
                             {
@@ -532,7 +531,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task PackageOperation(Task<OperationResult> operation, NuGetImporterWindow window, string packageId)
         {
-            var result = await operation;
+            OperationResult result = await operation;
             EditorUtility.DisplayDialog("NuGet  importer", result.Message, "OK");
             await window.UpdateInstalledList();
             await window.UpdateSelected(packageId);
@@ -551,7 +550,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task GetIcon(this Catalog data, string installedVersion)
         {
-            var d = data.GetAllCatalogEntry().First(catalog => catalog.version == installedVersion);
+            Catalogentry d = data.GetAllCatalogEntry().First(catalog => catalog.version == installedVersion);
 
             if (d.iconUrl == null || d.iconUrl == "")
             {

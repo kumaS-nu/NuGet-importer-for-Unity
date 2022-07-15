@@ -46,7 +46,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    var before = NuGetImporterSettings.Instance.InstallMethod;
+                    InstallMethod before = NuGetImporterSettings.Instance.InstallMethod;
                     EditorGUILayout.LabelField("install method");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);

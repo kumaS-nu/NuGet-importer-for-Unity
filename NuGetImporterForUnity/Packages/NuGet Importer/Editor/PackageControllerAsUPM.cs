@@ -19,16 +19,16 @@ namespace kumaS.NuGetImporter.Editor
         /// <inheritdoc/>
         internal override async Task<string> GetInstallPath(Package package)
         {
-            var catalog = await NuGet.GetCatalog(package.id);
-            var selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
+            Catalog catalog = await NuGet.GetCatalog(package.id);
+            Catalogentry selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
             return Path.Combine(PackageManager.DataPath.Replace("Assets", "Packages"), selectedCatalog.id);
         }
 
         /// <inheritdoc/>
         internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
-            var task = GetInstallPath(package);
-            var task2 = NuGet.GetCatalog(package.id);
+            Task<string> task = GetInstallPath(package);
+            Task<Catalog> task2 = NuGet.GetCatalog(package.id);
             await ExtractPackageAsync(package);
             var installPath = await task;
             var asm = new PackageManagedPluginList
@@ -43,8 +43,8 @@ namespace kumaS.NuGetImporter.Editor
                 return (true, package, asm);
             }
 
-            var catalog = await task2;
-            var selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
+            Catalog catalog = await task2;
+            Catalogentry selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
             File.WriteAllText(Path.Combine(installPath, "package.json"), JsonUtility.ToJson(selectedCatalog.ToPackageJson(), true));
             return (false, package, asm);
         }

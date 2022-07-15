@@ -1,9 +1,10 @@
 ﻿#if ZIP_AVAILABLE
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,7 +14,6 @@ using kumaS.NuGetImporter.Editor.DataClasses;
 using UnityEditor;
 
 using UnityEngine;
-using System.Collections;
 
 namespace kumaS.NuGetImporter.Editor
 {
@@ -164,7 +164,7 @@ namespace kumaS.NuGetImporter.Editor
                     return searchCache[query];
                 }
             }
-            var task = Task.Run(async() => await GetSearchResult(query));
+            var task = Task.Run(async () => await GetSearchResult(query));
             return await task;
         }
 
@@ -181,7 +181,7 @@ namespace kumaS.NuGetImporter.Editor
                 return searchCache[query];
             }
 
-            var task = GetQueryResult(query);
+            Task task = GetQueryResult(query);
             lock (gettingSearchs)
             {
                 gettingSearchs.Add(query, task);
@@ -200,7 +200,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task GetQueryResult(string query)
         {
-            var request = searchQueryService.Select<string, Func<Task<string>>>(endpoint => { return () => client.GetStringAsync(endpoint + query);});
+            IEnumerable<Func<Task<string>>> request = searchQueryService.Select<string, Func<Task<string>>>(endpoint => { return () => client.GetStringAsync(endpoint + query); });
             var responseText = await GetResponseWithRetry(gettingSearchs, query, request.ToArray());
             SearchResult result = JsonUtility.FromJson<SearchResult>(RefineJson(responseText));
             lock (searchCache)
@@ -220,9 +220,9 @@ namespace kumaS.NuGetImporter.Editor
         {
             var tryLimit = NuGetImporterSettings.Instance.RetryLimit + 1;
             var totalTryCount = tryLimit * actions.Length;
-            for (int i = 0; i < tryLimit; i++)
+            for (var i = 0; i < tryLimit; i++)
             {
-                foreach (var action in actions)
+                foreach (Func<Task<string>> action in actions)
                 {
                     totalTryCount--;
                     try
@@ -288,7 +288,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (Directory.Exists(cachePath))
                 {
-                    using (var sourceStream = File.Open(Path.Combine(cachePath, fileName + ".nupkg"), FileMode.Open))
+                    using (FileStream sourceStream = File.Open(Path.Combine(cachePath, fileName + ".nupkg"), FileMode.Open))
                     {
                         lock (downloading)
                         {
@@ -308,7 +308,7 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         try
                         {
-                            var response = await client.GetAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg", HttpCompletionOption.ResponseHeadersRead);
+                            HttpResponseMessage response = await client.GetAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg", HttpCompletionOption.ResponseHeadersRead);
                             using (Stream responseStream = await response.Content.ReadAsStreamAsync())
                             {
                                 lock (downloading)
@@ -321,7 +321,7 @@ namespace kumaS.NuGetImporter.Editor
                         }
                         catch (Exception)
                         {
-                            if(i >= tryCount - 1)
+                            if (i >= tryCount - 1)
                             {
                                 throw;
                             }
@@ -418,7 +418,7 @@ namespace kumaS.NuGetImporter.Editor
                     return catalogCache[packageName];
                 }
             }
-            var task = Task.Run(async() => await GetCatalogResult(packageName));
+            var task = Task.Run(async () => await GetCatalogResult(packageName));
             return await task;
         }
 

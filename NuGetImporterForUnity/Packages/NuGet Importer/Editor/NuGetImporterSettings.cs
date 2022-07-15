@@ -60,7 +60,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public int SearchCacheLimit
         {
-            get { return searchCacheLimit; }
+            get => searchCacheLimit;
             set
             {
                 var changed = searchCacheLimit != value;
@@ -81,7 +81,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public int CatalogCacheLimit
         {
-            get { return catalogCacheLimit; }
+            get => catalogCacheLimit;
             set
             {
                 var changed = catalogCacheLimit != value;
@@ -102,7 +102,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public int IconCacheLimit
         {
-            get { return iconCacheLimit; }
+            get => iconCacheLimit;
             set
             {
                 var changed = iconCacheLimit != value;
@@ -123,7 +123,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public VersionSelectMethod Method
         {
-            get { return method; }
+            get => method;
             set
             {
                 var changed = method != value;
@@ -144,7 +144,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public bool OnlyStable
         {
-            get { return onlyStable; }
+            get => onlyStable;
             set
             {
                 var changed = onlyStable != value;
@@ -165,7 +165,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public InstallMethod InstallMethod
         {
-            get { return installMethod; }
+            get => installMethod;
             set
             {
                 var changed = installMethod != value;

@@ -1,12 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEditor;
-using Unity.CodeEditor;
-using System.IO;
 using System.Xml.Linq;
+
+using Unity.CodeEditor;
+
+using UnityEditor;
+
+using UnityEngine;
 
 namespace kumaS.NuGetImporter.Editor
 {
@@ -24,7 +26,7 @@ namespace kumaS.NuGetImporter.Editor
 #if UNITY_2020_2_OR_NEWER
                 return true;
 #endif
-                var codeEditorType = CodeEditor.CurrentEditor.GetType();
+                System.Type codeEditorType = CodeEditor.CurrentEditor.GetType();
                 if (codeEditorType.Name == "VSCodeScriptEditor")
                 {
 #if HAS_ROSLYN_ANALZYER_SUPPORT_VSCODE
@@ -45,7 +47,10 @@ namespace kumaS.NuGetImporter.Editor
 
         private readonly static Regex rx = new Regex(@"[/\\]dotnet[/\\]cs[/\\]", RegexOptions.IgnoreCase);
 
-        private static bool IsAnalyzer(string path) => rx.IsMatch(path);
+        private static bool IsAnalyzer(string path)
+        {
+            return rx.IsMatch(path);
+        }
 
         private void OnPreprocessAsset()
         {
@@ -71,14 +76,14 @@ namespace kumaS.NuGetImporter.Editor
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             AssetDatabase.StartAssetEditing();
-            bool isChanged = false;
-            foreach(var importedAsset in importedAssets)
+            var isChanged = false;
+            foreach (var importedAsset in importedAssets)
             {
                 if (!importedAsset.EndsWith(".dll") || !IsAnalyzer(importedAsset))
                 {
                     continue;
                 }
-                var asset = AssetDatabase.LoadMainAssetAtPath(importedAsset);
+                Object asset = AssetDatabase.LoadMainAssetAtPath(importedAsset);
                 AssetDatabase.SetLabels(asset, new[] { "RoslynAnalyzer" });
                 isChanged = true;
             }
@@ -107,7 +112,7 @@ namespace kumaS.NuGetImporter.Editor
             var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(p => IsAnalyzer(p)).ToArray();
             var xDoc = XDocument.Parse(content);
             var nsMsbuild = (XNamespace)"http://schemas.microsoft.com/developer/msbuild/2003";
-            var project = xDoc.Element(nsMsbuild + "Project");
+            XElement project = xDoc.Element(nsMsbuild + "Project");
 
             var baseDir = Path.GetDirectoryName(path);
             var analyzersInCsproj = new HashSet<string>(project.Descendants(nsMsbuild + "Analyzer").Select(x => x.Attribute("Include")?.Value).Where(x => x != null));

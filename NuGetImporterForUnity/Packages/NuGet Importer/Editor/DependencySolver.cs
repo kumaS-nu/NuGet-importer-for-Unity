@@ -210,7 +210,7 @@ namespace kumaS.NuGetImporter.Editor
             var confirmedNode = new List<DependencyNode>();
             var tasks = new List<Task>();
             var allNode = new Dictionary<string, List<DependencyNode>>();
-            var targetFramework = FrameworkName.TARGET;
+            List<string> targetFramework = FrameworkName.TARGET;
 
             // First, search for packages that may be necessary.
             foreach ((var packageId, var version) in packages)
@@ -335,14 +335,14 @@ namespace kumaS.NuGetImporter.Editor
             else
             {
                 var dependencies = new List<Dependency>();
-                var dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
+                IEnumerable<Dependencygroup> dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
                 if (dependAllGroup.Any())
                 {
                     dependencies.AddRange(dependAllGroup.First().dependencies);
                     node.TragetFramework = targetFramework.First();
                 }
 
-                var dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(depend =>
+                IOrderedEnumerable<Dependencygroup> dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(depend =>
                 {
                     var ret = targetFramework.IndexOf(depend.targetFramework);
                     return ret < 0 ? int.MaxValue : ret;
@@ -350,7 +350,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (dependGroups.Any())
                 {
-                    var dependGroup = dependGroups.First();
+                    Dependencygroup dependGroup = dependGroups.First();
                     node.TragetFramework = dependGroup.targetFramework;
                     if (dependGroups.First().dependencies != null)
                     {

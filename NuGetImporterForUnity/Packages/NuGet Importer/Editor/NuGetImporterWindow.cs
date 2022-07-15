@@ -44,7 +44,7 @@ namespace kumaS.NuGetImporter.Editor
         private PackageSummary summary;
         private Catalog deteal;
         private bool isAddedSummary = false;
-        private Stack<DateTime> dataUpdateRequest = new Stack<DateTime>();
+        private readonly Stack<DateTime> dataUpdateRequest = new Stack<DateTime>();
         private readonly TimeSpan throttleTime = TimeSpan.FromMilliseconds(500);
 
         private void OnEnable()
@@ -58,7 +58,7 @@ namespace kumaS.NuGetImporter.Editor
 
         internal static void Initialize()
         {
-            var instance = Resources.FindObjectsOfTypeAll<NuGetImporterWindow>();
+            NuGetImporterWindow[] instance = Resources.FindObjectsOfTypeAll<NuGetImporterWindow>();
             if (instance.Length > 0)
             {
                 _ = instance[0].UpdateData();
@@ -95,7 +95,7 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Repair packages", false, 1)]
         private static async Task FixPackages()
         {
-            var result = await PackageManager.FixPackagesAsync(false);
+            OperationResult result = await PackageManager.FixPackagesAsync(false);
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
 
@@ -335,7 +335,8 @@ namespace kumaS.NuGetImporter.Editor
                     }
                     Repaint();
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.LogException(e);
             }
@@ -403,7 +404,7 @@ namespace kumaS.NuGetImporter.Editor
             };
             using (new EditorGUILayout.HorizontalScope())
             {
-                var icon = EditorGUIUtility.IconContent("Search Icon");
+                GUIContent icon = EditorGUIUtility.IconContent("Search Icon");
                 GUILayout.Box(icon, GUILayout.Width(30), GUILayout.Height(30));
                 InputText = EditorGUILayout.TextField(InputText, searchStyle, GUILayout.Height(30), GUILayout.ExpandWidth(true));
             }
@@ -438,7 +439,7 @@ namespace kumaS.NuGetImporter.Editor
                             foreach (Catalog catalog in catalogs)
                             {
                                 var id = catalog.items[0].items[0].catalogEntry.id;
-                                var installedPkg = PackageManager.Installed.package.Where(package => package.id == id);
+                                IEnumerable<Package> installedPkg = PackageManager.Installed.package.Where(package => package.id == id);
                                 if (installedPkg.Count() != 1)
                                 {
                                     GUIUtility.ExitGUI();
