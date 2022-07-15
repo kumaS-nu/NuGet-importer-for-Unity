@@ -899,6 +899,7 @@ namespace kumaS.NuGetImporter.Editor
                         if (tasks.IsFaulted)
                         {
                             ret = OperationState.Failure;
+                            UnityEngine.Debug.LogException(tasks.Exception);
                             EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + tasks.Exception.Message, "OK");
                             await Rollback(installingPackages);
                             return new OperationResult(ret, "Rollback to before operation is complete.");
@@ -917,6 +918,7 @@ namespace kumaS.NuGetImporter.Editor
                 catch (Exception e)
                 {
                     ret = OperationState.Failure;
+                    UnityEngine.Debug.LogException(e);
                     EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + e.Message, "OK");
                     await Rollback(installingPackages);
                     return new OperationResult(ret, "Rollback to before operation is complete.");

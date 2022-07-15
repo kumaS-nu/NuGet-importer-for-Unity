@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
@@ -153,25 +154,39 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task GetIcon(this Datum data)
         {
-            if (data.iconUrl == null)
+            if (data.iconUrl == null || data.iconUrl == "")
             {
                 data.icon = null;
                 return;
             }
 
             // The below code is the cache process.
-            var haveIcon = false;
-            var isGetting = false;
             lock (iconCache)
             {
-                haveIcon = iconCache.ContainsKey(data.iconUrl);
+                var haveIcon = iconCache.ContainsKey(data.iconUrl);
+                if (haveIcon)
+                {
+                    iconLog.Remove(data.iconUrl);
+                    iconLog.Add(data.iconUrl);
+                    data.icon = iconCache[data.iconUrl];
+                    return;
+                }
             }
+
+            var isGetting = false;
             lock (getting)
             {
                 isGetting = getting.ContainsKey(data.iconUrl);
             }
 
-            if (!haveIcon && !isGetting)
+            var isSavemode = NuGetImporterSettings.Instance.IsNetworkSavemode;
+            if (isSavemode)
+            {
+                data.icon = null;
+                return;
+            }
+
+            if (!isGetting)
             {
                 lock (getting)
                 {
@@ -179,17 +194,10 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
-            if (!haveIcon)
+            await getting[data.iconUrl];
+            lock (getting)
             {
-                await getting[data.iconUrl];
-            }
-            else
-            {
-                lock (iconCache)
-                {
-                    iconLog.Remove(data.iconUrl);
-                    iconLog.Add(data.iconUrl);
-                }
+                getting.Remove(data.iconUrl);
             }
 
             data.icon = iconCache[data.iconUrl];
@@ -548,20 +556,28 @@ namespace kumaS.NuGetImporter.Editor
             if (d.iconUrl == null || d.iconUrl == "")
             {
                 data.icon = null;
+                return;
             }
 
             // The below code is the cache process.
-            var haveIcon = false;
-            var isGetting = false;
             lock (iconCache)
             {
-                haveIcon = iconCache.ContainsKey(d.iconUrl);
+                var haveIcon = iconCache.ContainsKey(d.iconUrl);
+                if (haveIcon)
+                {
+                    iconLog.Remove(d.iconUrl);
+                    iconLog.Add(d.iconUrl);
+                    data.icon = iconCache[d.iconUrl];
+                    return;
+                }
             }
+
+            var isGetting = false;
             lock (getting)
             {
                 isGetting = getting.ContainsKey(d.iconUrl);
             }
-            if (!haveIcon && !isGetting)
+            if (!isGetting)
             {
                 lock (getting)
                 {
@@ -569,17 +585,10 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
-            if (!haveIcon)
+            await getting[d.iconUrl];
+            lock (getting)
             {
-                await getting[d.iconUrl];
-            }
-            else
-            {
-                lock (iconCache)
-                {
-                    iconLog.Remove(d.iconUrl);
-                    iconLog.Add(d.iconUrl);
-                }
+                getting.Remove(d.iconUrl);
             }
 
             data.icon = iconCache[d.iconUrl];
@@ -589,10 +598,41 @@ namespace kumaS.NuGetImporter.Editor
         private static async Task GetIcon(string url)
         {
             var source = new Texture2D(0, 0, TextureFormat.RGBA32, false);
-            source.LoadImage(await client.GetByteArrayAsync(url));
+            var tryCount = NuGetImporterSettings.Instance.RetryLimit + 1;
+            for (var i = 0; i < tryCount; i++)
+            {
+                try
+                {
+                    var data = await client.GetByteArrayAsync(url);
+                    source.LoadImage(data);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (e.Message == "404 (Not Found)")
+                    {
+                        UpdateIconCache(url, null);
+                        break;
+                    }
+                    if (i >= tryCount - 1)
+                    {
+                        lock (getting)
+                        {
+                            getting.Clear();
+                        }
+                        throw;
+                    }
+                    await Task.Delay(1000);
+                }
+            }
             var texture = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Graphics.ConvertTexture(source, texture);
             MonoBehaviour.DestroyImmediate(source);
+            UpdateIconCache(url, texture);
+        }
+
+        private static void UpdateIconCache(string url, Texture2D texture)
+        {
             lock (iconCache)
             {
                 iconCache[url] = texture;

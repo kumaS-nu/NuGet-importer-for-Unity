@@ -419,6 +419,24 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
+            var analyzerLanguagePath = Path.Combine(extractPath, "analyzers", "dotnet");
+            if (Directory.Exists(analyzerLanguagePath))
+            {
+                var langDir = Directory.GetDirectories(analyzerLanguagePath);
+                foreach(var lang in langDir)
+                {
+                    if (lang.EndsWith("cs"))
+                    {
+                        continue;
+                    }
+                    if (!Directory.Exists(Path.Combine(nugetPackagePath, "analyzers", "dotnet")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(nugetPackagePath, "analyzers", "dotnet"));
+                    }
+                    Directory.Move(lang, Path.Combine(nugetPackagePath, "analyzers", "dotnet", Path.GetFileName(lang)));
+                }
+            }
+
             var analyzerLocalizePath = Path.Combine(extractPath, "analyzers", "dotnet", "cs");
             if (Directory.Exists(analyzerLocalizePath))
             {
@@ -439,16 +457,11 @@ namespace kumaS.NuGetImporter.Editor
                             var localizedName = Path.GetFileName(localized);
                             if (!currentCulture.Equals(CultureInfo.CreateSpecificCulture(localizedName)))
                             {
-                                var platformName = Path.GetFileName(Path.GetDirectoryName(localized));
                                 if (!Directory.Exists(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs")))
                                 {
                                     Directory.CreateDirectory(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs"));
                                 }
-                                if (!Directory.Exists(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", platformName)))
-                                {
-                                    Directory.CreateDirectory(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", platformName));
-                                }
-                                Directory.Move(localized, Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", platformName, localizedName));
+                                Directory.Move(localized, Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", localizedName));
                             }
                         }
                     }

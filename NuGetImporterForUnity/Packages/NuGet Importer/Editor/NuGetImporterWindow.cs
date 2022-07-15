@@ -35,7 +35,7 @@ namespace kumaS.NuGetImporter.Editor
         private readonly object lockAddingPackages = new object();
 
         private int Selected { get => selected; set { if (selected != value) { selected = value; _ = UpdateData(); } } }
-        private string InputText { get => inputText; set { if (inputText != value) { inputText = value; _ = UpdateData(); } } }
+        private string InputText { get => inputText; set { if (inputText != value) { inputText = value; dataUpdateRequest.Push(DateTime.Now); } } }
 
         private readonly string[] selectedLabel = { "Search packages", "Installed packages" };
 
@@ -44,6 +44,8 @@ namespace kumaS.NuGetImporter.Editor
         private PackageSummary summary;
         private Catalog deteal;
         private bool isAddedSummary = false;
+        private Stack<DateTime> dataUpdateRequest = new Stack<DateTime>();
+        private readonly TimeSpan throttleTime = TimeSpan.FromMilliseconds(500);
 
         private void OnEnable()
         {
@@ -136,6 +138,26 @@ namespace kumaS.NuGetImporter.Editor
         private static void GoProjectPage()
         {
             Help.BrowseURL("https://github.com/kumaS-nu/NuGet-importer-for-Unity");
+        }
+
+        private void Update()
+        {
+            if (NuGetImporterSettings.Instance.IsNetworkSavemode)
+            {
+                if (dataUpdateRequest.Any() && DateTime.Now - dataUpdateRequest.Peek() > throttleTime)
+                {
+                    dataUpdateRequest.Clear();
+                    _ = UpdateData();
+                }
+                return;
+            }
+
+            if (dataUpdateRequest.Any())
+            {
+                dataUpdateRequest.Clear();
+                _ = UpdateData();
+                return;
+            }
         }
 
         /// <summary>
@@ -247,69 +269,75 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         internal async Task UpdateData()
         {
-            progress = 0.25f;
-            progressText = "Getting package list";
-            if (selected == 1)
+            try
             {
-                Task tasks = UpdateInstalledList();
-                progress = 0.5f;
-                progressText = "Organizing datas";
-
-                // Asynchronous is only fetching images, so the catalog are all available. So, we can filter the catalog here.
-                catalogs = catalogs.Where(catalog => catalog.items[0].items[0].catalogEntry.id.IndexOf(inputText, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
-                searchPackages.Clear();
-                Repaint();
-                progress = 0.75f;
-                progressText = "Getting icons";
-                await Task.WhenAll(tasks);
-                progress = 1;
-                progressText = "Finish";
-                Repaint();
-            }
-            else
-            {
-                var searchQuery = inputText;
-                SearchResult searchResult = await NuGet.SearchPackage(inputText, prerelease: true);
-                progress = 0.5f;
-                progressText = "Getting icons";
-
-                var tasks = new List<Task>();
-                foreach (Datum search in searchResult.data)
+                progress = 0.25f;
+                progressText = "Getting package list";
+                if (selected == 1)
                 {
-                    tasks.Add(search.GetIcon());
-                }
+                    Task tasks = UpdateInstalledList();
+                    progress = 0.5f;
+                    progressText = "Organizing datas";
 
-                lock (searchPackages)
-                {
-                    hitPackages = searchResult.totalHits;
+                    // Asynchronous is only fetching images, so the catalog are all available. So, we can filter the catalog here.
+                    catalogs = catalogs.Where(catalog => catalog.items[0].items[0].catalogEntry.id.IndexOf(inputText, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
                     searchPackages.Clear();
-                }
-
-                if (selected == 0)
-                {
-                    if (searchQuery == inputText)
-                    {
-                        progress = 0.75f;
-                        progressText = "Organizing datas";
-                        lock (searchPackages)
-                        {
-                            searchPackages.AddRange(searchResult.data);
-                        }
-                    }
-                    else
-                    {
-                        return;
-                    }
-                    catalogs.Clear();
-                }
-                Repaint();
-                if (selected == 0 && searchQuery == inputText)
-                {
+                    Repaint();
+                    progress = 0.75f;
+                    progressText = "Getting icons";
                     await Task.WhenAll(tasks);
                     progress = 1;
                     progressText = "Finish";
+                    Repaint();
                 }
-                Repaint();
+                else
+                {
+                    var searchQuery = inputText;
+                    SearchResult searchResult = await NuGet.SearchPackage(inputText, prerelease: true);
+                    progress = 0.5f;
+                    progressText = "Getting icons";
+
+                    var tasks = new List<Task>();
+                    foreach (Datum search in searchResult.data)
+                    {
+                        tasks.Add(search.GetIcon());
+                    }
+
+                    lock (searchPackages)
+                    {
+                        hitPackages = searchResult.totalHits;
+                        searchPackages.Clear();
+                    }
+
+                    if (selected == 0)
+                    {
+                        if (searchQuery == inputText)
+                        {
+                            progress = 0.75f;
+                            progressText = "Organizing datas";
+                            lock (searchPackages)
+                            {
+                                searchPackages.AddRange(searchResult.data);
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        catalogs.Clear();
+                    }
+                    Repaint();
+                    if (selected == 0 && searchQuery == inputText)
+                    {
+                        await Task.WhenAll(tasks);
+                        progress = 1;
+                        progressText = "Finish";
+                    }
+                    Repaint();
+                }
+            }catch(Exception e)
+            {
+                Debug.LogException(e);
             }
         }
 

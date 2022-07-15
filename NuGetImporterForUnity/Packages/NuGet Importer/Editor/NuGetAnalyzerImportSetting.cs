@@ -104,7 +104,7 @@ namespace kumaS.NuGetImporter.Editor
         private static string OnGeneratedCSProject(string path, string content)
         {
             var packageDir = NuGetImporterSettings.Instance.InstallMethod == DataClasses.InstallMethod.AsAssets ? Path.Combine(Application.dataPath, "Packages") : Application.dataPath.Replace("Assets", "Packages");
-            var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(path => IsAnalyzer(path)).ToArray();
+            var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(p => IsAnalyzer(p)).ToArray();
             var xDoc = XDocument.Parse(content);
             var nsMsbuild = (XNamespace)"http://schemas.microsoft.com/developer/msbuild/2003";
             var project = xDoc.Element(nsMsbuild + "Project");

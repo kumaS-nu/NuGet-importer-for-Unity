@@ -197,5 +197,76 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
         }
+
+        [SerializeField]
+        private int retryLimit = 1;
+
+        /// <summary>
+        /// <para>How many retries are allowed over a network connection.</para>
+        /// <para>ネットワーク接続で何回までリトライするか。</para>
+        /// </summary>
+        public int RetryLimit
+        {
+            get => retryLimit;
+            set
+            {
+                if (value < 0)
+                {
+                    return;
+                }
+                var changed = retryLimit != value;
+                retryLimit = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private int timeout = 100;
+
+        /// <summary>
+        /// <para>Network timeout time.</para>
+        /// <para>ネットワークのタイムアウト時間。</para>
+        /// </summary>
+        public int Timeout
+        {
+            get => timeout;
+            set
+            {
+                if (value < 100)
+                {
+                    return;
+                }
+                var changed = timeout != value;
+                timeout = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private bool isNetworkSavemode = false;
+
+        /// <summary>
+        /// <para>A mode that reduces the network connections.</para>
+        /// <para>ネットワーク接続を少なくするモード。</para>
+        /// </summary>
+        public bool IsNetworkSavemode
+        {
+            get => isNetworkSavemode;
+            set
+            {
+                var changed = isNetworkSavemode != value;
+                isNetworkSavemode = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
     }
 }

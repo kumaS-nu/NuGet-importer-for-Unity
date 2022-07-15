@@ -5,5 +5,8 @@
     "method": 0,
     "onlyStable": false,
     "installMethod": 0,
-    "autoPackagePlacementCheck": true
+    "autoPackagePlacementCheck": true,
+    "retryLimit": 5,
+    "timeout": 100,
+    "isNetworkSavemode": false
 }
