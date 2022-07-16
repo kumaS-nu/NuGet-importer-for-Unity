@@ -8,8 +8,8 @@
 [![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/kumaS-nu/NuGet-importer-for-Unity)](https://www.codefactor.io/repository/github/kumaS-nu/NuGet-importer-for-Unity)
 [![openupm](https://img.shields.io/npm/v/org.kumas.nuget-importer?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/org.kumas.nuget-importer/)
 
- "NuGet importer for Unity" is a fast, easy to use, and very powerful editor extension that provides you to import NuGet packages into Unity.
-This is also fully support for native plugins.
+ "NuGet importer for Unity" is a fast, easy-to-use, and powerful editor extension that provides you to import NuGet packages into Unity.
+This package also fully supports native plugins.
 (This was inspired by [GlitchEnzo/NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity), but made from scratch.)  
 [日本語はこちら。](#日本語)
 
@@ -17,7 +17,7 @@ This is also fully support for native plugins.
 
 ## Usage
 
- For information on how to install and use this package, please see [usage](documentation/usage.html).
+ For information on how to install and use this package, please see [usage].(documentation/usage.html).
 
 ## Environment
 
@@ -25,16 +25,16 @@ This is also fully support for native plugins.
 
 ## API
 
- The API documentation is available at [here](api/index.html).
+ The API documentation is available [here](api/index.html).
 
 ## Contributing
 
- Any contributions (bug reports, desired features) are welcomed. If you wish to contribute, be sure to review our [Contribution guide](documentation/contributing.html)
+ We welcome any contributions (bug reports, desired features). If you wish to contribute, be sure to review our [Contribution guide](documentation/contributing.html)
 
 ## License
 
- This is [Apache License 2.0](https://github.com/kumaS-nu/NuGet-importer-for-Unity/blob/master/NuGetImporterForUnity/Packages/NuGet%20Importer/LICENSE.md).  
-Each package in NuGet is governed by the terms that are included with the package. For more details, see [NuGet F&Q](https://docs.microsoft.com/en-us/nuget/nuget-org/nuget-org-faq#license-terms).
+ This package is under [Apache License 2.0](https://github.com/kumaS-nu/NuGet-importer-for-Unity/blob/master/NuGetImporterForUnity/Packages/NuGet%20Importer/LICENSE.md).  
+Each package in NuGet is governed by the terms included with the package. For more details, see [NuGet F&Q](https://docs.microsoft.com/en-us/nuget/nuget-org/nuget-org-faq#license-terms).
 
 ## Author
 
@@ -77,7 +77,7 @@ Each package in NuGet is governed by the terms that are included with the packag
 
 ## コントリビュート
 
- どんな貢献（バグ報告やほしい機能）でもしていただけるとありがたいです。具体的なやり方は[コントリビューションガイド](documentation_jp/contributing.html)をご覧ください。
+ どんなコントリビュート（バグ報告やほしい機能）でもしていただけるとありがたいです。具体的なやり方は[コントリビューションガイド](documentation_jp/contributing.html)をご覧ください。
 
 ## ライセンス
 

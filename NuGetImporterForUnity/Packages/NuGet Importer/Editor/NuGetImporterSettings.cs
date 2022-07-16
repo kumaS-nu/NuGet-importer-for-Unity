@@ -60,7 +60,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public int SearchCacheLimit
         {
-            get { return searchCacheLimit; }
+            get => searchCacheLimit;
             set
             {
                 var changed = searchCacheLimit != value;
@@ -81,7 +81,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public int CatalogCacheLimit
         {
-            get { return catalogCacheLimit; }
+            get => catalogCacheLimit;
             set
             {
                 var changed = catalogCacheLimit != value;
@@ -102,7 +102,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public int IconCacheLimit
         {
-            get { return iconCacheLimit; }
+            get => iconCacheLimit;
             set
             {
                 var changed = iconCacheLimit != value;
@@ -123,7 +123,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public VersionSelectMethod Method
         {
-            get { return method; }
+            get => method;
             set
             {
                 var changed = method != value;
@@ -144,7 +144,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public bool OnlyStable
         {
-            get { return onlyStable; }
+            get => onlyStable;
             set
             {
                 var changed = onlyStable != value;
@@ -165,7 +165,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </value>
         public InstallMethod InstallMethod
         {
-            get { return installMethod; }
+            get => installMethod;
             set
             {
                 var changed = installMethod != value;
@@ -191,6 +191,77 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var changed = autoPackagePlacementCheck != value;
                 autoPackagePlacementCheck = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private int retryLimit = 1;
+
+        /// <summary>
+        /// <para>How many retries are allowed over a network connection.</para>
+        /// <para>ネットワーク接続で何回までリトライするか。</para>
+        /// </summary>
+        public int RetryLimit
+        {
+            get => retryLimit;
+            set
+            {
+                if (value < 0)
+                {
+                    return;
+                }
+                var changed = retryLimit != value;
+                retryLimit = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private int timeout = 100;
+
+        /// <summary>
+        /// <para>Network timeout time.</para>
+        /// <para>ネットワークのタイムアウト時間。</para>
+        /// </summary>
+        public int Timeout
+        {
+            get => timeout;
+            set
+            {
+                if (value < 100)
+                {
+                    return;
+                }
+                var changed = timeout != value;
+                timeout = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private bool isNetworkSavemode = false;
+
+        /// <summary>
+        /// <para>A mode that reduces the network connections.</para>
+        /// <para>ネットワーク接続を少なくするモード。</para>
+        /// </summary>
+        public bool IsNetworkSavemode
+        {
+            get => isNetworkSavemode;
+            set
+            {
+                var changed = isNetworkSavemode != value;
+                isNetworkSavemode = value;
                 if (changed)
                 {
                     Save();

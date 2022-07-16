@@ -27,12 +27,12 @@ namespace kumaS.NuGetImporter.Editor
                     LoadManagedPluginList();
                 }
             }
-            var _managed = managedPluginList.managedList.Where(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            IEnumerable<PackageManagedPluginList> _managed = managedPluginList.managedList.Where(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
             if (!_managed.Any())
             {
                 return;
             }
-            var managed = _managed.First();
+            PackageManagedPluginList managed = _managed.First();
             try
             {
                 foreach (var file in managed.fileNames)
@@ -67,13 +67,12 @@ namespace kumaS.NuGetImporter.Editor
         internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
             var topDirectory = Path.Combine(PackageManager.DataPath, "Packages");
-            var directoryName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant();
             if (!Directory.Exists(topDirectory))
             {
                 Directory.CreateDirectory(topDirectory);
             }
 
-            var task = GetInstallPath(package);
+            Task<string> task = GetInstallPath(package);
             await ExtractPackageAsync(package);
             var installPath = await task;
             var asm = new PackageManagedPluginList

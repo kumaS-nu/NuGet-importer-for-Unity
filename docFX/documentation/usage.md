@@ -6,11 +6,11 @@
 
 ### via UPM (Unity Package Manager)
 
- There are two ways to install using UPM: using this Git URL, or using OpenUPM.
+ There are two ways to install using UPM: this Git URL or OpenUPM.
 
 #### Use This Git URL
 
-1. Open Package Manager window.
+1. Open the Package Manager window.
 1. Click the **add** (+) button in the status bar.
 1. Select **Add package from git URL**.
 1. Enter "`https://github.com/kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer`" or "`git@github.com:kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer`".
@@ -39,7 +39,7 @@
 
 ## Configure of .gitignore
 
-You may want to keep installed packages to out of git's tracking. In that case, you can add the following to `.gitignore`. The list of installed packages is managed in `Asset/package.config`, and you can restore packages by sharing this file.
+You may want to keep installed packages out of git's tracking. In that case, you can add the following to  `.gitignore`. NuGet-importer-for-Unity manages the list of installed packages in `Asset/package.config`, and you can restore packages by sharing this file.
 ```bash
 # NuGet importer
 /[Aa]ssets/[Pp]ackages.meta
@@ -62,7 +62,7 @@ You may want to keep installed packages to out of git's tracking. In that case, 
 - Delete cache ・・・ Delete the cache. (However, the cache is deleted every time the assembly is loaded.)
 - NuGet importer settings ・・・ Open the window for configuring settings with NuGet importer.
 - Check update ・・・ Check for updates.
-- Go to project page ・・・ Open the "NuGet importer for Unity" web page.
+- Go to the project page ・・・ Open the "NuGet importer for Unity" web page.
 
 ### Main window
 
@@ -70,7 +70,7 @@ You may want to keep installed packages to out of git's tracking. In that case, 
 
 1. Mode to search from NuGet.
 1. Mode to search from the installed packages.
-1. Whether include development version.
+1. Include the development version or not.
 1. Input area for search words. (Incremental search.)
 1. Search results.
 1. Package details.
@@ -81,17 +81,20 @@ You may want to keep installed packages to out of git's tracking. In that case, 
 
 ![NuGet importer settings](../images/Settings.png)
 
-1. Specify the installation location. （It is recommended to use UPM.)
-1. Specify the method for determining the package version when solve dependency. (Suit is recommended.)
-1. Specifies whether the package is installed at startup. If the package directory exists, it is determined that the package is already installed. If missing packages are found, they are automatically installed. ( It is recommended to turn it on.)
+1. Specify the installation location. （We recommend using UPM.)
+1. Specify the method for determining the package version when solving dependency. (We recommend setting Suit.)
+1. Specifies whether check the package is installed at startup. If the package directory exists, NuGet-importer-for-Unity determines as the package is already installed in the project. If NuGet-importer-for-Unity finds missing packages, automatically install them. ( We recommend turning it on.)
 1. The maximum number of search results to cache. (0 or less is not cached.)
-1. The maximum number of catalog to cache. (0 or less is not cached.)
-1. The maximum number of icon to cache. (0 or less is not cached.)
+1. The maximum number of catalogs to cache. (0 or less is not cached.)
+1. The maximum number of icons to cache. (0 or less is not cached.)
+1. Reduce the amount of data in the communication or not. If on, images of packages not installed in the project will not fetch, and NuGet-importer-for-Unity will not perform package searches until the input has settled.
+1. The maximum number of retry attempts to get data when data fetch fails.
+1. Time out seconds of communication.
 
 ## Note
 
-Files that are not required at runtime (e.g. analyzers, documentationn, etc.) are installed to `(your project)/NuGet`. If you want to reference them, add them reference manually.
+NuGet-importer-for-Unity install files not required at runtime (e.g., rulesets, documentation, etc.) are installed to `(your project)/NuGet`. If you want to reference them, add them reference manually.
 
-When importing this package into your project, make the following changes
-- Turn off `PlayerSettings -> assemblyVersionValidation`. (To make Unity not check version of assembly as NuGet does.)
+When importing this package into your project, this package makes the following changes.
+- Turn off `PlayerSettings -> assemblyVersionValidation`. (To make Unity not check the assembly version as NuGet does.)
 - Add reference `System.IO.Compression.FileSystem.dll`. (NuGet importer for Unity handles Zip files.)

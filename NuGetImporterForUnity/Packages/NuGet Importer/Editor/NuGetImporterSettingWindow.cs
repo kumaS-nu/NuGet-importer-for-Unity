@@ -46,7 +46,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    var before = NuGetImporterSettings.Instance.InstallMethod;
+                    InstallMethod before = NuGetImporterSettings.Instance.InstallMethod;
                     EditorGUILayout.LabelField("install method");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
@@ -97,6 +97,29 @@ namespace kumaS.NuGetImporter.Editor
                     EditorGUILayout.LabelField("icon cache count");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.IconCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.IconCacheLimit);
+                }
+
+                EditorGUILayout.LabelField("Network settings", EditorStyles.boldLabel);
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("network save mode");
+                    GUILayout.FlexibleSpace();
+                    NuGetImporterSettings.Instance.IsNetworkSavemode = EditorGUILayout.Toggle(NuGetImporterSettings.Instance.IsNetworkSavemode);
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("retry limit");
+                    GUILayout.FlexibleSpace();
+                    NuGetImporterSettings.Instance.RetryLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.RetryLimit);
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("timeout seconds");
+                    GUILayout.FlexibleSpace();
+                    NuGetImporterSettings.Instance.Timeout = EditorGUILayout.IntField(NuGetImporterSettings.Instance.Timeout);
                 }
             }
         }
