@@ -210,11 +210,11 @@ namespace kumaS.NuGetImporter.Editor
 
             if (installed.package != null)
             {
-                var tasks = installed.package.Select(pkg => NuGet.GetCatalog(pkg.id));
-                var catalogs = await Task.WhenAll(tasks);
+                IEnumerable<Task<Catalog>> tasks = installed.package.Select(pkg => NuGet.GetCatalog(pkg.id));
+                Catalog[] catalogs = await Task.WhenAll(tasks);
                 lock (installedCatalog)
                 {
-                    foreach (var catalog in catalogs)
+                    foreach (Catalog catalog in catalogs)
                     {
                         installedCatalog[catalog.nuget_id] = catalog;
                     }
@@ -236,7 +236,7 @@ namespace kumaS.NuGetImporter.Editor
                         {
                             if (EditorUtility.DisplayDialog("NuGet importer", "We find packages that are not installed. Do you install these packages?", "Yes", "No"))
                             {
-                                var fixResult = await FixPackagesAsync(false);
+                                OperationResult fixResult = await FixPackagesAsync(false);
                                 EditorUtility.DisplayDialog("NuGet importer", fixResult.Message, "OK");
                             }
                         }
@@ -249,7 +249,7 @@ namespace kumaS.NuGetImporter.Editor
                 return;
             }
             var operation = new RebootProcess();
-            var result = await operation.Operate();
+            OperationResult result = await operation.Operate();
 
             if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
             {
@@ -259,6 +259,10 @@ namespace kumaS.NuGetImporter.Editor
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
 
+        /// <summary>
+        /// <para>Processes the startup process after a reboot.</para>
+        /// <para>再起動を行った後の起動時の処理を行う。</para>
+        /// </summary>
         internal class RebootProcess : OperatePackage
         {
             protected override string FinishMessage { get => "The package operation finished."; }
@@ -268,6 +272,8 @@ namespace kumaS.NuGetImporter.Editor
                 isConfirmToUser = false;
             }
 
+#pragma warning disable CS1998 // 非同期メソッドは、'await' 演算子がないため、同期的に実行されます
+            /// <inheritdoc/>
             internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
             {
                 InstalledPackages install;
@@ -354,6 +360,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 return (new OperationResult(OperationState.Progress, ""), root.package, install.package, deletePackages);
             }
+#pragma warning restore CS1998 // 非同期メソッドは、'await' 演算子がないため、同期的に実行されます
         }
 
         private static void DeleteAsAssetDirectory()
@@ -479,6 +486,7 @@ namespace kumaS.NuGetImporter.Editor
                 isConfirmToUser = confirm;
             }
 
+#pragma warning disable CS1998 // 非同期メソッドは、'await' 演算子がないため、同期的に実行されます
             /// <inheritdoc/>
             internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
             {
@@ -490,6 +498,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 return (new OperationResult(OperationState.Progress, ""), rootPackage.package, fixPackage, fixPackage);
             }
+#pragma warning restore CS1998 // 非同期メソッドは、'await' 演算子がないため、同期的に実行されます
         }
 
         /// <summary>
@@ -526,14 +535,14 @@ namespace kumaS.NuGetImporter.Editor
             /// <inheritdoc/>
             internal protected override async Task<(OperationResult result, IEnumerable<Package> root, IEnumerable<Package> install, IEnumerable<Package> delete)> FindOperatePackages()
             {
-                var isInstalled = Installed.package.Select(async pkg =>
+                IEnumerable<Task<(bool, Package pkg)>> isInstalled = Installed.package.Select(async pkg =>
                 {
-                    var controller = GetPackageController();
+                    PackageControllerBase controller = GetPackageController();
                     var installPath = await controller.GetInstallPath(pkg);
                     return (Directory.Exists(installPath), pkg);
                 });
-                var isInstalled_ = await Task.WhenAll(isInstalled);
-                var notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
+                (bool, Package pkg)[] isInstalled_ = await Task.WhenAll(isInstalled);
+                IEnumerable<Package> notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
 
                 if (!notInstalled.Any())
                 {
@@ -596,7 +605,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
 
                 List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(id, onlyStable, method);
-                var rootPackages = installed.package.Where(package => !uninstallPackages.Any(uninstall => uninstall.id == package.id)).Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
+                Package[] rootPackages = installed.package.Where(package => !uninstallPackages.Any(uninstall => uninstall.id == package.id)).Where(package => rootPackage.package.Any(root => root.id == package.id)).ToArray();
 
                 if (!uninstallPackages.Any())
                 {
@@ -701,7 +710,7 @@ namespace kumaS.NuGetImporter.Editor
                 Load();
                 var installed = await Task.WhenAll(Installed.package.Select(async pkg =>
                 {
-                    var controller = GetPackageController();
+                    PackageControllerBase controller = GetPackageController();
                     var installPath = await controller.GetInstallPath(pkg);
                     return Directory.Exists(installPath);
                 }));
@@ -737,20 +746,20 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         private static async Task<OperationResult> FixPackagesInternal()
         {
-            var ret = OperationState.Progress;
+            OperationState ret = OperationState.Progress;
             try
             {
-                var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
+                IEnumerable<string> loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
                 loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
 
-                var isInstalled = Installed.package.Select(async pkg =>
+                IEnumerable<Task<(bool, Package pkg)>> isInstalled = Installed.package.Select(async pkg =>
                 {
-                    var controller = GetPackageController();
+                    PackageControllerBase controller = GetPackageController();
                     var installPath = await controller.GetInstallPath(pkg);
                     return (Directory.Exists(installPath), pkg);
                 });
-                var isInstalled_ = await Task.WhenAll(isInstalled);
-                var notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
+                (bool, Package pkg)[] isInstalled_ = await Task.WhenAll(isInstalled);
+                IEnumerable<Package> notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
 
                 if (!notInstalled.Any())
                 {
@@ -758,7 +767,7 @@ namespace kumaS.NuGetImporter.Editor
                     return new OperationResult(ret, "No packages to repair.\n(If you want to repair the contents of a package, please repair the package individually.)");
                 }
 
-                var task = InstallSelectPackages(notInstalled, loadedAsmNames);
+                Task<IEnumerable<Package>> task = InstallSelectPackages(notInstalled, loadedAsmNames);
 
                 _ = DownloadProgress(0, notInstalled.Select(package => package.id).ToArray());
                 _ = await task;
@@ -812,7 +821,7 @@ namespace kumaS.NuGetImporter.Editor
                     throw new InvalidOperationException("It has already been operated in this instance.");
                 }
 
-                var ret = OperationState.Progress;
+                OperationState ret = OperationState.Progress;
                 var installingPackages = new List<Package>();
 
                 if (working)
@@ -829,15 +838,15 @@ namespace kumaS.NuGetImporter.Editor
 
                     EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
                     Load();
-                    var (result, rootPackages, installPackages, deletePackages) = await FindOperatePackages();
+                    (OperationResult result, IEnumerable<Package> rootPackages, IEnumerable<Package> installPackages, IEnumerable<Package> deletePackages) = await FindOperatePackages();
                     if (result.State != OperationState.Progress)
                     {
                         return result;
                     }
                     installingPackages = installPackages.ToList();
-                    var uninstallPackages = deletePackages.Where(package => !installPackages.Any(install => install.id == package.id)).ToArray();
-                    var changePackages = deletePackages.Where(package => installPackages.Any(install => install.id == package.id)).ToArray();
-                    var allinstallPackages = installed.package.Where(package => !deletePackages.Any(uninstall => uninstall.id == package.id)).Concat(installPackages).ToArray();
+                    Package[] uninstallPackages = deletePackages.Where(package => !installPackages.Any(install => install.id == package.id)).ToArray();
+                    Package[] changePackages = deletePackages.Where(package => installPackages.Any(install => install.id == package.id)).ToArray();
+                    Package[] allinstallPackages = installed.package.Where(package => !deletePackages.Any(uninstall => uninstall.id == package.id)).Concat(installPackages).ToArray();
 
                     var nativePackages = new List<Package>();
                     var managedPackages = new List<Package>();
@@ -868,7 +877,7 @@ namespace kumaS.NuGetImporter.Editor
 
                         if (nativePackages.Any())
                         {
-                            var process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, allinstallPackages, rootPackages);
+                            Process process = await OperateWithNativeAsync(installPackages, managedPackages, nativePackages, allinstallPackages, rootPackages);
                             AssetDatabase.SaveAssets();
                             EditorSceneManager.SaveOpenScenes();
                             process.Start();
@@ -881,7 +890,7 @@ namespace kumaS.NuGetImporter.Editor
                         }
                     }
 
-                    var loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
+                    IEnumerable<string> loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
                     loadedAsmNames = loadedAsmNames.Except(packageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
 
                     if (changePackages.Any())
@@ -892,13 +901,14 @@ namespace kumaS.NuGetImporter.Editor
                     IEnumerable<Package> skipped = new List<Package>();
                     if (installPackages.Any())
                     {
-                        var tasks = InstallSelectPackages(installPackages, loadedAsmNames);
+                        Task<IEnumerable<Package>> tasks = InstallSelectPackages(installPackages, loadedAsmNames);
 
                         _ = DownloadProgress(0.5f, installPackages.Select(package => package.id).ToArray());
                         skipped = await tasks;
                         if (tasks.IsFaulted)
                         {
                             ret = OperationState.Failure;
+                            UnityEngine.Debug.LogException(tasks.Exception);
                             EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + tasks.Exception.Message, "OK");
                             await Rollback(installingPackages);
                             return new OperationResult(ret, "Rollback to before operation is complete.");
@@ -917,6 +927,7 @@ namespace kumaS.NuGetImporter.Editor
                 catch (Exception e)
                 {
                     ret = OperationState.Failure;
+                    UnityEngine.Debug.LogException(e);
                     EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + e.Message, "OK");
                     await Rollback(installingPackages);
                     return new OperationResult(ret, "Rollback to before operation is complete.");
@@ -1109,7 +1120,7 @@ namespace kumaS.NuGetImporter.Editor
                     return true;
                 }
                 var controller = new PackageControllerAsAsset();
-                var tasks = installed.package.Select(async pkg =>
+                IEnumerable<Task<bool>> tasks = installed.package.Select(async pkg =>
                 {
                     var path = await controller.GetInstallPath(pkg);
                     return HasNative(path);
@@ -1120,7 +1131,7 @@ namespace kumaS.NuGetImporter.Editor
                 if (isNatives.Any(isNative => isNative))
                 {
                     EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
-                    var process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
+                    Process process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
                     try
                     {
                         File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json"));
@@ -1148,7 +1159,7 @@ namespace kumaS.NuGetImporter.Editor
                     var installer = new PackageControllerAsUPM();
                     var tasks2 = new List<Task>();
                     var loadedAsmName = new string[0];
-                    foreach (var pkg in installed.package)
+                    foreach (Package pkg in installed.package)
                     {
                         tasks2.Add(installer.InstallPackageAsync(pkg, loadedAsmName));
                     }
@@ -1205,7 +1216,7 @@ namespace kumaS.NuGetImporter.Editor
                     return true;
                 }
                 var controller = new PackageControllerAsUPM();
-                var tasks = installed.package.Select(async pkg =>
+                IEnumerable<Task<bool>> tasks = installed.package.Select(async pkg =>
                 {
                     var path = await controller.GetInstallPath(pkg);
                     var packageId = "";
@@ -1215,7 +1226,7 @@ namespace kumaS.NuGetImporter.Editor
                         var jsonString = File.ReadAllText(jsonPath);
                         try
                         {
-                            var json = JsonUtility.FromJson<PackageJson>(jsonString);
+                            PackageJson json = JsonUtility.FromJson<PackageJson>(jsonString);
                             packageId = json.name;
                         }
                         catch (Exception) { }
@@ -1228,7 +1239,7 @@ namespace kumaS.NuGetImporter.Editor
                 if (isNatives.Any(isNative => isNative))
                 {
                     EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
-                    var process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
+                    Process process = await controller.OperateWithNativeAsync(installed.package, new Package[0], installed.package, installed.package, rootPackage.package);
                     AssetDatabase.SaveAssets();
                     EditorSceneManager.SaveOpenScenes();
                     process.Start();
@@ -1242,7 +1253,7 @@ namespace kumaS.NuGetImporter.Editor
                     var installer = new PackageControllerAsAsset();
                     var tasks2 = new List<Task>();
                     var loadedAsmName = new string[0];
-                    foreach (var pkg in installed.package)
+                    foreach (Package pkg in installed.package)
                     {
                         tasks2.Add(installer.InstallPackageAsync(pkg, loadedAsmName));
                     }
@@ -1274,15 +1285,15 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task<IEnumerable<Package>> InstallSelectPackages(IEnumerable<Package> packages, IEnumerable<string> loadAssembliesFullName)
         {
-            var controller = GetPackageController();
+            PackageControllerBase controller = GetPackageController();
             var tasks = new List<Task<(bool isSkipped, Package package, PackageManagedPluginList asm)>>();
-            foreach (var package in packages)
+            foreach (Package package in packages)
             {
                 tasks.Add(controller.InstallPackageAsync(package, loadAssembliesFullName));
             }
-            var result = await Task.WhenAll(tasks);
+            (bool isSkipped, Package package, PackageManagedPluginList asm)[] result = await Task.WhenAll(tasks);
             var ret = new List<Package>();
-            foreach (var (isSkipped, package, asm) in result)
+            foreach ((var isSkipped, Package package, PackageManagedPluginList asm) in result)
             {
                 if (isSkipped)
                 {
@@ -1325,8 +1336,8 @@ namespace kumaS.NuGetImporter.Editor
                 serializer.Serialize(file, rootPackage);
             }
 
-            var controller = GetPackageController();
-            var process = await controller.OperateWithNativeAsync(installs, manageds, natives, allInstalled, root);
+            PackageControllerBase controller = GetPackageController();
+            Process process = await controller.OperateWithNativeAsync(installs, manageds, natives, allInstalled, root);
             installed.package = installed.package.Where(package => !manageds.Any(manage => manage.id == package.id) && !natives.Any(native => native.id == package.id)).ToArray();
             rootPackage.package = rootPackage.package.Where(package => installed.package.Any(installed => installed.id == package.id)).ToArray();
             packageAsmNames.managedList = packageAsmNames.managedList.Where(pkg => installed.package.Any(installed => installed.id == pkg.packageName)).ToList();
@@ -1336,7 +1347,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task UninstallSelectedPackages(IEnumerable<Package> packages)
         {
-            var controller = GetPackageController();
+            PackageControllerBase controller = GetPackageController();
             await controller.UninstallManagedPackagesAsync(packages);
             lock (installed)
             {
@@ -1344,7 +1355,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     lock (packageAsmNames)
                     {
-                        foreach (var package in packages)
+                        foreach (Package package in packages)
                         {
                             installed.package = installed.package.Where(pkg => pkg.id != package.id).ToArray();
                             installedCatalog.Remove(package.id);
@@ -1371,7 +1382,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task<bool> HasNativeAsync(Package package)
         {
-            var controller = GetPackageController();
+            PackageControllerBase controller = GetPackageController();
             var path = await controller.GetInstallPath(package);
             var packageId = "";
             if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
@@ -1382,7 +1393,7 @@ namespace kumaS.NuGetImporter.Editor
                     var jsonString = File.ReadAllText(jsonPath);
                     try
                     {
-                        var json = JsonUtility.FromJson<PackageJson>(jsonString);
+                        PackageJson json = JsonUtility.FromJson<PackageJson>(jsonString);
                         packageId = json.name;
                     }
                     catch (Exception) { }
@@ -1438,9 +1449,9 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var downloadedSumSize = 0L;
                 var finishedCount = 0;
-                foreach (string packageName in packageNames)
+                foreach (var packageName in packageNames)
                 {
-                    if (NuGet.TryGetDownloadingProgress(packageName, out long packageSize, out long downloadedSize))
+                    if (NuGet.TryGetDownloadingProgress(packageName, out var packageSize, out var downloadedSize))
                     {
                         allPackageSize[packageName] = packageSize;
                         downloadedSumSize += downloadedSize;
@@ -1461,7 +1472,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
 
                 var packageSumSize = 0L;
-                foreach (var packageSize in allPackageSize)
+                foreach (KeyValuePair<string, long> packageSize in allPackageSize)
                 {
                     packageSumSize += packageSize.Value;
                 }

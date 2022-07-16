@@ -75,7 +75,7 @@ namespace kumaS.NuGetImporter.Editor
         internal async Task UninstallManagedPackagesAsync(IEnumerable<Package> packages)
         {
             var tasks = new List<Task>();
-            foreach (var package in packages)
+            foreach (Package package in packages)
             {
                 tasks.Add(UninstallManagedPackageAsync(package));
             }
@@ -139,14 +139,14 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             await UninstallManagedPackagesAsync(manageds);
-            foreach (var native in natives)
+            foreach (Package native in natives)
             {
                 DeletePluginsOutOfDirectory(native);
             }
 
-            var tasks = natives.Select(package => GetInstallPath(package));
+            IEnumerable<Task<string>> tasks = natives.Select(package => GetInstallPath(package));
             IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
-            var nativeNugetDirectory = natives.Select(package => Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
+            IEnumerable<string> nativeNugetDirectory = natives.Select(package => Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
 
             return CreateDeleteNativeProcess(nativeDirectory.ToArray(), nativeNugetDirectory.ToArray());
         }
@@ -238,9 +238,9 @@ namespace kumaS.NuGetImporter.Editor
             var managedPath = Path.Combine(extractPath, "lib");
             if (Directory.Exists(managedPath))
             {
-                var frameworkDictionary = FrameworkName.ALLPLATFORM;
+                List<string[]> frameworkDictionary = FrameworkName.ALLPLATFORM;
                 var targetFramework = frameworkDictionary.FirstOrDefault(framework => framework.Contains(package.targetFramework));
-                var frameworkList = FrameworkName.TARGET;
+                List<string> frameworkList = FrameworkName.TARGET;
                 var target = "";
                 var priority = int.MaxValue;
 
@@ -304,9 +304,9 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
 
-                var groupedDirectories = GroupLocalizedDirectory(Directory.GetDirectories(managedPath)[0]);
-                var currentCulture = CultureInfo.CurrentUICulture;
-                foreach (var grouped in groupedDirectories)
+                List<List<string>> groupedDirectories = GroupLocalizedDirectory(Directory.GetDirectories(managedPath)[0]);
+                CultureInfo currentCulture = CultureInfo.CurrentUICulture;
+                foreach (List<string> grouped in groupedDirectories)
                 {
                     if (grouped.Count == 1)
                     {
@@ -340,7 +340,7 @@ namespace kumaS.NuGetImporter.Editor
 
             // Processing Native Plugins
             var nativePath = Path.Combine(extractPath, "runtimes");
-            var directories = Directory.GetDirectories(extractPath).Select(path => Path.GetFileName(path).ToLowerInvariant());
+            IEnumerable<string> directories = Directory.GetDirectories(extractPath).Select(path => Path.GetFileName(path).ToLowerInvariant());
             if (directories.Any(dir => dir == "unity"))
             {
                 DeleteDirectory(nativePath);
@@ -419,10 +419,63 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
+            var analyzerLanguagePath = Path.Combine(extractPath, "analyzers", "dotnet");
+            if (Directory.Exists(analyzerLanguagePath))
+            {
+                var langDir = Directory.GetDirectories(analyzerLanguagePath);
+                foreach (var lang in langDir)
+                {
+                    if (lang.EndsWith("cs"))
+                    {
+                        continue;
+                    }
+                    if (!Directory.Exists(Path.Combine(nugetPackagePath, "analyzers", "dotnet")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(nugetPackagePath, "analyzers", "dotnet"));
+                    }
+                    Directory.Move(lang, Path.Combine(nugetPackagePath, "analyzers", "dotnet", Path.GetFileName(lang)));
+                }
+            }
+
+            var analyzerLocalizePath = Path.Combine(extractPath, "analyzers", "dotnet", "cs");
+            if (Directory.Exists(analyzerLocalizePath))
+            {
+                var localDir = Directory.GetDirectories(analyzerLocalizePath);
+                if (localDir.Length != 0)
+                {
+                    List<List<string>> groupedDirectories = GroupLocalizedDirectory(analyzerLocalizePath);
+                    CultureInfo currentCulture = CultureInfo.CurrentUICulture;
+                    foreach (List<string> grouped in groupedDirectories)
+                    {
+                        if (grouped.Count == 1)
+                        {
+                            continue;
+                        }
+
+                        foreach (var localized in grouped)
+                        {
+                            var localizedName = Path.GetFileName(localized);
+                            if (!currentCulture.Equals(CultureInfo.CreateSpecificCulture(localizedName)))
+                            {
+                                if (!Directory.Exists(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs")))
+                                {
+                                    Directory.CreateDirectory(Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs"));
+                                }
+                                Directory.Move(localized, Path.Combine(nugetPackagePath, "analyzers", "dotnet", "cs", localizedName));
+                            }
+                        }
+                    }
+                }
+            }
+
             foreach (var moveDir in Directory.GetDirectories(extractPath))
             {
                 var dirName = Path.GetFileName(moveDir);
                 if (dirName == "lib" || dirName == "runtimes" || dirName.ToLowerInvariant() == "unity")
+                {
+                    continue;
+                }
+                if (NuGetAnalyzerImportSetting.HasAnalyzerSupport && dirName == "analyzers")
                 {
                     continue;
                 }
@@ -449,8 +502,8 @@ namespace kumaS.NuGetImporter.Editor
             foreach (var localizedDir in Directory.GetDirectories(managedPath))
             {
                 var localizedFiles = Directory.GetFiles(localizedDir, "*.dll", SearchOption.AllDirectories).Select(file => Path.GetFileName(file)).ToList();
-                int addIndex = 0;
-                foreach (var localizedFile in localizedFileNames)
+                var addIndex = 0;
+                foreach (List<string> localizedFile in localizedFileNames)
                 {
                     if (localizedFile.Intersect(localizedFiles).Any())
                     {
@@ -486,10 +539,12 @@ namespace kumaS.NuGetImporter.Editor
         {
             var path = await GetInstallPath(package);
             var nugetPackagePath = Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
-            var tasks = new List<Task>();
-            tasks.Add(Task.Run(() => DeleteDirectory(nugetPackagePath)));
-            tasks.Add(Task.Run(() => DeleteDirectory(path)));
-            tasks.Add(Task.Run(() => DeletePluginsOutOfDirectory(package)));
+            var tasks = new List<Task>
+            {
+                Task.Run(() => DeleteDirectory(nugetPackagePath)),
+                Task.Run(() => DeleteDirectory(path)),
+                Task.Run(() => DeletePluginsOutOfDirectory(package))
+            };
             await Task.WhenAll(tasks);
         }
 

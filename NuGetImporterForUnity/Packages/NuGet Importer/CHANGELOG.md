@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0] - 2022-07-16
+
+- Support Roslyn analyzer
+- Improved stability when connection to the Internet is unstable
+- Added error logs to be displayed in Unity editor
+- Fix a bug when the URL of the image is 404
+
 ## [2.2.1] - 2022-05-12
 
 - Improved stability.
