@@ -2,271 +2,277 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/index.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.APIList.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Author.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Catalog.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Catalogentry.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Datum.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Dependency.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Dependencygroup.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.InstallMethod.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Item.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Item1.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Package.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.PackageJson.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Packagetype.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.PackageVersionInformation.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.Resource.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.SearchResult.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.SemVer.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DataClasses.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.DependencySolver.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.GUILayoutExtention.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.NuGet.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.html</loc>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.NuGetImporterWindow.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.PackageDataExtentionToGUI.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.PackageManager.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.PrepareThisAsset.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/api/kumaS.NuGetImporter.Editor.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/documentation/codingConventions.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/documentation/contributing.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/documentation/usage.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/documentation_jp/codingConventions.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/documentation_jp/contributing.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/documentation_jp/usage.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kumas-nu.github.io/NuGet-importer-for-Unity/index.html</loc>
-    <lastmod>2022-05-12T07:29:09+09:00</lastmod>
+    <lastmod>2022-07-16T10:13:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

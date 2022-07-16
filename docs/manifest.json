@@ -384,6 +384,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.html",
+          "hash": "BQKyjhDIt/pjoCz6OdtPv2v1vY1F9IFvGPEJFmFBG2I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.yml",
       "output": {
         ".html": {
@@ -400,7 +412,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html",
-          "hash": "ZEVjf3T0YkDAk0DMFeh6/t+rWCLrfwDNdlpdvdFk71k="
+          "hash": "oKIRzRwHWMVrxOKUaGio3lBvt2c76qdKzmARECBExlo="
         }
       },
       "is_incremental": false,
@@ -472,7 +484,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.html",
-          "hash": "fbMQuL7hTNiNA7PuI1/gEmGHofDxUv+rOnCmkrUo/+o="
+          "hash": "1Xf/ntPDa9+0xJ2+jkhRjunhSBeanAuVo+q3rrouc7g="
         }
       },
       "is_incremental": false,
@@ -484,7 +496,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "5L41cElY5GzObm+LihugRZAcT2FklM7j/QtK1O2Imbc="
+          "hash": "ONpb5XIh1XbAmtrKlMzy4tqDnXVIMEjwwxvMl7xtxD0="
         }
       },
       "is_incremental": false,
@@ -496,7 +508,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/codingConventions.html",
-          "hash": "zj7sy+uZoY85s8PrSKs0viJoLQkoACwdjstRTvemM9U="
+          "hash": "rR8xyCLAaNrF3Jbrl/BehoEvwIKnUX8Q0LCR+Gf8wnQ="
         }
       },
       "is_incremental": false,
@@ -511,7 +523,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/contributing.html",
-          "hash": "yT9jniK9iMDFwVZtJae5T4vy2xTMsg4OGxPAmgvnmyc="
+          "hash": "1+D602ci/bEyhWBi+m1aELdiaMB9J90sr/zMCrWbxYc="
         }
       },
       "is_incremental": false,
@@ -535,7 +547,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/usage.html",
-          "hash": "XjX25KoDe0aUs7PxxTGmfla8LDX2pZiNanl8iidtDtk="
+          "hash": "ZCHsz8UqqvxINZFHon/OWthGBVO+6SEI6+JeDYcx13U="
         }
       },
       "is_incremental": false,
@@ -586,7 +598,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation_jp/usage.html",
-          "hash": "2xHz3o+1TX4JFgC98Ek95ZjcNXhVpKdN8477u99DOZ4="
+          "hash": "lIonE4slDlxfk5ijcv2G2US5fVO2oTyuOpCYL7Erl9M="
         }
       },
       "is_incremental": false,
@@ -656,7 +668,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "F+EfmnGuYSwK0t4fdjtsat/FfqwkNZdmlC5s5sXDc58="
+          "hash": "6CQRaTIlpRe+AQKPI9IkxSVO/EBpSY38mWHr1L0VhLs="
         }
       },
       "is_incremental": false,
@@ -678,25 +690,23 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot build incrementally because docfx version changed from 2.59.0.0 to 2.59.2.0.",
+        "can_incremental": true,
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0,
-        "full_build_reason_code": "DocfxVersionChanged"
+        "skipped_file_count": 0
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 8,
-          "skipped_file_count": 0
+          "skipped_file_count": 3
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 37,
-          "skipped_file_count": 0
+          "total_file_count": 38,
+          "skipped_file_count": 31
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

@@ -1563,6 +1563,25 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.NuGet.TryGetDownloadingProgress
   nameWithType: NuGet.TryGetDownloadingProgress
+- uid: kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting
+  name: NuGetAnalyzerImportSetting
+  href: api/kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.html
+  commentId: T:kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting
+  fullName: kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting
+  nameWithType: NuGetAnalyzerImportSetting
+- uid: kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.HasAnalyzerSupport
+  name: HasAnalyzerSupport
+  href: api/kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.html#kumaS_NuGetImporter_Editor_NuGetAnalyzerImportSetting_HasAnalyzerSupport
+  commentId: P:kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.HasAnalyzerSupport
+  fullName: kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.HasAnalyzerSupport
+  nameWithType: NuGetAnalyzerImportSetting.HasAnalyzerSupport
+- uid: kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.HasAnalyzerSupport*
+  name: HasAnalyzerSupport
+  href: api/kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.html#kumaS_NuGetImporter_Editor_NuGetAnalyzerImportSetting_HasAnalyzerSupport_
+  commentId: Overload:kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.HasAnalyzerSupport
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.HasAnalyzerSupport
+  nameWithType: NuGetAnalyzerImportSetting.HasAnalyzerSupport
 - uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings
   name: NuGetImporterSettings
   href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html
@@ -1634,6 +1653,19 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.Instance
   nameWithType: NuGetImporterSettings.Instance
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IsNetworkSavemode
+  name: IsNetworkSavemode
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_IsNetworkSavemode
+  commentId: P:kumaS.NuGetImporter.Editor.NuGetImporterSettings.IsNetworkSavemode
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IsNetworkSavemode
+  nameWithType: NuGetImporterSettings.IsNetworkSavemode
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IsNetworkSavemode*
+  name: IsNetworkSavemode
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_IsNetworkSavemode_
+  commentId: Overload:kumaS.NuGetImporter.Editor.NuGetImporterSettings.IsNetworkSavemode
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IsNetworkSavemode
+  nameWithType: NuGetImporterSettings.IsNetworkSavemode
 - uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.Method
   name: Method
   href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_Method
@@ -1660,6 +1692,19 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.OnlyStable
   nameWithType: NuGetImporterSettings.OnlyStable
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.RetryLimit
+  name: RetryLimit
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_RetryLimit
+  commentId: P:kumaS.NuGetImporter.Editor.NuGetImporterSettings.RetryLimit
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.RetryLimit
+  nameWithType: NuGetImporterSettings.RetryLimit
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.RetryLimit*
+  name: RetryLimit
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_RetryLimit_
+  commentId: Overload:kumaS.NuGetImporter.Editor.NuGetImporterSettings.RetryLimit
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.RetryLimit
+  nameWithType: NuGetImporterSettings.RetryLimit
 - uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.SearchCacheLimit
   name: SearchCacheLimit
   href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_SearchCacheLimit
@@ -1673,6 +1718,19 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.SearchCacheLimit
   nameWithType: NuGetImporterSettings.SearchCacheLimit
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.Timeout
+  name: Timeout
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_Timeout
+  commentId: P:kumaS.NuGetImporter.Editor.NuGetImporterSettings.Timeout
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.Timeout
+  nameWithType: NuGetImporterSettings.Timeout
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.Timeout*
+  name: Timeout
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_Timeout_
+  commentId: Overload:kumaS.NuGetImporter.Editor.NuGetImporterSettings.Timeout
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.Timeout
+  nameWithType: NuGetImporterSettings.Timeout
 - uid: kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow
   name: NuGetImporterSettingWindow
   href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.html

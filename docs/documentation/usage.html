@@ -82,10 +82,10 @@
 <h2 id="getting-start">Getting Start</h2>
 <p>There are two ways to install the package: using the UPM (Unity Package Manager) or importing the .unitypackage.</p>
 <h3 id="via-upm-unity-package-manager">via UPM (Unity Package Manager)</h3>
-<p>There are two ways to install using UPM: using this Git URL, or using OpenUPM.</p>
+<p>There are two ways to install using UPM: this Git URL or OpenUPM.</p>
 <h4 id="use-this-git-url">Use This Git URL</h4>
 <ol>
-<li>Open Package Manager window.</li>
+<li>Open the Package Manager window.</li>
 <li>Click the <strong>add</strong> (+) button in the status bar.</li>
 <li>Select <strong>Add package from git URL</strong>.</li>
 <li>Enter &quot;<code>https://github.com/kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer</code>&quot; or &quot;<code>git@github.com:kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer</code>&quot;.</li>
@@ -111,7 +111,7 @@
 <li>Extract the zip file and import the .unitypackage into your project.</li>
 </ol>
 <h2 id="configure-of-gitignore">Configure of .gitignore</h2>
-<p>You may want to keep installed packages to out of git's tracking. In that case, you can add the following to <code>.gitignore</code>. The list of installed packages is managed in <code>Asset/package.config</code>, and you can restore packages by sharing this file.</p>
+<p>You may want to keep installed packages out of git's tracking. In that case, you can add the following to  <code>.gitignore</code>. NuGet-importer-for-Unity manages the list of installed packages in <code>Asset/package.config</code>, and you can restore packages by sharing this file.</p>
 <pre><code class="lang-bash"># NuGet importer
 /[Aa]ssets/[Pp]ackages.meta
 /[Aa]ssets/[Pp]ackages/
@@ -130,14 +130,14 @@
 <li>Delete cache ・・・ Delete the cache. (However, the cache is deleted every time the assembly is loaded.)</li>
 <li>NuGet importer settings ・・・ Open the window for configuring settings with NuGet importer.</li>
 <li>Check update ・・・ Check for updates.</li>
-<li>Go to project page ・・・ Open the &quot;NuGet importer for Unity&quot; web page.</li>
+<li>Go to the project page ・・・ Open the &quot;NuGet importer for Unity&quot; web page.</li>
 </ul>
 <h3 id="main-window">Main window</h3>
 <p><img src="../images/MainWindow.png" alt="Main window"></p>
 <ol>
 <li>Mode to search from NuGet.</li>
 <li>Mode to search from the installed packages.</li>
-<li>Whether include development version.</li>
+<li>Include the development version or not.</li>
 <li>Input area for search words. (Incremental search.)</li>
 <li>Search results.</li>
 <li>Package details.</li>
@@ -147,18 +147,21 @@
 <h3 id="nuget-importer-settings">NuGet importer settings</h3>
 <p><img src="../images/Settings.png" alt="NuGet importer settings"></p>
 <ol>
-<li>Specify the installation location. （It is recommended to use UPM.)</li>
-<li>Specify the method for determining the package version when solve dependency. (Suit is recommended.)</li>
-<li>Specifies whether the package is installed at startup. If the package directory exists, it is determined that the package is already installed. If missing packages are found, they are automatically installed. ( It is recommended to turn it on.)</li>
+<li>Specify the installation location. （We recommend using UPM.)</li>
+<li>Specify the method for determining the package version when solving dependency. (We recommend setting Suit.)</li>
+<li>Specifies whether check the package is installed at startup. If the package directory exists, NuGet-importer-for-Unity determines as the package is already installed in the project. If NuGet-importer-for-Unity finds missing packages, automatically install them. ( We recommend turning it on.)</li>
 <li>The maximum number of search results to cache. (0 or less is not cached.)</li>
-<li>The maximum number of catalog to cache. (0 or less is not cached.)</li>
-<li>The maximum number of icon to cache. (0 or less is not cached.)</li>
+<li>The maximum number of catalogs to cache. (0 or less is not cached.)</li>
+<li>The maximum number of icons to cache. (0 or less is not cached.)</li>
+<li>Reduce the amount of data in the communication or not. If on, images of packages not installed in the project will not fetch, and NuGet-importer-for-Unity will not perform package searches until the input has settled.</li>
+<li>The maximum number of retry attempts to get data when data fetch fails.</li>
+<li>Time out seconds of communication.</li>
 </ol>
 <h2 id="note">Note</h2>
-<p>Files that are not required at runtime (e.g. analyzers, documentationn, etc.) are installed to <code>(your project)/NuGet</code>. If you want to reference them, add them reference manually.</p>
-<p>When importing this package into your project, make the following changes</p>
+<p>NuGet-importer-for-Unity install files not required at runtime (e.g., rulesets, documentation, etc.) are installed to <code>(your project)/NuGet</code>. If you want to reference them, add them reference manually.</p>
+<p>When importing this package into your project, this package makes the following changes.</p>
 <ul>
-<li>Turn off <code>PlayerSettings -&gt; assemblyVersionValidation</code>. (To make Unity not check version of assembly as NuGet does.)</li>
+<li>Turn off <code>PlayerSettings -&gt; assemblyVersionValidation</code>. (To make Unity not check the assembly version as NuGet does.)</li>
 <li>Add reference <code>System.IO.Compression.FileSystem.dll</code>. (NuGet importer for Unity handles Zip files.)</li>
 </ul>
 </article>
