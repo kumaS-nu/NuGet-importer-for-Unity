@@ -120,6 +120,5 @@ namespace kumaS.NuGetImporter.Editor
             content = xDoc.ToString();
             return content;
         }
-
     }
 }
