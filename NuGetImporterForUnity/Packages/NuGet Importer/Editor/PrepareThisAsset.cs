@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using UnityEditor;
@@ -13,6 +14,16 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class PrepareThisAsset : AssetPostprocessor
     {
+        private static List<ApiCompatibilityLevel> enableApiLevel = new List<ApiCompatibilityLevel>
+        {
+            ApiCompatibilityLevel.NET_4_6,
+            ApiCompatibilityLevel.NET_Standard_2_0
+#if UNITY_2021_2_OR_NEWER
+            ,ApiCompatibilityLevel.NET_Unity_4_8
+            ,ApiCompatibilityLevel.NET_Standard
+#endif
+        };
+
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             SetCorrectDefine();
@@ -25,11 +36,15 @@ namespace kumaS.NuGetImporter.Editor
             var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone).Split(';').ToList();
 
             ApiCompatibilityLevel apiLevel = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
-            if (apiLevel == ApiCompatibilityLevel.NET_4_6 || apiLevel == ApiCompatibilityLevel.NET_Standard_2_0)
+            if (enableApiLevel.Contains(apiLevel))
             {
                 if (!File.Exists(Path.Combine(Application.dataPath, "csc.rsp")) || !File.ReadAllLines(Path.Combine(Application.dataPath, "csc.rsp")).Contains("-r:System.IO.Compression.FileSystem.dll"))
                 {
                     File.AppendAllText(Path.Combine(Application.dataPath, "csc.rsp"), "-r:System.IO.Compression.FileSystem.dll\n");
+                }
+
+                if (!symbols.Contains("ZIP_AVAILABLE"))
+                {
                     haveChange = true;
                     symbols.Add("ZIP_AVAILABLE");
                 }
@@ -43,10 +58,14 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         allLine.Remove("-r:System.IO.Compression.FileSystem.dll");
                         File.WriteAllLines(Path.Combine(Application.dataPath, "csc.rsp"), allLine);
-                        haveChange = true;
-                        symbols.Remove("ZIP_AVAILABLE");
-                        EditorUtility.DisplayDialog("NuGet importer", "NuGet importer work only .NET 4.x Equivalent.", "OK");
                     }
+                }
+
+                if (symbols.Contains("ZIP_AVAILABLE"))
+                {
+                    haveChange = true;
+                    symbols.Remove("ZIP_AVAILABLE");
+                    EditorUtility.DisplayDialog("NuGet importer", "NuGet importer work only .NET 4.x Equivalent.", "OK");
                 }
             }
 
