@@ -33,7 +33,7 @@ namespace kumaS.NuGetImporter.Editor
         private static void SetCorrectDefine()
         {
             var haveChange = false;
-            var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone).Split(';').ToList();
+            var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
 
             ApiCompatibilityLevel apiLevel = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
             if (enableApiLevel.Contains(apiLevel))
@@ -71,7 +71,7 @@ namespace kumaS.NuGetImporter.Editor
 
             if (haveChange)
             {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, string.Join(";", symbols));
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", symbols));
             }
         }
 
