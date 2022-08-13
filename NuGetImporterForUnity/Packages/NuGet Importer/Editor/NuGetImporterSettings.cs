@@ -16,13 +16,7 @@ namespace kumaS.NuGetImporter.Editor
         private static NuGetImporterSettings instance;
 
         [NonSerialized]
-        private static string projectSettingsPath;
-
-        [InitializeOnLoadMethod]
-        private static void SetProjectSettingsPath()
-        {
-            projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
-        }
+        private static string projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
 
         public static NuGetImporterSettings Instance
         {
