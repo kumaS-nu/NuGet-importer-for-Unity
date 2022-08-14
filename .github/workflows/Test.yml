@@ -3,6 +3,8 @@ name: Test
 on:
   pull_request:
     types: [opened, synchronize]
+  pull_request_target:
+    types: [labeled]
   push: { branches: [main] }
 
 env:
@@ -12,6 +14,7 @@ jobs:
   testAllModes:
     name: Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request_target' || contains(github.event.pull_request.labels.*.name, 'run to test')
     strategy:
       fail-fast: false
       matrix:

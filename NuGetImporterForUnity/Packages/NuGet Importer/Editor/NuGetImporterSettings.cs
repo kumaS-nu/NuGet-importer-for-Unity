@@ -26,6 +26,14 @@ namespace kumaS.NuGetImporter.Editor
             projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
         }
 
+        internal static void EnsureSetProjectSettingsPath()
+        {
+            if (projectSettingsPath == null)
+            {
+                SetProjectSettingsPath();
+            }
+        }
+
         public static NuGetImporterSettings Instance
         {
             get
