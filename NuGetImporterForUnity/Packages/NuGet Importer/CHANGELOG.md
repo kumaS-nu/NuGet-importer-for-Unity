@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.3.2] - 2022-08-14
+
+- Fix a bug that Define Symbols was not set
+- Fix a bug that raised a null reference exception when using Rider
+- Fix a bug that stopped working when Timeout was changed
+
 ## [2.3.1] - 2022-08-08
 
 - Fix a bug that Define Symbols was not set
