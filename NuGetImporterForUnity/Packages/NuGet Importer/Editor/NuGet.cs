@@ -26,8 +26,12 @@ namespace kumaS.NuGetImporter.Editor
         private static readonly List<string> searchQueryService = new List<string>() { "https://azuresearch-usnc.nuget.org/query" };
         private static string packageBaseAddress = "https://api.nuget.org/v3-flatcontainer/";
         private static string registrationsBaseUrl = "https://api.nuget.org/v3/registration5-gz-semver2/";
-        private static readonly HttpClient client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+        private static HttpClient client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
         private static readonly Dictionary<string, (long packageSize, FileStream downloaded)> downloading = new Dictionary<string, (long, FileStream)>();
+
+        private static List<Task> timeoutSet = new List<Task>();
+        private static Stack<TimeSpan> timeoutStack = new Stack<TimeSpan>();
+        private static Dictionary<Guid, Task> workingTask = new Dictionary<Guid, Task>();
 
         private static readonly Dictionary<string, SearchResult> searchCache = new Dictionary<string, SearchResult>();
         private static readonly List<string> searchLog = new List<string>();
@@ -50,6 +54,7 @@ namespace kumaS.NuGetImporter.Editor
         [InitializeOnLoadMethod]
         public static async Task InitializeAPIEndPoint()
         {
+            client.Timeout = TimeSpan.FromSeconds(NuGetImporterSettings.Instance.Timeout);
             var responseText = await client.GetStringAsync("https://api.nuget.org/v3/index.json");
             APIList apiList = JsonUtility.FromJson<APIList>(RefineJson(responseText));
             var searchQueryServices = new List<string>();
@@ -99,6 +104,41 @@ namespace kumaS.NuGetImporter.Editor
         }
 
         /// <summary>
+        /// <para>Set Timeout.</para>
+        /// <para>タイムアウト時間を再設定。</para>
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static async Task SetTimeout(TimeSpan timeout)
+        {
+            lock (timeoutStack)
+            {
+                if (timeoutStack.Any())
+                {
+                    timeoutStack.Push(timeout);
+                    return;
+                }
+                timeoutStack.Push(timeout);
+            }
+            var task = SetWebClientTasks();
+            timeoutSet.Add(task);
+            await task;
+            timeoutSet.Clear();
+        }
+
+        private static async Task SetWebClientTasks()
+        {
+            await Task.WhenAll(workingTask.Values.ToArray());
+            client.Dispose();
+            client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+            lock (timeoutStack)
+            {
+                client.Timeout = timeoutStack.Pop();
+                timeoutStack.Clear();
+            }
+        }
+
+        /// <summary>
         /// <para>Search for packages.</para>
         /// <para>パッケージを検索する。</para>
         /// </summary>
@@ -124,7 +164,6 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task<SearchResult> SearchPackage(string q = "", int skip = -1, int take = -1, bool prerelease = false)
         {
-            client.Timeout = TimeSpan.FromSeconds(NuGetImporterSettings.Instance.Timeout);
             var query = "";
             void concat()
             {
@@ -164,8 +203,16 @@ namespace kumaS.NuGetImporter.Editor
                     return searchCache[query];
                 }
             }
-            var task = Task.Run(async () => await GetSearchResult(query));
-            return await task;
+            if (timeoutSet.Any())
+            {
+                await Task.WhenAll(timeoutSet.ToArray());
+            }
+            var id = Guid.NewGuid();
+            var task = GetSearchResult(query);
+            workingTask.Add(id, task);
+            var ret = await task;
+            workingTask.Remove(id);
+            return ret;
         }
 
         private static async Task<SearchResult> GetSearchResult(string query)
@@ -265,7 +312,6 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task GetPackage(string packageName, string version, string savePath)
         {
-            client.Timeout = TimeSpan.FromSeconds(NuGetImporterSettings.Instance.Timeout);
             var fileName = packageName.ToLowerInvariant() + "." + version.ToLowerInvariant();
             using (var fileStream = new FileStream(Path.Combine(savePath, fileName + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
             {
@@ -303,40 +349,53 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 else
                 {
-                    var tryCount = NuGetImporterSettings.Instance.RetryLimit + 1;
-                    for (var i = 0; i < tryCount; i++)
+                    if (timeoutSet.Any())
                     {
-                        try
+                        await Task.WhenAll(timeoutSet.ToArray());
+                    }
+                    var id = Guid.NewGuid();
+                    var task = GetContent(packageName, version, fileName, fileStream);
+                    workingTask.Add(id, task);
+                    await task;
+                    workingTask.Remove(id);
+                }
+            }
+        }
+
+        private static async Task GetContent(string packageName, string version, string fileName, FileStream fileStream)
+        {
+            var tryCount = NuGetImporterSettings.Instance.RetryLimit + 1;
+            for (var i = 0; i < tryCount; i++)
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg", HttpCompletionOption.ResponseHeadersRead);
+                    using (Stream responseStream = await response.Content.ReadAsStreamAsync())
+                    {
+                        lock (downloading)
                         {
-                            HttpResponseMessage response = await client.GetAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg", HttpCompletionOption.ResponseHeadersRead);
-                            using (Stream responseStream = await response.Content.ReadAsStreamAsync())
-                            {
-                                lock (downloading)
-                                {
-                                    downloading[packageName] = (response.Content.Headers.ContentLength.GetValueOrDefault(), fileStream);
-                                }
-                                await responseStream.CopyToAsync(fileStream);
-                            }
-                            break;
+                            downloading[packageName] = (response.Content.Headers.ContentLength.GetValueOrDefault(), fileStream);
                         }
-                        catch (Exception)
+                        await responseStream.CopyToAsync(fileStream);
+                    }
+                    break;
+                }
+                catch (Exception)
+                {
+                    if (i >= tryCount - 1)
+                    {
+                        throw;
+                    }
+                    fileStream.Seek(0, SeekOrigin.Begin);
+                    await Task.Delay(1000);
+                }
+                finally
+                {
+                    if (i >= tryCount - 1)
+                    {
+                        lock (downloading)
                         {
-                            if (i >= tryCount - 1)
-                            {
-                                throw;
-                            }
-                            fileStream.Seek(0, SeekOrigin.Begin);
-                            await Task.Delay(1000);
-                        }
-                        finally
-                        {
-                            if (i >= tryCount - 1)
-                            {
-                                lock (downloading)
-                                {
-                                    downloading.Remove(packageName);
-                                }
-                            }
+                            downloading.Remove(packageName);
                         }
                     }
                 }
@@ -407,7 +466,6 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static async Task<Catalog> GetCatalog(string packageName)
         {
-            client.Timeout = TimeSpan.FromSeconds(NuGetImporterSettings.Instance.Timeout);
             // The below code is the cache process.
             lock (catalogCache)
             {
@@ -418,8 +476,16 @@ namespace kumaS.NuGetImporter.Editor
                     return catalogCache[packageName];
                 }
             }
-            var task = Task.Run(async () => await GetCatalogResult(packageName));
-            return await task;
+            if (timeoutSet.Any())
+            {
+                await Task.WhenAll(timeoutSet.ToArray());
+            }
+            var id = Guid.NewGuid();
+            var task = GetCatalogResult(packageName);
+            workingTask.Add(id, task);
+            var ret = await task;
+            workingTask.Remove(id);
+            return ret;
         }
 
         private static async Task<Catalog> GetCatalogResult(string packageName)

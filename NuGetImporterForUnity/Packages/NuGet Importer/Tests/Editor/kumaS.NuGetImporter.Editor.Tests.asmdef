@@ -1,5 +1,6 @@
 {
     "name": "kumaS.NuGetImporter.Editor.Tests",
+    "rootNamespace": "kumaS.NuGetImporter.Editor.Tests",
     "references": [
         "GUID:565f8656cac40f94690764098c03c6c4"
     ],
