@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if ZIP_AVAILABLE
+
+using System;
 using System.IO;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
@@ -241,6 +243,8 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 var changed = timeout != value;
                 timeout = value;
+                _ = NuGet.SetTimeout(TimeSpan.FromSeconds(value));
+                _ = PackageDataExtentionToGUI.SetTimeout(TimeSpan.FromSeconds(value));
                 if (changed)
                 {
                     Save();
@@ -270,3 +274,5 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
+
+#endif

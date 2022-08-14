@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -20,10 +22,13 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public static class PackageDataExtentionToGUI
     {
-        private static readonly HttpClient client = new HttpClient();
+        private static HttpClient client = new HttpClient();
         private static readonly Dictionary<string, Task> getting = new Dictionary<string, Task>();
         private static readonly Dictionary<string, Texture2D> iconCache = new Dictionary<string, Texture2D>();
         private static readonly List<string> iconLog = new List<string>();
+
+        private static List<Task> timeoutSet = new List<Task>();
+        private static Stack<TimeSpan> timeoutStack = new Stack<TimeSpan>();
 
         /// <summary>
         /// <para>Delete icon cache.</para>
@@ -36,6 +41,41 @@ namespace kumaS.NuGetImporter.Editor
                 iconCache.Clear();
                 iconLog.Clear();
                 getting.Clear();
+            }
+        }
+
+        /// <summary>
+        /// <para>Set Timeout.</para>
+        /// <para>タイムアウト時間を再設定。</para>
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static async Task SetTimeout(TimeSpan timeout)
+        {
+            lock (timeoutStack)
+            {
+                if (timeoutStack.Any())
+                {
+                    timeoutStack.Push(timeout);
+                    return;
+                }
+                timeoutStack.Push(timeout);
+            }
+            var task = SetWebClientTasks();
+            timeoutSet.Add(task);
+            await task;
+            timeoutSet.Clear();
+        }
+
+        private static async Task SetWebClientTasks()
+        {
+            await Task.WhenAll(getting.Values.ToArray());
+            client.Dispose();
+            client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+            lock (timeoutStack)
+            {
+                client.Timeout = timeoutStack.Pop();
+                timeoutStack.Clear();
             }
         }
 
@@ -578,6 +618,11 @@ namespace kumaS.NuGetImporter.Editor
             }
             if (!isGetting)
             {
+                if (timeoutSet.Any())
+                {
+                    await Task.WhenAll(timeoutSet.ToArray());
+                }
+
                 lock (getting)
                 {
                     getting.Add(d.iconUrl, GetIcon(d.iconUrl));
