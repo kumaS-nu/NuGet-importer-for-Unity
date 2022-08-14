@@ -228,6 +228,8 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (!File.Exists(DataPath.Replace("Assets", "WillInstall.xml")))
             {
+                NuGetImporterSettings.EnsureSetProjectSettingsPath();
+
                 if (NuGetImporterSettings.Instance.AutoPackagePlacementCheck)
                 {
                     try
