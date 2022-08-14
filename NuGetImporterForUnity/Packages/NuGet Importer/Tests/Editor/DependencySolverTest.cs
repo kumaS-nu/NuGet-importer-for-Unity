@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
@@ -184,7 +185,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -199,7 +200,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -215,7 +216,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -230,7 +231,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -245,7 +246,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.0.0" };
@@ -261,7 +262,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -277,7 +278,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -293,7 +294,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -313,7 +314,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -330,7 +331,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -347,7 +348,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -364,7 +365,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -382,7 +383,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.installed.package = new Package[1];
             PackageManager.installed.package[0] = new Package { id = "E", version = "1.0.0", allowedVersions = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -398,7 +399,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", true, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
 
@@ -414,7 +415,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "F", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
 
@@ -430,7 +431,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "E", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
 
@@ -446,7 +447,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -461,7 +462,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -477,7 +478,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -492,7 +493,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -507,7 +508,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.0.0" };
@@ -523,7 +524,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -539,7 +540,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -555,7 +556,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -575,7 +576,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -592,7 +593,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -609,7 +610,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -626,7 +627,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -644,7 +645,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.installed.package = new Package[1];
             PackageManager.installed.package[0] = new Package { id = "E", version = "1.0.0", allowedVersions = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -660,7 +661,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", true, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
 
@@ -676,7 +677,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "E", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
 
@@ -692,7 +693,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "E", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
 
@@ -708,7 +709,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -723,7 +724,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -739,7 +740,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -754,7 +755,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -769,7 +770,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.0.0" };
@@ -785,7 +786,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -801,7 +802,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -817,7 +818,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -837,7 +838,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -854,7 +855,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -871,7 +872,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -888,7 +889,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -906,7 +907,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.installed.package = new Package[1];
             PackageManager.installed.package[0] = new Package { id = "E", version = "1.0.0", allowedVersions = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -922,7 +923,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", true, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
 
@@ -938,7 +939,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "F", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
 
@@ -954,7 +955,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "E", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", true, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
 
@@ -974,7 +975,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -993,7 +994,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -1012,7 +1013,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -1032,7 +1033,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -1053,7 +1054,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -1074,7 +1075,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1095,7 +1096,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1116,7 +1117,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1137,7 +1138,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "D", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", true, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -1160,7 +1161,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "D", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -1180,7 +1181,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "E", version = "2.0.0", allowedVersions = "2.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -1203,7 +1204,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
             PackageManager.rootPackage.package[1] = new Package { id = "C", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", false, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
 
@@ -1223,7 +1224,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -1242,7 +1243,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -1261,7 +1262,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -1281,7 +1282,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -1302,7 +1303,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -1323,7 +1324,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1344,7 +1345,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1365,7 +1366,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1386,7 +1387,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "D", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", true, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -1409,7 +1410,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "D", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -1429,7 +1430,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "E", version = "2.0.0", allowedVersions = "2.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -1452,7 +1453,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
             PackageManager.rootPackage.package[1] = new Package { id = "C", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", false, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
 
@@ -1472,7 +1473,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -1491,7 +1492,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "2.0.0" };
@@ -1510,7 +1511,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -1530,7 +1531,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -1551,7 +1552,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "2.0.0" };
@@ -1572,7 +1573,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1593,7 +1594,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1614,7 +1615,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "B", version = "1.1.0-alpha" };
@@ -1635,7 +1636,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "D", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -1658,7 +1659,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "D", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package { id = "D", version = "1.1.0-alpha" };
@@ -1678,7 +1679,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package { id = "E", version = "2.0.0", allowedVersions = "2.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
             expected[0] = new Package { id = "D", version = "1.0.0" };
@@ -1701,7 +1702,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" };
             PackageManager.rootPackage.package[1] = new Package { id = "C", version = "1.0.0", allowedVersions = "[1.0.0]" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", false, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
 
@@ -1721,7 +1722,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -1740,7 +1741,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -1759,7 +1760,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -1779,7 +1780,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -1800,7 +1801,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", true, VersionSelectMethod.Suit);
 
             var expected = new Package[0];
 
@@ -1819,7 +1820,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.1.0-alpha" };
@@ -1840,7 +1841,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", false, VersionSelectMethod.Suit);
 
             var expected = new Package[0];
 
@@ -1861,7 +1862,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package() { id = "A", version = "1.0.0" };
@@ -1883,7 +1884,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -1906,7 +1907,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
             expected[0] = new Package() { id = "A", version = "1.0.0" };
@@ -1928,7 +1929,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -1950,7 +1951,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "D", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", true, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", true, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
             expected[0] = new Package() { id = "D", version = "1.0.0" };
@@ -1973,7 +1974,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "D", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", false, VersionSelectMethod.Suit);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
             expected[0] = new Package() { id = "D", version = "1.0.0" };
@@ -1998,7 +1999,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -2017,7 +2018,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -2036,7 +2037,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -2056,7 +2057,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -2077,7 +2078,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", true, VersionSelectMethod.Highest);
 
             var expected = new Package[0];
 
@@ -2096,7 +2097,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.1.0-alpha" };
@@ -2117,7 +2118,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", false, VersionSelectMethod.Highest);
 
             var expected = new Package[0];
 
@@ -2138,7 +2139,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package() { id = "A", version = "1.0.0" };
@@ -2160,7 +2161,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -2183,7 +2184,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
             expected[0] = new Package() { id = "A", version = "1.0.0" };
@@ -2205,7 +2206,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -2227,7 +2228,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "D", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", true, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", true, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
             expected[0] = new Package() { id = "D", version = "1.0.0" };
@@ -2250,7 +2251,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "D", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", false, VersionSelectMethod.Highest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
             expected[0] = new Package() { id = "D", version = "1.0.0" };
@@ -2275,7 +2276,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -2294,7 +2295,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.1.0-alpha" };
@@ -2313,7 +2314,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package { id = "A", version = "1.0.0" };
@@ -2333,7 +2334,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -2354,7 +2355,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[0];
 
@@ -2373,7 +2374,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.1.0-alpha" };
@@ -2394,7 +2395,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "B", version = "1.1.0-alpha" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[0];
 
@@ -2415,7 +2416,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package() { id = "A", version = "1.0.0" };
@@ -2437,7 +2438,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -2460,7 +2461,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
             expected[0] = new Package() { id = "A", version = "1.0.0" };
@@ -2482,7 +2483,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package[0] = new Package() { id = "A", version = "1.0.0" };
             PackageManager.rootPackage.package[1] = new Package() { id = "B", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
             expected[0] = new Package() { id = "B", version = "1.0.0" };
@@ -2504,7 +2505,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "D", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", true, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", true, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
             expected[0] = new Package() { id = "D", version = "1.0.0" };
@@ -2527,7 +2528,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             PackageManager.rootPackage.package = new Package[1];
             PackageManager.rootPackage.package[0] = new Package() { id = "D", version = "1.0.0" };
 
-            System.Threading.Tasks.Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", false, VersionSelectMethod.Lowest);
+            Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
             expected[0] = new Package() { id = "D", version = "1.0.0" };
