@@ -113,14 +113,32 @@ namespace kumaS.NuGetImporter.Editor
             NuGetImporterSettings.EnsureSetProjectSettingsPath();
 
             var packageDir = NuGetImporterSettings.Instance.InstallMethod == DataClasses.InstallMethod.AsAssets ? Path.Combine(Application.dataPath, "Packages") : Application.dataPath.Replace("Assets", "Packages");
-            var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(p => IsAnalyzer(p)).ToArray();
+            var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(p => IsAnalyzer(p))
+                                         .Select(path => path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)).ToArray();
             var xDoc = XDocument.Parse(content);
-            var nsMsbuild = (XNamespace)"http://schemas.microsoft.com/developer/msbuild/2003";
-            XElement project = xDoc.Element(nsMsbuild + "Project");
+            XElement project = xDoc.Root;
+            var xNamespace = project.Name.Namespace;
 
             var baseDir = Path.GetDirectoryName(path);
-            var analyzersInCsproj = new HashSet<string>(project.Descendants(nsMsbuild + "Analyzer").Select(x => x.Attribute("Include")?.Value).Where(x => x != null));
-            project.Add(new XElement(nsMsbuild + "ItemGroup", analyzersPath.Where(x => !analyzersInCsproj.Contains(x)).Select(x => new XElement(nsMsbuild + "Analyzer", new XAttribute("Include", x)))));
+            var analyzer = project.Descendants(xNamespace + "Analyzer");
+            var analyzersInCsproj = new HashSet<string>(analyzer.Select(x => x.Attribute("Include")?.Value).Where(x => x != null));
+            var addingAnalyzer = analyzersPath.Where(x => !analyzersInCsproj.Contains(x));
+            if (!addingAnalyzer.Any())
+            {
+                return content;
+            }
+
+            XElement analyzerGroup;
+            if (analyzer.Any())
+            {
+                analyzerGroup = analyzer.First().Parent;
+            }
+            else
+            {
+                analyzerGroup = new XElement("ItemGroup");
+                project.Add(analyzerGroup);
+            }
+            analyzerGroup.Add(addingAnalyzer.Select(x => new XElement(xNamespace + "Analyzer", new XAttribute("Include", x))));
             content = xDoc.ToString();
             return content;
         }
