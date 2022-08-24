@@ -1,6 +1,4 @@
-﻿#if ZIP_AVAILABLE
-
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -142,5 +140,3 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
-
-#endif

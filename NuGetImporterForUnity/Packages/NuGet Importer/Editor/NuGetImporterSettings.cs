@@ -1,6 +1,4 @@
-﻿#if ZIP_AVAILABLE
-
-using System;
+﻿using System;
 using System.IO;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
@@ -282,5 +280,3 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
-
-#endif
