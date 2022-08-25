@@ -16,7 +16,7 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class NuGetImporterSettingWindow : EditorWindow
     {
-        [MenuItem("NuGet Importer/NuGet importer settings", false, 3)]
+        [MenuItem("NuGet Importer/NuGet importer settings", false, 4)]
         private static void ShowWindow()
         {
             var isAssets = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsAssets;

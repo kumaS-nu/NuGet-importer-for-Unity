@@ -104,7 +104,19 @@ namespace kumaS.NuGetImporter.Editor
             PackageDataExtentionToGUI.DeleteCache();
         }
 
-        [MenuItem("NuGet Importer/Check update", false, 4)]
+        [MenuItem("NuGet Importer/Clean up this plugin", false, 3)]
+        private static async Task CleanUp()
+        {
+            if(EditorUtility.DisplayDialog("NuGet importer", "!!!!!!!!!!!!!!!!!!\n! WARNING !\n!!!!!!!!!!!!!!!!!!\nThis operation is for when this extension does not work.\n\nIf you execute this operation, NuGet importer will uninstall packages installed through this.", "Clean up", "Cancel"))
+            {
+                NuGet.DeleteCache();
+                PackageDataExtentionToGUI.DeleteCache();
+                await PackageManager.CleanUpPlugin();
+            }
+        }
+
+
+        [MenuItem("NuGet Importer/Check update", false, 5)]
         private static async Task CheckUpdate()
         {
             var client = new HttpClient();

@@ -1283,6 +1283,100 @@ namespace kumaS.NuGetImporter.Editor
             return true;
         }
 
+        /// <summary>
+        /// <para>Uninstall the packages installed with this plugin and initialize the internal data.</para>
+        /// <para>このプラグインでインストールしたパッケージを削除し、内部データを初期化する。</para>
+        /// </summary>
+        public static async Task CleanUpPlugin()
+        {
+            if (working)
+            {
+                throw new InvalidOperationException("Now other processes are in progress.");
+            }
+            working = true;
+
+            try
+            {
+                EditorApplication.LockReloadAssemblies();
+                AssetDatabase.StartAssetEditing();
+
+                EditorUtility.DisplayProgressBar("NuGet importer", "Checking packages", 0.1f);
+
+                Load();
+
+                if (!installed.package.Any())
+                {
+                    Directory.Delete(DataPath.Replace("Assets", "NuGet"), true);
+                    return;
+                }
+
+                var controller = GetPackageController();
+                IEnumerable<Task<bool>> tasks = installed.package.Select(async pkg =>
+                {
+                    var path = await controller.GetInstallPath(pkg);
+                    var packageId = "";
+                    var jsonPath = Path.Combine(path, "package.json");
+                    if (File.Exists(jsonPath))
+                    {
+                        var jsonString = File.ReadAllText(jsonPath);
+                        try
+                        {
+                            PackageJson json = JsonUtility.FromJson<PackageJson>(jsonString);
+                            packageId = json.name;
+                        }
+                        catch (Exception) { }
+                    }
+                    return HasNative(path, packageId);
+                });
+
+                var isNatives = await Task.WhenAll(tasks);
+                EditorUtility.DisplayProgressBar("NuGet importer", "Deleting packages", 0.4f);
+                if (isNatives.Any(isNative => isNative))
+                {
+                    EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
+                    Process process = await controller.OperateWithNativeAsync(new Package[0], new Package[0], installed.package, new Package[0], new Package[0]);
+                    installed.package = new Package[0];
+                    rootPackage.package = new Package[0];
+                    existingPackage.package = new Package[0];
+                    packageAsmNames.managedList.Clear();
+                    Save();
+                    AssetDatabase.SaveAssets();
+                    EditorSceneManager.SaveOpenScenes();
+                    process.Start();
+                    EditorApplication.Exit(0);
+                }
+                else
+                {
+                    Directory.Delete(DataPath.Replace("Assets", "NuGet"), true);
+                    await controller.UninstallManagedPackagesAsync(installed.package);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                working = false;
+                EditorUtility.ClearProgressBar();
+                installed.package = new Package[0];
+                rootPackage.package = new Package[0];
+                existingPackage.package = new Package[0];
+                packageAsmNames.managedList.Clear();
+                Save();
+                AssetDatabase.StopAssetEditing();
+                AssetDatabase.Refresh();
+#if UNITY_2020_1_OR_NEWER
+                Client.Resolve();
+#endif
+                EditorApplication.RepaintProjectWindow();
+                EditorApplication.UnlockReloadAssemblies();
+                CompilationPipeline.RequestScriptCompilation();
+            }
+
+            return;
+        }
+
         private static async Task<IEnumerable<Package>> InstallSelectPackages(IEnumerable<Package> packages, IEnumerable<string> loadAssembliesFullName)
         {
             PackageControllerBase controller = GetPackageController();
