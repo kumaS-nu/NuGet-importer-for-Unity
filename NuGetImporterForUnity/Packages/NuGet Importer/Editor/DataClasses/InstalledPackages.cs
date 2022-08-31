@@ -1,4 +1,6 @@
-﻿namespace kumaS.NuGetImporter.Editor.DataClasses
+﻿using System.Collections.Generic;
+
+namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     // メモ: 生成されたコードは、少なくとも .NET Framework 4.5または .NET Core/Standard 2.0 が必要な可能性があります。
     /// <remarks/>
@@ -8,11 +10,11 @@
     [System.Xml.Serialization.XmlRootAttribute("packages", Namespace = "", IsNullable = false)]
     public partial class InstalledPackages
     {
-        private Package[] packageField;
+        private List<Package> packageField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("package")]
-        public Package[] package
+        public List<Package> package
         {
             get => packageField;
             set => packageField = value;

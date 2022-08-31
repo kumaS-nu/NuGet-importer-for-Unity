@@ -111,7 +111,8 @@ namespace kumaS.NuGetImporter.Editor
             {
                 NuGet.DeleteCache();
                 PackageDataExtentionToGUI.DeleteCache();
-                await PackageManager.CleanUpPlugin();
+                var result = await PackageManager.CleanUp();
+                EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
             }
         }
 
@@ -548,21 +549,10 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        private static async Task Operate(Task<bool> operation)
+        private static async Task Operate(Task<OperationResult> operation)
         {
-            try
-            {
-                await operation;
-                EditorUtility.DisplayDialog("NuGet importer", "Conversion is finished.", "OK");
-            }
-            catch (InvalidOperationException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
-            catch (ArgumentException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
+            var result = await operation;
+            EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
     }
 }

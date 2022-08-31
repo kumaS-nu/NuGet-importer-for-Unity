@@ -250,7 +250,7 @@ namespace kumaS.NuGetImporter.Editor
             SearchResult result = JsonUtility.FromJson<SearchResult>(RefineJson(responseText));
             lock (searchCache)
             {
-                searchCache.Add(query, result);
+                searchCache[query] = result;
                 searchLog.Add(query);
                 while (searchCache.Count > NuGetImporterSettings.Instance.SearchCacheLimit && searchCache.Count > 0)
                 {

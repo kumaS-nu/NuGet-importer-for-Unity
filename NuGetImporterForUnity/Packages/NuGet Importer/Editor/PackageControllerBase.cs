@@ -113,7 +113,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var write = new InstalledPackages
                 {
-                    package = installs.ToArray()
+                    package = installs.ToList()
                 };
                 serializer.Serialize(file, write);
             }
@@ -122,7 +122,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var write = new InstalledPackages
                 {
-                    package = allInstalled.ToArray()
+                    package = allInstalled.ToList()
                 };
                 serializer.Serialize(file, write);
             }
@@ -131,7 +131,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var write = new InstalledPackages
                 {
-                    package = root.ToArray()
+                    package = root.ToList()
                 };
                 serializer.Serialize(file, write);
             }
