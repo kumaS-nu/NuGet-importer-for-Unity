@@ -108,6 +108,12 @@ namespace kumaS.NuGetImporter.Editor
 
         private static string OnGeneratedCSProject(string path, string content)
         {
+            if (CodeEditor.CurrentEditor.GetType().Name == "VSCodeScriptEditor" && HasAnalyzerSupport)
+            {
+                // Analyzer is automatically added in VSCode.
+                return content;
+            }
+
             NuGetImporterSettings.EnsureSetProjectSettingsPath();
 
             var packageDir = NuGetImporterSettings.Instance.InstallMethod == DataClasses.InstallMethod.AsAssets ? Path.Combine(Application.dataPath, "Packages") : Application.dataPath.Replace("Assets", "Packages");
