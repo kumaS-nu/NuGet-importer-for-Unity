@@ -651,7 +651,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 catch (Exception e)
                 {
-                    if (e.Message == "404 (Not Found)")
+                    if (e.Message.Contains("404") && e.Message.ToLower().Contains("not found"))
                     {
                         UpdateIconCache(url, null);
                         break;
