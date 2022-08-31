@@ -107,7 +107,7 @@ namespace kumaS.NuGetImporter.Editor
         [MenuItem("NuGet Importer/Clean up this plugin", false, 3)]
         private static async Task CleanUp()
         {
-            if(EditorUtility.DisplayDialog("NuGet importer", "!!!!!!!!!!!!!!!!!!\n! WARNING !\n!!!!!!!!!!!!!!!!!!\nThis operation is for when this extension does not work.\n\nIf you execute this operation, NuGet importer will uninstall packages installed through this.", "Clean up", "Cancel"))
+            if (EditorUtility.DisplayDialog("NuGet importer", "!!!!!!!!!!!!!!!!!!\n! WARNING !\n!!!!!!!!!!!!!!!!!!\nThis operation is for when this extension does not work.\n\nIf you execute this operation, NuGet importer will uninstall packages installed through this.", "Clean up", "Cancel"))
             {
                 NuGet.DeleteCache();
                 PackageDataExtentionToGUI.DeleteCache();
@@ -431,16 +431,10 @@ namespace kumaS.NuGetImporter.Editor
                         {
                             tasks.Add(search.ToGUI(bold, this, summary != null && summary.PackageId == search.id, NuGetImporterSettings.Instance.OnlyStable));
                         }
-                        if (searchPackages.Count > 0)
+                        var isShown = searchPackages.Where(search => !NuGetImporterSettings.Instance.OnlyStable || search.versions.Any(version => !version.version.Contains('-') && version.version[0] != '0'));
+                        if (isShown.Any())
                         {
-                            try
-                            {
-                                sumHeight = GUILayoutUtility.GetLastRect().yMax;
-                            }
-                            catch (Exception)
-                            {
-                                // When only the stable version is displayed, the exception is gripped because there may be no more packages to display.
-                            }
+                            sumHeight = GUILayoutUtility.GetLastRect().yMax;
                         }
                     }
                     else
