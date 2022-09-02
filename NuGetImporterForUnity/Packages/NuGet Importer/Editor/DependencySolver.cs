@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -337,12 +337,11 @@ namespace kumaS.NuGetImporter.Editor
                     node.TragetFramework = dependGroup.targetFramework;
                     if (dependGroups.First().dependencies != null)
                     {
-                        foreach (Dependency dependency in dependGroup.dependencies)
-                        {
-                            dependencies.AddRange(dependGroup.dependencies);
-                        }
+                        dependencies.AddRange(dependGroup.dependencies);
                     }
                 }
+
+                dependencies.RemoveAll(d => StandardLibraries.PackageIds.Contains(d.id));
 
                 if (dependencies.Any())
                 {
