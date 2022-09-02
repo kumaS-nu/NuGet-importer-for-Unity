@@ -8,7 +8,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Uninstall the specified package.</para>
-    /// <para>w’è‚µ‚½ƒpƒbƒP[ƒW‚ğƒAƒ“ƒCƒ“ƒXƒg[ƒ‹‚·‚éB</para>
+    /// <para>æŒ‡å®šã—ãŸãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ã‚¢ãƒ³ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã€‚</para>
     /// </summary>
     internal sealed class UninstallPackages : OperatePackage
     {

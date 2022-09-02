@@ -18,7 +18,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Move the packages from under Asset to under UPM.</para>
-    /// <para>パッケージをAsset下からUPM下に移す。</para>
+    /// <para>繝代ャ繧ｱ繝ｼ繧ｸ繧但sset荳九°繧蔚PM荳九↓遘ｻ縺吶�</para>
     /// </summary>
     internal sealed class ConvertToUPM : OperatePackage
     {

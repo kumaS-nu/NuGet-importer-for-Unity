@@ -10,7 +10,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Change the version of the specified package.</para>
-    /// <para>w’è‚µ‚½ƒpƒbƒP[ƒW‚Ìƒo[ƒWƒ‡ƒ“‚ğ•ÏX‚·‚éB</para>
+    /// <para>æŒ‡å®šã—ãŸãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹ã€‚</para>
     /// </summary>
     internal sealed class ChangePackageVersion : OperatePackage
     {

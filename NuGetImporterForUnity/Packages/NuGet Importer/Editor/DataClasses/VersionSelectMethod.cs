@@ -1,4 +1,4 @@
-﻿namespace kumaS.NuGetImporter.Editor.DataClasses
+namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     public enum VersionSelectMethod
     {

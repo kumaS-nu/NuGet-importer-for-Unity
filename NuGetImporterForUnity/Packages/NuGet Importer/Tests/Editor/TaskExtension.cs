@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Threading.Tasks;
 
 namespace kumaS.NuGetImporter.Editor.Tests

@@ -11,7 +11,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Repair the specified package.</para>
-    /// <para>w’è‚³‚ê‚½ƒpƒbƒP[ƒW‚ğC•œ‚·‚éB</para>
+    /// <para>æŒ‡å®šã•ã‚ŒãŸãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ä¿®å¾©ã™ã‚‹ã€‚</para>
     /// </summary>
     internal sealed class FixSpecifiedPackage : OperatePackage
     {

@@ -11,7 +11,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Fix as follows in package.config.</para>
-    /// <para>package.config‚Ì’Ê‚è‚ÉC•œ‚·‚éB</para>
+    /// <para>package.configã®é€šã‚Šã«ä¿®å¾©ã™ã‚‹ã€‚</para>
     /// </summary>
     internal sealed class FixPackages : OperatePackage
     {

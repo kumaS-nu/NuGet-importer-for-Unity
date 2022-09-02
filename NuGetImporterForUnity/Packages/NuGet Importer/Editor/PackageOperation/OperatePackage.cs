@@ -14,7 +14,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Base class for operating packages. Implement FindOperatePackages when operating on packages. Remember to change onlyStable and method.</para>
-    /// <para>ƒpƒbƒP[ƒW‚ğ‘€ì‚·‚éÛ‚ÌŠî’êƒNƒ‰ƒXBƒpƒbƒP[ƒW‚ğ‘€ì‚·‚éÛ‚Í FindOperatePackages ‚ğÀ‘•BonlyStable, method ‚Ì•ÏX‚ğ–Y‚ê‚È‚¢‚æ‚¤‚ÉB</para>
+    /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’æ“ä½œã™ã‚‹éš›ã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’æ“ä½œã™ã‚‹éš›ã¯ FindOperatePackages ã‚’å®Ÿè£…ã€‚onlyStable, method ã®å¤‰æ›´ã‚’å¿˜ã‚Œãªã„ã‚ˆã†ã«ã€‚</para>
     /// </summary>
     internal abstract class OperatePackage
     {
@@ -26,15 +26,15 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         /// <summary>
         /// <para>Execute operations to packages.</para>
-        /// <para>ƒpƒbƒP[ƒW‚Ì‘€ì‚ğs‚¤B</para>
+        /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®æ“ä½œã‚’è¡Œã†ã€‚</para>
         /// </summary>
         /// <returns>
         /// <para>Operation result.</para>
-        /// <para>‘€ìŒ‹‰ÊB</para>
+        /// <para>æ“ä½œçµæœã€‚</para>
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// <para>It is thrown if the operation has already been executed in this instance.</para>
-        /// <para>Šù‚É‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Å‘€ìÏ‚İ‚Ìê‡ƒXƒ[‚³‚ê‚éB</para>
+        /// <para>æ—¢ã«ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§æ“ä½œæ¸ˆã¿ã®å ´åˆã‚¹ãƒ­ãƒ¼ã•ã‚Œã‚‹ã€‚</para>
         /// </exception>
         public async Task<OperationResult> Execute()
         {
@@ -79,35 +79,35 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         /// <summary>
         /// <para>Notify users and manipulate packages by given arguments.</para>
-        /// <para>—^‚¦‚ç‚ê‚½ˆø”‚ğŒ³‚Éƒ†[ƒU[‚Ö’Ê’mEƒpƒbƒP[ƒW‚ğ‘€ì‚ğs‚¤B</para>
+        /// <para>ä¸ãˆã‚‰ã‚ŒãŸå¼•æ•°ã‚’å…ƒã«ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¸é€šçŸ¥ãƒ»ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’æ“ä½œã‚’è¡Œã†ã€‚</para>
         /// </summary>
         /// <param name="rootPackages">
         /// <para>Root packages.</para>
-        /// <para>ƒ‹[ƒg‚Æ‚È‚éƒpƒbƒP[ƒWB</para>
+        /// <para>ãƒ«ãƒ¼ãƒˆã¨ãªã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <param name="installPackages">
         /// <para>Installing packages.</para>
-        /// <para>ƒCƒ“ƒXƒg[ƒ‹‚·‚éƒpƒbƒP[ƒWB</para>
+        /// <para>ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <param name="deletePackages">
         /// <para>deleting packages.</para>
-        /// <para>íœ‚·‚éƒpƒbƒP[ƒWB</para>
+        /// <para>å‰Šé™¤ã™ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <param name="controlledPackages">
         /// <para>List of packages under management.</para>
-        /// <para>ŠÇ—‰º‚É‚ ‚éƒpƒbƒP[ƒWˆê——B</para>
+        /// <para>ç®¡ç†ä¸‹ã«ã‚ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ä¸€è¦§ã€‚</para>
         /// </param>
         /// <param name="operateLock">
         /// <para>Lock for operation.</para>
-        /// <para>‘€ì‚ğs‚¤‚½‚ß‚ÌƒƒbƒNB</para>
+        /// <para>æ“ä½œã‚’è¡Œã†ãŸã‚ã®ãƒ­ãƒƒã‚¯ã€‚</para>
         /// </param>
         /// <param name="controller">
         /// <para>Controller to operate.</para>
-        /// <para>‘€ì‚ğs‚¤ƒRƒ“ƒgƒ[ƒ‰[B</para>
+        /// <para>æ“ä½œã‚’è¡Œã†ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Manipulate result.</para>
-        /// <para>‘€ìŒ‹‰ÊB</para>
+        /// <para>æ“ä½œçµæœã€‚</para>
         /// </returns>
         protected async Task<OperationResult> ManipulatePackages(IEnumerable<Package> rootPackages, IEnumerable<Package> installPackages, IEnumerable<Package> deletePackages, ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock, PackageControllerBase controller = default)
         {
@@ -199,23 +199,23 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         /// <summary>
         /// <para>Confirm the package change to the user.</para>
-        /// <para>ƒ†[ƒU[‚ÖƒpƒbƒP[ƒW•ÏX‚ÌŠm”F‚ğs‚¤B</para>
+        /// <para>ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¸ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸å¤‰æ›´ã®ç¢ºèªã‚’è¡Œã†ã€‚</para>
         /// </summary>
         /// <param name="installPackages">
         /// <para>New package to be installed.</para>
-        /// <para>V‚½‚ÉƒCƒ“ƒXƒg[ƒ‹‚·‚éƒpƒbƒP[ƒWB</para>
+        /// <para>æ–°ãŸã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <param name="uninstallPackages">
         /// <para>Package to uninstall.</para>
-        /// <para>ƒAƒ“ƒCƒ“ƒXƒg[ƒ‹‚·‚éƒpƒbƒP[ƒWB</para>
+        /// <para>ã‚¢ãƒ³ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <param name="nativePackages">
         /// <para>Packages that include native plug-ins in the package to be deleted.</para>
-        /// <para>íœ‚·‚éƒpƒbƒP[ƒW‚Ì’†‚ÅƒlƒCƒeƒBƒuƒvƒ‰ƒOƒCƒ“‚ğŠÜ‚ŞƒpƒbƒP[ƒWB</para>
+        /// <para>å‰Šé™¤ã™ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ä¸­ã§ãƒã‚¤ãƒ†ã‚£ãƒ–ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’å«ã‚€ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Return true when the user agrees.</para>
-        /// <para>ƒ†[ƒU[‚ª—¹‰ğ‚µ‚½‚©B</para>
+        /// <para>ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒäº†è§£ã—ãŸã‹ã€‚</para>
         /// </returns>
         private async Task<bool> ConfirmToUser(IEnumerable<Package> installPackages, IEnumerable<Package> uninstallPackages, IEnumerable<Package> nativePackages, ReadOnlyControlledPackages controlledPackages)
         {
@@ -290,15 +290,15 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         /// <summary>
         /// <para>Rollback for this operation.</para>
-        /// <para>‚±‚Ì‘€ì‚É‘Î‚·‚éƒ[ƒ‹ƒoƒbƒN‚ğs‚¤B</para>
+        /// <para>ã“ã®æ“ä½œã«å¯¾ã™ã‚‹ãƒ­ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¡Œã†ã€‚</para>
         /// </summary>
         /// <param name="operatorLock">
         /// <para>Lock for this operation.</para>
-        /// <para>‚±‚Ì‘€ì‚Ì‚½‚ß‚Éæ“¾‚µ‚½ƒƒbƒNB</para>
+        /// <para>ã“ã®æ“ä½œã®ãŸã‚ã«å–å¾—ã—ãŸãƒ­ãƒƒã‚¯ã€‚</para>
         /// </param>
         /// <param name="controller">
         /// <para>PackageController used for this operation.</para>
-        /// <para>‚±‚Ì‘€ì‚Åg—p‚µ‚½ƒpƒbƒP[ƒWƒRƒ“ƒgƒ[ƒ‰[B</para>
+        /// <para>ã“ã®æ“ä½œã§ä½¿ç”¨ã—ãŸãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã€‚</para>
         /// </param>
         protected async Task Rollback(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operatorLock, PackageControllerBase controller)
         {
@@ -316,15 +316,15 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         /// <summary>
         /// <para>Operation.</para>
-        /// <para>‘€ì“à—eB</para>
+        /// <para>æ“ä½œå†…å®¹ã€‚</para>
         /// </summary>
         /// <param name="controlledPackages">
         /// <para>List of packages currently under control.</para>
-        /// <para>Œ»İ§Œä‰º‚É‚ ‚éƒpƒbƒP[ƒWˆê——B</para>
+        /// <para>ç¾åœ¨åˆ¶å¾¡ä¸‹ã«ã‚ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ä¸€è¦§ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Operation result</para>
-        /// <para>‘€ìŒ‹‰ÊB</para>
+        /// <para>æ“ä½œçµæœã€‚</para>
         /// </returns>
         protected abstract Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock);
     }

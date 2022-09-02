@@ -7,7 +7,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 {
     /// <summary>
     /// <para>List of packages under management that can only be read.</para>
-    /// <para>“Ç‚İ‚İ‚Ì‚İ‰Â”\‚ÈŠÇ—‰º‚É‚ ‚éƒpƒbƒP[ƒWˆê——B</para>
+    /// <para>èª­ã¿è¾¼ã¿ã®ã¿å¯èƒ½ãªç®¡ç†ä¸‹ã«ã‚ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ä¸€è¦§ã€‚</para>
     /// </summary>
     public class ReadOnlyControlledPackages
     {

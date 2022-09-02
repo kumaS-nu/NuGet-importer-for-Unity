@@ -14,7 +14,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Uninstall the packages installed with this plugin and initialize the internal data.</para>
-    /// <para>‚±‚Ìƒvƒ‰ƒOƒCƒ“‚ÅƒCƒ“ƒXƒg[ƒ‹‚µ‚½ƒpƒbƒP[ƒW‚ğíœ‚µA“à•”ƒf[ƒ^‚ğ‰Šú‰»‚·‚éB</para>
+    /// <para>ã“ã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã§ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãŸãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’å‰Šé™¤ã—ã€å†…éƒ¨ãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚</para>
     /// </summary>
     internal sealed class CleanUp : OperatePackage
     {

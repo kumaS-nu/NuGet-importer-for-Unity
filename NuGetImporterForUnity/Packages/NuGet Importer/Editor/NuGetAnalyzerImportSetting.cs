@@ -14,11 +14,11 @@ namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
     /// <para>Class for configuring Roslyn Analyzer plugins.</para>
-    /// <para>Roslyn Analyzer‚Ìİ’è‚ğ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB</para>
+    /// <para>Roslyn Analyzerã®è¨­å®šã‚’ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚</para>
     /// </summary>
     public class NuGetAnalyzerImportSetting : AssetPostprocessor
     {
-#pragma warning disable CS0162 // “’B‚Å‚«‚È‚¢ƒR[ƒh‚ªŒŸo‚³‚ê‚Ü‚µ‚½
+#pragma warning disable CS0162 // åˆ°é”ã§ããªã„ã‚³ãƒ¼ãƒ‰ãŒæ¤œå‡ºã•ã‚Œã¾ã—ãŸ
         public static bool HasAnalyzerSupport
         {
             get
@@ -43,7 +43,7 @@ namespace kumaS.NuGetImporter.Editor
                 return false;
             }
         }
-#pragma warning restore CS0162 // “’B‚Å‚«‚È‚¢ƒR[ƒh‚ªŒŸo‚³‚ê‚Ü‚µ‚½
+#pragma warning restore CS0162 // åˆ°é”ã§ããªã„ã‚³ãƒ¼ãƒ‰ãŒæ¤œå‡ºã•ã‚Œã¾ã—ãŸ
 
         private readonly static Regex rx = new Regex(@"[/\\]dotnet[/\\]cs[/\\]", RegexOptions.IgnoreCase);
 
@@ -118,7 +118,7 @@ namespace kumaS.NuGetImporter.Editor
 
             var packageDir = NuGetImporterSettings.Instance.InstallMethod == DataClasses.InstallMethod.AsAssets ? Path.Combine(Application.dataPath, "Packages") : Application.dataPath.Replace("Assets", "Packages");
             var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(p => IsAnalyzer(p))
-                                         .Select(path => path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)).ToArray();
+                                         .Select(p => p.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)).ToArray();
             var xDoc = XDocument.Parse(content);
             XElement project = xDoc.Root;
             var xNamespace = project.Name.Namespace;

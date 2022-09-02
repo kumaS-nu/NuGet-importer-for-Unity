@@ -8,7 +8,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Install the package.</para>
-    /// <para>ƒpƒbƒP[ƒW‚ğƒCƒ“ƒXƒg[ƒ‹‚·‚éB</para>
+    /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã€‚</para>
     /// </summary>
     internal sealed class InstallPackage : OperatePackage
     {

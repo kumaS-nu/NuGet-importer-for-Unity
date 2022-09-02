@@ -12,7 +12,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
     /// <summary>
     /// <para>Processes the startup process after a reboot.</para>
-    /// <para>Ä‹N“®‚ğs‚Á‚½Œã‚Ì‹N“®‚Ìˆ—‚ğs‚¤B</para>
+    /// <para>å†èµ·å‹•ã‚’è¡Œã£ãŸå¾Œã®èµ·å‹•æ™‚ã®å‡¦ç†ã‚’è¡Œã†ã€‚</para>
     /// </summary>
     internal sealed class RebootProcess : OperatePackage
     {
