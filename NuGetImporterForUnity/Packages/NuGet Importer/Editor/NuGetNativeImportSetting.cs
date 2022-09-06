@@ -199,7 +199,17 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     pluginImporter.SetCompatibleWithPlatform(target, true);
                     pluginImporter.SetExcludeFromAnyPlatform(target, true);
-                    pluginImporter.SetPlatformData(target, "CPU", architecture);
+                    if (target == BuildTarget.StandaloneLinux64)
+                    {
+                        // It would be better if we specify x86_64 for Linux,
+                        // but it is replaced with AnyCPU, and the change is confirmed
+                        // whenever we see it in the inspector.
+                        pluginImporter.SetPlatformData(target, "CPU", "AnyCPU");
+                    }
+                    else
+                    {
+                        pluginImporter.SetPlatformData(target, "CPU", architecture);
+                    }
                 }
             }
 
