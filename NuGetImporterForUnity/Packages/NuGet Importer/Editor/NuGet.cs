@@ -398,6 +398,11 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
             }
+
+            lock (downloading)
+            {
+                downloading.Remove(packageName);
+            }
         }
 
         /// <summary>
