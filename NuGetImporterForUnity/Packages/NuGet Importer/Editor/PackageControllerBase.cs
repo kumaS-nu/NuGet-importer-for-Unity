@@ -372,6 +372,10 @@ namespace kumaS.NuGetImporter.Editor
                     priority = frameworkList.IndexOf(frameworkName);
                     suit = framework;
                 }
+                else
+                {
+                    removes.Add(framework);
+                }
             }
             return (Path.GetFileName(suit), removes);
         }
