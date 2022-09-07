@@ -66,7 +66,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                     ret = OperationState.Failure;
                     UnityEngine.Debug.LogException(e);
                     EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + e.Message, "OK");
-                    await Rollback(controlledPackages, operatorLock, default);
+                    await Rollback(controlledPackages, operatorLock);
                     return new OperationResult(ret, "Rollback to before operation is complete.");
                 }
                 finally
@@ -300,7 +300,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         /// <para>PackageController used for this operation.</para>
         /// <para>この操作で使用したパッケージコントローラー。</para>
         /// </param>
-        protected async Task Rollback(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operatorLock, PackageControllerBase controller)
+        protected async Task Rollback(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operatorLock, PackageControllerBase controller = default)
         {
             await PackageManager.UninstallSelectedPackages(installingPackages, operatorLock, controller);
             IEnumerable<Task<(bool, Package pkg)>> isInstalled = controlledPackages.installed.Select(async pkg =>

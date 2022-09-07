@@ -6,9 +6,12 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using Codice.CM.Common.Serialization.Replication;
+
 using kumaS.NuGetImporter.Editor.DataClasses;
 
 using UnityEditor;
+using UnityEditor.PackageManager.UI;
 
 using UnityEngine;
 
@@ -151,8 +154,29 @@ namespace kumaS.NuGetImporter.Editor
             Help.BrowseURL("https://github.com/kumaS-nu/NuGet-importer-for-Unity");
         }
 
-        private void Update()
+        [SerializeField]
+        private ApiCompatibilityLevel beforeAPI;
+
+        private async void Update()
         {
+            if(beforeAPI == default)
+            {
+                beforeAPI = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
+            }
+
+            if (beforeAPI != PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) && PackageManager.ControlledPackages.installed.Any())
+            {
+                EditorUtility.DisplayDialog("NuGet  importer", "You changed script backend. We change the package to fit the current script backend.", "OK");
+                beforeAPI = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
+                var result = await PackageManager.ReInstallAllPackages(NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method);
+                EditorUtility.DisplayDialog("NuGet  importer", result.Message, "OK");
+                await UpdateInstalledList();
+                if (summary != null && summary.PackageId != null && summary.PackageId != "")
+                {
+                    await UpdateSelected(summary.PackageId);
+                }
+            }
+
             if (NuGetImporterSettings.Instance.IsNetworkSavemode)
             {
                 if (dataUpdateRequest.Any() && DateTime.Now - dataUpdateRequest.Peek() > throttleTime)

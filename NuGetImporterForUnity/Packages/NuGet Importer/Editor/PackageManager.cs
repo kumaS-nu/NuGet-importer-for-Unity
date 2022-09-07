@@ -487,6 +487,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="method">
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
+        /// </param>
         /// <returns>
         /// <para>Operation result.</para>
         /// <para>操作結果。</para>
@@ -522,6 +523,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="method">
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
+        /// </param>
         /// <returns>
         /// <para>Operation result.</para>
         /// <para>操作結果。</para>
@@ -631,6 +633,36 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     File.WriteAllText(Path.Combine(DataPath, "Packages", "managedPluginList.json"), "");
                 }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// <para>Reinstall based on the current root package.</para>
+        /// <para>現在のルートパッケージを元に再インストールする。</para>
+        /// </summary>
+        /// <param name="onlyStable">
+        /// <para>Whether use only stable version.</para>
+        /// <para>安定版のみつかうか。</para>
+        /// </param>
+        /// <param name="method">
+        /// <para>Method to select a version.</para>
+        /// <para>バージョンを選択する方法。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Operation result.</para>
+        /// <para>操作結果。</para>
+        /// </returns>
+        public static async Task<OperationResult> ReInstallAllPackages(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        {
+            var operation = new ReInstallAllPackages(onlyStable, method);
+            var result = await operation.Execute();
+            if (result.State == OperationState.Success)
+            {
+                var rootId = rootPackage.package.Select(pkg => pkg.id).ToArray();
+                rootPackage.package.Clear();
+                rootPackage.package.AddRange(installed.package.Where(pkg => rootId.Contains(pkg.id)));
+                Save();
             }
             return result;
         }
