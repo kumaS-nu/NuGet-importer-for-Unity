@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -50,14 +49,9 @@ namespace kumaS.NuGetImporter.Editor
                     NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
                     if (before != NuGetImporterSettings.Instance.InstallMethod)
                     {
-                        if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
-                        {
-                            _ = Operate(PackageManager.ConvertToUPM());
-                        }
-                        else
-                        {
-                            _ = Operate(PackageManager.ConvertToAssets());
-                        }
+                        _ = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM
+                            ? Operate(PackageManager.ConvertToUPM())
+                            : Operate(PackageManager.ConvertToAssets());
                         GUIUtility.ExitGUI();
                     }
                 }
@@ -124,7 +118,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task Operate(Task<OperationResult> operation)
         {
-            var result = await operation;
+            OperationResult result = await operation;
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
     }

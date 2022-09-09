@@ -183,7 +183,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -199,7 +199,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -216,7 +216,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -232,7 +232,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -248,7 +248,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -265,7 +265,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -282,7 +282,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -299,7 +299,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -324,7 +324,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
@@ -342,7 +342,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
@@ -360,7 +360,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
@@ -378,7 +378,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -399,7 +399,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "1.0.0", allowedVersions = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -416,7 +416,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
@@ -437,7 +437,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "F", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
@@ -458,7 +458,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
@@ -475,7 +475,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -491,7 +491,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -508,7 +508,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -524,7 +524,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -540,7 +540,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -557,7 +557,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -574,7 +574,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -591,7 +591,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -616,7 +616,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
@@ -634,7 +634,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
@@ -652,7 +652,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
@@ -670,7 +670,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -691,7 +691,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "1.0.0", allowedVersions = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -708,7 +708,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
@@ -729,7 +729,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
@@ -750,7 +750,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
@@ -767,7 +767,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -783,7 +783,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -800,7 +800,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.0.0", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -816,7 +816,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("A", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -832,7 +832,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -849,7 +849,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -866,7 +866,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -883,7 +883,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -908,7 +908,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
@@ -926,7 +926,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
@@ -944,7 +944,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
@@ -962,7 +962,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -983,7 +983,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "1.0.0", allowedVersions = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -1000,7 +1000,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             SetNoInstalled();
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("G", "1.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
@@ -1021,7 +1021,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "F", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
@@ -1042,7 +1042,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackages("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
@@ -1067,7 +1067,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -1091,7 +1091,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -1115,7 +1115,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -1140,7 +1140,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -1166,7 +1166,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -1192,7 +1192,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -1218,7 +1218,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -1244,7 +1244,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -1270,7 +1270,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "D", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
@@ -1298,7 +1298,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "D", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -1323,7 +1323,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "2.0.0", allowedVersions = "2.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
@@ -1351,7 +1351,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "C", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Suit);
 
             yield return task.AsEnumerator(false);
@@ -1376,7 +1376,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -1400,7 +1400,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -1424,7 +1424,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -1449,7 +1449,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -1475,7 +1475,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -1501,7 +1501,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -1527,7 +1527,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -1553,7 +1553,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -1579,7 +1579,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "D", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
@@ -1607,7 +1607,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "D", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -1632,7 +1632,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "2.0.0", allowedVersions = "2.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
@@ -1660,7 +1660,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "C", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Highest);
 
             yield return task.AsEnumerator(false);
@@ -1685,7 +1685,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -1709,7 +1709,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "2.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -1733,7 +1733,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "A", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("A", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -1758,7 +1758,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -1784,7 +1784,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("C", "2.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -1810,7 +1810,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -1836,7 +1836,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -1862,7 +1862,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "B", version = "2.0.0", allowedVersions = "[2.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -1888,7 +1888,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "D", version = "1.1.0-alpha", allowedVersions = "[1.1.0-alpha]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
@@ -1916,7 +1916,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "D", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.1.0-alpha", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -1941,7 +1941,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "E", version = "2.0.0", allowedVersions = "2.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("D", "1.0.0", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
@@ -1969,7 +1969,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package { id = "C", version = "1.0.0", allowedVersions = "[1.0.0]" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRequiredPackagesWhenChangeVersion("B", "2.0.0", controlledPackages, false, VersionSelectMethod.Lowest);
 
             yield return task.AsEnumerator(false);
@@ -1994,7 +1994,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -2018,7 +2018,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -2042,7 +2042,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -2067,7 +2067,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -2093,7 +2093,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[0];
@@ -2117,7 +2117,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -2143,7 +2143,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[0];
@@ -2169,7 +2169,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -2196,7 +2196,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -2224,7 +2224,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[1];
@@ -2251,7 +2251,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[2];
@@ -2278,7 +2278,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "D", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", controlledPackages, true, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
@@ -2306,7 +2306,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "D", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", controlledPackages, false, VersionSelectMethod.Suit);
 
             var expected = new Package[3];
@@ -2336,7 +2336,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -2360,7 +2360,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -2384,7 +2384,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -2409,7 +2409,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -2435,7 +2435,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[0];
@@ -2459,7 +2459,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -2485,7 +2485,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[0];
@@ -2511,7 +2511,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -2538,7 +2538,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -2566,7 +2566,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[1];
@@ -2593,7 +2593,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[2];
@@ -2620,7 +2620,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "D", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", controlledPackages, true, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
@@ -2648,7 +2648,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "D", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", controlledPackages, false, VersionSelectMethod.Highest);
 
             var expected = new Package[3];
@@ -2678,7 +2678,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -2702,7 +2702,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -2726,7 +2726,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "A", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -2751,7 +2751,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -2777,7 +2777,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[0];
@@ -2801,7 +2801,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -2827,7 +2827,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.1.0-alpha" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("C", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[0];
@@ -2853,7 +2853,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -2880,7 +2880,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -2908,7 +2908,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("A", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[1];
@@ -2935,7 +2935,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "B", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("B", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[2];
@@ -2962,7 +2962,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "D", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", controlledPackages, true, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
@@ -2990,7 +2990,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
                 new Package() { id = "D", version = "1.0.0" }
             });
 
-            var controlledPackages = PackageManager.ControlledPackages;
+            ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
             Task<List<Package>> task = DependencySolver.FindRemovablePackages("D", controlledPackages, false, VersionSelectMethod.Lowest);
 
             var expected = new Package[3];
@@ -3025,12 +3025,18 @@ namespace kumaS.NuGetImporter.Editor.Tests
 
         private void SetNoInstalled()
         {
-            PackageManager.installed = new InstalledPackages();
-            PackageManager.installed.package = new List<Package>();
-            PackageManager.rootPackage = new InstalledPackages();
-            PackageManager.rootPackage.package = new List<Package>();
-            PackageManager.existingPackage = new InstalledPackages();
-            PackageManager.existingPackage.package = new List<Package>();
+            PackageManager.installed = new InstalledPackages
+            {
+                package = new List<Package>()
+            };
+            PackageManager.rootPackage = new InstalledPackages
+            {
+                package = new List<Package>()
+            };
+            PackageManager.existingPackage = new InstalledPackages
+            {
+                package = new List<Package>()
+            };
             PackageManager.controlledPackages = new ReadOnlyControlledPackages(PackageManager.installed, PackageManager.rootPackage, PackageManager.existingPackage);
         }
 

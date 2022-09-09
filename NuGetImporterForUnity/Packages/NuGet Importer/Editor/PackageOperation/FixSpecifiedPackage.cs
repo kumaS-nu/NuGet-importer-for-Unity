@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using kumaS.NuGetImporter.Editor.DataClasses;
 using System.Linq;
 using System.Threading.Tasks;
 
-using UnityEngine;
+using kumaS.NuGetImporter.Editor.DataClasses;
+
 using UnityEditor;
 
 namespace kumaS.NuGetImporter.Editor.PackageOperation
@@ -34,7 +33,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 return new OperationResult(OperationState.Cancel, id + " is not installed.");
             }
 
-            var tasks = controlledPackages.installed.Where(pkg => pkg.id == id).Select(async pkg => await PackageManager.HasNativeAsync(pkg));
+            IEnumerable<Task<bool>> tasks = controlledPackages.installed.Where(pkg => pkg.id == id).Select(async pkg => await PackageManager.HasNativeAsync(pkg));
             var hasNatives = await Task.WhenAll(tasks);
             if (hasNatives.Any(isNative => isNative))
             {

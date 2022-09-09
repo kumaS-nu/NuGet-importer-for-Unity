@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,8 +7,6 @@ using kumaS.NuGetImporter.Editor.DataClasses;
 
 using UnityEditor;
 using UnityEditor.SceneManagement;
-
-using UnityEngine;
 
 namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
@@ -29,8 +26,8 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
         {
-            var tasks = controlledPackages.installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg));
-            var requredPackages = await DependencySolver.CheckAllPackage(controlledPackages, isOnlyStable, versionSelectMethod);
+            IEnumerable<Task<bool>> tasks = controlledPackages.installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg));
+            List<Package> requredPackages = await DependencySolver.CheckAllPackage(controlledPackages, isOnlyStable, versionSelectMethod);
             var hasNatives = await Task.WhenAll(tasks);
             if (!hasNatives.Any(native => native))
             {

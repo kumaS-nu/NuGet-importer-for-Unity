@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+
 using UnityEngine.TestTools;
 
 namespace kumaS.NuGetImporter.Editor.Tests
@@ -12,7 +12,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         [UnityTest]
         public IEnumerator SearchPackage()
         {
-            var task = NuGet.SearchPackage();
+            Task<DataClasses.SearchResult> task = NuGet.SearchPackage();
             yield return task.AsEnumerator();
             Assert.That(true);
         }
@@ -20,9 +20,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
         [UnityTest]
         public IEnumerator GetCatalog()
         {
-            var task = NuGet.SearchPackage();
+            Task<DataClasses.SearchResult> task = NuGet.SearchPackage();
             yield return task.AsEnumerator();
-            var task1 = NuGet.GetCatalog(task.Result.data[0].id);
+            Task<DataClasses.Catalog> task1 = NuGet.GetCatalog(task.Result.data[0].id);
             yield return task1.AsEnumerator();
             Assert.That(true);
         }
@@ -30,9 +30,9 @@ namespace kumaS.NuGetImporter.Editor.Tests
         [UnityTest]
         public IEnumerator GetIcon()
         {
-            var task = NuGet.SearchPackage();
+            Task<DataClasses.SearchResult> task = NuGet.SearchPackage();
             yield return task.AsEnumerator();
-            var task1 = PackageDataExtentionToGUI.GetIcon(task.Result.data[0]);
+            Task task1 = PackageDataExtentionToGUI.GetIcon(task.Result.data[0]);
             yield return task1.AsEnumerator();
             Assert.That(true);
         }
@@ -43,12 +43,12 @@ namespace kumaS.NuGetImporter.Editor.Tests
             NuGetImporterSettings.Instance.Timeout = 100;
             var task = Task.Delay(1000);
             yield return task.AsEnumerator();
-            var task1 = NuGet.SearchPackage();
+            Task<DataClasses.SearchResult> task1 = NuGet.SearchPackage();
             yield return task1.AsEnumerator();
             NuGetImporterSettings.Instance.Timeout = 300;
             var task2 = Task.Delay(1000);
             yield return task2.AsEnumerator();
-            var task3 = NuGet.GetCatalog(task1.Result.data[0].id);
+            Task<DataClasses.Catalog> task3 = NuGet.GetCatalog(task1.Result.data[0].id);
             yield return task3.AsEnumerator();
             Assert.That(true);
         }
@@ -59,10 +59,10 @@ namespace kumaS.NuGetImporter.Editor.Tests
             NuGetImporterSettings.Instance.Timeout = 100;
             var task = Task.Delay(1000);
             yield return task.AsEnumerator();
-            var task1 = NuGet.SearchPackage();
+            Task<DataClasses.SearchResult> task1 = NuGet.SearchPackage();
             yield return task1.AsEnumerator();
             NuGetImporterSettings.Instance.Timeout = 300;
-            var task2 = NuGet.GetCatalog(task1.Result.data[0].id);
+            Task<DataClasses.Catalog> task2 = NuGet.GetCatalog(task1.Result.data[0].id);
             yield return task2.AsEnumerator();
             Assert.That(true);
         }
@@ -73,10 +73,10 @@ namespace kumaS.NuGetImporter.Editor.Tests
             NuGetImporterSettings.Instance.Timeout = 100;
             var task = Task.Delay(1000);
             yield return task.AsEnumerator();
-            var task1 = NuGet.SearchPackage();
+            Task<DataClasses.SearchResult> task1 = NuGet.SearchPackage();
             NuGetImporterSettings.Instance.Timeout = 300;
             yield return task1.AsEnumerator();
-            var task2 = NuGet.GetCatalog(task1.Result.data[0].id);
+            Task<DataClasses.Catalog> task2 = NuGet.GetCatalog(task1.Result.data[0].id);
             yield return task2.AsEnumerator();
             Assert.That(true);
         }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,11 +7,8 @@ using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
-using UnityEditor.SceneManagement;
-
 using UnityEditor;
-
-using UnityEngine;
+using UnityEditor.SceneManagement;
 
 namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
@@ -32,7 +28,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
         {
             var controller = new PackageControllerAsAsset();
-            var tasks = controlledPackages.installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg, controller));
+            IEnumerable<Task<bool>> tasks = controlledPackages.installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg, controller));
             var hasNatives = await Task.WhenAll(tasks);
             if (!hasNatives.Any(native => native))
             {

@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using kumaS.NuGetImporter.Editor.DataClasses;
 using System.Linq;
 using System.Threading.Tasks;
 
-using UnityEngine;
+using kumaS.NuGetImporter.Editor.DataClasses;
 
 namespace kumaS.NuGetImporter.Editor.PackageOperation
 {

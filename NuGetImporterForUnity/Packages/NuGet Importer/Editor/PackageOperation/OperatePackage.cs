@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -53,11 +52,11 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                     return new OperationResult(ret, "Now other processes are in progress.");
                 }
 
-                var controlledPackages = PackageManager.ControlledPackages;
+                ReadOnlyControlledPackages controlledPackages = PackageManager.ControlledPackages;
                 try
                 {
                     EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
-                    var result = await Operate(controlledPackages, operatorLock);
+                    OperationResult result = await Operate(controlledPackages, operatorLock);
                     ret = result.State;
                     return result;
                 }

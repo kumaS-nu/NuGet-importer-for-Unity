@@ -270,7 +270,7 @@ namespace kumaS.NuGetImporter.Editor
                 targetFramework = frameworkDictionary.First(dic => dic.Contains(frameworkList.First()));
             }
 
-            var (leftPath, framework) = SelectManagedDirectory(managedPath, targetFramework, frameworkList);
+            (var leftPath, var framework) = SelectManagedDirectory(managedPath, targetFramework, frameworkList);
             package.targetFramework = framework;
 
             LocalizeDirectoryProcess(nugetPackagePath, extractPath, leftPath);
@@ -303,10 +303,10 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         private (string path, string framework) SelectManagedDirectory(string managedPath, string[] targetFramework, List<string> frameworkList)
         {
-            var forUnityPath = Directory.GetDirectories(managedPath).Where(p => Path.GetFileName(p).ToLowerInvariant() == "unity");
+            IEnumerable<string> forUnityPath = Directory.GetDirectories(managedPath).Where(p => Path.GetFileName(p).ToLowerInvariant() == "unity");
             if (forUnityPath.Any())
             {
-                var (suit, remove) = GetSuitFramework(forUnityPath.First(), targetFramework, frameworkList);
+                (var suit, List<string> remove) = GetSuitFramework(forUnityPath.First(), targetFramework, frameworkList);
                 remove.AddRange(Directory.GetDirectories(managedPath).Where(p => Path.GetFileName(p).ToLowerInvariant() != "unity"));
                 foreach (var r in remove)
                 {
@@ -315,7 +315,7 @@ namespace kumaS.NuGetImporter.Editor
                 return (forUnityPath.First(), suit);
             }
             {
-                var (suit, remove) = GetSuitFramework(managedPath, targetFramework, frameworkList);
+                (var suit, List<string> remove) = GetSuitFramework(managedPath, targetFramework, frameworkList);
                 foreach (var r in remove)
                 {
                     DeleteDirectory(r);
@@ -348,7 +348,7 @@ namespace kumaS.NuGetImporter.Editor
         {
             var removes = new List<string>();
             var frameworkPaths = Directory.GetDirectories(frameworkDir);
-            var target = frameworkPaths.Where(framework => targetFramework.Contains(Path.GetFileName(framework)));
+            IEnumerable<string> target = frameworkPaths.Where(framework => targetFramework.Contains(Path.GetFileName(framework)));
             if (target.Any())
             {
                 removes.AddRange(frameworkPaths);
@@ -407,10 +407,10 @@ namespace kumaS.NuGetImporter.Editor
 
         private void NativeProcess(string nativePath, string nugetPackagePath, string extractPath)
         {
-            var moveList = Directory.GetDirectories(nativePath).Select(native => new NativePlatform(native))
+            IEnumerable<NativePlatform> moveList = Directory.GetDirectories(nativePath).Select(native => new NativePlatform(native))
                 .Where(native => native.osPriority >= 0).OrderBy(native => native.osPriority).Skip(1);
 
-            foreach (var move in moveList)
+            foreach (NativePlatform move in moveList)
             {
                 MoveDirectory(move.path, extractPath, nugetPackagePath);
             }
@@ -418,13 +418,13 @@ namespace kumaS.NuGetImporter.Editor
             foreach (var directory in Directory.GetDirectories(nativePath))
             {
                 var platform = new NativePlatform(directory);
-                if (!enableArch.TryGetValue(platform.os, out var _) || !enableArch[platform.os].Contains(platform.architecture))
+                if (!enableArch.TryGetValue(platform.os, out List<string> _) || !enableArch[platform.os].Contains(platform.architecture))
                 {
                     MoveDirectory(platform.path, extractPath, nugetPackagePath);
                 }
             }
 
-            var nonNativeList = Directory.GetDirectories(nativePath)
+            IEnumerable<string> nonNativeList = Directory.GetDirectories(nativePath)
                 .SelectMany(native => Directory.GetDirectories(native)).Where(native => !native.EndsWith("native"));
 
             foreach (var move in nonNativeList)

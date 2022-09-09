@@ -158,14 +158,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 }
 
                 var splitedVersion = value.Split('.').ToList();
-                if (IsAllowedVersion(splitedVersion))
-                {
-                    selectedVersion = splitedVersion;
-                }
-                else
-                {
-                    throw new IndexOutOfRangeException(value + " is not in allowed version");
-                }
+                selectedVersion = IsAllowedVersion(splitedVersion) ? splitedVersion : throw new IndexOutOfRangeException(value + " is not in allowed version");
             }
         }
 
@@ -227,18 +220,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             {
                 var minDiff = CompareVersion(minimumVersion, newVersion.minimumVersion);
                 ret.minimumVersion = minDiff > 0 ? minimumVersion : newVersion.minimumVersion;
-                if (minDiff > 0)
-                {
-                    ret.excludeMinimum = excludeMinimum;
-                }
-                else if (minDiff == 0)
-                {
-                    ret.excludeMinimum = excludeMinimum || newVersion.excludeMinimum;
-                }
-                else
-                {
-                    ret.excludeMinimum = newVersion.excludeMinimum;
-                }
+                ret.excludeMinimum = minDiff > 0 ? excludeMinimum : minDiff == 0 ? excludeMinimum || newVersion.excludeMinimum : newVersion.excludeMinimum;
             }
 
             if (maximumVersion == null)
@@ -253,18 +235,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             {
                 var maxDiff = CompareVersion(maximumVersion, newVersion.maximumVersion);
                 ret.maximumVersion = maxDiff < 0 ? maximumVersion : newVersion.maximumVersion;
-                if (maxDiff < 0)
-                {
-                    ret.excludeMaximum = excludeMaximum;
-                }
-                else if (maxDiff == 0)
-                {
-                    ret.excludeMaximum = excludeMaximum || newVersion.excludeMaximum;
-                }
-                else
-                {
-                    ret.excludeMaximum = newVersion.excludeMaximum;
-                }
+                ret.excludeMaximum = maxDiff < 0 ? excludeMaximum : maxDiff == 0 ? excludeMaximum || newVersion.excludeMaximum : newVersion.excludeMaximum;
             }
 
             try
@@ -351,30 +322,20 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 if (maxDiff == 0 && !excludeMaximum)
                 {
                     var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                    if (minDiff == 0 && !excludeMinimum)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-                    if (minDiff > 0)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-
-                    throw new InvalidOperationException("There is no available version.");
+                    return minDiff == 0 && !excludeMinimum
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : minDiff > 0
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : throw new InvalidOperationException("There is no available version.");
                 }
                 if (maxDiff < 0)
                 {
                     var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                    if (minDiff == 0 && !excludeMinimum)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-                    if (minDiff > 0)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-
-                    throw new InvalidOperationException("There is no available version.");
+                    return minDiff == 0 && !excludeMinimum
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : minDiff > 0
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : throw new InvalidOperationException("There is no available version.");
                 }
             }
 
@@ -395,30 +356,20 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 if (minDiff == 0 && !excludeMinimum)
                 {
                     var maxDiff = maximumVersion != null ? CompareVersion(version, maximumVersion) : -1;
-                    if (maxDiff == 0 && !excludeMaximum)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-                    if (maxDiff < 0)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-
-                    throw new InvalidOperationException("There is no available version.");
+                    return maxDiff == 0 && !excludeMaximum
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : maxDiff < 0
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : throw new InvalidOperationException("There is no available version.");
                 }
                 if (minDiff > 0)
                 {
                     var maxDiff = maximumVersion != null ? CompareVersion(version, maximumVersion) : -1;
-                    if (maxDiff == 0 && !excludeMaximum)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-                    if (maxDiff < 0)
-                    {
-                        return version.Aggregate((now, next) => now + "." + next);
-                    }
-
-                    throw new InvalidOperationException("There is no available version.");
+                    return maxDiff == 0 && !excludeMaximum
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : maxDiff < 0
+                        ? version.Aggregate((now, next) => now + "." + next)
+                        : throw new InvalidOperationException("There is no available version.");
                 }
             }
 
@@ -440,30 +391,20 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     if (maxDiff == 0 && !excludeMaximum)
                     {
                         var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                        if (minDiff == 0 && !excludeMinimum)
-                        {
-                            return version.Aggregate((now, next) => now + "." + next);
-                        }
-                        if (minDiff > 0)
-                        {
-                            return version.Aggregate((now, next) => now + "." + next);
-                        }
-
-                        throw new InvalidOperationException("There is no available version.");
+                        return minDiff == 0 && !excludeMinimum
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : minDiff > 0
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : throw new InvalidOperationException("There is no available version.");
                     }
                     if (maxDiff < 0)
                     {
                         var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                        if (minDiff == 0 && !excludeMinimum)
-                        {
-                            return version.Aggregate((now, next) => now + "." + next);
-                        }
-                        if (minDiff > 0)
-                        {
-                            return version.Aggregate((now, next) => now + "." + next);
-                        }
-
-                        throw new InvalidOperationException("There is no available version.");
+                        return minDiff == 0 && !excludeMinimum
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : minDiff > 0
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : throw new InvalidOperationException("There is no available version.");
                     }
                 }
                 throw new InvalidOperationException("There is no available version.");
@@ -515,22 +456,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
             var maxDiff = maximumVersion != null ? CompareVersion(version, maximumVersion) : -1;
 
-            if (minDiff < 0 || maxDiff > 0)
-            {
-                return false;
-            }
-
-            if (excludeMinimum && minDiff == 0)
-            {
-                return false;
-            }
-
-            if (excludeMaximum && maxDiff == 0)
-            {
-                return false;
-            }
-
-            return true;
+            return minDiff < 0 || maxDiff > 0 ? false : excludeMinimum && minDiff == 0 ? false : !excludeMaximum || maxDiff != 0;
         }
 
         /// <summary>
@@ -564,13 +490,9 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         return compare;
                     }
                 }
-                else if (isNumberBase == true)
-                {
-                    return 1;
-                }
                 else
                 {
-                    return -1;
+                    return isNumberBase == true ? 1 : -1;
                 }
 
                 if (splitedCompare.Length >= 2 && splitedBase.Length >= 2)
@@ -595,16 +517,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             }
 
             var lengthDiff = compareVersion.Count - baseVersion.Count;
-            if (lengthDiff < 0)
-            {
-                return -1;
-            }
-            if (lengthDiff > 0)
-            {
-                return 1;
-            }
-
-            return 0;
+            return lengthDiff < 0 ? -1 : lengthDiff > 0 ? 1 : 0;
         }
     }
 }

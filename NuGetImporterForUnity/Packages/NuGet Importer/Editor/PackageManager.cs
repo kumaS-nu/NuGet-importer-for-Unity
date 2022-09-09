@@ -6,15 +6,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-using Codice.Client.BaseCommands.BranchExplorer;
-
 using kumaS.NuGetImporter.Editor.DataClasses;
 using kumaS.NuGetImporter.Editor.PackageOperation;
 
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEditor.PackageManager;
-using UnityEditor.SceneManagement;
 
 using UnityEngine;
 
@@ -270,7 +267,7 @@ namespace kumaS.NuGetImporter.Editor
                 Load();
                 return;
             }
-            var (willInstall, willRoot, rollbackPackages) = GetRestartInfo();
+            (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) = GetRestartInfo();
             await Task.Delay(1000);
             var operation = new RebootProcess(willInstall, willRoot, rollbackPackages);
             OperationResult result = await operation.Execute();
@@ -421,7 +418,7 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<OperationResult> InstallPackageAsync(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             var operation = new InstallPackage(packageId, version, onlyStable, method);
-            var result = await operation.Execute();
+            OperationResult result = await operation.Execute();
             if (result.State == OperationState.Success)
             {
                 rootPackage.package.Add(installed.package.First(pkg => pkg.id == packageId));
@@ -496,7 +493,7 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<OperationResult> UninstallPackagesAsync(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             var operation = new UninstallPackages(packageId, onlyStable, method);
-            var result = await operation.Execute();
+            OperationResult result = await operation.Execute();
             if (result.State == OperationState.Success)
             {
                 rootPackage.package.RemoveAll(pkg => pkg.id == packageId);
@@ -532,7 +529,7 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<OperationResult> ChangePackageVersionAsync(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             var operateion = new ChangePackageVersion(packageId, newVersion, onlyStable, method);
-            var result = await operateion.Execute();
+            OperationResult result = await operateion.Execute();
             if (result.State == OperationState.Success)
             {
                 var rootId = rootPackage.package.Select(pkg => pkg.id).ToArray();
@@ -598,7 +595,7 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<OperationResult> ConvertToUPM()
         {
             var operation = new ConvertToUPM();
-            var result = await operation.Execute();
+            OperationResult result = await operation.Execute();
             if (result.State == OperationState.Success)
             {
                 try
@@ -623,7 +620,7 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<OperationResult> ConvertToAssets()
         {
             var operation = new ConvertToAssets();
-            var result = await operation.Execute();
+            OperationResult result = await operation.Execute();
             if (result.State == OperationState.Success)
             {
                 if (!Directory.Exists(Path.Combine(DataPath, "Packages")))
@@ -657,7 +654,7 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<OperationResult> ReInstallAllPackages(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
             var operation = new ReInstallAllPackages(onlyStable, method);
-            var result = await operation.Execute();
+            OperationResult result = await operation.Execute();
             if (result.State == OperationState.Success)
             {
                 var rootId = rootPackage.package.Select(pkg => pkg.id).ToArray();
@@ -678,7 +675,7 @@ namespace kumaS.NuGetImporter.Editor
             existingPackage.package.Clear();
             Save();
             var operation = new CleanUp();
-            var result = await operation.Execute();
+            OperationResult result = await operation.Execute();
             installed.package.Clear();
             rootPackage.package.Clear();
             Save();

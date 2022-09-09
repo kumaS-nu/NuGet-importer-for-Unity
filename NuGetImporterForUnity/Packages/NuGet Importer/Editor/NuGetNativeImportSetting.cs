@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -24,10 +23,10 @@ namespace kumaS.NuGetImporter.Editor
                 return;
             }
 
-            var all = Enum.GetValues(typeof(BuildTarget)).Cast<Enum>().ToArray()
+            System.Collections.Generic.IEnumerable<(Enum val, string name)> all = Enum.GetValues(typeof(BuildTarget)).Cast<Enum>().ToArray()
                             .Zip(Enum.GetNames(typeof(BuildTarget)), (val, name) => (val, name));
 
-            var nonObsolete = all.Where(platform => !typeof(BuildTarget).GetMember(platform.name).First()
+            BuildTarget[] nonObsolete = all.Where(platform => !typeof(BuildTarget).GetMember(platform.name).First()
                                                 .GetCustomAttributes(typeof(ObsoleteAttribute), false)
                                                 .Any(attr => attr is ObsoleteAttribute))
                                 .Select(platform => platform.val).Cast<BuildTarget>().ToArray();
@@ -35,7 +34,7 @@ namespace kumaS.NuGetImporter.Editor
         }
 
         // I don't know why, but I can't set it up in OnPreprocessAsset().
-        
+
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             SetAllTarget();
@@ -53,8 +52,8 @@ namespace kumaS.NuGetImporter.Editor
                     continue;
                 }
 
-                var current = GetImportSettings(native);
-                var target = GetPluginSetting(imported);
+                (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) current = GetImportSettings(native);
+                (bool enableOnEditor, BuildTarget target, string architecture) target = GetPluginSetting(imported);
                 if (current.isNoTarget && !current.enableOnEditor && target.target == BuildTarget.NoTarget)
                 {
                     continue;
@@ -84,8 +83,8 @@ namespace kumaS.NuGetImporter.Editor
         private static (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) GetImportSettings(PluginImporter pluginImporter)
         {
             var enableOnEditor = pluginImporter.GetCompatibleWithEditor();
-            var enableTarget = allTarget.Where(t => pluginImporter.GetCompatibleWithPlatform(t)).ToArray();
-            var target = enableTarget.Length == 1 ? enableTarget[0] : BuildTarget.NoTarget;
+            BuildTarget[] enableTarget = allTarget.Where(t => pluginImporter.GetCompatibleWithPlatform(t)).ToArray();
+            BuildTarget target = enableTarget.Length == 1 ? enableTarget[0] : BuildTarget.NoTarget;
             var architecture = target == BuildTarget.NoTarget ? "" : pluginImporter.GetPlatformData(target, "CPU");
             return (!enableTarget.Any(), enableOnEditor, target, architecture);
         }

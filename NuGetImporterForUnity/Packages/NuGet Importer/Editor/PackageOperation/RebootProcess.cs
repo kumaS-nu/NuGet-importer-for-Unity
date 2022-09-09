@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using kumaS.NuGetImporter.Editor.DataClasses;
-using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
-using UnityEngine;
-using System.Linq;
-using System.Xml.Serialization;
+using kumaS.NuGetImporter.Editor.DataClasses;
 
 namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
@@ -37,7 +32,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 return new OperationResult(OperationState.Success, "Uninstallation finished.");
             }
 
-            Package[] deletePackages = new Package[0];
+            var deletePackages = new Package[0];
 
             if (rPackages != null)
             {

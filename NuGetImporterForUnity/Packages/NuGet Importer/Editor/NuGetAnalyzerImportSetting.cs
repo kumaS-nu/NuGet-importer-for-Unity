@@ -45,7 +45,7 @@ namespace kumaS.NuGetImporter.Editor
         }
 #pragma warning restore CS0162 // 到達できないコードが検出されました
 
-        private readonly static Regex rx = new Regex(@"[/\\]dotnet[/\\]cs[/\\]", RegexOptions.IgnoreCase);
+        private static readonly Regex rx = new Regex(@"[/\\]dotnet[/\\]cs[/\\]", RegexOptions.IgnoreCase);
 
         private static bool IsAnalyzer(string path)
         {
@@ -121,12 +121,12 @@ namespace kumaS.NuGetImporter.Editor
                                          .Select(p => p.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)).ToArray();
             var xDoc = XDocument.Parse(content);
             XElement project = xDoc.Root;
-            var xNamespace = project.Name.Namespace;
+            XNamespace xNamespace = project.Name.Namespace;
 
             var baseDir = Path.GetDirectoryName(path);
-            var analyzer = project.Descendants(xNamespace + "Analyzer");
+            IEnumerable<XElement> analyzer = project.Descendants(xNamespace + "Analyzer");
             var analyzersInCsproj = new HashSet<string>(analyzer.Select(x => x.Attribute("Include")?.Value).Where(x => x != null));
-            var addingAnalyzer = analyzersPath.Where(x => !analyzersInCsproj.Contains(x));
+            IEnumerable<string> addingAnalyzer = analyzersPath.Where(x => !analyzersInCsproj.Contains(x));
             if (!addingAnalyzer.Any())
             {
                 return content;

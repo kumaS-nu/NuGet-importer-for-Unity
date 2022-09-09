@@ -228,15 +228,7 @@ namespace kumaS.NuGetImporter.Editor
                 var topNodes = confirmedNode.SelectMany(node => node.dependingNode).GroupBy(node => node.PackageName).Select(group => group.First()).Where(node =>
                 {
                     IEnumerable<string> topParent = node.dependedNode.Select(parent => parent.PackageName).Except(confirmedPackage);
-                    if (topParent == null || !topParent.Any())
-                    {
-                        if (confirmedPackage.Contains(node.PackageName))
-                        {
-                            return false;
-                        }
-                        return true;
-                    }
-                    return false;
+                    return topParent == null || !topParent.Any() ? !confirmedPackage.Contains(node.PackageName) : false;
                 }).ToList();
 
                 for (var i = 0; i < topNodes.Count; i++)

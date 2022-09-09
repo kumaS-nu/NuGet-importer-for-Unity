@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -59,7 +58,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 timeoutStack.Push(timeout);
             }
-            var task = SetWebClientTasks();
+            Task task = SetWebClientTasks();
             timeoutSet.Add(task);
             await task;
             timeoutSet.Clear();

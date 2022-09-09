@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,9 +18,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         private static ApiCompatibilityLevel profile = default;
 
         private static IList<string> packageIds = default;
-        public static IList<string> PackageIds { 
-            get { 
-                if (profile != PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup)) {
+        public static IList<string> PackageIds
+        {
+            get
+            {
+                if (profile != PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
+                {
                     GetDefaultUnityAssembly();
                 }
                 return packageIds;
@@ -33,7 +34,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         private static void GetDefaultUnityAssembly()
         {
             var projectPath = Path.GetDirectoryName(Application.dataPath).Replace("\\", "/");
-            var playerAssembly = CompilationPipeline.GetAssemblies(AssembliesType.Player).First();
+            Assembly playerAssembly = CompilationPipeline.GetAssemblies(AssembliesType.Player).First();
             var standardRef = playerAssembly.compiledAssemblyReferences
                                 .Select(p => p.Replace("\\", "/"))
                                 .Where(p => !p.StartsWith(projectPath)).Select(p => Path.GetFileNameWithoutExtension(p))

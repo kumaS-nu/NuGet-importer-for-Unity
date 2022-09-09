@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using kumaS.NuGetImporter.Editor.DataClasses;
 using System.Linq;
 using System.Threading.Tasks;
+
+using kumaS.NuGetImporter.Editor.DataClasses;
 
 namespace kumaS.NuGetImporter.Editor.PackageOperation
 {
@@ -36,12 +36,9 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
             List<Package> uninstallPackages = await DependencySolver.FindRemovablePackages(id, controlledPackages, onlyStable, method);
             Package[] rootPackages = controlledPackages.installed.Where(package => !uninstallPackages.Any(uninstall => uninstall.id == package.id)).Where(package => controlledPackages.root.Any(root => root.id == package.id)).ToArray();
 
-            if (!uninstallPackages.Any())
-            {
-                return new OperationResult(OperationState.Cancel, "Selected package is depended by other package.");
-            }
-
-            return await ManipulatePackages(rootPackages, new Package[0], uninstallPackages, controlledPackages, operateLock);
+            return !uninstallPackages.Any()
+                ? new OperationResult(OperationState.Cancel, "Selected package is depended by other package.")
+                : await ManipulatePackages(rootPackages, new Package[0], uninstallPackages, controlledPackages, operateLock);
         }
     }
 

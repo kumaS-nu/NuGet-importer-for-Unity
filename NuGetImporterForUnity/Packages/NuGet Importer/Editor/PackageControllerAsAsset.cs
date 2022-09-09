@@ -13,7 +13,7 @@ namespace kumaS.NuGetImporter.Editor
     {
         private static ManagedPluginList managedPluginList;
         private static readonly object managedPluginListLock = new object();
-        private readonly static string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
+        private static readonly string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
 
         /// <inheritdoc/>
         internal override void DeletePluginsOutOfDirectory(Package package)

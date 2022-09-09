@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
-using UnityEngine;
 
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
@@ -95,27 +92,13 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 return (nameof(OSType.alpine), 5);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.rhel)))
-            {
-                return (nameof(OSType.rhel), 6);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.arch)))
-            {
-                return (nameof(OSType.arch), 7);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.opensuse)))
-            {
-                return (nameof(OSType.opensuse), 8);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.gentoo)))
-            {
-                return (nameof(OSType.gentoo), 9);
-            }
-
-            return (directoryName.Split('-')[0], int.MaxValue);
+            return directoryName.StartsWith(nameof(OSType.rhel))
+                ? ((string os, int priority))(nameof(OSType.rhel), 6)
+                : directoryName.StartsWith(nameof(OSType.arch))
+                ? ((string os, int priority))(nameof(OSType.arch), 7)
+                : directoryName.StartsWith(nameof(OSType.opensuse))
+                ? ((string os, int priority))(nameof(OSType.opensuse), 8)
+                : directoryName.StartsWith(nameof(OSType.gentoo)) ? ((string os, int priority))(nameof(OSType.gentoo), 9) : ((string os, int priority))(directoryName.Split('-')[0], int.MaxValue);
         }
 
         private string GetArchInfo(string directoryName)
@@ -125,27 +108,13 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 return nameof(ArchitectureType.x64);
             }
 
-            if (directoryName.EndsWith(nameof(ArchitectureType.x86)))
-            {
-                return nameof(ArchitectureType.x86);
-            }
-
-            if (directoryName.EndsWith(nameof(ArchitectureType.arm64)))
-            {
-                return nameof(ArchitectureType.arm64);
-            }
-
-            if (directoryName.EndsWith(nameof(ArchitectureType.arm)))
-            {
-                return nameof(ArchitectureType.arm);
-            }
-
-            if (defaultArch.TryGetValue(os, out var arch))
-            {
-                return arch;
-            }
-
-            return nameof(ArchitectureType.x64);
+            return directoryName.EndsWith(nameof(ArchitectureType.x86))
+                ? nameof(ArchitectureType.x86)
+                : directoryName.EndsWith(nameof(ArchitectureType.arm64))
+                ? nameof(ArchitectureType.arm64)
+                : directoryName.EndsWith(nameof(ArchitectureType.arm))
+                ? nameof(ArchitectureType.arm)
+                : defaultArch.TryGetValue(os, out var arch) ? arch : nameof(ArchitectureType.x64);
         }
     }
 
