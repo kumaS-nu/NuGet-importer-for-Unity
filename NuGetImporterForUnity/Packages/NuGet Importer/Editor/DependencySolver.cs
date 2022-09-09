@@ -36,6 +36,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="method">
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
+        /// </param>
         /// <returns>
         /// <para>Required packages include installed and specified ones.</para>
         /// <para>インストール済みや、指定したものを含んだ必要なパッケージ。</para>
@@ -79,6 +80,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="method">
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
+        /// </param>
         /// <returns>
         /// <para>Required packages include installed and specified ones.</para>
         /// <para>インストール済みや、指定したものを含んだ必要なパッケージ。</para>
@@ -114,6 +116,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         /// <param name="method">
         /// <para>Method to select a version.</para>
+        /// </param>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Required packages include installed and specified ones.</para>

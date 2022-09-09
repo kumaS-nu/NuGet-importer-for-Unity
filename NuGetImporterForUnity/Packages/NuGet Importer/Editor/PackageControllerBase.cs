@@ -94,7 +94,8 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         /// <param name="root">
         /// <para>Root package.</para>
-        /// <para>ルートのパッケージ。</para></param>
+        /// <para>ルートのパッケージ。</para>
+        /// </param>
         /// <returns>
         /// <para>The process of removing native plugins.</para>
         /// <para>ネイティブプラグインを削除するプロセス。</para>
@@ -299,6 +300,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <returns>
         /// <para>Paths left.Just the right framework.</para>
         /// <para>残したパス。ちょうどよいフレームワーク。</para>
+        /// </returns>
         private (string path, string framework) SelectManagedDirectory(string managedPath, string[] targetFramework, List<string> frameworkList)
         {
             var forUnityPath = Directory.GetDirectories(managedPath).Where(p => Path.GetFileName(p).ToLowerInvariant() == "unity");

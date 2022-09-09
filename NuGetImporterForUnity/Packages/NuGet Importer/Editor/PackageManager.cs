@@ -413,6 +413,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="method">
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
+        /// </param>
         /// <returns>
         /// <para>Operation result.</para>
         /// <para>操作結果。</para>
