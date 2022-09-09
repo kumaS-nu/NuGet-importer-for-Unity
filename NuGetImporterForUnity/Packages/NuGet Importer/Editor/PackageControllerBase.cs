@@ -262,7 +262,7 @@ namespace kumaS.NuGetImporter.Editor
         private void ManagedPluginProcess(Package package, string nugetPackagePath, string extractPath, string managedPath)
         {
             List<string[]> frameworkDictionary = FrameworkName.ALLPLATFORM;
-            var targetFramework = frameworkDictionary.FirstOrDefault(framework => framework.Contains(package.targetFramework));
+            var targetFramework = frameworkDictionary.FirstOrDefault(f=> f.Contains(package.targetFramework));
             List<string> frameworkList = FrameworkName.TARGET;
 
             if (targetFramework == default)
