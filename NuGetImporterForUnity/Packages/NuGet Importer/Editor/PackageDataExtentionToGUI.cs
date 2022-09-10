@@ -460,7 +460,6 @@ namespace kumaS.NuGetImporter.Editor
                         }
                     }
                 }
-
             }
 
             GUILayout.FlexibleSpace();
@@ -634,7 +633,6 @@ namespace kumaS.NuGetImporter.Editor
 
             data.icon = iconCache[d.iconUrl];
         }
-
 
         private static async Task GetIcon(string url)
         {

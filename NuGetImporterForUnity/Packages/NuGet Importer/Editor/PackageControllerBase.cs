@@ -12,7 +12,6 @@ using System.Xml.Serialization;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
-
 namespace kumaS.NuGetImporter.Editor
 {
     internal abstract class PackageControllerBase
@@ -403,7 +402,6 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
         }
-
 
         private void NativeProcess(string nativePath, string nugetPackagePath, string extractPath)
         {

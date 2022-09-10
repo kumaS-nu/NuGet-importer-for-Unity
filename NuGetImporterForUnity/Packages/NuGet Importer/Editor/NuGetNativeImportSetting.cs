@@ -164,7 +164,6 @@ namespace kumaS.NuGetImporter.Editor
             return (enableOnEditor, target, architecture);
         }
 
-
         private static void SetImportSetting(PluginImporter pluginImporter, bool enableOnEditor, BuildTarget target, string architecture)
         {
             pluginImporter.SetCompatibleWithAnyPlatform(false);

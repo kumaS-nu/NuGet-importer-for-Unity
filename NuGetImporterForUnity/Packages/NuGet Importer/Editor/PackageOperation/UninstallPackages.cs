@@ -41,5 +41,4 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 : await ManipulatePackages(rootPackages, new Package[0], uninstallPackages, controlledPackages, operateLock);
         }
     }
-
 }

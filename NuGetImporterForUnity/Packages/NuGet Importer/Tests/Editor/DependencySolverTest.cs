@@ -79,7 +79,6 @@ namespace kumaS.NuGetImporter.Editor.Tests
                  null,
                  new (string, string)[] { ("G", "2.0.0") }
             ));
-
         }
 
         private Catalog MakeCatalog(string id, (string id, string range)[] dependency1, (string id, string range)[] dependency1a, (string id, string range)[] dependency2)
@@ -171,7 +170,6 @@ namespace kumaS.NuGetImporter.Editor.Tests
             }
 
             return catalog;
-
         }
 
         #endregion
@@ -209,7 +207,6 @@ namespace kumaS.NuGetImporter.Editor.Tests
 
             IsEqual(task.Result, expected);
         }
-
 
         [UnityTest]
         public IEnumerator FindRequiredPackagesTest03SuitZeroPreRelease()
@@ -502,7 +499,6 @@ namespace kumaS.NuGetImporter.Editor.Tests
             IsEqual(task.Result, expected);
         }
 
-
         [UnityTest]
         public IEnumerator FindRequiredPackagesTest19HighestZeroPreRelease()
         {
@@ -793,7 +789,6 @@ namespace kumaS.NuGetImporter.Editor.Tests
 
             IsEqual(task.Result, expected);
         }
-
 
         [UnityTest]
         public IEnumerator FindRequiredPackagesTest35LowestZeroPreRelease()
@@ -3039,6 +3034,5 @@ namespace kumaS.NuGetImporter.Editor.Tests
             };
             PackageManager.controlledPackages = new ReadOnlyControlledPackages(PackageManager.installed, PackageManager.rootPackage, PackageManager.existingPackage);
         }
-
     }
 }

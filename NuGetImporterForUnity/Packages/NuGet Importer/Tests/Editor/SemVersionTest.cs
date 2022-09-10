@@ -171,7 +171,6 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
         }
 
-
         [Test]
         public void MargeTest6PreRelease()
         {
@@ -521,6 +520,5 @@ namespace kumaS.NuGetImporter.Editor.Tests
         }
 
         #endregion
-
     }
 }

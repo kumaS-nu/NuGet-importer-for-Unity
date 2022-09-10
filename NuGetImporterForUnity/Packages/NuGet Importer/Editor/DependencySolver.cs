@@ -289,7 +289,6 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     allNode.Add(node.PackageName, new List<DependencyNode>() { node });
                 }
-
             }
 
             Catalogentry catalogEntry = catalog.GetAllCatalogEntry().FirstOrDefault(entry => entry.version == node.Version.SelectedVersion);

@@ -144,7 +144,6 @@ namespace kumaS.NuGetImporter.Editor
             EditorUtility.DisplayDialog("NuGet importer", "Now version is " + thisVersion.Major + "." + thisVersion.Minor + "." + thisVersion.Revision + ".\n Lastest version is " + lastestVersion, "OK");
         }
 
-
         [MenuItem("NuGet Importer/Go to project page", false, 5)]
         private static void GoProjectPage()
         {
