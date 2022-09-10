@@ -116,7 +116,6 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-
         [MenuItem("NuGet Importer/Check update", false, 5)]
         private static async Task CheckUpdate()
         {
