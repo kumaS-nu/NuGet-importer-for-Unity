@@ -1,8 +1,8 @@
-﻿#if ZIP_AVAILABLE
-
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
+using kumaS.NuGetImporter.Editor.DataClasses;
 
 using UnityEditor;
 
@@ -14,171 +14,275 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class NuGetNativeImportSetting : AssetPostprocessor
     {
-        private static readonly BuildTarget[] allTarget = (BuildTarget[])Enum.GetValues(typeof(BuildTarget));
-        private static readonly List<string> linuxName = new List<string>() { "linux", "ubuntu", "centos", "debian" };
+        private static BuildTarget[] allTarget = default;
 
-        private void OnPreprocessAsset()
+        private static void SetAllTarget()
         {
-            if (!assetImporter.importSettingsMissing)
+            if (allTarget != default)
             {
                 return;
             }
 
-            var pluginImporter = assetImporter as PluginImporter;
-            if (pluginImporter == null)
-            {
-                return;
-            }
-            if (!assetImporter.assetPath.Contains("Packages"))
-            {
-                return;
-            }
+            System.Collections.Generic.IEnumerable<(Enum val, string name)> all = Enum.GetValues(typeof(BuildTarget)).Cast<Enum>().ToArray()
+                            .Zip(Enum.GetNames(typeof(BuildTarget)), (val, name) => (val, name));
 
-            if (!assetImporter.assetPath.Contains("native") || !assetImporter.assetPath.Contains("runtimes"))
-            {
-                return;
-            }
+            BuildTarget[] nonObsolete = all.Where(platform => !typeof(BuildTarget).GetMember(platform.name).First()
+                                                .GetCustomAttributes(typeof(ObsoleteAttribute), false)
+                                                .Any(attr => attr is ObsoleteAttribute))
+                                .Select(platform => platform.val).Cast<BuildTarget>().ToArray();
+            allTarget = nonObsolete.Where(platform => platform > 0).ToArray();
+        }
 
+        // I don't know why, but I can't set it up in OnPreprocessAsset().
+
+        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        {
+            SetAllTarget();
+
+            foreach (var imported in importedAssets)
+            {
+                if (!imported.Contains("Packages") || !imported.Contains("native") || !imported.Contains("runtimes"))
+                {
+                    continue;
+                }
+
+                var native = AssetImporter.GetAtPath(imported) as PluginImporter;
+                if (native == null)
+                {
+                    continue;
+                }
+
+                (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) current = GetImportSettings(native);
+                (bool enableOnEditor, BuildTarget target, string architecture) target = GetPluginSetting(imported);
+                if (current.isNoTarget && !current.enableOnEditor && target.target == BuildTarget.NoTarget)
+                {
+                    continue;
+                }
+
+                if (current.target == target.target && current.enableOnEditor == target.enableOnEditor && current.architecture == target.architecture)
+                {
+                    continue;
+                }
+
+                SetImportSetting(native, target.enableOnEditor, target.target, target.architecture);
+            }
+        }
+
+        /// <summary>
+        /// <para>Get current plugin settings.</para>
+        /// <para>現在のプラグイン設定を取得。</para>
+        /// </summary>
+        /// <param name="pluginImporter">
+        /// <para>Target plugins.</para>
+        /// <para>対象のプラグイン。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Is there a target? Is it valid on the editor? Target. Architecture.</para>
+        /// <para>ターゲットが無いか。エディタ上で有効か。ターゲット。アーキテクチャ。</para>
+        /// </returns>
+        private static (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) GetImportSettings(PluginImporter pluginImporter)
+        {
+            var enableOnEditor = pluginImporter.GetCompatibleWithEditor();
+            BuildTarget[] enableTarget = allTarget.Where(t => pluginImporter.GetCompatibleWithPlatform(t)).ToArray();
+            BuildTarget target = enableTarget.Length == 1 ? enableTarget[0] : BuildTarget.NoTarget;
+            var architecture = target == BuildTarget.NoTarget ? "" : pluginImporter.GetPlatformData(target, "CPU");
+            return (!enableTarget.Any(), enableOnEditor, target, architecture);
+        }
+
+        /// <summary>
+        /// <para>Get the plugin settings that should be set.</para>
+        /// <para>設定すべきプラグイン設定を取得。</para>
+        /// </summary>
+        /// <param name="pluginPath">
+        /// <para>Target plugins path.</para>
+        /// <para>対象のプラグインのパス。</para>
+        /// </param>
+        /// <returns>
+        /// <para>Is it valid on the editor? Target. Architecture.</para>
+        /// <para>エディタ上で有効か。ターゲット。アーキテクチャ。</para>
+        /// </returns>
+        private static (bool enableOnEditor, BuildTarget target, string architecture) GetPluginSetting(string pluginPath)
+        {
             BuildTarget target = BuildTarget.NoTarget;
-            var targetCPU = "";
+            var architecture = "";
             var enableOnEditor = false;
-            var dirName = Path.GetFileName(Path.GetDirectoryName(Path.GetDirectoryName(assetImporter.assetPath)));
-            var splitedDirName = dirName.Split('-');
-            if (splitedDirName.Length < 2)
+            var platformPath = pluginPath;
+            while (platformPath.Contains("native"))
             {
-                return;
+                platformPath = Path.GetDirectoryName(platformPath);
             }
-
-            switch (splitedDirName[0])
+            var platform = new NativePlatform(platformPath);
+            switch (platform.architecture)
             {
-                case "win":
-                    enableOnEditor = true;
-                    switch (splitedDirName[1])
-                    {
-                        case "x64":
-                            target = BuildTarget.StandaloneWindows64;
-                            targetCPU = "x86_64";
-                            break;
-                        case "x86":
-                            target = BuildTarget.StandaloneWindows;
-                            targetCPU = "x86";
-                            break;
-                        default:
-                            return;
-                    }
+                case nameof(ArchitectureType.x64):
+                    architecture = platform.os == nameof(OSType.ios) ? "X64" : "x86_64";
                     break;
-                case "osx":
-                    target = BuildTarget.StandaloneOSX;
-                    switch (splitedDirName[1])
-                    {
-                        case "x64":
-                            enableOnEditor = true;
-                            targetCPU = "x86_64";
-                            break;
-#if UNITY_2020_2_OR_NEWER
-                        case "arm64":
-                            enableOnEditor = true;
-                            targetCPU = "ARM64";
-                            break;
-#endif
-                        default:
-                            return;
-                    }
+                case nameof(ArchitectureType.x86):
+                    architecture = "x86";
                     break;
-                case "android":
-                    target = BuildTarget.Android;
-                    switch (splitedDirName[1])
-                    {
-                        case "arm":
-                            targetCPU = "ARMv7";
-                            break;
-                        case "arm64":
-                            targetCPU = "ARM64";
-                            break;
-                        case "x64":
-                            targetCPU = "x86_64";
-                            break;
-                        case "x86":
-                            targetCPU = "x86";
-                            break;
-                        default:
-                            return;
-                    }
+                case nameof(ArchitectureType.arm64):
+                    architecture = "ARM64";
                     break;
-                case "ios":
-                    target = BuildTarget.iOS;
-                    switch (splitedDirName[1])
-                    {
-                        case "arm":
-                            targetCPU = "ARMv7";
-                            break;
-                        case "arm64":
-                            targetCPU = "ARM64";
-                            break;
-                        case "x64":
-                            targetCPU = "X64";
-                            break;
-                        default:
-                            return;
-                    }
-                    break;
-                default:
-                    enableOnEditor = true;
-                    if (linuxName.Contains(splitedDirName[0]))
-                    {
-                        target = BuildTarget.StandaloneLinux64;
-                        targetCPU = "x86_64";
-                    }
-                    else
-                    {
-                        return;
-                    }
+                case nameof(ArchitectureType.arm):
+                    architecture = "ARMv7";
                     break;
             }
 
+            switch (platform.os)
+            {
+                case nameof(OSType.win):
+                    target = WindowsProcess(platform);
+                    enableOnEditor = true;
+                    break;
+                case nameof(OSType.osx):
+                    target = OSXProcess(platform);
+                    enableOnEditor = true;
+                    break;
+                case nameof(OSType.android):
+                    target = AndroidProcess(platform);
+                    enableOnEditor = false;
+                    break;
+                case nameof(OSType.ios):
+                    target = IOSProcess(platform);
+                    enableOnEditor = false;
+                    break;
+                case nameof(OSType.linux):
+                case nameof(OSType.ubuntu):
+                case nameof(OSType.debian):
+                case nameof(OSType.fedora):
+                case nameof(OSType.centos):
+                case nameof(OSType.alpine):
+                case nameof(OSType.rhel):
+                case nameof(OSType.arch):
+                case nameof(OSType.opensuse):
+                case nameof(OSType.gentoo):
+                    target = LinuxProcess(platform);
+                    enableOnEditor = true;
+                    break;
+            }
+
+            return (enableOnEditor, target, architecture);
+        }
+
+        private static void SetImportSetting(PluginImporter pluginImporter, bool enableOnEditor, BuildTarget target, string architecture)
+        {
             pluginImporter.SetCompatibleWithAnyPlatform(false);
             pluginImporter.SetCompatibleWithEditor(enableOnEditor);
-            foreach (BuildTarget tar in allTarget)
-            {
-                pluginImporter.SetCompatibleWithPlatform(tar, false);
-            }
-            pluginImporter.SetCompatibleWithPlatform(target, true);
+            pluginImporter.SetExcludeEditorFromAnyPlatform(enableOnEditor);
             switch (target)
             {
                 case BuildTarget.StandaloneLinux64:
                     pluginImporter.SetEditorData("OS", "Linux");
-                    pluginImporter.SetEditorData("CPU", targetCPU);
-                    pluginImporter.SetPlatformData(BuildTarget.StandaloneOSX, "CPU", "None");
+                    pluginImporter.SetEditorData("CPU", architecture);
                     break;
                 case BuildTarget.StandaloneOSX:
                     pluginImporter.SetEditorData("OS", "OSX");
-                    pluginImporter.SetEditorData("CPU", targetCPU);
+                    pluginImporter.SetEditorData("CPU", architecture);
                     break;
                 case BuildTarget.StandaloneWindows:
                 case BuildTarget.StandaloneWindows64:
                     pluginImporter.SetEditorData("OS", "Windows");
-                    pluginImporter.SetEditorData("CPU", targetCPU);
+                    pluginImporter.SetEditorData("CPU", architecture);
                     break;
             }
-            pluginImporter.SetPlatformData(target, "CPU", targetCPU);
-        }
 
-        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
-        {
-            foreach (var imported in importedAssets)
+            foreach (BuildTarget tar in allTarget)
             {
-                var dirName = Path.GetFileName(Path.GetDirectoryName(imported));
-                if (dirName == "native")
+                if (tar != target)
                 {
-                    var native = AssetImporter.GetAtPath(imported) as PluginImporter;
-                    if (native != null)
+                    pluginImporter.SetCompatibleWithPlatform(tar, false);
+                    pluginImporter.SetExcludeFromAnyPlatform(tar, false);
+                }
+                else
+                {
+                    pluginImporter.SetCompatibleWithPlatform(target, true);
+                    pluginImporter.SetExcludeFromAnyPlatform(target, true);
+                    if (target == BuildTarget.StandaloneLinux64)
                     {
-                        native.isPreloaded = true;
+                        // It would be better if we specify x86_64 for Linux,
+                        // but it is replaced with AnyCPU, and the change is confirmed
+                        // whenever we see it in the inspector.
+                        pluginImporter.SetPlatformData(target, "CPU", "AnyCPU");
+                    }
+                    else
+                    {
+                        pluginImporter.SetPlatformData(target, "CPU", architecture);
                     }
                 }
+            }
+
+            if (target != BuildTarget.NoTarget)
+            {
+                pluginImporter.isPreloaded = true;
+            }
+        }
+
+        private static BuildTarget WindowsProcess(NativePlatform platform)
+        {
+            switch (platform.architecture)
+            {
+                case nameof(ArchitectureType.x64):
+                    return BuildTarget.StandaloneWindows64;
+                case nameof(ArchitectureType.x86):
+                    return BuildTarget.StandaloneWindows;
+                case nameof(ArchitectureType.arm64):
+                case nameof(ArchitectureType.arm):
+                    return BuildTarget.WSAPlayer;
+                default:
+                    return BuildTarget.NoTarget;
+            }
+        }
+
+        private static BuildTarget OSXProcess(NativePlatform platform)
+        {
+            switch (platform.architecture)
+            {
+                case nameof(ArchitectureType.x64):
+                    return BuildTarget.StandaloneOSX;
+#if UNITY_2020_2_OR_NEWER
+                case nameof(ArchitectureType.arm64):
+                    return BuildTarget.StandaloneOSX;
+#endif
+                default:
+                    return BuildTarget.NoTarget;
+            }
+        }
+
+        private static BuildTarget LinuxProcess(NativePlatform platform)
+        {
+            switch (platform.architecture)
+            {
+                case nameof(ArchitectureType.x64):
+                    return BuildTarget.StandaloneLinux64;
+                default:
+                    return BuildTarget.NoTarget;
+            }
+        }
+
+        private static BuildTarget AndroidProcess(NativePlatform platform)
+        {
+            switch (platform.architecture)
+            {
+                case nameof(ArchitectureType.x64):
+                case nameof(ArchitectureType.x86):
+                case nameof(ArchitectureType.arm64):
+                case nameof(ArchitectureType.arm):
+                    return BuildTarget.Android;
+                default:
+                    return BuildTarget.NoTarget;
+            }
+        }
+
+        private static BuildTarget IOSProcess(NativePlatform platform)
+        {
+            switch (platform.architecture)
+            {
+                case nameof(ArchitectureType.arm64):
+                case nameof(ArchitectureType.arm):
+                    return BuildTarget.iOS;
+                default:
+                    return BuildTarget.NoTarget;
             }
         }
     }
 }
-
-#endif

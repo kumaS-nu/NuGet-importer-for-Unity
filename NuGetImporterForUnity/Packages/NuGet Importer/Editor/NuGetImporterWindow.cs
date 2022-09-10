@@ -1,5 +1,3 @@
-﻿#if ZIP_AVAILABLE
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -106,7 +104,19 @@ namespace kumaS.NuGetImporter.Editor
             PackageDataExtentionToGUI.DeleteCache();
         }
 
-        [MenuItem("NuGet Importer/Check update", false, 4)]
+        [MenuItem("NuGet Importer/Clean up this plugin", false, 3)]
+        private static async Task CleanUp()
+        {
+            if (EditorUtility.DisplayDialog("NuGet importer", "!!!!!!!!!!!!!!!!!!\n! WARNING !\n!!!!!!!!!!!!!!!!!!\nThis operation is for when this extension does not work.\n\nIf you execute this operation, NuGet importer will uninstall packages installed through this.", "Clean up", "Cancel"))
+            {
+                NuGet.DeleteCache();
+                PackageDataExtentionToGUI.DeleteCache();
+                OperationResult result = await PackageManager.CleanUp();
+                EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
+            }
+        }
+
+        [MenuItem("NuGet Importer/Check update", false, 5)]
         private static async Task CheckUpdate()
         {
             var client = new HttpClient();
@@ -133,15 +143,35 @@ namespace kumaS.NuGetImporter.Editor
             EditorUtility.DisplayDialog("NuGet importer", "Now version is " + thisVersion.Major + "." + thisVersion.Minor + "." + thisVersion.Revision + ".\n Lastest version is " + lastestVersion, "OK");
         }
 
-
         [MenuItem("NuGet Importer/Go to project page", false, 5)]
         private static void GoProjectPage()
         {
             Help.BrowseURL("https://github.com/kumaS-nu/NuGet-importer-for-Unity");
         }
 
-        private void Update()
+        [SerializeField]
+        private ApiCompatibilityLevel beforeAPI;
+
+        private async void Update()
         {
+            if (beforeAPI == default)
+            {
+                beforeAPI = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
+            }
+
+            if (beforeAPI != PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) && PackageManager.ControlledPackages.installed.Any())
+            {
+                EditorUtility.DisplayDialog("NuGet  importer", "You changed script backend. We change the package to fit the current script backend.", "OK");
+                beforeAPI = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
+                OperationResult result = await PackageManager.ReInstallAllPackages(NuGetImporterSettings.Instance.OnlyStable, NuGetImporterSettings.Instance.Method);
+                EditorUtility.DisplayDialog("NuGet  importer", result.Message, "OK");
+                await UpdateInstalledList();
+                if (summary != null && summary.PackageId != null && summary.PackageId != "")
+                {
+                    await UpdateSelected(summary.PackageId);
+                }
+            }
+
             if (NuGetImporterSettings.Instance.IsNetworkSavemode)
             {
                 if (dataUpdateRequest.Any() && DateTime.Now - dataUpdateRequest.Peek() > throttleTime)
@@ -420,16 +450,10 @@ namespace kumaS.NuGetImporter.Editor
                         {
                             tasks.Add(search.ToGUI(bold, this, summary != null && summary.PackageId == search.id, NuGetImporterSettings.Instance.OnlyStable));
                         }
-                        if (searchPackages.Count > 0)
+                        IEnumerable<Datum> isShown = searchPackages.Where(search => !NuGetImporterSettings.Instance.OnlyStable || search.versions.Any(version => !version.version.Contains('-') && version.version[0] != '0'));
+                        if (isShown.Any())
                         {
-                            try
-                            {
-                                sumHeight = GUILayoutUtility.GetLastRect().yMax;
-                            }
-                            catch (Exception)
-                            {
-                                // When only the stable version is displayed, the exception is gripped because there may be no more packages to display.
-                            }
+                            sumHeight = GUILayoutUtility.GetLastRect().yMax;
                         }
                     }
                     else
@@ -538,23 +562,10 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        private static async Task Operate(Task<bool> operation)
+        private static async Task Operate(Task<OperationResult> operation)
         {
-            try
-            {
-                await operation;
-                EditorUtility.DisplayDialog("NuGet importer", "Conversion is finished.", "OK");
-            }
-            catch (InvalidOperationException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
-            catch (ArgumentException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
+            OperationResult result = await operation;
+            EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
     }
 }
-
-#endif

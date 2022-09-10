@@ -1,5 +1,3 @@
-﻿#if ZIP_AVAILABLE
-
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +13,7 @@ namespace kumaS.NuGetImporter.Editor
     {
         private static ManagedPluginList managedPluginList;
         private static readonly object managedPluginListLock = new object();
-        private readonly static string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
+        private static readonly string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
 
         /// <inheritdoc/>
         internal override void DeletePluginsOutOfDirectory(Package package)
@@ -115,5 +113,3 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
-
-#endif

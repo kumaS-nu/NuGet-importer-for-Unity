@@ -1,6 +1,4 @@
-﻿#if ZIP_AVAILABLE
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -172,7 +170,6 @@ namespace kumaS.NuGetImporter.Editor.Tests
             Assert.That(marged.ExistVersion, Is.EqualTo(rightSemVer.ExistVersion));
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
         }
-
 
         [Test]
         public void MargeTest6PreRelease()
@@ -523,8 +520,5 @@ namespace kumaS.NuGetImporter.Editor.Tests
         }
 
         #endregion
-
     }
 }
-
-#endif

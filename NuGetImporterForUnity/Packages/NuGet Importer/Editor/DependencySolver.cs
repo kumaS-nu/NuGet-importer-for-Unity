@@ -1,5 +1,3 @@
-﻿#if ZIP_AVAILABLE
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +25,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Package version</para>
         /// <para>パッケージのバージョン</para>
         /// </param>
+        /// <param name="controlledPackages">
+        /// <para>List of packages currently under control.</para>
+        /// <para>現在制御下にあるパッケージ一覧。</para>
+        /// </param>
         /// <param name="onlyStable">
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
@@ -34,6 +36,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="method">
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
+        /// </param>
         /// <returns>
         /// <para>Required packages include installed and specified ones.</para>
         /// <para>インストール済みや、指定したものを含んだ必要なパッケージ。</para>
@@ -46,17 +49,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> FindRequiredPackages(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> FindRequiredPackages(string packageId, string version, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
-            if (PackageManager.RootPackage == null)
-            {
-                PackageManager.Load();
-            }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>() { (packageId, version) };
-            if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
-            {
-                packageList = packageList.Concat(PackageManager.RootPackage.package.Select(package => (package.id, package.version)));
-            }
+            packageList = packageList.Concat(controlledPackages.root.Select(package => (package.id, package.version)));
             IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable, method);
             return requiredPackages.ToList();
         }
@@ -73,6 +69,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Package version</para>
         /// <para>パッケージのバージョン</para>
         /// </param>
+        /// <param name="controlledPackages">
+        /// <para>List of packages currently under control.</para>
+        /// <para>現在制御下にあるパッケージ一覧。</para>
+        /// </param>
         /// <param name="onlyStable">
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
@@ -80,6 +80,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="method">
         /// <para>Method to select a version.</para>
         /// <para>バージョンを選択する方法。</para>
+        /// </param>
         /// <returns>
         /// <para>Required packages include installed and specified ones.</para>
         /// <para>インストール済みや、指定したものを含んだ必要なパッケージ。</para>
@@ -92,17 +93,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> FindRequiredPackagesWhenChangeVersion(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> FindRequiredPackagesWhenChangeVersion(string packageId, string version, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
-            if (PackageManager.Installed == null || PackageManager.RootPackage == null)
-            {
-                PackageManager.Load();
-            }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
-            if (PackageManager.RootPackage != null && PackageManager.RootPackage.package.Any())
-            {
-                packageList = PackageManager.RootPackage.package.Where(package => package.id != packageId).Select(package => (package.id, package.version));
-            }
+            packageList = controlledPackages.root.Where(package => package.id != packageId).Select(package => (package.id, package.version));
             packageList = packageList.Append((packageId, version)).ToArray();
             IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable, method);
             return requiredPackages.ToList();
@@ -112,12 +106,17 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Find the required packages in the installed package.</para>
         /// <para>インストール済みのものから必要なパッケージを探す。</para>
         /// </summary>
+        /// <param name="controlledPackages">
+        /// <para>List of packages currently under control.</para>
+        /// <para>現在制御下にあるパッケージ一覧。</para>
+        /// </param>
         /// <param name="onlyStable">
         /// <para>Whether use only stable version.</para>
         /// <para>安定版のみつかうか。</para>
         /// </param>
         /// <param name="method">
         /// <para>Method to select a version.</para>
+        /// </param>
         /// <para>バージョンを選択する方法。</para>
         /// <returns>
         /// <para>Required packages include installed and specified ones.</para>
@@ -131,17 +130,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> CheckAllPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> CheckAllPackage(ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
-            if (PackageManager.RootPackage == null || PackageManager.Installed == null)
-            {
-                PackageManager.Load();
-            }
             IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
-            if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
-            {
-                packageList = PackageManager.RootPackage.package.Select(package => (package.id, package.version)).ToArray();
-            }
+            packageList = controlledPackages.root.Select(package => (package.id, package.version)).ToArray();
             IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable, method);
             return requiredPackages.ToList();
         }
@@ -153,6 +145,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <param name="removePackageId">
         /// <para>Remove package.</para>
         /// <para>除去するパッケージ。</para>
+        /// </param>
+        /// <param name="controlledPackages">
+        /// <para>List of packages currently under control.</para>
+        /// <para>現在制御下にあるパッケージ一覧。</para>
         /// </param>
         /// <param name="onlyStable">
         /// <para>Whether use only stable version.</para>
@@ -174,17 +170,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> FindRemovablePackages(string removePackageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> FindRemovablePackages(string removePackageId, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
-            if (PackageManager.RootPackage == null || PackageManager.Installed == null)
-            {
-                PackageManager.Load();
-            }
             IEnumerable<(string packageId, string version)> installed = new List<(string packageId, string version)>();
-            if (PackageManager.RootPackage.package != null && PackageManager.RootPackage.package.Any())
-            {
-                installed = PackageManager.RootPackage.package.Where(package => removePackageId != package.id).Select(package => { return (package.id, package.version); }).ToArray();
-            }
+            installed = controlledPackages.root.Where(package => removePackageId != package.id).Select(package => { return (package.id, package.version); }).ToArray();
             IEnumerable<DependencyNode> allPackages = await GetInputedDependencyList(installed, onlyStable, method);
             IEnumerable<string> allPackagesName = allPackages.Select(package => package.PackageName);
             return PackageManager.Installed.package.Where(pkg => !allPackagesName.Contains(pkg.id)).ToList();
@@ -239,15 +228,7 @@ namespace kumaS.NuGetImporter.Editor
                 var topNodes = confirmedNode.SelectMany(node => node.dependingNode).GroupBy(node => node.PackageName).Select(group => group.First()).Where(node =>
                 {
                     IEnumerable<string> topParent = node.dependedNode.Select(parent => parent.PackageName).Except(confirmedPackage);
-                    if (topParent == null || !topParent.Any())
-                    {
-                        if (confirmedPackage.Contains(node.PackageName))
-                        {
-                            return false;
-                        }
-                        return true;
-                    }
-                    return false;
+                    return topParent == null || !topParent.Any() ? !confirmedPackage.Contains(node.PackageName) : false;
                 }).ToList();
 
                 for (var i = 0; i < topNodes.Count; i++)
@@ -294,11 +275,8 @@ namespace kumaS.NuGetImporter.Editor
         {
             var tasks = new List<Task>();
             var isInstalled = false;
-            lock (PackageManager.installedCatalog)
-            {
-                isInstalled = PackageManager.installedCatalog.ContainsKey(node.PackageName);
-            }
-            Catalog catalog = isInstalled ? PackageManager.installedCatalog[node.PackageName] : await NuGet.GetCatalog(node.PackageName);
+            isInstalled = PackageManager.InstalledCatalog.ContainsKey(node.PackageName);
+            Catalog catalog = isInstalled ? PackageManager.InstalledCatalog[node.PackageName] : await NuGet.GetCatalog(node.PackageName);
             node.Version.ExistVersion = catalog.GetAllVersion();
             node.Version.SelectedVersion = node.Version.GetSuitVersion(onlyStable, method);
             lock (allNode)
@@ -311,7 +289,6 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     allNode.Add(node.PackageName, new List<DependencyNode>() { node });
                 }
-
             }
 
             Catalogentry catalogEntry = catalog.GetAllCatalogEntry().FirstOrDefault(entry => entry.version == node.Version.SelectedVersion);
@@ -354,12 +331,11 @@ namespace kumaS.NuGetImporter.Editor
                     node.TragetFramework = dependGroup.targetFramework;
                     if (dependGroups.First().dependencies != null)
                     {
-                        foreach (Dependency dependency in dependGroup.dependencies)
-                        {
-                            dependencies.AddRange(dependGroup.dependencies);
-                        }
+                        dependencies.AddRange(dependGroup.dependencies);
                     }
                 }
+
+                dependencies.RemoveAll(d => StandardLibraries.PackageIds.Contains(d.id));
 
                 if (dependencies.Any())
                 {
@@ -440,5 +416,3 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
-
-#endif

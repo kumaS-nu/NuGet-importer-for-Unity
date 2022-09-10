@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -6,13 +6,13 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace kumaS.NuGetImporter.Editor
+namespace kumaS.NuGetImporter.Editor.Setup
 {
     /// <summary>
     /// <para>Class to prepare to use NuGet importer.</para>
     /// <para>NuGet importerを使う準備をするクラス。</para>
     /// </summary>
-    public class PrepareThisAsset : AssetPostprocessor
+    public class SetupPackage : AssetPostprocessor
     {
         private static List<ApiCompatibilityLevel> enableApiLevel = new List<ApiCompatibilityLevel>
         {

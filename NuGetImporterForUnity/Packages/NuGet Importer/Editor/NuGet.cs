@@ -1,6 +1,4 @@
-﻿#if ZIP_AVAILABLE
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -120,7 +118,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 timeoutStack.Push(timeout);
             }
-            var task = SetWebClientTasks();
+            Task task = SetWebClientTasks();
             timeoutSet.Add(task);
             await task;
             timeoutSet.Clear();
@@ -208,9 +206,9 @@ namespace kumaS.NuGetImporter.Editor
                 await Task.WhenAll(timeoutSet.ToArray());
             }
             var id = Guid.NewGuid();
-            var task = GetSearchResult(query);
+            Task<SearchResult> task = GetSearchResult(query);
             workingTask.Add(id, task);
-            var ret = await task;
+            SearchResult ret = await task;
             workingTask.Remove(id);
             return ret;
         }
@@ -252,7 +250,7 @@ namespace kumaS.NuGetImporter.Editor
             SearchResult result = JsonUtility.FromJson<SearchResult>(RefineJson(responseText));
             lock (searchCache)
             {
-                searchCache.Add(query, result);
+                searchCache[query] = result;
                 searchLog.Add(query);
                 while (searchCache.Count > NuGetImporterSettings.Instance.SearchCacheLimit && searchCache.Count > 0)
                 {
@@ -321,15 +319,7 @@ namespace kumaS.NuGetImporter.Editor
                     downloading[packageName] = (0, fileStream);
                 }
 
-                string cachePath;
-                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                {
-                    cachePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                }
-                else
-                {
-                    cachePath = "~";
-                }
+                var cachePath = Environment.OSVersion.Platform == PlatformID.Win32NT ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) : "~";
                 cachePath = Path.Combine(cachePath, ".nuget", "packages", packageName.ToLowerInvariant(), version.ToLowerInvariant());
 
                 if (Directory.Exists(cachePath))
@@ -354,7 +344,7 @@ namespace kumaS.NuGetImporter.Editor
                         await Task.WhenAll(timeoutSet.ToArray());
                     }
                     var id = Guid.NewGuid();
-                    var task = GetContent(packageName, version, fileName, fileStream);
+                    Task task = GetContent(packageName, version, fileName, fileStream);
                     workingTask.Add(id, task);
                     await task;
                     workingTask.Remove(id);
@@ -400,6 +390,11 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
             }
+
+            lock (downloading)
+            {
+                downloading.Remove(packageName);
+            }
         }
 
         /// <summary>
@@ -422,14 +417,9 @@ namespace kumaS.NuGetImporter.Editor
         {
             lock (downloading)
             {
-                if (downloading.ContainsKey(packageName))
-                {
-                    return (downloading[packageName].packageSize, downloading[packageName].downloaded.Length);
-                }
-                else
-                {
-                    throw new ArgumentException(packageName + " is not downloading now.");
-                }
+                return downloading.ContainsKey(packageName)
+                    ? ((long packageSize, long downloadedSize))(downloading[packageName].packageSize, downloading[packageName].downloaded.Length)
+                    : throw new ArgumentException(packageName + " is not downloading now.");
             }
         }
 
@@ -481,9 +471,9 @@ namespace kumaS.NuGetImporter.Editor
                 await Task.WhenAll(timeoutSet.ToArray());
             }
             var id = Guid.NewGuid();
-            var task = GetCatalogResult(packageName);
+            Task<Catalog> task = GetCatalogResult(packageName);
             workingTask.Add(id, task);
-            var ret = await task;
+            Catalog ret = await task;
             workingTask.Remove(id);
             return ret;
         }
@@ -557,5 +547,3 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
-
-#endif

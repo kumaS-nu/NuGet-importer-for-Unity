@@ -60,6 +60,7 @@
 - Manage packages ・・・ パッケージを管理するメインウィンドウを表示する。
 - Repair packages ・・・ インストールされていないパッケージを修復する。
 - Delete cache ・・・ キャッシュを削除する。（ただし、アセンブリがロードされるたびにキャッシュは消える。）
+- Clean up this plugin ・・・ パッケージを全削除し、このプラグインを初期化する。
 - NuGet importer settings ・・・ NuGet importer に関する設定をするウィンドウを表示する。
 - Check update ・・・ 更新があるか確認する。
 - Go to project page ・・・ NuGet importer for Unity の Web ページを開く。

@@ -1,6 +1,3 @@
-﻿#if ZIP_AVAILABLE
-
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -18,7 +15,7 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class NuGetImporterSettingWindow : EditorWindow
     {
-        [MenuItem("NuGet Importer/NuGet importer settings", false, 3)]
+        [MenuItem("NuGet Importer/NuGet importer settings", false, 4)]
         private static void ShowWindow()
         {
             var isAssets = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsAssets;
@@ -52,14 +49,9 @@ namespace kumaS.NuGetImporter.Editor
                     NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
                     if (before != NuGetImporterSettings.Instance.InstallMethod)
                     {
-                        if (NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM)
-                        {
-                            _ = Operate(PackageManager.ConvertToUPM());
-                        }
-                        else
-                        {
-                            _ = Operate(PackageManager.ConvertToAssets());
-                        }
+                        _ = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM
+                            ? Operate(PackageManager.ConvertToUPM())
+                            : Operate(PackageManager.ConvertToAssets());
                         GUIUtility.ExitGUI();
                     }
                 }
@@ -124,23 +116,10 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        private static async Task Operate(Task<bool> operation)
+        private static async Task Operate(Task<OperationResult> operation)
         {
-            try
-            {
-                await operation;
-                EditorUtility.DisplayDialog("NuGet importer", "Conversion is finished.", "OK");
-            }
-            catch (InvalidOperationException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
-            catch (ArgumentException e)
-            {
-                EditorUtility.DisplayDialog("NuGet importer", e.Message, "OK");
-            }
+            OperationResult result = await operation;
+            EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
         }
     }
 }
-
-#endif

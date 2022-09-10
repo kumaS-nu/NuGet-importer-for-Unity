@@ -1,8 +1,5 @@
-﻿#if ZIP_AVAILABLE
-
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -61,7 +58,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 timeoutStack.Push(timeout);
             }
-            var task = SetWebClientTasks();
+            Task task = SetWebClientTasks();
             timeoutSet.Add(task);
             await task;
             timeoutSet.Clear();
@@ -463,7 +460,6 @@ namespace kumaS.NuGetImporter.Editor
                         }
                     }
                 }
-
             }
 
             GUILayout.FlexibleSpace();
@@ -638,7 +634,6 @@ namespace kumaS.NuGetImporter.Editor
             data.icon = iconCache[d.iconUrl];
         }
 
-
         private static async Task GetIcon(string url)
         {
             var source = new Texture2D(0, 0, TextureFormat.RGBA32, false);
@@ -653,7 +648,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 catch (Exception e)
                 {
-                    if (e.Message == "404 (Not Found)")
+                    if (e.Message.Contains("404") && e.Message.ToLower().Contains("not found"))
                     {
                         UpdateIconCache(url, null);
                         break;
@@ -692,5 +687,3 @@ namespace kumaS.NuGetImporter.Editor
         }
     }
 }
-
-#endif

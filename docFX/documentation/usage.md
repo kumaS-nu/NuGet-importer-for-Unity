@@ -60,6 +60,7 @@ You may want to keep installed packages out of git's tracking. In that case, you
 - Manage packages ・・・ Open the main window for managing packages.
 - Repair packages ・・・ Optimize the dependencies of installed packages and repair them.
 - Delete cache ・・・ Delete the cache. (However, the cache is deleted every time the assembly is loaded.)
+- Clean up this plugin ・・・ Delete all packages and initialize this plugin.
 - NuGet importer settings ・・・ Open the window for configuring settings with NuGet importer.
 - Check update ・・・ Check for updates.
 - Go to the project page ・・・ Open the "NuGet importer for Unity" web page.

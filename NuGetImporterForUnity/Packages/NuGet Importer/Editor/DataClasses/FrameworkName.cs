@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +12,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public static readonly string[] net472 = { ".NETFramework4.7.2", "net472" };
         public static readonly string[] net471 = { ".NETFramework4.7.1", "net471" };
         public static readonly string[] net47 = { ".NETFramework4.7", "net47" };
+        public static readonly string[] net463 = { ".NETFramework4.6.3", "net463" };
         public static readonly string[] net462 = { ".NETFramework4.6.2", "net462" };
         public static readonly string[] net461 = { ".NETFramework4.6.1", "net461" };
         public static readonly string[] net46 = { ".NETFramework4.6", "net46" };
@@ -20,8 +21,11 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public static readonly string[] net45 = { ".NETFramework4.5", "net45" };
         public static readonly string[] net403 = { ".NETFramework4.0.3", "net403" };
         public static readonly string[] net40 = { ".NETFramework4.0", "net40" };
+        public static readonly string[] net35 = { ".NETFramework3.5", "net35" };
+        public static readonly string[] net20 = { ".NETFramework2.0", "net20" };
         public static readonly string[] standard21 = { ".NETStandard2.1", "netstandard2.1" };
         public static readonly string[] standard20 = { ".NETStandard2.0", "netstandard2.0" };
+        public static readonly string[] standard17 = { ".NETStandard1.7", "netstandard1.7" };
         public static readonly string[] standard16 = { ".NETStandard1.6", "netstandard1.6" };
         public static readonly string[] standard15 = { ".NETStandard1.5", "netstandard1.5" };
         public static readonly string[] standard14 = { ".NETStandard1.4", "netstandard1.4" };
@@ -39,6 +43,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             get
             {
                 var ret = new List<string>();
+                ret.AddRange(net463);
                 ret.AddRange(net462);
                 ret.AddRange(net461);
                 ret.AddRange(net46);
@@ -70,6 +75,27 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         }
 
         /// <summary>
+        /// <para>Available .NETStandard1.x name</para>
+        /// <para>利用可能な.NETStandard1.xの名前</para>
+        /// </summary>
+        public static List<string> STANDARD1_X
+        {
+            get
+            {
+                var ret = new List<string>();
+                ret.AddRange(standard17);
+                ret.AddRange(standard16);
+                ret.AddRange(standard15);
+                ret.AddRange(standard14);
+                ret.AddRange(standard13);
+                ret.AddRange(standard12);
+                ret.AddRange(standard11);
+                ret.AddRange(standard10);
+                return ret;
+            }
+        }
+
+        /// <summary>
         /// <para>Available .NETStandard name</para>
         /// <para>利用可能な.NETStandardの名前</para>
         /// </summary>
@@ -79,6 +105,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             {
                 var ret = new List<string>();
                 ret.AddRange(standard20);
+                ret.AddRange(STANDARD1_X);
                 return ret;
             }
         }
@@ -152,6 +179,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     net472,
                     net471,
                     net47,
+                    net463,
                     net462,
                     net461,
                     net46,
@@ -161,7 +189,15 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     net403,
                     net40,
                     standard21,
-                    standard20
+                    standard20,
+                    standard17,
+                    standard16,
+                    standard15,
+                    standard14,
+                    standard13,
+                    standard12,
+                    standard11,
+                    standard10
                 };
                 return ret;
             }

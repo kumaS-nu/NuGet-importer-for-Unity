@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.0] - 2022-09-10
+
+- Support for .NET Standard1.x
+- Support for SDK-style project
+- Improved install process
+- Add button for clean up this plugin
+- Add the function to update packages depending on the script backend as needed
+- Fix a bug in displaying packages under some conditions
+
 ## [2.3.2] - 2022-08-14
 
 - Fix a bug that Define Symbols was not set

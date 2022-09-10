@@ -1,5 +1,3 @@
-#if ZIP_AVAILABLE
-
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,11 +14,11 @@ namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
     /// <para>Class for configuring Roslyn Analyzer plugins.</para>
-    /// <para>Roslyn AnalyzerÇÃê›íËÇÇ∑ÇÈÇΩÇﬂÇÃÉNÉâÉXÅB</para>
+    /// <para>Roslyn Analyzer„ÅÆË®≠ÂÆö„Çí„Åô„Çã„Åü„ÇÅ„ÅÆ„ÇØ„É©„Çπ„ÄÇ</para>
     /// </summary>
     public class NuGetAnalyzerImportSetting : AssetPostprocessor
     {
-#pragma warning disable CS0162 // ìûíBÇ≈Ç´Ç»Ç¢ÉRÅ[ÉhÇ™åüèoÇ≥ÇÍÇ‹ÇµÇΩ
+#pragma warning disable CS0162 // Âà∞ÈÅî„Åß„Åç„Å™„ÅÑ„Ç≥„Éº„Éâ„ÅåÊ§úÂá∫„Åï„Çå„Åæ„Åó„Åü
         public static bool HasAnalyzerSupport
         {
             get
@@ -45,9 +43,9 @@ namespace kumaS.NuGetImporter.Editor
                 return false;
             }
         }
-#pragma warning restore CS0162 // ìûíBÇ≈Ç´Ç»Ç¢ÉRÅ[ÉhÇ™åüèoÇ≥ÇÍÇ‹ÇµÇΩ
+#pragma warning restore CS0162 // Âà∞ÈÅî„Åß„Åç„Å™„ÅÑ„Ç≥„Éº„Éâ„ÅåÊ§úÂá∫„Åï„Çå„Åæ„Åó„Åü
 
-        private readonly static Regex rx = new Regex(@"[/\\]dotnet[/\\]cs[/\\]", RegexOptions.IgnoreCase);
+        private static readonly Regex rx = new Regex(@"[/\\]dotnet[/\\]cs[/\\]", RegexOptions.IgnoreCase);
 
         private static bool IsAnalyzer(string path)
         {
@@ -110,21 +108,43 @@ namespace kumaS.NuGetImporter.Editor
 
         private static string OnGeneratedCSProject(string path, string content)
         {
+            if (CodeEditor.CurrentEditor.GetType().Name == "VSCodeScriptEditor" && HasAnalyzerSupport)
+            {
+                // Analyzer is automatically added in VSCode.
+                return content;
+            }
+
             NuGetImporterSettings.EnsureSetProjectSettingsPath();
 
             var packageDir = NuGetImporterSettings.Instance.InstallMethod == DataClasses.InstallMethod.AsAssets ? Path.Combine(Application.dataPath, "Packages") : Application.dataPath.Replace("Assets", "Packages");
-            var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(p => IsAnalyzer(p)).ToArray();
+            var analyzersPath = Directory.EnumerateFiles(packageDir, "*.dll", SearchOption.AllDirectories).Where(p => IsAnalyzer(p))
+                                         .Select(p => p.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)).ToArray();
             var xDoc = XDocument.Parse(content);
-            var nsMsbuild = (XNamespace)"http://schemas.microsoft.com/developer/msbuild/2003";
-            XElement project = xDoc.Element(nsMsbuild + "Project");
+            XElement project = xDoc.Root;
+            XNamespace xNamespace = project.Name.Namespace;
 
             var baseDir = Path.GetDirectoryName(path);
-            var analyzersInCsproj = new HashSet<string>(project.Descendants(nsMsbuild + "Analyzer").Select(x => x.Attribute("Include")?.Value).Where(x => x != null));
-            project.Add(new XElement(nsMsbuild + "ItemGroup", analyzersPath.Where(x => !analyzersInCsproj.Contains(x)).Select(x => new XElement(nsMsbuild + "Analyzer", new XAttribute("Include", x)))));
+            IEnumerable<XElement> analyzer = project.Descendants(xNamespace + "Analyzer");
+            var analyzersInCsproj = new HashSet<string>(analyzer.Select(x => x.Attribute("Include")?.Value).Where(x => x != null));
+            IEnumerable<string> addingAnalyzer = analyzersPath.Where(x => !analyzersInCsproj.Contains(x));
+            if (!addingAnalyzer.Any())
+            {
+                return content;
+            }
+
+            XElement analyzerGroup;
+            if (analyzer.Any())
+            {
+                analyzerGroup = analyzer.First().Parent;
+            }
+            else
+            {
+                analyzerGroup = new XElement("ItemGroup");
+                project.Add(analyzerGroup);
+            }
+            analyzerGroup.Add(addingAnalyzer.Select(x => new XElement(xNamespace + "Analyzer", new XAttribute("Include", x))));
             content = xDoc.ToString();
             return content;
         }
     }
 }
-
-#endif
