@@ -247,7 +247,19 @@ namespace kumaS.NuGetImporter.Editor
             {
                 NuGetImporterSettings.EnsureSetProjectSettingsPath();
 
-                if (NuGetImporterSettings.Instance.AutoPackagePlacementCheck)
+                if (IsCIorCD())
+                {
+                    try
+                    {
+                        if (await IsNeedToFix())
+                        {
+                            await FixPackagesAsync(false);
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    { }
+                }
+                else if (NuGetImporterSettings.Instance.AutoPackagePlacementCheck)
                 {
                     try
                     {
@@ -285,6 +297,23 @@ namespace kumaS.NuGetImporter.Editor
             Save();
 
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
+        }
+
+        private static bool IsCIorCD()
+        {
+            var ci = Environment.GetEnvironmentVariable("CI");
+            if (ci != null && ci.ToLowerInvariant() == "true")
+            {
+                return true;
+            }
+
+            var cd = Environment.GetEnvironmentVariable("CD");
+            if (cd != null && cd.ToLowerInvariant() == "true")
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private static (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) GetRestartInfo()
