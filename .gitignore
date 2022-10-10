@@ -16,11 +16,24 @@
 /Packager/[Bb]uilds/
 /Packager/[Ll]ogs/
 /Packager/[Mm]emoryCaptures/
+/CITest/[Ll]ibrary/
+/CITest/[Tt]emp/
+/CITest/[Oo]bj/
+/CITest/[Bb]uild/
+/CITest/[Bb]uilds/
+/CITest/[Ll]ogs/
+/CITest/[Mm]emoryCaptures/
+/CITest/[Uu]serSettings/
+/CITest/[Aa]ssets/[Pp]ackages.meta
+/CITest/[Aa]ssets/[Pp]ackages/
+/CITest/[Nn]u[Gg]et/
+/CITest/[Pp]ackages/*/
 
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/NuGetImporterForUnity/[Aa]ssets/**/*.meta
 !/Packager/[Aa]ssets/**/*.meta
+!/CITest/[Aa]ssets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
