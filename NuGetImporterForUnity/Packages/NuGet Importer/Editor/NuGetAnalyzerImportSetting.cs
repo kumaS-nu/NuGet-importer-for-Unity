@@ -45,7 +45,7 @@ namespace kumaS.NuGetImporter.Editor
         }
 #pragma warning restore CS0162 // 到達できないコードが検出されました
 
-        private static readonly Regex rx = new Regex(@"[/\\]dotnet[/\\]cs[/\\]", RegexOptions.IgnoreCase);
+        private static readonly Regex rx = new Regex(@"[/\\]analyzers[/\\]dotnet[/\\]", RegexOptions.IgnoreCase);
 
         private static bool IsAnalyzer(string path)
         {
