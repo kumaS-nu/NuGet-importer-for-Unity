@@ -20,7 +20,8 @@
     ],
     "autoReferenced": true,
     "defineConstraints": [
-        "UNITY_INCLUDE_TESTS"
+        "UNITY_INCLUDE_TESTS",
+        "NUGET_PACKAGE_READY"
     ],
     "versionDefines": [],
     "noEngineReferences": false

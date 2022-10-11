@@ -238,6 +238,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
+            PackageReadyState.SetReady();
             NuGetImporterWindow.Initialize();
         }
 
@@ -301,19 +302,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static bool IsCIorCD()
         {
-            var ci = Environment.GetEnvironmentVariable("CI");
-            if (ci != null && ci.ToLowerInvariant() == "true")
-            {
-                return true;
-            }
-
-            var cd = Environment.GetEnvironmentVariable("CD");
-            if (cd != null && cd.ToLowerInvariant() == "true")
-            {
-                return true;
-            }
-
-            return false;
+            return Application.isBatchMode;
         }
 
         private static (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) GetRestartInfo()
