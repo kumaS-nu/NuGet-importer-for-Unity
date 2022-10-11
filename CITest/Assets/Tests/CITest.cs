@@ -7,7 +7,6 @@ using UnityEngine.TestTools;
 
 using Cysharp.Text;
 
-
 namespace kumaS.NuGetImporter.CI.Tests
 {
     public class CITest

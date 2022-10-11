@@ -19,6 +19,7 @@ This package also fully supports native plugins.
 - Powerful dependency solving
 - Full support for native plugins
 - Support for Roslyn Analyzer
+- Support for CI/CD
 - Useful UI
 - UPM and unitypackage support
 - Compatible with [GlitchEnzo/NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)

@@ -18,6 +18,7 @@
 - 強力な依存関係解決
 - ネイティブプラグインに対する完全な対応
 - Roslyn Analyzer も対応
+- CI/CD に対応
 - わかりやすいUI
 - UPM対応・unitypackageあり
 - [GlitchEnzo/NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)との互換性あり
