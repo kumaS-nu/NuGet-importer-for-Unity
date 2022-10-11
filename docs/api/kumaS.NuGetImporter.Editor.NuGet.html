@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class NuGet
    | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -98,6 +98,345 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class NuGet</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_catalogCache" data-uid="kumaS.NuGetImporter.Editor.NuGet.catalogCache">catalogCache</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, Catalog&gt; catalogCache</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a>&gt;</td>
+        <td><p>For test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_catalogLog" data-uid="kumaS.NuGetImporter.Editor.NuGet.catalogLog">catalogLog</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly List&lt;string&gt; catalogLog</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_client" data-uid="kumaS.NuGetImporter.Editor.NuGet.client">client</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static HttpClient client</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.Http.HttpClient</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_downloading" data-uid="kumaS.NuGetImporter.Editor.NuGet.downloading">downloading</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, (long packageSize, FileStream downloaded)&gt; downloading</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.IO.FileStream</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_gettingCatalogs" data-uid="kumaS.NuGetImporter.Editor.NuGet.gettingCatalogs">gettingCatalogs</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, Task&lt;string&gt;&gt; gettingCatalogs</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_gettingSearchs" data-uid="kumaS.NuGetImporter.Editor.NuGet.gettingSearchs">gettingSearchs</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, Task&gt; gettingSearchs</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Threading.Tasks.Task</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_packageBaseAddress" data-uid="kumaS.NuGetImporter.Editor.NuGet.packageBaseAddress">packageBaseAddress</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string packageBaseAddress</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_registrationsBaseUrl" data-uid="kumaS.NuGetImporter.Editor.NuGet.registrationsBaseUrl">registrationsBaseUrl</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string registrationsBaseUrl</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_searchCache" data-uid="kumaS.NuGetImporter.Editor.NuGet.searchCache">searchCache</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, SearchResult&gt; searchCache</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.SearchResult.html">SearchResult</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_searchLog" data-uid="kumaS.NuGetImporter.Editor.NuGet.searchLog">searchLog</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly List&lt;string&gt; searchLog</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_searchQueryService" data-uid="kumaS.NuGetImporter.Editor.NuGet.searchQueryService">searchQueryService</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly List&lt;string&gt; searchQueryService</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_timeoutSet" data-uid="kumaS.NuGetImporter.Editor.NuGet.timeoutSet">timeoutSet</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static List&lt;Task&gt; timeoutSet</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Threading.Tasks.Task</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_timeoutStack" data-uid="kumaS.NuGetImporter.Editor.NuGet.timeoutStack">timeoutStack</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static Stack&lt;TimeSpan&gt; timeoutStack</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Stack</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_workingTask" data-uid="kumaS.NuGetImporter.Editor.NuGet.workingTask">workingTask</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static Dictionary&lt;Guid, Task&gt; workingTask</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.Guid</span>, <span class="xref">System.Threading.Tasks.Task</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -157,6 +496,105 @@
         <td><p>Specified catalog.</p>
 <p>指定したカタログ。</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_GetCatalogResult_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetCatalogResult*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetCatalogResult_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetCatalogResult(System.String)">GetCatalogResult(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;Catalog&gt; GetCatalogResult(string packageName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_GetContent_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetContent*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetContent_System_String_System_String_System_String_System_IO_FileStream_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetContent(System.String,System.String,System.String,System.IO.FileStream)">GetContent(String, String, String, FileStream)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task GetContent(string packageName, string version, string fileName, FileStream fileStream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.FileStream</span></td>
+        <td><span class="parametername">fileStream</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -227,6 +665,53 @@
   </table>
   
   
+  <a id="kumaS_NuGetImporter_Editor_NuGet_GetItem_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetItem*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetItem_kumaS_NuGetImporter_Editor_DataClasses_Catalog_System_Int32_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetItem(kumaS.NuGetImporter.Editor.DataClasses.Catalog,System.Int32)">GetItem(Catalog, Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task GetItem(Catalog catalog, int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a></td>
+        <td><span class="parametername">catalog</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="kumaS_NuGetImporter_Editor_NuGet_GetPackage_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetPackage*"></a>
   <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetPackage_System_String_System_String_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetPackage(System.String,System.String,System.String)">GetPackage(String, String, String)</h4>
   <div class="markdown level1 summary"><p>Get the specified package.</p>
@@ -288,6 +773,142 @@
   </table>
   
   
+  <a id="kumaS_NuGetImporter_Editor_NuGet_GetQueryResult_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetQueryResult*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetQueryResult_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetQueryResult(System.String)">GetQueryResult(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task GetQueryResult(string query)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_GetResponseWithRetry_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetResponseWithRetry*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetResponseWithRetry_System_Collections_IDictionary_System_String_System_Func_System_Threading_Tasks_Task_System_String_____" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetResponseWithRetry(System.Collections.IDictionary,System.String,System.Func{System.Threading.Tasks.Task{System.String}}[])">GetResponseWithRetry(IDictionary, String, Func&lt;Task&lt;String&gt;&gt;[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;string&gt; GetResponseWithRetry(IDictionary getting, string key, params Func&lt;Task&lt;string&gt;&gt;[] actions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.IDictionary</span></td>
+        <td><span class="parametername">getting</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;&gt;[]</td>
+        <td><span class="parametername">actions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_GetSearchResult_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetSearchResult*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_GetSearchResult_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGet.GetSearchResult(System.String)">GetSearchResult(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;SearchResult&gt; GetSearchResult(string query)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.SearchResult.html">SearchResult</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="kumaS_NuGetImporter_Editor_NuGet_InitializeAPIEndPoint_" data-uid="kumaS.NuGetImporter.Editor.NuGet.InitializeAPIEndPoint*"></a>
   <h4 id="kumaS_NuGetImporter_Editor_NuGet_InitializeAPIEndPoint" data-uid="kumaS.NuGetImporter.Editor.NuGet.InitializeAPIEndPoint">InitializeAPIEndPoint()</h4>
   <div class="markdown level1 summary"><p>Initialize the API endpoint.</p>
@@ -312,6 +933,48 @@ public static async Task InitializeAPIEndPoint()</code></pre>
         <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td><p><code>Task</code></p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_RefineJson_" data-uid="kumaS.NuGetImporter.Editor.NuGet.RefineJson*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_RefineJson_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGet.RefineJson(System.String)">RefineJson(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string RefineJson(string json)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">json</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -381,6 +1044,75 @@ public static async Task InitializeAPIEndPoint()</code></pre>
         <td><p>Search result.</p>
 <p>検索結果。</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_SetTimeout_" data-uid="kumaS.NuGetImporter.Editor.NuGet.SetTimeout*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_SetTimeout_System_TimeSpan_" data-uid="kumaS.NuGetImporter.Editor.NuGet.SetTimeout(System.TimeSpan)">SetTimeout(TimeSpan)</h4>
+  <div class="markdown level1 summary"><p>Set Timeout.</p>
+<p>タイムアウト時間を再設定。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task SetTimeout(TimeSpan timeout)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="parametername">timeout</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGet_SetWebClientTasks_" data-uid="kumaS.NuGetImporter.Editor.NuGet.SetWebClientTasks*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGet_SetWebClientTasks" data-uid="kumaS.NuGetImporter.Editor.NuGet.SetWebClientTasks">SetWebClientTasks()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task SetWebClientTasks()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

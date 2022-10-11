@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PackageManager
    | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -98,8 +98,308 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class PackageManager</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_controlledPackages" data-uid="kumaS.NuGetImporter.Editor.PackageManager.controlledPackages">controlledPackages</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static ReadOnlyControlledPackages controlledPackages</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.html">ReadOnlyControlledPackages</a></td>
+        <td><p>For Test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_dataPath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.dataPath">dataPath</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string dataPath</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_existingPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.existingPackage">existingPackage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static InstalledPackages existingPackage</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a></td>
+        <td><p>For Test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_installed" data-uid="kumaS.NuGetImporter.Editor.PackageManager.installed">installed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static InstalledPackages installed</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a></td>
+        <td><p>For Test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_installedCatalog" data-uid="kumaS.NuGetImporter.Editor.PackageManager.installedCatalog">installedCatalog</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static Dictionary&lt;string, Catalog&gt; installedCatalog</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a>&gt;</td>
+        <td><p>Catalogs of installed packages.</p>
+<p>インストールされているパッケージのカタログ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_installLocate" data-uid="kumaS.NuGetImporter.Editor.PackageManager.installLocate">installLocate</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static int installLocate</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Path to install. 0:UPM・1:Assets/Plugins</p>
+<p>インストールする場所。0:UPM・1:Assets/Plugins</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_packageAsmNames" data-uid="kumaS.NuGetImporter.Editor.PackageManager.packageAsmNames">packageAsmNames</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static ManagedPluginList packageAsmNames</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html">ManagedPluginList</a></td>
+        <td><p>For Test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_rootPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.rootPackage">rootPackage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static InstalledPackages rootPackage</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a></td>
+        <td><p>For Test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_serializer" data-uid="kumaS.NuGetImporter.Editor.PackageManager.serializer">serializer</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly XmlSerializer serializer</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Xml.Serialization.XmlSerializer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_unit" data-uid="kumaS.NuGetImporter.Editor.PackageManager.unit">unit</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static readonly string[] unit</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_working" data-uid="kumaS.NuGetImporter.Editor.PackageManager.working">working</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static bool working</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ControlledPackages_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ControlledPackages*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ControlledPackages" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ControlledPackages">ControlledPackages</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ReadOnlyControlledPackages ControlledPackages { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.html">ReadOnlyControlledPackages</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_DataPath_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DataPath*"></a>
@@ -111,6 +411,289 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static string DataPath { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ExiestingPackage_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExiestingPackage*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ExiestingPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExiestingPackage">ExiestingPackage</h4>
+  <div class="markdown level1 summary"><p>Packages that are not under control within a project.</p>
+<p>プロジェクト内で監理外にあるパッケージ。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static InstalledPackages ExiestingPackage { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ExistingPackagePath_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExistingPackagePath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ExistingPackagePath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExistingPackagePath">ExistingPackagePath</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string ExistingPackagePath { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_Installed_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Installed*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_Installed" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Installed">Installed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static InstalledPackages Installed { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a></td>
+        <td><p>Installed package.</p>
+<p>インストールされているパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_InstalledCatalog_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstalledCatalog*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_InstalledCatalog" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstalledCatalog">InstalledCatalog</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IReadOnlyDictionary&lt;string, Catalog&gt; InstalledCatalog { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyDictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_PackageAsmNames_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.PackageAsmNames*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_PackageAsmNames" data-uid="kumaS.NuGetImporter.Editor.PackageManager.PackageAsmNames">PackageAsmNames</h4>
+  <div class="markdown level1 summary"><p>The name of the assembly included in the package.</p>
+<p>パッケージに含まれているアセンブリ名。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static ManagedPluginList PackageAsmNames { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html">ManagedPluginList</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_PackageAsmNamesPath_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.PackageAsmNamesPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_PackageAsmNamesPath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.PackageAsmNamesPath">PackageAsmNamesPath</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string PackageAsmNamesPath { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_PackagePath_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.PackagePath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_PackagePath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.PackagePath">PackagePath</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string PackagePath { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ProjectSettingsPath_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ProjectSettingsPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ProjectSettingsPath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ProjectSettingsPath">ProjectSettingsPath</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string ProjectSettingsPath { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_RootPackage_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RootPackage*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_RootPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RootPackage">RootPackage</h4>
+  <div class="markdown level1 summary"><p>Root packages.</p>
+<p>ルートのパッケージ。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static InstalledPackages RootPackage { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_RootPackagePath_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RootPackagePath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_RootPackagePath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RootPackagePath">RootPackagePath</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string RootPackagePath { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_RootPath_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RootPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_RootPath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RootPath">RootPath</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string RootPath { }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,11 +742,13 @@ public static async Task Boot()</code></pre>
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersionAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync*"></a>
   <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersionAsync_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">ChangePackageVersionAsync(String, String, Boolean, VersionSelectMethod)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Change the version of the specified package.</p>
+<p>指定したパッケージのバージョンを変更する。</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;OperationResult&gt; ChangePackageVersionAsync(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;OperationResult&gt; ChangePackageVersionAsync(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -178,25 +763,62 @@ public static async Task Boot()</code></pre>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">packageId</span></td>
-        <td></td>
+        <td><p>Package id.</p>
+<p>パッケージのid。</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">newVersion</span></td>
-        <td></td>
+        <td><p>Version after change.</p>
+<p>変更後のバージョン。</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">onlyStable</span></td>
-        <td></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
         <td><span class="parametername">method</span></td>
-        <td></td>
+        <td><p>Method to select a version.</p>
+<p>バージョンを選択する方法。</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><p>Operation result.</p>
+<p>操作結果。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_CleanUp_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.CleanUp*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_CleanUp" data-uid="kumaS.NuGetImporter.Editor.PackageManager.CleanUp">CleanUp()</h4>
+  <div class="markdown level1 summary"><p>Uninstall the packages installed with this plugin and initialize the internal data.</p>
+<p>このプラグインでインストールしたパッケージを削除し、内部データを初期化する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;OperationResult&gt; CleanUp()</code></pre>
+  </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -216,11 +838,13 @@ public static async Task Boot()</code></pre>
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToAssets_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToAssets*"></a>
   <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToAssets" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToAssets">ConvertToAssets()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Move the packages from under UPM to under Asset.</p>
+<p>パッケージをUPM下からAsset下に移す。</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; ConvertToAssets()</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;OperationResult&gt; ConvertToAssets()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,8 +856,10 @@ public static async Task Boot()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
-        <td></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><p>Operation result.</p>
+<p>操作結果。</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -241,11 +867,13 @@ public static async Task Boot()</code></pre>
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToUPM_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToUPM*"></a>
   <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ConvertToUPM" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ConvertToUPM">ConvertToUPM()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Move the packages from under Asset to under UPM.</p>
+<p>パッケージをAsset下からUPM下に移す。</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; ConvertToUPM()</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;OperationResult&gt; ConvertToUPM()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -257,7 +885,66 @@ public static async Task Boot()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><p>Operation result.</p>
+<p>操作結果。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_DeleteAsAssetDirectory_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DeleteAsAssetDirectory*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_DeleteAsAssetDirectory" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DeleteAsAssetDirectory">DeleteAsAssetDirectory()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static void DeleteAsAssetDirectory()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_DownloadProgress_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DownloadProgress*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_DownloadProgress_System_Single_System_Collections_Generic_IEnumerable_System_String__" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DownloadProgress(System.Single,System.Collections.Generic.IEnumerable{System.String})">DownloadProgress(Single, IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task DownloadProgress(float startPos, IEnumerable&lt;string&gt; packageNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">startPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">packageNames</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -367,13 +1054,63 @@ public static async Task Boot()</code></pre>
   </table>
   
   
-  <a id="kumaS_NuGetImporter_Editor_PackageManager_InstallPackageAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_InstallPackageAsync_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">InstallPackageAsync(String, String, Boolean, VersionSelectMethod)</h4>
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_GetPackageController_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.GetPackageController*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_GetPackageController" data-uid="kumaS.NuGetImporter.Editor.PackageManager.GetPackageController">GetPackageController()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;OperationResult&gt; InstallPackageAsync(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">static PackageControllerBase GetPackageController()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageControllerBase.html">PackageControllerBase</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_GetRestartInfo_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.GetRestartInfo*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_GetRestartInfo" data-uid="kumaS.NuGetImporter.Editor.PackageManager.GetRestartInfo">GetRestartInfo()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) GetRestartInfo()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a>, <a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a>, <a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html">InstalledPackages</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_HasNative_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.HasNative*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_HasNative_System_String_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.HasNative(System.String,System.String)">HasNative(String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static bool HasNative(string path, string packageId = &quot;&quot;)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -387,22 +1124,12 @@ public static async Task Boot()</code></pre>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">packageId</span></td>
+        <td><span class="parametername">path</span></td>
         <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">version</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">onlyStable</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
-        <td><span class="parametername">method</span></td>
+        <td><span class="parametername">packageId</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -417,7 +1144,234 @@ public static async Task Boot()</code></pre>
     </thead>
     <tbody>
       <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_HasNativeAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.HasNativeAsync*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_HasNativeAsync_kumaS_NuGetImporter_Editor_DataClasses_Package_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.HasNativeAsync(kumaS.NuGetImporter.Editor.DataClasses.Package,kumaS.NuGetImporter.Editor.PackageControllerBase)">HasNativeAsync(Package, PackageControllerBase)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;bool&gt; HasNativeAsync(Package package, PackageControllerBase controller = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a></td>
+        <td><span class="parametername">package</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageControllerBase.html">PackageControllerBase</a></td>
+        <td><span class="parametername">controller</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_InstallPackageAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_InstallPackageAsync_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallPackageAsync(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">InstallPackageAsync(String, String, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"><p>Install the specified package.</p>
+<p>指定されたパッケージをインストールする。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;OperationResult&gt; InstallPackageAsync(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageId</span></td>
+        <td><p>Package id.</p>
+<p>パッケージのid。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>The version of the package to install.</p>
+<p>インストールするパッケージのバージョン。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>Method to select a version.</p>
+<p>バージョンを選択する方法。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><p>Operation result.</p>
+<p>操作結果。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_InstallSelectPackages_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallSelectPackages*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_InstallSelectPackages_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_System_String__kumaS_NuGetImporter_Editor_PackageManager_OperateLock_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.InstallSelectPackages(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{System.String},kumaS.NuGetImporter.Editor.PackageManager.OperateLock,kumaS.NuGetImporter.Editor.PackageControllerBase)">InstallSelectPackages(IEnumerable&lt;Package&gt;, IEnumerable&lt;String&gt;, PackageManager.OperateLock, PackageControllerBase)</h4>
+  <div class="markdown level1 summary"><p>Installs the specified package. Operation results are not automatically saved. (Low-level API.)</p>
+<p>指定したパッケージをインストールする。操作結果は自動的に保存されない。（低レベルAPI。）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;IEnumerable&lt;Package&gt;&gt; InstallSelectPackages(IEnumerable&lt;Package&gt; packages, IEnumerable&lt;string&gt; loadAssembliesFullName, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="parametername">packages</span></td>
+        <td><p>Packages to install.</p>
+<p>インストールするパッケージ。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">loadAssembliesFullName</span></td>
+        <td><p>List of assembly names loaded into Unity.</p>
+<p>Unityに読み込まれているアセンブリ名一覧。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageManager.OperateLock.html">PackageManager.OperateLock</a></td>
+        <td><span class="parametername">operateLock</span></td>
+        <td><p>Lock for operation.</p>
+<p>操作を行うためのロック。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageControllerBase.html">PackageControllerBase</a></td>
+        <td><span class="parametername">controller</span></td>
+        <td><p>Controller to operate.</p>
+<p>操作を行うコントローラー。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><p>Packages that were not installed.</p>
+<p>インストールを行わなかったパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown if an invalid lock is given.</p>
+<p>不正なロックが与えられた場合発生する。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_IsCIorCD_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.IsCIorCD*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_IsCIorCD" data-uid="kumaS.NuGetImporter.Editor.PackageManager.IsCIorCD">IsCIorCD()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static bool IsCIorCD()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -453,37 +1407,15 @@ public static async Task Boot()</code></pre>
   </table>
   
   
-  <a id="kumaS_NuGetImporter_Editor_PackageManager_Load_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Load*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_Load" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Load">Load()</h4>
-  <div class="markdown level1 summary"><p>Load the package installation information.</p>
-<p>パッケージのインストール情報を読み込む。</p>
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_IsPackageCorrectlyInstalled_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.IsPackageCorrectlyInstalled*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_IsPackageCorrectlyInstalled_kumaS_NuGetImporter_Editor_DataClasses_Package_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.IsPackageCorrectlyInstalled(kumaS.NuGetImporter.Editor.DataClasses.Package)">IsPackageCorrectlyInstalled(Package)</h4>
+  <div class="markdown level1 summary"><p>Does the directory for the specified package exist?</p>
+<p>指定したパッケージのディレクトリは存在するか。</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Load()</code></pre>
-  </div>
-  
-  
-  <a id="kumaS_NuGetImporter_Editor_PackageManager_Save_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Save*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_Save" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Save">Save()</h4>
-  <div class="markdown level1 summary"><p>Save the package installation information.</p>
-<p>パッケージのインストール情報を保存する。</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Save()</code></pre>
-  </div>
-  
-  
-  <a id="kumaS_NuGetImporter_Editor_PackageManager_UninstallPackagesAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_UninstallPackagesAsync_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">UninstallPackagesAsync(String, Boolean, VersionSelectMethod)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;OperationResult&gt; UninstallPackagesAsync(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;bool&gt; IsPackageCorrectlyInstalled(Package package)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -496,18 +1428,8 @@ public static async Task Boot()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">packageId</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">onlyStable</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
-        <td><span class="parametername">method</span></td>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a></td>
+        <td><span class="parametername">package</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -522,8 +1444,365 @@ public static async Task Boot()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_Load_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Load*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_Load" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Load">Load()</h4>
+  <div class="markdown level1 summary"><p>Load the package installation information.</p>
+<p>パッケージのインストール情報を読み込む。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Load()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_OperateWithNativeAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.OperateWithNativeAsync*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_OperateWithNativeAsync_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__kumaS_NuGetImporter_Editor_PackageManager_OperateLock_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.OperateWithNativeAsync(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},kumaS.NuGetImporter.Editor.PackageManager.OperateLock,kumaS.NuGetImporter.Editor.PackageControllerBase)">OperateWithNativeAsync(IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, PackageManager.OperateLock, PackageControllerBase)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;Process&gt; OperateWithNativeAsync(IEnumerable&lt;Package&gt; installs, IEnumerable&lt;Package&gt; manageds, IEnumerable&lt;Package&gt; natives, IEnumerable&lt;Package&gt; allInstalled, IEnumerable&lt;Package&gt; root, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="parametername">installs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="parametername">manageds</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="parametername">natives</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="parametername">allInstalled</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="parametername">root</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageManager.OperateLock.html">PackageManager.OperateLock</a></td>
+        <td><span class="parametername">operateLock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageControllerBase.html">PackageControllerBase</a></td>
+        <td><span class="parametername">controller</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Diagnostics.Process</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_RebootProcessAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RebootProcessAsync*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_RebootProcessAsync" data-uid="kumaS.NuGetImporter.Editor.PackageManager.RebootProcessAsync">RebootProcessAsync()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task RebootProcessAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ReInstallAllPackages_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ReInstallAllPackages*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ReInstallAllPackages_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ReInstallAllPackages(System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">ReInstallAllPackages(Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"><p>Reinstall based on the current root package.</p>
+<p>現在のルートパッケージを元に再インストールする。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;OperationResult&gt; ReInstallAllPackages(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>Method to select a version.</p>
+<p>バージョンを選択する方法。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><p>Operation result.</p>
+<p>操作結果。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_Save_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Save*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_Save" data-uid="kumaS.NuGetImporter.Editor.PackageManager.Save">Save()</h4>
+  <div class="markdown level1 summary"><p>Save the package installation information.</p>
+<p>パッケージのインストール情報を保存する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Save()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ToReadableSizeString_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ToReadableSizeString*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ToReadableSizeString_System_Int64_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ToReadableSizeString(System.Int64)">ToReadableSizeString(Int64)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static string ToReadableSizeString(long size)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">size</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_UninstallPackagesAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_UninstallPackagesAsync_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallPackagesAsync(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">UninstallPackagesAsync(String, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"><p>Uninstall the specified package.</p>
+<p>指定したパッケージをアンインストールする。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;OperationResult&gt; UninstallPackagesAsync(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageId</span></td>
+        <td><p>Package id.</p>
+<p>パッケージのid。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>Method to select a version.</p>
+<p>バージョンを選択する方法。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><p>Operation result.</p>
+<p>操作結果。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_UninstallSelectedPackages_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallSelectedPackages*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_UninstallSelectedPackages_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__kumaS_NuGetImporter_Editor_PackageManager_OperateLock_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallSelectedPackages(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},kumaS.NuGetImporter.Editor.PackageManager.OperateLock,kumaS.NuGetImporter.Editor.PackageControllerBase)">UninstallSelectedPackages(IEnumerable&lt;Package&gt;, PackageManager.OperateLock, PackageControllerBase)</h4>
+  <div class="markdown level1 summary"><p>Uninstalls the specified package. Operation results are not automatically saved. (Low-level API.)</p>
+<p>指定したパッケージをアンインストールする。操作結果は自動的に保存されない。（低レベルAPI。）</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task UninstallSelectedPackages(IEnumerable&lt;Package&gt; packages, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="parametername">packages</span></td>
+        <td><p>Packages to uninstall.</p>
+<p>アンインストールするパッケージ。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageManager.OperateLock.html">PackageManager.OperateLock</a></td>
+        <td><span class="parametername">operateLock</span></td>
+        <td><p>Lock for operation.</p>
+<p>操作を行うためのロック。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.PackageControllerBase.html">PackageControllerBase</a></td>
+        <td><span class="parametername">controller</span></td>
+        <td><p>Controller to operate.</p>
+<p>操作を行うコントローラー。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown if an invalid lock is given.</p>
+<p>不正なロックが与えられた場合発生する。</p>
+</td>
       </tr>
     </tbody>
   </table>

@@ -8,7 +8,7 @@
     <title>Usage | NuGet importer for Unity documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Usage | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -121,6 +121,20 @@
 /[Pp]ackages/*/
 !/[Pp]ackages/your embedded package to share with git/
 </code></pre>
+<p>If you set these packages out of git's tracking, you will get a compile error when you run CI/CD.
+Therefore, if you want to use CI/CD with the packages out of git's tracking, you should take one of the following three ways.</p>
+<ul>
+<li>Add <code>-ignoreCompilerErrors</code> command line options when launching Unity with batch mode.</li>
+<li>Add <code>NUGET_PACKAGE_READY</code> to <code>Define Constraints</code> in .asmdef that depends on the installed package.</li>
+<li>Enclose your code that depends on the imported packages in the preprocessor directives below.
+<pre><code class="lang-csharp">#if NUGET_PACKAGE_READY
+
+// your code
+
+#endif
+</code></pre>
+</li>
+</ul>
 <h2 id="usage-in-unity">Usage in Unity</h2>
 <h3 id="menu-item">Menu item</h3>
 <p><img src="../images/MenuItem.png" alt="Menu item"></p>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DependencySolver
    | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -103,12 +103,14 @@
   
   
   <a id="kumaS_NuGetImporter_Editor_DependencySolver_CheckAllPackage_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.CheckAllPackage*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_CheckAllPackage_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.CheckAllPackage(System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">CheckAllPackage(Boolean, VersionSelectMethod)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_CheckAllPackage_kumaS_NuGetImporter_Editor_DataClasses_ReadOnlyControlledPackages_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.CheckAllPackage(kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">CheckAllPackage(ReadOnlyControlledPackages, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"><p>Find the required packages in the installed package.</p>
+<p>インストール済みのものから必要なパッケージを探す。</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; CheckAllPackage(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; CheckAllPackage(ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -120,6 +122,182 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.html">ReadOnlyControlledPackages</a></td>
+        <td><span class="parametername">controlledPackages</span></td>
+        <td><p>List of packages currently under control.</p>
+<p>現在制御下にあるパッケージ一覧。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>Method to select a version.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><p>Required packages include installed and specified ones.</p>
+<p>インストール済みや、指定したものを含んだ必要なパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when dependency conflict occered.</p>
+<p>依存関係に衝突があるときthrowされる。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when there is a circular reference or there is no version of package.</p>
+<p>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_DeleteDependency_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.DeleteDependency*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_DeleteDependency_kumaS_NuGetImporter_Editor_DataClasses_DependencyNode_System_Collections_Generic_Dictionary_System_String_System_Collections_Generic_List_kumaS_NuGetImporter_Editor_DataClasses_DependencyNode___" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.DeleteDependency(kumaS.NuGetImporter.Editor.DataClasses.DependencyNode,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{kumaS.NuGetImporter.Editor.DataClasses.DependencyNode}})">DeleteDependency(DependencyNode, Dictionary&lt;String, List&lt;DependencyNode&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static void DeleteDependency(DependencyNode node, Dictionary&lt;string, List&lt;DependencyNode&gt;&gt; allNode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a>&gt;&gt;</td>
+        <td><span class="parametername">allNode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_EnsureNoCircularReference_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.EnsureNoCircularReference*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_EnsureNoCircularReference_kumaS_NuGetImporter_Editor_DataClasses_DependencyNode_System_String_System_Collections_Generic_List_System_String__" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.EnsureNoCircularReference(kumaS.NuGetImporter.Editor.DataClasses.DependencyNode,System.String,System.Collections.Generic.List{System.String})">EnsureNoCircularReference(DependencyNode, String, List&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static void EnsureNoCircularReference(DependencyNode node, string targetName = &quot;&quot;, List&lt;string&gt; log = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">log</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindChildDependency_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindChildDependency*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindChildDependency_System_String_System_String_kumaS_NuGetImporter_Editor_DataClasses_DependencyNode_System_Collections_Generic_List_System_String__System_Collections_Generic_Dictionary_System_String_System_Collections_Generic_List_kumaS_NuGetImporter_Editor_DataClasses_DependencyNode___System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindChildDependency(System.String,System.String,kumaS.NuGetImporter.Editor.DataClasses.DependencyNode,System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{kumaS.NuGetImporter.Editor.DataClasses.DependencyNode}},System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindChildDependency(String, String, DependencyNode, List&lt;String&gt;, Dictionary&lt;String, List&lt;DependencyNode&gt;&gt;, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task FindChildDependency(string packageName, string allowedVersion, DependencyNode parent, List&lt;string&gt; targetFramework, Dictionary&lt;string, List&lt;DependencyNode&gt;&gt; allNode, bool onlyStable, VersionSelectMethod method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">allowedVersion</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a></td>
+        <td><span class="parametername">parent</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">targetFramework</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a>&gt;&gt;</td>
+        <td><span class="parametername">allNode</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">onlyStable</span></td>
@@ -142,7 +320,69 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindDependency_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindDependency*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindDependency_kumaS_NuGetImporter_Editor_DataClasses_DependencyNode_System_Collections_Generic_List_System_String__System_Collections_Generic_Dictionary_System_String_System_Collections_Generic_List_kumaS_NuGetImporter_Editor_DataClasses_DependencyNode___System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindDependency(kumaS.NuGetImporter.Editor.DataClasses.DependencyNode,System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{kumaS.NuGetImporter.Editor.DataClasses.DependencyNode}},System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindDependency(DependencyNode, List&lt;String&gt;, Dictionary&lt;String, List&lt;DependencyNode&gt;&gt;, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task FindDependency(DependencyNode node, List&lt;string&gt; targetFramework, Dictionary&lt;string, List&lt;DependencyNode&gt;&gt; allNode, bool onlyStable, VersionSelectMethod method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">targetFramework</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a>&gt;&gt;</td>
+        <td><span class="parametername">allNode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -150,14 +390,14 @@
   
   
   <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindRemovablePackages_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRemovablePackages*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRemovablePackages_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRemovablePackages(System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindRemovablePackages(String, Boolean, VersionSelectMethod)</h4>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRemovablePackages_System_String_kumaS_NuGetImporter_Editor_DataClasses_ReadOnlyControlledPackages_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRemovablePackages(System.String,kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindRemovablePackages(String, ReadOnlyControlledPackages, Boolean, VersionSelectMethod)</h4>
   <div class="markdown level1 summary"><p>Find removable packages when the specified package is removed.</p>
 <p>特定のパッケージを除去した際取り除けるパッケージを探す。</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRemovablePackages(string removePackageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRemovablePackages(string removePackageId, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -174,6 +414,13 @@
         <td><span class="parametername">removePackageId</span></td>
         <td><p>Remove package.</p>
 <p>除去するパッケージ。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.html">ReadOnlyControlledPackages</a></td>
+        <td><span class="parametername">controlledPackages</span></td>
+        <td><p>List of packages currently under control.</p>
+<p>現在制御下にあるパッケージ一覧。</p>
 </td>
       </tr>
       <tr>
@@ -235,12 +482,14 @@
   
   
   <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackages_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackages*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackages_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackages(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindRequiredPackages(String, String, Boolean, VersionSelectMethod)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackages_System_String_System_String_kumaS_NuGetImporter_Editor_DataClasses_ReadOnlyControlledPackages_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackages(System.String,System.String,kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindRequiredPackages(String, String, ReadOnlyControlledPackages, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"><p>Find the required packages in the installed and specified packages.</p>
+<p>インストールされたパッケージと指定したパッケージを元に必要なパッケージを探す。</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRequiredPackages(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRequiredPackages(string packageId, string version, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -255,22 +504,37 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">packageId</span></td>
-        <td></td>
+        <td><p>Package id</p>
+<p>パッケージのid</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">version</span></td>
-        <td></td>
+        <td><p>Package version</p>
+<p>パッケージのバージョン</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.html">ReadOnlyControlledPackages</a></td>
+        <td><span class="parametername">controlledPackages</span></td>
+        <td><p>List of packages currently under control.</p>
+<p>現在制御下にあるパッケージ一覧。</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">onlyStable</span></td>
-        <td></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
         <td><span class="parametername">method</span></td>
-        <td></td>
+        <td><p>Method to select a version.</p>
+<p>バージョンを選択する方法。</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -285,19 +549,46 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>Required packages include installed and specified ones.</p>
+<p>インストール済みや、指定したものを含んだ必要なパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when dependency conflict occered.</p>
+<p>依存関係に衝突があるときthrowされる。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when there is a circular reference or there is no version of package.</p>
+<p>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
   <a id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackagesWhenChangeVersion_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackagesWhenChangeVersion*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackagesWhenChangeVersion_System_String_System_String_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackagesWhenChangeVersion(System.String,System.String,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindRequiredPackagesWhenChangeVersion(String, String, Boolean, VersionSelectMethod)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_FindRequiredPackagesWhenChangeVersion_System_String_System_String_kumaS_NuGetImporter_Editor_DataClasses_ReadOnlyControlledPackages_System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.FindRequiredPackagesWhenChangeVersion(System.String,System.String,kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages,System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">FindRequiredPackagesWhenChangeVersion(String, String, ReadOnlyControlledPackages, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"><p>Find the required packages when change package version.</p>
+<p>パッケージのバージョンを変更する時に必要なパッケージを探す。</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRequiredPackagesWhenChangeVersion(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;List&lt;Package&gt;&gt; FindRequiredPackagesWhenChangeVersion(string packageId, string version, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -312,11 +603,103 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">packageId</span></td>
-        <td></td>
+        <td><p>Package id</p>
+<p>パッケージのid</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">version</span></td>
+        <td><p>Package version</p>
+<p>パッケージのバージョン</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.html">ReadOnlyControlledPackages</a></td>
+        <td><span class="parametername">controlledPackages</span></td>
+        <td><p>List of packages currently under control.</p>
+<p>現在制御下にあるパッケージ一覧。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td><p>Whether use only stable version.</p>
+<p>安定版のみつかうか。</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>Method to select a version.</p>
+<p>バージョンを選択する方法。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><p>Required packages include installed and specified ones.</p>
+<p>インストール済みや、指定したものを含んだ必要なパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when dependency conflict occered.</p>
+<p>依存関係に衝突があるときthrowされる。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when there is a circular reference or there is no version of package.</p>
+<p>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_GetInputedDependencyList_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.GetInputedDependencyList*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_GetInputedDependencyList_System_Collections_Generic_IEnumerable_System_ValueTuple_System_String_System_String___System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.GetInputedDependencyList(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">GetInputedDependencyList(IEnumerable&lt;(String, String)&gt;, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;IEnumerable&lt;DependencyNode&gt;&gt; GetInputedDependencyList(IEnumerable&lt;(string, string)&gt; packages, bool onlyStable, VersionSelectMethod method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;&gt;</td>
+        <td><span class="parametername">packages</span></td>
         <td></td>
       </tr>
       <tr>
@@ -341,7 +724,59 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html">DependencyNode</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_DependencySolver_GetInputedRequiredPackageList_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.GetInputedRequiredPackageList*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DependencySolver_GetInputedRequiredPackageList_System_Collections_Generic_IEnumerable_System_ValueTuple_System_String_System_String___System_Boolean_kumaS_NuGetImporter_Editor_DataClasses_VersionSelectMethod_" data-uid="kumaS.NuGetImporter.Editor.DependencySolver.GetInputedRequiredPackageList(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.Boolean,kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod)">GetInputedRequiredPackageList(IEnumerable&lt;(String, String)&gt;, Boolean, VersionSelectMethod)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task&lt;IEnumerable&lt;Package&gt;&gt; GetInputedRequiredPackageList(IEnumerable&lt;(string, string)&gt; packages, bool onlyStable, VersionSelectMethod method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;&gt;</td>
+        <td><span class="parametername">packages</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">onlyStable</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html">VersionSelectMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>

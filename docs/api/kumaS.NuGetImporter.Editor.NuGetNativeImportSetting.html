@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class NuGetNativeImportSetting
    | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -99,6 +99,434 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class NuGetNativeImportSetting : AssetPostprocessor</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_allTarget" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.allTarget">allTarget</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static BuildTarget[] allTarget</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.BuildTarget</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_AndroidProcess_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.AndroidProcess*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_AndroidProcess_kumaS_NuGetImporter_Editor_DataClasses_NativePlatform_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.AndroidProcess(kumaS.NuGetImporter.Editor.DataClasses.NativePlatform)">AndroidProcess(NativePlatform)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static BuildTarget AndroidProcess(NativePlatform platform)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.NativePlatform.html">NativePlatform</a></td>
+        <td><span class="parametername">platform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.BuildTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_GetImportSettings_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.GetImportSettings*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_GetImportSettings_UnityEditor_PluginImporter_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.GetImportSettings(UnityEditor.PluginImporter)">GetImportSettings(PluginImporter)</h4>
+  <div class="markdown level1 summary"><p>Get current plugin settings.</p>
+<p>現在のプラグイン設定を取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) GetImportSettings(PluginImporter pluginImporter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.PluginImporter</span></td>
+        <td><span class="parametername">pluginImporter</span></td>
+        <td><p>Target plugins.</p>
+<p>対象のプラグイン。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">System.Boolean</span>, <span class="xref">UnityEditor.BuildTarget</span>, <span class="xref">System.String</span>&gt;</td>
+        <td><p>Is there a target? Is it valid on the editor? Target. Architecture.</p>
+<p>ターゲットが無いか。エディタ上で有効か。ターゲット。アーキテクチャ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_GetPluginSetting_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.GetPluginSetting*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_GetPluginSetting_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.GetPluginSetting(System.String)">GetPluginSetting(String)</h4>
+  <div class="markdown level1 summary"><p>Get the plugin settings that should be set.</p>
+<p>設定すべきプラグイン設定を取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static (bool enableOnEditor, BuildTarget target, string architecture) GetPluginSetting(string pluginPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">pluginPath</span></td>
+        <td><p>Target plugins path.</p>
+<p>対象のプラグインのパス。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Boolean</span>, <span class="xref">UnityEditor.BuildTarget</span>, <span class="xref">System.String</span>&gt;</td>
+        <td><p>Is it valid on the editor? Target. Architecture.</p>
+<p>エディタ上で有効か。ターゲット。アーキテクチャ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_IOSProcess_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.IOSProcess*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_IOSProcess_kumaS_NuGetImporter_Editor_DataClasses_NativePlatform_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.IOSProcess(kumaS.NuGetImporter.Editor.DataClasses.NativePlatform)">IOSProcess(NativePlatform)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static BuildTarget IOSProcess(NativePlatform platform)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.NativePlatform.html">NativePlatform</a></td>
+        <td><span class="parametername">platform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.BuildTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_LinuxProcess_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.LinuxProcess*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_LinuxProcess_kumaS_NuGetImporter_Editor_DataClasses_NativePlatform_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.LinuxProcess(kumaS.NuGetImporter.Editor.DataClasses.NativePlatform)">LinuxProcess(NativePlatform)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static BuildTarget LinuxProcess(NativePlatform platform)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.NativePlatform.html">NativePlatform</a></td>
+        <td><span class="parametername">platform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.BuildTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_OnPostprocessAllAssets_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.OnPostprocessAllAssets*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_OnPostprocessAllAssets_System_String___System_String___System_String___System_String___" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.OnPostprocessAllAssets(System.String[],System.String[],System.String[],System.String[])">OnPostprocessAllAssets(String[], String[], String[], String[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">importedAssets</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">deletedAssets</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">movedAssets</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">movedFromAssetPaths</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_OSXProcess_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.OSXProcess*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_OSXProcess_kumaS_NuGetImporter_Editor_DataClasses_NativePlatform_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.OSXProcess(kumaS.NuGetImporter.Editor.DataClasses.NativePlatform)">OSXProcess(NativePlatform)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static BuildTarget OSXProcess(NativePlatform platform)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.NativePlatform.html">NativePlatform</a></td>
+        <td><span class="parametername">platform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.BuildTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_SetAllTarget_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.SetAllTarget*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_SetAllTarget" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.SetAllTarget">SetAllTarget()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static void SetAllTarget()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_SetImportSetting_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.SetImportSetting*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_SetImportSetting_UnityEditor_PluginImporter_System_Boolean_UnityEditor_BuildTarget_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.SetImportSetting(UnityEditor.PluginImporter,System.Boolean,UnityEditor.BuildTarget,System.String)">SetImportSetting(PluginImporter, Boolean, BuildTarget, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static void SetImportSetting(PluginImporter pluginImporter, bool enableOnEditor, BuildTarget target, string architecture)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.PluginImporter</span></td>
+        <td><span class="parametername">pluginImporter</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">enableOnEditor</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEditor.BuildTarget</span></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">architecture</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_WindowsProcess_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.WindowsProcess*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetNativeImportSetting_WindowsProcess_kumaS_NuGetImporter_Editor_DataClasses_NativePlatform_" data-uid="kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.WindowsProcess(kumaS.NuGetImporter.Editor.DataClasses.NativePlatform)">WindowsProcess(NativePlatform)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static BuildTarget WindowsProcess(NativePlatform platform)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.NativePlatform.html">NativePlatform</a></td>
+        <td><span class="parametername">platform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.BuildTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

@@ -8,7 +8,7 @@
     <title>&#20351;&#12356;&#26041; | NuGet importer for Unity documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="&#20351;&#12356;&#26041; | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -121,6 +121,20 @@
 /[Pp]ackages/*/
 !/[Pp]ackages/your embedded package to share with git/
 </code></pre>
+<p>ただし、パッケージを Git の監理外にするとそのままではコンパイルエラーが発生し CI/CD に使用できません。
+そのため、パッケージを Git の監理外にし CI/CD をする際は以下の3つの対応策のうちどれかを行ってください。</p>
+<ul>
+<li>バッチモードの起動オプションに <code>-ignoreCompilerErrors</code> を追加。</li>
+<li>導入したパッケージに依存する .asmdef の <code>Define Constraints</code> に <code>NUGET_PACKAGE_READY</code> を追加。</li>
+<li>導入したパッケージに依存するコードを以下のようにプリプロセッサディレクディブで囲う。
+<pre><code class="lang-csharp">#if NUGET_PACKAGE_READY
+
+// your code
+
+#endif
+</code></pre>
+</li>
+</ul>
 <h2 id="unityでの使い方">Unityでの使い方</h2>
 <h3 id="メニューアイテム">メニューアイテム</h3>
 <p><img src="../images/MenuItem.png" alt="メニューアイテム"></p>

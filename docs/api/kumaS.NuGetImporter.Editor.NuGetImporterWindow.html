@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class NuGetImporterWindow
    | NuGet importer for Unity documentation ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -101,8 +101,615 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class NuGetImporterWindow : EditorWindow</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_beforeAPI" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.beforeAPI">beforeAPI</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[SerializeField]
+ApiCompatibilityLevel beforeAPI</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEditor.ApiCompatibilityLevel</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_catalogs" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.catalogs">catalogs</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">List&lt;Catalog&gt; catalogs</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_dataUpdateRequest" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.dataUpdateRequest">dataUpdateRequest</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">readonly Stack&lt;DateTime&gt; dataUpdateRequest</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Stack</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_deteal" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.deteal">deteal</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Catalog deteal</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_detealScroll" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.detealScroll">detealScroll</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Vector2 detealScroll</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_hitPackages" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.hitPackages">hitPackages</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int hitPackages</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_inputText" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.inputText">inputText</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string inputText</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_isAddedSummary" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.isAddedSummary">isAddedSummary</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool isAddedSummary</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_isAddingPackages" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.isAddingPackages">isAddingPackages</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool isAddingPackages</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_lockAddingPackages" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.lockAddingPackages">lockAddingPackages</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">readonly object lockAddingPackages</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_packagesScroll" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.packagesScroll">packagesScroll</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Vector2 packagesScroll</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_progress" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.progress">progress</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">float progress</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_progressText" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.progressText">progressText</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string progressText</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_searchPackages" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.searchPackages">searchPackages</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">readonly List&lt;Datum&gt; searchPackages</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Datum.html">Datum</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_selected" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.selected">selected</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int selected</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_selectedLabel" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.selectedLabel">selectedLabel</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">readonly string[] selectedLabel</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_summary" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.summary">summary</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">PackageSummary summary</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.html">PackageSummary</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_throttleTime" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.throttleTime">throttleTime</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">readonly TimeSpan throttleTime</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_InputText_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.InputText*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_InputText" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.InputText">InputText</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string InputText { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Selected_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Selected*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Selected" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Selected">Selected</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int Selected { }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_CheckUpdate_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.CheckUpdate*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_CheckUpdate" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.CheckUpdate">CheckUpdate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MenuItem(&quot;NuGet Importer/Check update&quot;, false, 5)]
+static async Task CheckUpdate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_CleanUp_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.CleanUp*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_CleanUp" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.CleanUp">CleanUp()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MenuItem(&quot;NuGet Importer/Clean up this plugin&quot;, false, 3)]
+static async Task CleanUp()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_DeleteCache_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.DeleteCache*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_DeleteCache" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.DeleteCache">DeleteCache()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MenuItem(&quot;NuGet Importer/Delete cache&quot;, false, 2)]
+static void DeleteCache()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_FixPackages_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.FixPackages*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_FixPackages" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.FixPackages">FixPackages()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MenuItem(&quot;NuGet Importer/Repair packages&quot;, false, 1)]
+static async Task FixPackages()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_GoProjectPage_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.GoProjectPage*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_GoProjectPage" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.GoProjectPage">GoProjectPage()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MenuItem(&quot;NuGet Importer/Go to project page&quot;, false, 5)]
+static void GoProjectPage()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Initialize_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Initialize*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Initialize" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Initialize">Initialize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static void Initialize()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_OnEnable_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.OnEnable*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_OnEnable" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void OnEnable()</code></pre>
+  </div>
   
   
   <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_OnGUI_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.OnGUI*"></a>
@@ -115,6 +722,275 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void OnGUI()</code></pre>
   </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Operate_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Operate*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Operate_System_Threading_Tasks_Task_kumaS_NuGetImporter_Editor_DataClasses_OperationResult__" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Operate(System.Threading.Tasks.Task{kumaS.NuGetImporter.Editor.DataClasses.OperationResult})">Operate(Task&lt;OperationResult&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task Operate(Task&lt;OperationResult&gt; operation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
+        <td><span class="parametername">operation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_SearchAditionalPackage_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.SearchAditionalPackage*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_SearchAditionalPackage" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.SearchAditionalPackage">SearchAditionalPackage()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task SearchAditionalPackage()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_ShowWindow_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.ShowWindow*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_ShowWindow" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.ShowWindow">ShowWindow()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MenuItem(&quot;NuGet Importer/Manage packages&quot;, false, 0)]
+static void ShowWindow()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Update_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Update*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_Update" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.Update">Update()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async void Update()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateData_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateData*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateData" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateData">UpdateData()</h4>
+  <div class="markdown level1 summary"><p>Update window infomation.</p>
+<p>画面の情報を更新する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task UpdateData()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateInstalledList_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateInstalledList*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateInstalledList" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateInstalledList">UpdateInstalledList()</h4>
+  <div class="markdown level1 summary"><p>Update the information of installed packages in the Window.</p>
+<p>ウィンドウのインストールされたパッケージの情報を更新する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task UpdateInstalledList()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateSelected_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateSelected*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateSelected_kumaS_NuGetImporter_Editor_DataClasses_Catalog_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateSelected(kumaS.NuGetImporter.Editor.DataClasses.Catalog)">UpdateSelected(Catalog)</h4>
+  <div class="markdown level1 summary"><p>Update selected package infomation.</p>
+<p>選択されたパッケージ情報（右側の画面のやつ）を更新する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UpdateSelected(Catalog data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Catalog.html">Catalog</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Selected package catalog.</p>
+<p>選択されたパッケージのカタログ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateSelected_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateSelected*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateSelected_kumaS_NuGetImporter_Editor_DataClasses_Datum_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateSelected(kumaS.NuGetImporter.Editor.DataClasses.Datum)">UpdateSelected(Datum)</h4>
+  <div class="markdown level1 summary"><p>Update selected package infomation.</p>
+<p>選択されたパッケージ情報（右側の画面のやつ）を更新する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task UpdateSelected(Datum data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Datum.html">Datum</a></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Selected package infomation.</p>
+<p>選択されたパッケージの情報。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateSelected_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateSelected*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterWindow_UpdateSelected_System_String_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterWindow.UpdateSelected(System.String)">UpdateSelected(String)</h4>
+  <div class="markdown level1 summary"><p>Update selected package infomation.</p>
+<p>選択されたパッケージ情報（右側の画面のやつ）を更新する。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task UpdateSelected(string packageId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageId</span></td>
+        <td><p>Selected package id.</p>
+<p>選択されたパッケージのid。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>Task</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

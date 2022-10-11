@@ -28,7 +28,7 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "3UAGKIlBV1XaJBLnVvxmxhPXnWowCJItEdI9L4AYWoo="
+          "hash": "7DRpBY4RDW/6ZEcq/uI1iSSYXJiXwhXjR6OW66AhGVE="
         }
       },
       "is_incremental": false,
@@ -40,7 +40,19 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.APIList.html",
-          "hash": "g9MOfVEOpLqYj3CWVTbgKjjSDjPKrgmOOn1bHnPxVpY="
+          "hash": "y27UfLIhdTxuTCXr8YWo4O8epLPju1axwuktk08PhYk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ArchitectureType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ArchitectureType.html",
+          "hash": "gKaeQAKkE0cHeElUmsHFGZESzYDNm+ouHe2C+cWKitU="
         }
       },
       "is_incremental": false,
@@ -52,7 +64,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Author.html",
-          "hash": "uaKfe2ty323zzP6ZdAnYw1VvRQVgVcwNYHKPgOtjdd0="
+          "hash": "aqg5ZR2s82XixvNVg47TuQwPGH2hu4SuQXoCQEA/eD4="
         }
       },
       "is_incremental": false,
@@ -64,7 +76,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Catalog.html",
-          "hash": "SL4BLZENkcJ9SEOzqOVmWza5SfjLkHTWO8ZkQCHGlBY="
+          "hash": "59WURDj9F0kZDdn8wfXN6UY4OCFYOegxT+aRx4l2kuU="
         }
       },
       "is_incremental": false,
@@ -76,7 +88,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Catalogentry.html",
-          "hash": "HB0fbFo+ymY7jlN6omQKyzlELZZK9nQnlAGXOkj7RPA="
+          "hash": "QklY5ra2uQmvsOKyL24Pg+hIeKAf7CgJsLMsU48EpBA="
         }
       },
       "is_incremental": false,
@@ -88,7 +100,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Datum.html",
-          "hash": "YCiPrqOsgN2OOewreQ+a+l/44E13Rj7JxkWdHhHOKcQ="
+          "hash": "cck9ubjQIYikqwD/6hY2n2ZrEQGmXsECnvRFQxNM3VA="
         }
       },
       "is_incremental": false,
@@ -100,7 +112,19 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Dependency.html",
-          "hash": "6Pk3tZr2G5ZXWL6PWVyY7SBWVO1Ix1A/KJIb15AYJOg="
+          "hash": "GRg4wdwDFBKgPpPp2tfjsEd2VP8e7aSWSAOl3vAmmpY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.DependencyNode.html",
+          "hash": "UADklHYv4Va9ZX6WJ/qryDRqMAPeGFdg52Mc+cY5V7I="
         }
       },
       "is_incremental": false,
@@ -112,7 +136,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Dependencygroup.html",
-          "hash": "h8KDooHT/lmFBowmU1ciPcK6BfpPA4bPkqaGnVYnhGs="
+          "hash": "PUG6ZIczKq5wRrh//WF7D+5a73WFoJPXwjw73fD6EVE="
         }
       },
       "is_incremental": false,
@@ -124,7 +148,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.FrameworkName.html",
-          "hash": "v7C9DS1OdLCUsdhuzhzJ8CJFSVOzvXP6qavIyPhWRuY="
+          "hash": "0F5BHh9ZLMJpTtHmEvdPLIoYGD6Y6kqXk35KdYPk0VY="
         }
       },
       "is_incremental": false,
@@ -136,7 +160,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.InstallMethod.html",
-          "hash": "xjJQLzKpNTJJ2bRxEqOxzwOEbrtsLRj9WftteWr4HaQ="
+          "hash": "jR0v6pH3YxPNT113OIS0qlPtBGF0cEVZFft45JINQfU="
         }
       },
       "is_incremental": false,
@@ -148,7 +172,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.InstalledPackages.html",
-          "hash": "Kbrd9CIs9X3mK4feTcGtK6/T/SenhqE+gQdvF+yokXM="
+          "hash": "podR9EUdvG5qEbV1p+N4Phqeu6rAQ74fdH4I8fpyAl0="
         }
       },
       "is_incremental": false,
@@ -160,7 +184,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Item.html",
-          "hash": "5ziiX4lwWaFCxYnwEvKqHZ0u+7JxTaRhBsAA/n53+4Q="
+          "hash": "CyrGT4OFWedh9WNXygttcU/WlV0sqpkI3vAnF/LEhL0="
         }
       },
       "is_incremental": false,
@@ -172,7 +196,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Item1.html",
-          "hash": "bq7OWzh2c6U3z4/yqPLFEOlBngDcSoQp802Ck8qAiTQ="
+          "hash": "kE0sKl+B6JfcZsYIi5ZYF+Oflm9dFzdddm9b5nuDctw="
         }
       },
       "is_incremental": false,
@@ -184,7 +208,31 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ManagedPluginList.html",
-          "hash": "R6aJOZIQALC51LGKBPvp2dsMQGX/p60HQgEDryePi8s="
+          "hash": "5ri4HSmVsoVHsQIWwP9fvE4S8u4NiLNUaUFh3rCzKMc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.NativePlatform.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.NativePlatform.html",
+          "hash": "XlmIXTDCxSLw8LLxk3A+fODPukQi+B1APWQ3jkrA+cI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OSType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OSType.html",
+          "hash": "Fp9IDU6/dHOtaQn363MU73QpwywGwylkWVBRWS4mu+Q="
         }
       },
       "is_incremental": false,
@@ -196,7 +244,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html",
-          "hash": "8GRG+vk170YMaZQm68hAwHuq8DfU7EvI9BfswMymN1c="
+          "hash": "1muXzbVAznTIcBTtAZTT0AO33N6tyKL8HJfaSMPQJaU="
         }
       },
       "is_incremental": false,
@@ -208,7 +256,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.OperationState.html",
-          "hash": "tfXUNuCAgIUeop6sd5BQdbwyF6LRjTqigllCs0KqCVo="
+          "hash": "vElPloICr/hWu0OvOYNzq4xF9srZMJy1bFc/F3lZgGo="
         }
       },
       "is_incremental": false,
@@ -220,7 +268,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Package.html",
-          "hash": "LAIHOUnGnMNMqP2mdQDY9oN/xrzNHrl2flePQfOUAyo="
+          "hash": "edlR3awVqxqQh0tB/e4fUsXYuomGbf97kfROVfcuyU0="
         }
       },
       "is_incremental": false,
@@ -232,7 +280,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageJson.html",
-          "hash": "sFZSwEV7B1M8wyx6ABekBAaPPbBzHT4XgGGvSVKb7Z8="
+          "hash": "zKv4j8R8fupSO36PoXmj+EVX0X0Awhabtkj07zPmAhY="
         }
       },
       "is_incremental": false,
@@ -244,7 +292,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageManagedPluginList.html",
-          "hash": "PLgJLJEOtA0gt8GMVPWHDrw3z6h3CiErVIFiYibCBjQ="
+          "hash": "fLtrcE3Apkr3A4VuHcOVloGhkiy/G4FED4kri/XljF8="
         }
       },
       "is_incremental": false,
@@ -256,7 +304,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageSummary.html",
-          "hash": "sqiUNaLXc7wvd3/92d58Eqm6ROgyFThOug2it1swxdQ="
+          "hash": "a7sovPF8vBMRNuOfgL9mRsRWF/CE/f+nKq7TPO+uzjM="
         }
       },
       "is_incremental": false,
@@ -268,7 +316,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.PackageVersionInformation.html",
-          "hash": "Ez0jZeRj0IU6hjMWwiM+uOnebLtsSHPQif8PLJioEco="
+          "hash": "MZ+WTbi9SJNMeoQ3kYb4uNlbcjXekuDmYhXgxiAHmU8="
         }
       },
       "is_incremental": false,
@@ -280,7 +328,19 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Packagetype.html",
-          "hash": "UNQ2cjLOX4d0193K4+joY/39rCCDsPTFKiry6XKX8Io="
+          "hash": "bq0MapOlHBkCU0nJw/VPXNOq2zkUfq+0j32WWpZVHaM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.ReadOnlyControlledPackages.html",
+          "hash": "evSpjXz4aRe3D1Q885Szlx17rAA+kWbMbU8EN4I0ib4="
         }
       },
       "is_incremental": false,
@@ -292,7 +352,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Resource.html",
-          "hash": "XoCBzfEQGooJ6WRxgKnpHO/gAyVMNUxDcnlnVLqa9A8="
+          "hash": "YnI3LEbR3QKl0KWY/TPyztiaw/oLm8ZsJ/QIPkwnSJQ="
         }
       },
       "is_incremental": false,
@@ -304,7 +364,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.SearchResult.html",
-          "hash": "KFXRBPIppiXMsIeLKyTVoe7EF19m1qEW8ePVOURZrYM="
+          "hash": "1a3ocHQXxCJlbivVsceglwAdodKqPcuwNQHcc6CdNbI="
         }
       },
       "is_incremental": false,
@@ -316,7 +376,19 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.SemVer.html",
-          "hash": "eUuHqEjmqn0GjIlSl0ElBL4/PCWfQo/Al49SIPWXHMU="
+          "hash": "PGNykqEL8/O6M8Z53PhoU0CSbbtbv7AUuNOTvknMaLo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.StandardLibraries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.StandardLibraries.html",
+          "hash": "sR7afDUULTtFA3eP3HEqTm9flxw5q6R5bQamj7L5ACI="
         }
       },
       "is_incremental": false,
@@ -328,7 +400,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.VersionSelectMethod.html",
-          "hash": "QfuOahM62eqn2fiE6LrPeV3TPPb18MtIKQMKwM8B+KE="
+          "hash": "eJXfeT2Wrpp+wTfkyFaaDc+GzcWk/rIrcTmzh32jTPs="
         }
       },
       "is_incremental": false,
@@ -340,7 +412,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.html",
-          "hash": "ql2GWkOTO/OpvZJU3wPvEIiWu5iWn8Ts1ShLbqR+s20="
+          "hash": "C4ljQwEYZDxj+JShdwvF2vr4vpG+CRZeERQLIvwRWN4="
         }
       },
       "is_incremental": false,
@@ -352,7 +424,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DependencySolver.html",
-          "hash": "7BVVNXbz51mprNPOrXpeLaK/axZQASV1KPzbk7/YNDs="
+          "hash": "fFRI0QoAGtdxL0rNHb2DfXUx2oiZf+CvjZvFJ/ycylk="
         }
       },
       "is_incremental": false,
@@ -364,7 +436,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.GUILayoutExtention.html",
-          "hash": "z2BOf6EICQlmxN3cBGAQq6P5fAKvijHLYOld9XN+/Kg="
+          "hash": "ZJe0IMxLi1eXjIQgV5OQ9gfgatoxOTMRiKz4WGxuLrM="
         }
       },
       "is_incremental": false,
@@ -376,7 +448,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGet.html",
-          "hash": "VVDU1gKu/a3HtlWUnlfYAfn8iiBkjU23DMzJdrcD310="
+          "hash": "L+zZoykR/mWtgYoVk0WuyYyF36l29iTy94P/j35/iPo="
         }
       },
       "is_incremental": false,
@@ -388,7 +460,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetAnalyzerImportSetting.html",
-          "hash": "5cV40MVgyJtTpVi34zxTZmwwRIN4C90GdFXeQTrVFwU="
+          "hash": "OwslSakwEnR6wumVlfMHa/aMvKY4WGkuGtuvCXnhFEY="
         }
       },
       "is_incremental": false,
@@ -400,7 +472,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.html",
-          "hash": "OO2vsOddJj+3Sfh8YIzq9d0xYiNYBc3AhcXeDG/601Y="
+          "hash": "aOYOZ+COK1iBlq4DgYW7jVHKfAhFBEU9aGSV3Zn/kQ8="
         }
       },
       "is_incremental": false,
@@ -412,7 +484,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html",
-          "hash": "qPlBPW3ySx8u80ESlTJURlMIgZIEkVjxzblDMhpseac="
+          "hash": "DmPTqoTN/8NNyxgdK0iEDVwCWdhCQXzL6f+REGOBggA="
         }
       },
       "is_incremental": false,
@@ -424,7 +496,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterWindow.html",
-          "hash": "DCeTLsdqtcpk4na33grQl5MHJ/LiGOpMHwPz/X55BAg="
+          "hash": "qJmIqTlY74nu7s0Dg7NOYSByP69cAKRIB4V1tb0GHlE="
         }
       },
       "is_incremental": false,
@@ -436,7 +508,43 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetNativeImportSetting.html",
-          "hash": "ErTSvRTVPJKcPV+g8l1sfICZc7J2IfDlorhoBZteIEw="
+          "hash": "kkRnrbZ1cEhC78xh+HE3fQAN/YWHZj2mpiJYqbJU1YU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageControllerAsAsset.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageControllerAsAsset.html",
+          "hash": "uL5qDlHkEaD08HDf+qnYSJSprxPXFh6fmOLkHNSButg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageControllerAsUPM.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageControllerAsUPM.html",
+          "hash": "vh+wYnqVPE0YT5GNIQ1sRl0FHY07Ue91AdiJ6eS/ARQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageControllerBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageControllerBase.html",
+          "hash": "ESpfYqSCyZVaBOvQkbDadk6eu4onuKEwtQutdV1ot2Q="
         }
       },
       "is_incremental": false,
@@ -448,7 +556,19 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.PackageDataExtentionToGUI.html",
-          "hash": "Skv/yAr/77Q+8rJZlnuvkERYvd5m8xx+mufGYAaG+1E="
+          "hash": "pRLkt4hWrzvtPoMztpfyAX/pJ0Bv66dY12QHY2jwnGM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageManager.OperateLock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageManager.OperateLock.html",
+          "hash": "rSKuKhCMv49yBumIjsLGT4nieyGgaJu+W4AUUEWM7L0="
         }
       },
       "is_incremental": false,
@@ -460,7 +580,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.PackageManager.html",
-          "hash": "2DLAzy9IJnQjboH2zxIXnYj1kREqR9G7rA9jZON0o8I="
+          "hash": "jZejzxzzhZT/hykiWTq+Rf/QrO6UpVnt+ONSDBUHESI="
         }
       },
       "is_incremental": false,
@@ -468,11 +588,179 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PrepareThisAsset.yml",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ChangePackageVersion.yml",
       "output": {
         ".html": {
-          "relative_path": "api/kumaS.NuGetImporter.Editor.PrepareThisAsset.html",
-          "hash": "eYfKRH9sNSSCjjs0+qcc1eu+3Pb4I/a+1tY9Q9St0JY="
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ChangePackageVersion.html",
+          "hash": "q3QPuUqaMBaYbE7jk6xIhpdL15OJo+JO5Gp+0IPnYJc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.CleanUp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.CleanUp.html",
+          "hash": "lGeNEi7Xr1TbyAjDptPWpHm2clJI6U7V0lBWQxOD/9o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ConvertToAssets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ConvertToAssets.html",
+          "hash": "Jv6Nw9YiLqi/LErVObZrbb7/2cM0XZBtg1gq3M27SYw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ConvertToUPM.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ConvertToUPM.html",
+          "hash": "mkKOSQNZKQ55y6QvMXhMeRAP2UQ8FDPVeUxWOqnO04A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.FixPackages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.FixPackages.html",
+          "hash": "5WsOw6/TsdM9A3fusgSnz3bD3HnVgE10A9AOzGRpEWc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.FixSpecifiedPackage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.FixSpecifiedPackage.html",
+          "hash": "Vm3gsC4mJAeoAiuTshGKKYdkHHG8tHM/EIMska9xLNw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.InstallPackage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.InstallPackage.html",
+          "hash": "VqpQ692SNg0PL6zjUc0UrLZrH6PHSkqaaH5/XvCKfKQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.OperatePackage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.OperatePackage.html",
+          "hash": "aKvy4ptOiIYILf+fC2t6s/ecbvHk71mnh8k88sZxMvU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ReInstallAllPackages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.ReInstallAllPackages.html",
+          "hash": "OMrbZdjmtYlcgnc1TK5n77PRPvQn32E5NCFJTCg5Iw8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.RebootProcess.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.RebootProcess.html",
+          "hash": "NKF1wV5fcKvPuXFEtu32r16yOMaY7O1Bd2lOf51Lzw0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.UninstallPackages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.UninstallPackages.html",
+          "hash": "AeJxN2fbeFtaSjue+1/shGsTgAfL+TRPhol+b7YD5Tc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageOperation.html",
+          "hash": "J+i////XDpSJ8jI8nIPJ/IfYg5MnBbaHLUaXqLeRlrw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.PackageReadyState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.PackageReadyState.html",
+          "hash": "VVievhTXuCmLuyzfZ7v3PPU+HzQwMrJQj7CHxdkM88I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.Setup.SetupPackage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.Setup.SetupPackage.html",
+          "hash": "4vScsNftTjBvw+t0ZamkbDQc5RoRYLhkZTfhL+pd7kY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.Setup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.Setup.html",
+          "hash": "NJNgSDcijV6hScZ6kKp5bEf6GtTYrGXuYpgwnFE5VYI="
         }
       },
       "is_incremental": false,
@@ -484,7 +772,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.html",
-          "hash": "Okh+BQhZgqf3tsp7evgoHS6NUWfpuVMXBPptEKrpnM8="
+          "hash": "yL58s0lGwvfEhpr77XsLUltl4610walPfPiCXJxvF6c="
         }
       },
       "is_incremental": false,
@@ -496,7 +784,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "ONpb5XIh1XbAmtrKlMzy4tqDnXVIMEjwwxvMl7xtxD0="
+          "hash": "Fi00ItOCUoKst06y2VYlqBflExjIQreL49BEaoyvrCE="
         }
       },
       "is_incremental": false,
@@ -508,7 +796,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/codingConventions.html",
-          "hash": "WwPiwYCh/NCG+3rL8gcIWwZCiDGTRR4DZD0SaYwpqkk="
+          "hash": "Fm/+PRgeBcLrYE4VCEfm3QEOSNB2qFCMFX1GtGx96BM="
         }
       },
       "is_incremental": false,
@@ -523,7 +811,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/contributing.html",
-          "hash": "vEygUgLgQ34qeQx40Fe2VHAryd7v7d0R8lk3ca3pFRY="
+          "hash": "QMmhHuhb/Iw7QJgNmlZFAQiD7pZJivx+upI/foAIfHY="
         }
       },
       "is_incremental": false,
@@ -547,7 +835,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/usage.html",
-          "hash": "/U7azQQKr0RrPkJytUAR7RThPCKSmJDaAgRcXw/9CTw="
+          "hash": "G4QlYrjHH2mk0CgwF1oW9Vf54uQa9DSBl3m0eT2T2LY="
         }
       },
       "is_incremental": false,
@@ -559,7 +847,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation_jp/codingConventions.html",
-          "hash": "3Cli52EFB9k6EK2LRlBbjsv1pPiH3qIzEQNTlq2Jq+s="
+          "hash": "gRiFMackvzs0Uff5z/UTkKy6ptwBegzEnps+CwqNxhw="
         }
       },
       "is_incremental": false,
@@ -574,7 +862,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation_jp/contributing.html",
-          "hash": "MVyi+GeCgmmh3iyDnZ+FkuxX40FbtVEda6IYHNBHGI4="
+          "hash": "PEwKBLlZvBWPIyXEE9A/HEDyAR5Qy7GDZPPt7L9bWR4="
         }
       },
       "is_incremental": false,
@@ -598,7 +886,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation_jp/usage.html",
-          "hash": "kHZ8o/b5skdWk1aGROWJa9JCXRj7rKFq5zgHMsfg3WM="
+          "hash": "8eLUQcTqW4Vss981sKfjDD+HKzU3t6uXfUKpkPVwqkM="
         }
       },
       "is_incremental": false,
@@ -668,7 +956,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "QaTnrPDm+c2dCGsbCJdpkCmDXF6zuBAxRrd1QcyMqvE="
+          "hash": "eZ/EqCr0qHwmUiGrIllPwLVslCuECoXzMZCFBPT9x7A="
         }
       },
       "is_incremental": false,
@@ -705,8 +993,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 38,
-          "skipped_file_count": 38
+          "total_file_count": 62,
+          "skipped_file_count": 62
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
