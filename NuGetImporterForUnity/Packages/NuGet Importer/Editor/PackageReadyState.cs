@@ -1,6 +1,7 @@
 using System.Linq;
 
 using UnityEditor;
+using UnityEditor.Build;
 
 namespace kumaS.NuGetImporter.Editor
 {
@@ -8,8 +9,10 @@ namespace kumaS.NuGetImporter.Editor
     /// <para>A class that sets whether all packages introduced by NuGet are ready.</para>
     /// <para>NuGetで導入したパッケージがすべて準備完了であるか設定するクラス。</para>
     /// </summary>
-    internal static class PackageReadyState
+    internal class PackageReadyState : IActiveBuildTargetChanged
     {
+        public int callbackOrder { get => 0; }
+
         /// <summary>
         /// <para>Set as ready.</para>
         /// <para>準備完了状態と設定する。</para>
@@ -38,6 +41,13 @@ namespace kumaS.NuGetImporter.Editor
         public static void Init()
         {
             EditorApplication.quitting += SetUnReady;
+        }
+
+        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
+        {
+            var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(previousTarget)).Split(';').ToList();
+            symbols.Remove("NUGET_PACKAGE_READY");
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(previousTarget), string.Join(";", symbols));
         }
     }
 }
