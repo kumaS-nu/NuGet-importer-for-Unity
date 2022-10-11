@@ -12,7 +12,7 @@ env:
 
 jobs:
   testAllModes:
-    name: Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
+    name: CI test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
     if: (github.event_name != 'pull_request_target' && !contains(github.event.pull_request.labels.*.name, 'run to test')) || contains(github.event.pull_request.labels.*.name, 'run to test')
     strategy:
