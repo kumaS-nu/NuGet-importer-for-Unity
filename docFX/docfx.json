@@ -2,7 +2,8 @@
     "metadata": [{
         "src": [{
             "files": [
-                "**/kumaS.NuGetImporter.Editor.csproj"
+                "**/kumaS.NuGetImporter.Editor.csproj",
+                "**/kumaS.NuGetImporter.Editor.Setup.csproj"
             ],
             "src": "../NuGetImporterForUnity"
         }],
@@ -10,7 +11,7 @@
         "filter": "filterConfig.yml",
         "shouldSkipMarkup": false,
         "disableGitFeatures": false,
-        "disableDefaultFilter": false,
+        "disableDefaultFilter": true,
         "properties": {
             "DefineConstants": "ZIP_AVAILABLE;"
         }
