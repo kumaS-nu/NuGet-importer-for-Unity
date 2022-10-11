@@ -83,9 +83,9 @@ You may want to keep installed packages out of git's tracking. In that case, you
 If you set these packages out of git's tracking, you will get a compile error when you run CI/CD.
 Therefore, if you want to use CI/CD with the packages out of git's tracking, you should take one of the following three ways.
 
-1. Add `-ignoreCompilerErrors` command line options when launching Unity with batch mode.
-1. Add `NUGET_PACKAGE_READY` to `Define Constraints` in .asmdef that depends on the installed package.
-1. Enclose your code that depends on the imported packages in the preprocessor directives below.
+- Add `-ignoreCompilerErrors` command line options when launching Unity with batch mode.
+- Add `NUGET_PACKAGE_READY` to `Define Constraints` in .asmdef that depends on the installed package.
+- Enclose your code that depends on the imported packages in the preprocessor directives below.
     ```csharp
     #if NUGET_PACKAGE_READY
 

@@ -20,6 +20,12 @@
 
  Test code.
 
+### kumaS.NuGetImporter.Editor.Setup.dll
+
+#### namespace kumaS.NuGetImporter.Editor.Setup
+
+ Code for preparing this extensions.
+
 # 日本語
 
 ## API ドキュメント
@@ -43,3 +49,9 @@
 #### namespace kumaS.NuGetImporter.Editor.Test
 
  テストコード。
+
+### kumaS.NuGetImporter.Editor.Setup.dll
+
+#### namespace kumaS.NuGetImporter.Editor.Setup
+
+ 拡張機能の準備部分。
