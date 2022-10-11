@@ -18,6 +18,7 @@
 - 強力な依存関係解決
 - ネイティブプラグインに対する完全な対応
 - Roslyn Analyzer も対応
+- CI/CD に対応
 - わかりやすいUI
 - UPM対応・unitypackageあり
 - [GlitchEnzo/NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)との互換性あり
@@ -74,6 +75,20 @@
 /[Pp]ackages/*/
 !/[Pp]ackages/your embedded package to share with git/
 ```
+
+ただし、パッケージを Git の監理外にするとそのままではコンパイルエラーが発生し CI/CD に使用できません。
+そのため、パッケージを Git の監理外にし CI/CD をする際は以下の3つの対応策のうちどれかを行ってください。
+
+1. バッチモードの起動オプションに `-ignoreCompilerErrors` を追加。
+1. 導入したパッケージに依存する .asmdef の `Define Constraints` に `NUGET_PACKAGE_READY` を追加。
+1. 導入したパッケージに依存するコードを以下のようにプリプロセッサディレクディブで囲う。
+    ```csharp
+    #if NUGET_PACKAGE_READY
+
+    // your code
+
+    #endif
+    ```
 
 ## 注意点
 

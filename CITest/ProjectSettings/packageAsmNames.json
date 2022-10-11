@@ -1,0 +1,28 @@
+{
+    "managedList": [
+        {
+            "packageName": "ZString",
+            "fileNames": [
+                "ZString"
+            ]
+        },
+        {
+            "packageName": "System.Memory",
+            "fileNames": [
+                "System.Memory"
+            ]
+        },
+        {
+            "packageName": "System.Buffers",
+            "fileNames": [
+                "System.Buffers"
+            ]
+        },
+        {
+            "packageName": "System.Runtime.CompilerServices.Unsafe",
+            "fileNames": [
+                "System.Runtime.CompilerServices.Unsafe"
+            ]
+        }
+    ]
+}

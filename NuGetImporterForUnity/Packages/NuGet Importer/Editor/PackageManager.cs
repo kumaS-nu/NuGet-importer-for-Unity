@@ -238,6 +238,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
+            PackageReadyState.SetReady();
             NuGetImporterWindow.Initialize();
         }
 
@@ -247,7 +248,19 @@ namespace kumaS.NuGetImporter.Editor
             {
                 NuGetImporterSettings.EnsureSetProjectSettingsPath();
 
-                if (NuGetImporterSettings.Instance.AutoPackagePlacementCheck)
+                if (IsCIorCD())
+                {
+                    try
+                    {
+                        if (await IsNeedToFix())
+                        {
+                            await FixPackagesAsync(false);
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    { }
+                }
+                else if (NuGetImporterSettings.Instance.AutoPackagePlacementCheck)
                 {
                     try
                     {
@@ -285,6 +298,11 @@ namespace kumaS.NuGetImporter.Editor
             Save();
 
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
+        }
+
+        private static bool IsCIorCD()
+        {
+            return Application.isBatchMode;
         }
 
         private static (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) GetRestartInfo()

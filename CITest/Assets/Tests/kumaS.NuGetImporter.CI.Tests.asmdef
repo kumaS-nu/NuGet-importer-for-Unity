@@ -1,0 +1,28 @@
+{
+    "name": "kumaS.NuGetImporter.CI.Tests",
+    "rootNamespace": "kumaS.NuGetImporter.CI.Tests",
+    "references": [
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "System.Buffers.dll",
+        "System.Memory.dll",
+        "System.Runtime.CompilerServices.Unsafe.dll",
+        "ZString.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS",
+        "NUGET_PACKAGE_READY"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

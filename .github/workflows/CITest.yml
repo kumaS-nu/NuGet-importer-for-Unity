@@ -1,4 +1,4 @@
-name: Test
+name: CITest
 
 on:
   pull_request:
@@ -12,14 +12,14 @@ env:
 
 jobs:
   testAllModes:
-    name: Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
+    name: CI test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
     if: (github.event_name != 'pull_request_target' && !contains(github.event.pull_request.labels.*.name, 'run to test')) || contains(github.event.pull_request.labels.*.name, 'run to test')
     strategy:
       fail-fast: false
       matrix:
         projectPath:
-          - NuGetImporterForUnity
+          - CITest
         unityVersion:
           - 2020.3.40f1
           - 2021.3.11f1
@@ -34,6 +34,8 @@ jobs:
           key: Library-${{ matrix.projectPath }}
           restore-keys: |
             Library-
+      - name: setup
+        run: cp -rf "NuGetImporterForUnity/Packages/NuGet Importer" "CITest/Packages/NuGet Importer" && rm -rf "CITest/Packages/NuGet Importer/Tests" && rm -f "CITest/Packages/NuGet Importer/Tests.meta"
       - uses: webbertakken/unity-test-runner@v2.0.3
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
