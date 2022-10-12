@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.1.0] - 2022-10-11
+
+- Support for CI/CD
+- Fix path that identify as analyzer
+
 ## [3.0.0] - 2022-09-10
 
 - Support for .NET Standard1.x
