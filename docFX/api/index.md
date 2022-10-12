@@ -10,6 +10,10 @@
 
  Code for logic, UI, etc.
 
+#### namespace kumaS.NuGetImporter.Editor.PackageOperation
+
+ Code to operate packages.
+
 #### namespace kumaS.NuGetImporter.Editor.DataClasses
 
  The structure of the data returned by the API, and the code for its util methods.
@@ -39,6 +43,10 @@
 #### namespace kumaS.NuGetImporter.Editor
 
  ロジックやUI等のコード。
+
+#### namespace kumaS.NuGetImporter.Editor.PackageOperation
+
+ パッケージの操作を行うコード。
 
 #### namespace kumaS.NuGetImporter.Editor.DataClasses
 
