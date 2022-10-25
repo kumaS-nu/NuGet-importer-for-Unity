@@ -336,6 +336,7 @@ namespace kumaS.NuGetImporter.Editor
                 }
 
                 dependencies.RemoveAll(d => StandardLibraries.PackageIds.Contains(d.id));
+                dependencies.RemoveAll(d => NuGetImporterSettings.Instance.IgnorePackages.Contains(d.id));
 
                 if (dependencies.Any())
                 {

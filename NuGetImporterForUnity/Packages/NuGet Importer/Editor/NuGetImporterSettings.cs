@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
@@ -49,6 +51,10 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 var str = File.ReadAllText(path);
                 instance = JsonUtility.FromJson<NuGetImporterSettings>(str);
+                if (!str.Contains("\"ignorePackages\""))
+                {
+                    instance.ignorePackages = default;
+                }
                 return instance;
             }
         }
@@ -272,6 +278,35 @@ namespace kumaS.NuGetImporter.Editor
             {
                 var changed = isNetworkSavemode != value;
                 isNetworkSavemode = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
+
+        [SerializeField]
+        private List<string> ignorePackages = default;
+
+        /// <summary>
+        /// <para>Ignore pacakges.</para>
+        /// <para>無視するパッケージ。</para>
+        /// </summary>
+        public List<string> IgnorePackages
+        {
+            get
+            {
+                if (ignorePackages == default)
+                {
+                    ignorePackages = DefaultIgnorePackages.Names.ToList();
+                    Save();
+                }
+                return new List<string>(ignorePackages);
+            }
+            set
+            {
+                var changed = !ignorePackages.SequenceEqual(value);
+                ignorePackages = value;
                 if (changed)
                 {
                     Save();
