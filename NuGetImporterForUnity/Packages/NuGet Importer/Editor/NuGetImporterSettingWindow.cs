@@ -15,6 +15,8 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class NuGetImporterSettingWindow : EditorWindow
     {
+        private Vector2 scrollPos;
+
         [MenuItem("NuGet Importer/NuGet importer settings", false, 4)]
         private static void ShowWindow()
         {
@@ -112,6 +114,40 @@ namespace kumaS.NuGetImporter.Editor
                     EditorGUILayout.LabelField("timeout seconds");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.Timeout = EditorGUILayout.IntField(NuGetImporterSettings.Instance.Timeout);
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("ignore packages", EditorStyles.boldLabel);
+                    GUILayout.FlexibleSpace();
+                }
+
+                using (new EditorGUILayout.VerticalScope("Box"))
+                {
+                    var ignorePackages = NuGetImporterSettings.Instance.IgnorePackages;
+                    using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos))
+                    {
+                        scrollPos = scrollView.scrollPosition;
+                        for (var i = 0; i < ignorePackages.Count; i++)
+                        {
+                            ignorePackages[i] = GUILayout.TextField(ignorePackages[i]);
+                        }
+                    }
+
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        GUILayout.FlexibleSpace();
+                        if (GUILayout.Button("Add"))
+                        {
+                            ignorePackages.Add("");
+                        }
+
+                        if (GUILayout.Button("Remove"))
+                        {
+                            ignorePackages.RemoveAt(ignorePackages.Count - 1);
+                        }
+                    }
+                    NuGetImporterSettings.Instance.IgnorePackages = ignorePackages;
                 }
             }
         }

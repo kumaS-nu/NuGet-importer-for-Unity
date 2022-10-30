@@ -553,7 +553,22 @@ namespace kumaS.NuGetImporter.Editor
                         }
                     }
 
-                    if (isExist)
+                    var ignores = NuGetImporterSettings.Instance.IgnorePackages;
+                    var isIgnore = ignores.Contains(summary.PackageId);
+                    GUILayout.Space(2);
+                    isIgnore = GUILayout.Toggle(isIgnore, "Mark as ignore package");
+                    GUILayout.Space(EditorGUIUtility.singleLineHeight / 2);
+                    if (isIgnore)
+                    {
+                        ignores.Add(summary.PackageId);
+                    }
+                    else
+                    {
+                        ignores.Remove(summary.PackageId);     
+                    }
+                    NuGetImporterSettings.Instance.IgnorePackages = ignores.Distinct().ToList();
+
+                    if (isExist || isIgnore)
                     {
                         using (new EditorGUILayout.HorizontalScope())
                         {

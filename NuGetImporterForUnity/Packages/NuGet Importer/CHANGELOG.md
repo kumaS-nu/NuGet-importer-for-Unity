@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.2.0] - 2022-10-30
+
+- Add ignore packages setting
+
 ## [3.1.0] - 2022-10-11
 
 - Support for CI/CD

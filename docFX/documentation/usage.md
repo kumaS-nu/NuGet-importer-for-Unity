@@ -91,6 +91,7 @@ Therefore, if you want to use CI/CD with the packages out of git's tracking, you
 1. Package details.
 1. Version selection.
 1. Operations on the package.
+1. Ignored package or not.
 
 ### NuGet importer settings
 
@@ -105,6 +106,7 @@ Therefore, if you want to use CI/CD with the packages out of git's tracking, you
 1. Reduce the amount of data in the communication or not. If on, images of packages not installed in the project will not fetch, and NuGet-importer-for-Unity will not perform package searches until the input has settled.
 1. The maximum number of retry attempts to get data when data fetch fails.
 1. Time out seconds of communication.
+1. List of packages to ignore. The Add button works to append a blank package. The remove button works to remove the last package.
 
 ## Note
 

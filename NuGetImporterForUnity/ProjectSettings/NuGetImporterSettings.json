@@ -8,5 +8,8 @@
     "autoPackagePlacementCheck": true,
     "retryLimit": 5,
     "timeout": 100,
-    "isNetworkSavemode": false
+    "isNetworkSavemode": false,
+    "ignorePackages": [
+        "Microsoft.CSharp"
+    ]
 }
