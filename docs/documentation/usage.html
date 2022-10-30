@@ -158,6 +158,7 @@ Therefore, if you want to use CI/CD with the packages out of git's tracking, you
 <li>Package details.</li>
 <li>Version selection.</li>
 <li>Operations on the package.</li>
+<li>Ignored package or not.</li>
 </ol>
 <h3 id="nuget-importer-settings">NuGet importer settings</h3>
 <p><img src="../images/Settings.png" alt="NuGet importer settings"></p>
@@ -171,6 +172,7 @@ Therefore, if you want to use CI/CD with the packages out of git's tracking, you
 <li>Reduce the amount of data in the communication or not. If on, images of packages not installed in the project will not fetch, and NuGet-importer-for-Unity will not perform package searches until the input has settled.</li>
 <li>The maximum number of retry attempts to get data when data fetch fails.</li>
 <li>Time out seconds of communication.</li>
+<li>List of packages to ignore. The Add button works to append a blank package. The remove button works to remove the last package.</li>
 </ol>
 <h2 id="note">Note</h2>
 <p>NuGet-importer-for-Unity install files not required at runtime (e.g., rulesets, documentation, etc.) are installed to <code>(your project)/NuGet</code>. If you want to reference them, add them reference manually.</p>

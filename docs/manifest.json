@@ -108,6 +108,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.html",
+          "hash": "7gCB6wpys7SJg9C7NUHKZFWrEgu/mt2BGo7DrN5o298="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.Dependency.yml",
       "output": {
         ".html": {
@@ -412,7 +424,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.DataClasses.html",
-          "hash": "C4ljQwEYZDxj+JShdwvF2vr4vpG+CRZeERQLIvwRWN4="
+          "hash": "z28CHv0Z7g3vyU7Kk1dh+owEnxVcNQS2o9cxFYS2Y4w="
         }
       },
       "is_incremental": false,
@@ -472,7 +484,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.html",
-          "hash": "aOYOZ+COK1iBlq4DgYW7jVHKfAhFBEU9aGSV3Zn/kQ8="
+          "hash": "IgJZimN5K2sEQNr/1VtQMqzSgvwBFkOG0bR1e+PprdA="
         }
       },
       "is_incremental": false,
@@ -484,7 +496,7 @@
       "output": {
         ".html": {
           "relative_path": "api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html",
-          "hash": "DmPTqoTN/8NNyxgdK0iEDVwCWdhCQXzL6f+REGOBggA="
+          "hash": "ibtJM8MbT9mdc8Pf7pD/Qm07APTYbB1hUSjvcnWRuTI="
         }
       },
       "is_incremental": false,
@@ -784,7 +796,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Fi00ItOCUoKst06y2VYlqBflExjIQreL49BEaoyvrCE="
+          "hash": "uTe0U1uREDmAAhxSECELY+kXqECfpGw3zqucvVLpMZg="
         }
       },
       "is_incremental": false,
@@ -835,7 +847,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation/usage.html",
-          "hash": "G4QlYrjHH2mk0CgwF1oW9Vf54uQa9DSBl3m0eT2T2LY="
+          "hash": "dCgzq5ofCmb6fwcsoyxOF2YQtOYP1kLOf+WxX5qo4j4="
         }
       },
       "is_incremental": false,
@@ -886,7 +898,7 @@
       "output": {
         ".html": {
           "relative_path": "documentation_jp/usage.html",
-          "hash": "8eLUQcTqW4Vss981sKfjDD+HKzU3t6uXfUKpkPVwqkM="
+          "hash": "ptwTXM9at/SXQyjWZRMue6iBZyk4lqS1NwSctfJqvBY="
         }
       },
       "is_incremental": false,
@@ -988,13 +1000,13 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 8,
-          "skipped_file_count": 7
+          "skipped_file_count": 6
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 62,
-          "skipped_file_count": 62
+          "total_file_count": 63,
+          "skipped_file_count": 57
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

@@ -431,6 +431,31 @@ references:
   commentId: F:kumaS.NuGetImporter.Editor.DataClasses.Datum.versions
   fullName: kumaS.NuGetImporter.Editor.DataClasses.Datum.versions
   nameWithType: Datum.versions
+- uid: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages
+  name: DefaultIgnorePackages
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.html
+  commentId: T:kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages
+  nameWithType: DefaultIgnorePackages
+- uid: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.names
+  name: names
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.html#kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages_names
+  commentId: F:kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.names
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.names
+  nameWithType: DefaultIgnorePackages.names
+- uid: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names
+  name: Names
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.html#kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages_Names
+  commentId: P:kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names
+  nameWithType: DefaultIgnorePackages.Names
+- uid: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names*
+  name: Names
+  href: api/kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.html#kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages_Names_
+  commentId: Overload:kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names
+  nameWithType: DefaultIgnorePackages.Names
 - uid: kumaS.NuGetImporter.Editor.DataClasses.Dependency
   name: Dependency
   href: api/kumaS.NuGetImporter.Editor.DataClasses.Dependency.html
@@ -2572,6 +2597,25 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IconCacheLimit
   nameWithType: NuGetImporterSettings.IconCacheLimit
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.ignorePackages
+  name: ignorePackages
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_ignorePackages
+  commentId: F:kumaS.NuGetImporter.Editor.NuGetImporterSettings.ignorePackages
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.ignorePackages
+  nameWithType: NuGetImporterSettings.ignorePackages
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IgnorePackages
+  name: IgnorePackages
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_IgnorePackages
+  commentId: P:kumaS.NuGetImporter.Editor.NuGetImporterSettings.IgnorePackages
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IgnorePackages
+  nameWithType: NuGetImporterSettings.IgnorePackages
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IgnorePackages*
+  name: IgnorePackages
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_IgnorePackages_
+  commentId: Overload:kumaS.NuGetImporter.Editor.NuGetImporterSettings.IgnorePackages
+  isSpec: "True"
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettings.IgnorePackages
+  nameWithType: NuGetImporterSettings.IgnorePackages
 - uid: kumaS.NuGetImporter.Editor.NuGetImporterSettings.installMethod
   name: installMethod
   href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettings.html#kumaS_NuGetImporter_Editor_NuGetImporterSettings_installMethod
@@ -2791,6 +2835,12 @@ references:
   isSpec: "True"
   fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.Operate
   nameWithType: NuGetImporterSettingWindow.Operate
+- uid: kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.scrollPos
+  name: scrollPos
+  href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.html#kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_scrollPos
+  commentId: F:kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.scrollPos
+  fullName: kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.scrollPos
+  nameWithType: NuGetImporterSettingWindow.scrollPos
 - uid: kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.ShowWindow
   name: ShowWindow()
   href: api/kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.html#kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_ShowWindow

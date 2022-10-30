@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class NuGetImporterSettingWindow
+    <title>Class DefaultIgnorePackages
    | NuGet importer for Unity documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class NuGetImporterSettingWindow
+    <meta name="title" content="Class DefaultIgnorePackages
    | NuGet importer for Unity documentation ">
     <meta name="generator" content="docfx 2.59.4.0">
     
@@ -78,39 +78,36 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow">
+            <article class="content wrap" id="_content" data-uid="kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages">
   
   
-  <h1 id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow" class="text-break">Class NuGetImporterSettingWindow
+  <h1 id="kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages" data-uid="kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages" class="text-break">Class DefaultIgnorePackages
   </h1>
-  <div class="markdown level0 summary"><p>EditorWindow class to configure settings for NuGet importer.</p>
-<p>NuGet importerの設定をするエディタウィンドウクラス。</p>
+  <div class="markdown level0 summary"><p>Class of package to ignore by default.</p>
+<p>デフォルトで無視するパッケージの一覧。</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">UnityEngine.Object</span></div>
-    <div class="level2"><span class="xref">UnityEngine.ScriptableObject</span></div>
-    <div class="level3"><span class="xref">UnityEditor.EditorWindow</span></div>
-    <div class="level4"><span class="xref">NuGetImporterSettingWindow</span></div>
+    <div class="level1"><span class="xref">DefaultIgnorePackages</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="kumaS.NuGetImporter.Editor.html">kumaS.NuGetImporter.Editor</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.html">kumaS.NuGetImporter.Editor.DataClasses</a></h6>
   <h6><strong>Assembly</strong>: kumaS.NuGetImporter.Editor.dll</h6>
-  <h5 id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_syntax">Syntax</h5>
+  <h5 id="kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class NuGetImporterSettingWindow : EditorWindow</code></pre>
+    <pre><code class="lang-csharp hljs">public static class DefaultIgnorePackages</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
   
   
-  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_scrollPos" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.scrollPos">scrollPos</h4>
+  <h4 id="kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages_names" data-uid="kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.names">names</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Vector2 scrollPos</code></pre>
+    <pre><code class="lang-csharp hljs">static readonly IReadOnlyList&lt;string&gt; names</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -122,51 +119,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">UnityEngine.Vector2</span></td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
+  <h3 id="properties">Properties
   </h3>
   
   
-  <a id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_OnGUI_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.OnGUI*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_OnGUI" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.OnGUI">OnGUI()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages_Names_" data-uid="kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_DataClasses_DefaultIgnorePackages_Names" data-uid="kumaS.NuGetImporter.Editor.DataClasses.DefaultIgnorePackages.Names">Names</h4>
+  <div class="markdown level1 summary"><p>Package names.</p>
+<p>パッケージ名。</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void OnGUI()</code></pre>
+    <pre><code class="lang-csharp hljs">public static IReadOnlyList&lt;string&gt; Names { get; }</code></pre>
   </div>
-  
-  
-  <a id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_Operate_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.Operate*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_Operate_System_Threading_Tasks_Task_kumaS_NuGetImporter_Editor_DataClasses_OperationResult__" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.Operate(System.Threading.Tasks.Task{kumaS.NuGetImporter.Editor.DataClasses.OperationResult})">Operate(Task&lt;OperationResult&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static async Task Operate(Task&lt;OperationResult&gt; operation)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.OperationResult.html">OperationResult</a>&gt;</td>
-        <td><span class="parametername">operation</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -176,22 +148,11 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_ShowWindow_" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.ShowWindow*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_NuGetImporterSettingWindow_ShowWindow" data-uid="kumaS.NuGetImporter.Editor.NuGetImporterSettingWindow.ShowWindow">ShowWindow()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[MenuItem(&quot;NuGet Importer/NuGet importer settings&quot;, false, 4)]
-static void ShowWindow()</code></pre>
-  </div>
 </article>
           </div>
           
