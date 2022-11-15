@@ -36,7 +36,7 @@ jobs:
             Library-
       - name: setup
         run: cp -rf "NuGetImporterForUnity/Packages/NuGet Importer" "CITest/Packages/NuGet Importer" && rm -rf "CITest/Packages/NuGet Importer/Tests" && rm -f "CITest/Packages/NuGet Importer/Tests.meta"
-      - uses: webbertakken/unity-test-runner@v2.0.3
+      - uses: webbertakken/unity-test-runner@v2.1.0
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         id: tests
