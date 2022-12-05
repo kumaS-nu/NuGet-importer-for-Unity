@@ -34,7 +34,7 @@ jobs:
           key: Library-${{ matrix.projectPath }}
           restore-keys: |
             Library-
-      - uses: webbertakken/unity-test-runner@v2.1.0
+      - uses: webbertakken/unity-test-runner@v2.1.1
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         id: tests
