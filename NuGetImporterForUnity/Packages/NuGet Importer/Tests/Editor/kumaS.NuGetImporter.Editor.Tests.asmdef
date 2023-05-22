@@ -2,21 +2,23 @@
     "name": "kumaS.NuGetImporter.Editor.Tests",
     "rootNamespace": "kumaS.NuGetImporter.Editor.Tests",
     "references": [
-        "GUID:565f8656cac40f94690764098c03c6c4"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "GUID:565f8656cac40f94690764098c03c6c4",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
     "autoReferenced": false,
     "defineConstraints": [
-        "ZIP_AVAILABLE"
+        "ZIP_AVAILABLE",
+        "UNITY_INCLUDE_TESTS"
     ],
     "versionDefines": [],
     "noEngineReferences": false

@@ -79,6 +79,18 @@ namespace kumaS.NuGetImporter.Editor.Setup
         private static void SetAssemblyVersionValidation()
         {
             PlayerSettings.assemblyVersionValidation = false;
+            EditorApplication.quitting += SetUnReady;
+        }
+
+        /// <summary>
+        /// <para>Set as unready.</para>
+        /// <para>準備未完了状態と設定する。</para>
+        /// </summary>
+        internal static void SetUnReady()
+        {
+            var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
+            symbols.Remove("ZIP_AVAILABLE");
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", symbols));
         }
     }
 }
