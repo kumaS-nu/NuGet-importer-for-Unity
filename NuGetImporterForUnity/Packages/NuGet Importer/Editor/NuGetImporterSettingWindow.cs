@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -138,7 +139,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 using (new EditorGUILayout.VerticalScope("Box"))
                 {
-                    var ignorePackages = NuGetImporterSettings.Instance.IgnorePackages;
+                    List<string> ignorePackages = NuGetImporterSettings.Instance.IgnorePackages;
                     using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos))
                     {
                         scrollPos = scrollView.scrollPosition;

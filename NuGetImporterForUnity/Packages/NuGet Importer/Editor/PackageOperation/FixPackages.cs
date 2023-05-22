@@ -29,12 +29,9 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
             (bool, Package pkg)[] isInstalled_ = await Task.WhenAll(isInstalled);
             IEnumerable<Package> notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
 
-            if (!notInstalled.Any())
-            {
-                return new OperationResult(OperationState.Cancel, "No packages to repair.\n(If you want to repair the contents of a package, please repair the package individually.)");
-            }
-
-            return await ManipulatePackages(controlledPackages.root, notInstalled, notInstalled, controlledPackages, operateLock);    
+            return !notInstalled.Any()
+                ? new OperationResult(OperationState.Cancel, "No packages to repair.\n(If you want to repair the contents of a package, please repair the package individually.)")
+                : await ManipulatePackages(controlledPackages.root, notInstalled, notInstalled, controlledPackages, operateLock);
         }
     }
 }

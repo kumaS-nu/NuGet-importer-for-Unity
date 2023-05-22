@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,10 +26,10 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task CreateAsmdef(IList<Package> packages, PackagePathSolverBase pathResolver)
         {
-            var pathRequest = packages.Select(package => pathResolver.AnalyzerPath(package));
+            IEnumerable<Task<string>> pathRequest = packages.Select(package => pathResolver.AnalyzerPath(package));
             var paths = await Task.WhenAll(pathRequest);
 
-            foreach (var (package, path) in packages.Zip(paths, (n, p) => (n, p)))
+            foreach ((Package package, var path) in packages.Zip(paths, (n, p) => (n, p)))
             {
                 if (path == "")
                 {
@@ -43,7 +42,7 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task DeleteAsmdef(IList<Package> packages, PackagePathSolverBase pathResolver)
         {
-            var pathRequest = packages.Select(package => pathResolver.AnalyzerPath(package));
+            IEnumerable<Task<string>> pathRequest = packages.Select(package => pathResolver.AnalyzerPath(package));
             var paths = await Task.WhenAll(pathRequest);
 
             var asmdefPath = paths.Where(path => path != "").SelectMany(path => Directory.GetFiles(path, "*-auto-gen.asmdef", SearchOption.AllDirectories)).ToList();
@@ -61,14 +60,16 @@ namespace kumaS.NuGetImporter.Editor
 
         private static void UpdateAnalyzer(Package package, string path)
         {
-            var packageAsmdef = Directory.GetFiles(path, "*.asmdef", SearchOption.AllDirectories).Where(f => !f.EndsWith("-auto-gen.asmdef"));
+            IEnumerable<string> packageAsmdef = Directory.GetFiles(path, "*.asmdef", SearchOption.AllDirectories).Where(f => !f.EndsWith("-auto-gen.asmdef"));
             var filePath = Path.Combine(path, package.id + "-analyzer-auto-gen.asmdef");
             if (File.Exists(filePath) || packageAsmdef.Any())
             {
                 return;
             }
-            var adf = new AssemblyDefinitionFile();
-            adf.name = package.id + ".analyzer";
+            var adf = new AssemblyDefinitionFile
+            {
+                name = package.id + ".analyzer"
+            };
             File.WriteAllText(filePath, JsonUtility.ToJson(adf));
             if (!Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories).Any())
             {

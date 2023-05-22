@@ -11,7 +11,7 @@ namespace kumaS.NuGetImporter.Editor
 {
     internal sealed class PackageControllerAsUPM : PackageControllerBase
     {
-        public PackageControllerAsUPM() 
+        public PackageControllerAsUPM()
         {
             pathSolver = new UPMPathSolver();
         }

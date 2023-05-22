@@ -15,7 +15,7 @@ namespace kumaS.NuGetImporter.Editor
         private static readonly object managedPluginListLock = new object();
         private static readonly string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
 
-        public PackageControllerAsAsset() 
+        public PackageControllerAsAsset()
         {
             pathSolver = new AssetPathSolver();
         }

@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 
 using kumaS.NuGetImporter.Editor.DataClasses;
 
-using UnityEngine;
-
 namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>

@@ -1031,7 +1031,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 if (working)
                 {
-                    EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + ((1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize));
+                    EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize);
                 }
 
                 downloadedSumSizeLog.AddLast(downloadedSumSize);
