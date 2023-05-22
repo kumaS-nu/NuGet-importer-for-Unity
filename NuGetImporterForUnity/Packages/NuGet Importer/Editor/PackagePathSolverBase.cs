@@ -184,7 +184,6 @@ namespace kumaS.NuGetImporter.Editor
             return frameworkPath.First();
         }
 
-
         /// <summary>
         /// <para>Get the path to the Unity Editor directory of the library.</para>
         /// <para>ライブラリのUnity Editorディレクトリのパスを取得。</para>
