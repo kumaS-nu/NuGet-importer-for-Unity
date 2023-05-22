@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.3.0] - 2023-05-22
+
+- Auto-generate Assembly Definition files for analyzers
+- Fix define symbols
+
 ## [3.2.0] - 2022-10-30
 
 - Add ignore packages setting
