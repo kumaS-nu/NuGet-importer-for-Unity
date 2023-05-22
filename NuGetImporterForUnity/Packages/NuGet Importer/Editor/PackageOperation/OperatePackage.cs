@@ -70,6 +70,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 }
                 finally
                 {
+                    await AsmdefController.UpdateAsmdef(PackageManager.ControlledPackages.installed, PackageManager.GetPackagePathSolver());
                     operatorLock.result = ret;
                     isOperated = true;
                 }

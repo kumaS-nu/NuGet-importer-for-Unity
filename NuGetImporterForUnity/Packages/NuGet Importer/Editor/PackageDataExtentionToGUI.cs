@@ -553,7 +553,7 @@ namespace kumaS.NuGetImporter.Editor
                         }
                     }
 
-                    var ignores = NuGetImporterSettings.Instance.IgnorePackages;
+                    List<string> ignores = NuGetImporterSettings.Instance.IgnorePackages;
                     var isIgnore = ignores.Contains(summary.PackageId);
                     GUILayout.Space(2);
                     isIgnore = GUILayout.Toggle(isIgnore, "Mark as ignore package");
@@ -564,7 +564,7 @@ namespace kumaS.NuGetImporter.Editor
                     }
                     else
                     {
-                        ignores.Remove(summary.PackageId);     
+                        ignores.Remove(summary.PackageId);
                     }
                     NuGetImporterSettings.Instance.IgnorePackages = ignores.Distinct().ToList();
 

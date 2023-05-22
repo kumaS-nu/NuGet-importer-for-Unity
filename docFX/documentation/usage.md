@@ -103,6 +103,7 @@ Therefore, if you want to use CI/CD with the packages out of git's tracking, you
 1. The maximum number of search results to cache. (0 or less is not cached.)
 1. The maximum number of catalogs to cache. (0 or less is not cached.)
 1. The maximum number of icons to cache. (0 or less is not cached.)
+1. Generate an Assembly Definition file for Roslyn Analyzer, allowing the scope of analysis to be specified by the Assembly Definition file.
 1. Reduce the amount of data in the communication or not. If on, images of packages not installed in the project will not fetch, and NuGet-importer-for-Unity will not perform package searches until the input has settled.
 1. The maximum number of retry attempts to get data when data fetch fails.
 1. Time out seconds of communication.

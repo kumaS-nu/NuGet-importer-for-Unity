@@ -18,20 +18,7 @@ namespace kumaS.NuGetImporter.Editor
     {
         private readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
         private readonly string[] deleteDirectories = new string[] { "_rels", "package", "build", "buildMultiTargeting", "buildTransitive" };
-
-        /// <summary>
-        /// <para>Get the installation path of the package.</para>
-        /// <para>パッケージのインストールパスを取得する。</para>
-        /// </summary>
-        /// <param name="package">
-        /// <para>Package.</para>
-        /// <para>パッケージ。</para>
-        /// </param>
-        /// <returns>
-        /// <para>Installation path.</para>
-        /// <para>インストールパス。</para>
-        /// </returns>
-        internal abstract Task<string> GetInstallPath(Package package);
+        protected internal PackagePathSolverBase pathSolver { protected set; get; }
 
         /// <summary>
         /// <para>Install the specified package.</para>
@@ -134,7 +121,7 @@ namespace kumaS.NuGetImporter.Editor
                 DeletePluginsOutOfDirectory(native);
             }
 
-            IEnumerable<Task<string>> tasks = natives.Select(package => GetInstallPath(package));
+            IEnumerable<Task<string>> tasks = natives.Select(package => pathSolver.InstallPath(package));
             IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
             IEnumerable<string> nativeNugetDirectory = natives.Select(package => Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
 
@@ -188,7 +175,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </exception>
         protected async Task ExtractPackageAsync(Package package)
         {
-            var extractPath = await GetInstallPath(package);
+            var extractPath = await pathSolver.InstallPath(package);
             var nupkgName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant() + ".nupkg";
             var tempPath = PackageManager.DataPath.Replace("Assets", "Temp");
             var downloadPath = Path.Combine(tempPath, nupkgName);
@@ -261,7 +248,7 @@ namespace kumaS.NuGetImporter.Editor
         private void ManagedPluginProcess(Package package, string nugetPackagePath, string extractPath, string managedPath)
         {
             List<string[]> frameworkDictionary = FrameworkName.ALLPLATFORM;
-            var targetFramework = frameworkDictionary.FirstOrDefault(f=> f.Contains(package.targetFramework));
+            var targetFramework = frameworkDictionary.FirstOrDefault(f => f.Contains(package.targetFramework));
             List<string> frameworkList = FrameworkName.TARGET;
 
             if (targetFramework == default)
@@ -517,7 +504,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         private async Task UninstallManagedPackageAsync(Package package)
         {
-            var path = await GetInstallPath(package);
+            var path = await pathSolver.InstallPath(package);
             var nugetPackagePath = Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
             var tasks = new List<Task>
             {

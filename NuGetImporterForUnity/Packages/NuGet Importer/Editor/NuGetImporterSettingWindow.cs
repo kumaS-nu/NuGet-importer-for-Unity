@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -93,6 +94,20 @@ namespace kumaS.NuGetImporter.Editor
                     NuGetImporterSettings.Instance.IconCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.IconCacheLimit);
                 }
 
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    var before = NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer;
+                    EditorGUILayout.LabelField("Create asmdef for analyzer");
+                    GUILayout.FlexibleSpace();
+                    NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer = EditorGUILayout.Toggle(NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer);
+                    if (before != NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer)
+                    {
+                        _ = AsmdefController.UpdateAsmdef(PackageManager.ControlledPackages.installed, PackageManager.GetPackagePathSolver());
+                        AssetDatabase.Refresh();
+                        GUIUtility.ExitGUI();
+                    }
+                }
+
                 EditorGUILayout.LabelField("Network settings", EditorStyles.boldLabel);
 
                 using (new EditorGUILayout.HorizontalScope())
@@ -124,7 +139,7 @@ namespace kumaS.NuGetImporter.Editor
 
                 using (new EditorGUILayout.VerticalScope("Box"))
                 {
-                    var ignorePackages = NuGetImporterSettings.Instance.IgnorePackages;
+                    List<string> ignorePackages = NuGetImporterSettings.Instance.IgnorePackages;
                     using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos))
                     {
                         scrollPos = scrollView.scrollPosition;

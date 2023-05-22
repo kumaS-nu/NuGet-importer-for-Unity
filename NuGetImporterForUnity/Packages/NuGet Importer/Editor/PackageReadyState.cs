@@ -20,7 +20,8 @@ namespace kumaS.NuGetImporter.Editor
         internal static void SetReady()
         {
             var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
-            if (!symbols.Contains("NUGET_PACKAGE_READY")){
+            if (!symbols.Contains("NUGET_PACKAGE_READY"))
+            {
                 symbols.Add("NUGET_PACKAGE_READY");
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", symbols));
             }

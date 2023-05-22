@@ -11,5 +11,6 @@
     "isNetworkSavemode": false,
     "ignorePackages": [
         "Microsoft.CSharp"
-    ]
+    ],
+    "isCreateAsmdefForAnalyzer": true
 }
