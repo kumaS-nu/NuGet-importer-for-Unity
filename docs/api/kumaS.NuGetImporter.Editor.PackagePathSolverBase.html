@@ -1,0 +1,781 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PackagePathSolverBase
+   | NuGet importer for Unity documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PackagePathSolverBase
+   | NuGet importer for Unity documentation ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase">
+  
+  
+  <h1 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase" class="text-break">Class PackagePathSolverBase
+  </h1>
+  <div class="markdown level0 summary"><p>Base class for resolving package paths.</p>
+<p>パッケージのパスを解決するための基底クラス。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">PackagePathSolverBase</span></div>
+      <div class="level2"><a class="xref" href="kumaS.NuGetImporter.Editor.AssetPathSolver.html">AssetPathSolver</a></div>
+      <div class="level2"><a class="xref" href="kumaS.NuGetImporter.Editor.UPMPathSolver.html">UPMPathSolver</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="kumaS.NuGetImporter.Editor.html">kumaS.NuGetImporter.Editor</a></h6>
+  <h6><strong>Assembly</strong>: kumaS.NuGetImporter.Editor.dll</h6>
+  <h5 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">abstract class PackagePathSolverBase</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_AnalyzerPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.AnalyzerPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_AnalyzerPath_kumaS_NuGetImporter_Editor_DataClasses_Package_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.AnalyzerPath(kumaS.NuGetImporter.Editor.DataClasses.Package)">AnalyzerPath(Package)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the top directory of the analyzer.</p>
+<p>アナライザーのトップディレクトリのパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task&lt;string&gt; AnalyzerPath(Package package)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a></td>
+        <td><span class="parametername">package</span></td>
+        <td><p>Target package.</p>
+<p>対象のパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path. However, if the analyzer does not exist, an empty string is returned.</p>
+<p>パス。ただしアナライザーが存在しないときは空文字列が返る。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when a package is not installed.</p>
+<p>パッケージがインストールされていないときに投げられる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_AnalyzerPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.AnalyzerPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_AnalyzerPath_System_String_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.AnalyzerPath(System.String,System.String)">AnalyzerPath(String, String)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the top directory of the analyzer.</p>
+<p>アナライザーのトップディレクトリのパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task&lt;string&gt; AnalyzerPath(string packageName, string version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td><p>Target package name.</p>
+<p>対象のパッケージ名。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Target package version.</p>
+<p>対象のパッケージバージョン。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path. However, if the analyzer does not exist, an empty string is returned.</p>
+<p>パス。ただしアナライザーが存在しないときは空文字列が返る。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when a package is not installed.</p>
+<p>パッケージがインストールされていないときに投げられる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_AnalyzerPathInternal_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.AnalyzerPathInternal*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_AnalyzerPathInternal_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.AnalyzerPathInternal(System.String)">AnalyzerPathInternal(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string AnalyzerPathInternal(string installPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">installPath</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_InstallPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.InstallPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_InstallPath_kumaS_NuGetImporter_Editor_DataClasses_Package_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.InstallPath(kumaS.NuGetImporter.Editor.DataClasses.Package)">InstallPath(Package)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the installation location.</p>
+<p>インストール先のパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">abstract Task&lt;string&gt; InstallPath(Package package)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a></td>
+        <td><span class="parametername">package</span></td>
+        <td><p>Target package.</p>
+<p>対象のパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path.</p>
+<p>パス。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_InstallPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.InstallPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_InstallPath_System_String_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.InstallPath(System.String,System.String)">InstallPath(String, String)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the installation location.</p>
+<p>インストール先のパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">abstract Task&lt;string&gt; InstallPath(string packageName, string version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td><p>Target package name.</p>
+<p>対象のパッケージ名。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Target package version.</p>
+<p>対象のパッケージバージョン。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path.</p>
+<p>パス。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_LibraryPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.LibraryPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_LibraryPath_kumaS_NuGetImporter_Editor_DataClasses_Package_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.LibraryPath(kumaS.NuGetImporter.Editor.DataClasses.Package)">LibraryPath(Package)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the top directory of the library.</p>
+<p>ライブラリのトップディレクトリのパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task&lt;string&gt; LibraryPath(Package package)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a></td>
+        <td><span class="parametername">package</span></td>
+        <td><p>Target package.</p>
+<p>対象のパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path. However, if the managed library does not exist, an empty string is returned.</p>
+<p>パス。ただしマネージドライブラリが存在しないときは空文字列が返る。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when a package is not installed.</p>
+<p>パッケージがインストールされていないときに投げられる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_LibraryPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.LibraryPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_LibraryPath_System_String_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.LibraryPath(System.String,System.String)">LibraryPath(String, String)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the top directory of the library.</p>
+<p>ライブラリのトップディレクトリのパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task&lt;string&gt; LibraryPath(string packageName, string version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td><p>Target package name.</p>
+<p>対象のパッケージ名。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Target package version.</p>
+<p>対象のパッケージバージョン。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path. However, if the managed library does not exist, an empty string is returned.</p>
+<p>パス。ただしマネージドライブラリが存在しないときは空文字列が返る。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when a package is not installed.</p>
+<p>パッケージがインストールされていないときに投げられる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_LibraryPathInternal_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.LibraryPathInternal*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_LibraryPathInternal_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.LibraryPathInternal(System.String)">LibraryPathInternal(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string LibraryPathInternal(string installPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">installPath</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_UnityEditorPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.UnityEditorPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_UnityEditorPath_kumaS_NuGetImporter_Editor_DataClasses_Package_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.UnityEditorPath(kumaS.NuGetImporter.Editor.DataClasses.Package)">UnityEditorPath(Package)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the Unity Editor directory of the library.</p>
+<p>ライブラリのUnity Editorディレクトリのパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task&lt;string&gt; UnityEditorPath(Package package)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a></td>
+        <td><span class="parametername">package</span></td>
+        <td><p>Target package.</p>
+<p>対象のパッケージ。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path. However, if the directory for Unity Editor does not exist, an empty string is returned.</p>
+<p>パス。ただしUnity Editor用のディレクトリが存在しないときは空文字列が返る。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when a package is not installed.</p>
+<p>パッケージがインストールされていないときに投げられる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_UnityEditorPath_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.UnityEditorPath*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_UnityEditorPath_System_String_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.UnityEditorPath(System.String,System.String)">UnityEditorPath(String, String)</h4>
+  <div class="markdown level1 summary"><p>Get the path to the Unity Editor directory of the library.</p>
+<p>ライブラリのUnity Editorディレクトリのパスを取得。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">async Task&lt;string&gt; UnityEditorPath(string packageName, string version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">packageName</span></td>
+        <td><p>Target package name.</p>
+<p>対象のパッケージ名。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Target package version.</p>
+<p>対象のパッケージバージョン。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>Path. However, if the directory for Unity Editor does not exist, an empty string is returned.</p>
+<p>パス。ただしUnity Editor用のディレクトリが存在しないときは空文字列が返る。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when a package is not installed.</p>
+<p>パッケージがインストールされていないときに投げられる。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_UnityEditorPathInternal_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.UnityEditorPathInternal*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackagePathSolverBase_UnityEditorPathInternal_System_String_" data-uid="kumaS.NuGetImporter.Editor.PackagePathSolverBase.UnityEditorPathInternal(System.String)">UnityEditorPathInternal(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string UnityEditorPathInternal(string installPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">installPath</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            NuGet importer for Unity documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
