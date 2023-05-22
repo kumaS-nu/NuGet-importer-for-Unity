@@ -97,7 +97,7 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     var before = NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer;
-                    EditorGUILayout.LabelField("Create admdef for analyzer");
+                    EditorGUILayout.LabelField("Create asmdef for analyzer");
                     GUILayout.FlexibleSpace();
                     NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer = EditorGUILayout.Toggle(NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer);
                     if (before != NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer)
