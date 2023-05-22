@@ -706,8 +706,8 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         public static async Task<bool> IsPackageCorrectlyInstalled(Package package)
         {
-            PackageControllerBase controller = GetPackageController();
-            var installPath = await controller.GetInstallPath(package);
+            PackagePathSolverBase pathSolver = GetPackagePathSolver();
+            var installPath = await pathSolver.InstallPath(package);
             return Directory.Exists(installPath);
         }
 
@@ -897,6 +897,19 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
+        internal static PackagePathSolverBase GetPackagePathSolver()
+        {
+            switch (NuGetImporterSettings.Instance.InstallMethod)
+            {
+                case InstallMethod.AsUPM:
+                    return new UPMPathSolver();
+                case InstallMethod.AsAssets:
+                    return new AssetPathSolver();
+                default:
+                    throw new InvalidDataException();
+            }
+        }
+
         private static PackageControllerBase GetPackageController()
         {
             switch (NuGetImporterSettings.Instance.InstallMethod)
@@ -916,7 +929,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 controller = GetPackageController();
             }
-            var path = await controller.GetInstallPath(package);
+            var path = await controller.pathSolver.InstallPath(package);
             var packageId = "";
             if (controller is PackageControllerAsUPM)
             {

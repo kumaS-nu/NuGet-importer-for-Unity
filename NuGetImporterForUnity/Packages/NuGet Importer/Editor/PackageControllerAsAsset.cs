@@ -15,6 +15,11 @@ namespace kumaS.NuGetImporter.Editor
         private static readonly object managedPluginListLock = new object();
         private static readonly string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
 
+        public PackageControllerAsAsset() 
+        {
+            pathSolver = new AssetPathSolver();
+        }
+
         /// <inheritdoc/>
         internal override void DeletePluginsOutOfDirectory(Package package)
         {
@@ -53,14 +58,6 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-#pragma warning disable CS1998
-        /// <inheritdoc/>
-        internal override async Task<string> GetInstallPath(Package package)
-        {
-            return Path.Combine(PackageManager.DataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
-        }
-#pragma warning restore CS1998
-
         /// <inheritdoc/>
         internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
@@ -70,7 +67,7 @@ namespace kumaS.NuGetImporter.Editor
                 Directory.CreateDirectory(topDirectory);
             }
 
-            Task<string> task = GetInstallPath(package);
+            Task<string> task = pathSolver.InstallPath(package);
             await ExtractPackageAsync(package);
             var installPath = await task;
             var asm = new PackageManagedPluginList

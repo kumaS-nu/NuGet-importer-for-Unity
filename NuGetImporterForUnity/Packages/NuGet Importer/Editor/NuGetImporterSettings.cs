@@ -313,5 +313,22 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
         }
+
+        [SerializeField]
+        private bool isCreateAsmdefForAnalyzer = true;
+
+        public bool IsCreateAsmdefForAnalyzer
+        {
+            get => isCreateAsmdefForAnalyzer;
+            set
+            {
+                var changed = isCreateAsmdefForAnalyzer != value;
+                isCreateAsmdefForAnalyzer = value;
+                if (changed)
+                {
+                    Save();
+                }
+            }
+        }
     }
 }

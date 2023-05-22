@@ -9,23 +9,20 @@ using UnityEngine;
 
 namespace kumaS.NuGetImporter.Editor
 {
-    internal class PackageControllerAsUPM : PackageControllerBase
+    internal sealed class PackageControllerAsUPM : PackageControllerBase
     {
+        public PackageControllerAsUPM() 
+        {
+            pathSolver = new UPMPathSolver();
+        }
+
         /// <inheritdoc/>
         internal override void DeletePluginsOutOfDirectory(Package package) { }
 
         /// <inheritdoc/>
-        internal override async Task<string> GetInstallPath(Package package)
-        {
-            Catalog catalog = await NuGet.GetCatalog(package.id);
-            Catalogentry selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
-            return Path.Combine(PackageManager.DataPath.Replace("Assets", "Packages"), selectedCatalog.id);
-        }
-
-        /// <inheritdoc/>
         internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
-            Task<string> task = GetInstallPath(package);
+            Task<string> task = pathSolver.InstallPath(package);
             Task<Catalog> task2 = NuGet.GetCatalog(package.id);
             await ExtractPackageAsync(package);
             var installPath = await task;
