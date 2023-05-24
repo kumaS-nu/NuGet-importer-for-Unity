@@ -1072,13 +1072,13 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 8,
-          "skipped_file_count": 6
+          "skipped_file_count": 8
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 69,
-          "skipped_file_count": 52
+          "skipped_file_count": 68
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
