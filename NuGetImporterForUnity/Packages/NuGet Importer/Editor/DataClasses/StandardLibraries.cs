@@ -34,12 +34,15 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         private static void GetDefaultUnityAssembly()
         {
             var projectPath = Path.GetDirectoryName(Application.dataPath).Replace("\\", "/");
-            Assembly playerAssembly = CompilationPipeline.GetAssemblies(AssembliesType.Player).First();
-            var standardRef = playerAssembly.compiledAssemblyReferences
+            Assembly playerAssembly = CompilationPipeline.GetAssemblies(AssembliesType.Player).FirstOrDefault();
+            if (playerAssembly != default)
+            {
+                var standardRef = playerAssembly.compiledAssemblyReferences
                                 .Select(p => p.Replace("\\", "/"))
                                 .Where(p => !p.StartsWith(projectPath)).Select(p => Path.GetFileNameWithoutExtension(p))
                                 .ToList();
-            packageIds = standardRef.AsReadOnly();
+                packageIds = standardRef.AsReadOnly();
+            }
             profile = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
         }
     }
