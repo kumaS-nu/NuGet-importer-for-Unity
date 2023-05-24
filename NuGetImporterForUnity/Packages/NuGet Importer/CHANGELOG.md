@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.3.1] - 2023-05-24
+
+- Fix occasional UI bugs
+
 ## [3.3.0] - 2023-05-22
 
 - Auto-generate Assembly Definition files for analyzers
