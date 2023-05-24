@@ -285,8 +285,13 @@ namespace kumaS.NuGetImporter.Editor
             {
                 isAddedSummary = true;
             }
-            summary = new PackageSummary(data, PackageManager.Installed.package.First(package => package.id == data.items[0].items[0].catalogEntry.id).version);
-            deteal = data;
+            var package = PackageManager.Installed.package.Where(package => package.id == data.items[0].items[0].catalogEntry.id);
+            if (package != null && package.Any())
+            {
+                summary = new PackageSummary(data, package.First().version);
+                deteal = data;
+            }
+
             Repaint();
         }
 
@@ -391,7 +396,11 @@ namespace kumaS.NuGetImporter.Editor
                     foreach (KeyValuePair<string, Catalog> catalog in PackageManager.installedCatalog)
                     {
                         catalogs.Add(catalog.Value);
-                        tasks.Add(catalog.Value.GetIcon(PackageManager.installed.package.First(package => package.id == catalog.Value.items[0].items[0].catalogEntry.id).version));
+                        var package = PackageManager.Installed.package.Where(package => package.id == catalog.Value.items[0].items[0].catalogEntry.id);
+                        if (package != null && package.Any())
+                        {
+                            tasks.Add(catalog.Value.GetIcon(package.First().version));
+                        }
                     }
                 }
             }
