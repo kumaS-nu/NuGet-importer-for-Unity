@@ -20,17 +20,14 @@ namespace kumaS.NuGetImporter.Editor
         internal override void DeletePluginsOutOfDirectory(Package package) { }
 
         /// <inheritdoc/>
-        internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
+        internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)>
+            InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
             Task<string> task = pathSolver.InstallPath(package);
-            Task<Catalog> task2 = NuGet.GetCatalog(package.id);
+            Task<Catalog> task2 = NuGet.GetCatalog(package.ID);
             await ExtractPackageAsync(package);
             var installPath = await task;
-            var asm = new PackageManagedPluginList
-            {
-                packageName = package.id,
-                fileNames = new List<string>()
-            };
+            var asm = new PackageManagedPluginList { packageName = package.ID, fileNames = new List<string>() };
             GetLoadableAsmInPackage(installPath, asm);
             if (asm.fileNames.Intersect(loadedAsmName).Any())
             {
@@ -39,8 +36,12 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             Catalog catalog = await task2;
-            Catalogentry selectedCatalog = catalog.GetAllCatalogEntry().First(entry => entry.version == package.version);
-            File.WriteAllText(Path.Combine(installPath, "package.json"), JsonUtility.ToJson(selectedCatalog.ToPackageJson(), true));
+            Catalogentry selectedCatalog =
+                catalog.GetAllCatalogEntry().First(entry => entry.version == package.Version);
+            File.WriteAllText(
+                Path.Combine(installPath, "package.json"),
+                JsonUtility.ToJson(selectedCatalog.ToPackageJson(), true)
+            );
             return (false, package, asm);
         }
     }

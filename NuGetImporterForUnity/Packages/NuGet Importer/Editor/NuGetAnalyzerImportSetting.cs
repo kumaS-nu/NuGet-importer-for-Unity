@@ -27,20 +27,17 @@ namespace kumaS.NuGetImporter.Editor
                 return true;
 #endif
                 System.Type codeEditorType = CodeEditor.CurrentEditor.GetType();
-                if (codeEditorType.Name == "VSCodeScriptEditor")
-                {
+                switch (codeEditorType.Name) {
+                    case "VSCodeScriptEditor":
 #if HAS_ROSLYN_ANALZYER_SUPPORT_VSCODE
-                    return true;
+                        return true;
 #endif
-                }
-
-                if (codeEditorType.Name == "RiderScriptEditor")
-                {
+                    case "RiderScriptEditor":
 #if HAS_ROSLYN_ANALZYER_SUPPORT_RIDER
-                    return true;
+                        return true;
 #endif
+                    default: return false;
                 }
-                return false;
             }
         }
 #pragma warning restore CS0162 // 到達できないコードが検出されました
@@ -88,14 +85,7 @@ namespace kumaS.NuGetImporter.Editor
                 isChanged = true;
             }
 
-            foreach (var deletedAsset in deletedAssets)
-            {
-                if (deletedAsset.EndsWith(".dll") && IsAnalyzer(deletedAsset))
-                {
-                    isChanged = true;
-                    break;
-                }
-            }
+            if (deletedAssets.Any(deletedAsset => deletedAsset.EndsWith(".dll") && IsAnalyzer(deletedAsset))) { isChanged = true; }
 
             // Explicitly update project files since they are not automatically updated.
             if (isChanged)
@@ -121,12 +111,12 @@ namespace kumaS.NuGetImporter.Editor
                                          .Select(p => p.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)).ToArray();
             var xDoc = XDocument.Parse(content);
             XElement project = xDoc.Root;
-            XNamespace xNamespace = project.Name.Namespace;
+            XNamespace xNamespace = project!.Name.Namespace;
 
             var baseDir = Path.GetDirectoryName(path);
-            IEnumerable<XElement> analyzer = project.Descendants(xNamespace + "Analyzer");
+            ICollection<XElement> analyzer = project.Descendants(xNamespace + "Analyzer").ToArray();
             var analyzersInCsproj = new HashSet<string>(analyzer.Select(x => x.Attribute("Include")?.Value).Where(x => x != null));
-            IEnumerable<string> addingAnalyzer = analyzersPath.Where(x => !analyzersInCsproj.Contains(x));
+            ICollection<string> addingAnalyzer = analyzersPath.Where(x => !analyzersInCsproj.Contains(x)).ToArray();
             if (!addingAnalyzer.Any())
             {
                 return content;
@@ -142,7 +132,7 @@ namespace kumaS.NuGetImporter.Editor
                 analyzerGroup = new XElement("ItemGroup");
                 project.Add(analyzerGroup);
             }
-            analyzerGroup.Add(addingAnalyzer.Select(x => new XElement(xNamespace + "Analyzer", new XAttribute("Include", x))));
+            analyzerGroup!.Add(addingAnalyzer.Select(x => new XElement(xNamespace + "Analyzer", new XAttribute("Include", x))));
             content = xDoc.ToString();
             return content;
         }

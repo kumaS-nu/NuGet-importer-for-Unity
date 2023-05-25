@@ -24,7 +24,6 @@ namespace kumaS.NuGetImporter.Editor
     public static partial class PackageManager
     {
         private static bool working = false;
-        private static string dataPath;
         private static readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
 
         private static string ProjectSettingsPath { get => DataPath.Replace("Assets", "ProjectSettings"); }
@@ -62,7 +61,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Catalogs of installed packages.</para>
         /// <para>インストールされているパッケージのカタログ。</para>
         /// </value>
-        internal static Dictionary<string, Catalog> installedCatalog = new Dictionary<string, Catalog>();
+        internal static readonly Dictionary<string, Catalog> installedCatalog = new Dictionary<string, Catalog>();
 
         /// <value>
         /// <para>Path to install. 0:UPM・1:Assets/Plugins</para>
@@ -74,35 +73,35 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Installed package.</para>
         /// <para>インストールされているパッケージ。</para>
         /// </value>
-        internal static InstalledPackages Installed { get => installed; }
+        internal static InstalledPackages Installed => installed;
 
         /// <summary>
         /// <para>Root packages.</para>
         /// <para>ルートのパッケージ。</para>
         /// </summary>
-        internal static InstalledPackages RootPackage { get => rootPackage; }
+        internal static InstalledPackages RootPackage => rootPackage;
 
         /// <summary>
         /// <para>Packages that are not under control within a project.</para>
         /// <para>プロジェクト内で監理外にあるパッケージ。</para>
         /// </summary>
-        internal static InstalledPackages ExiestingPackage { get => existingPackage; }
+        internal static InstalledPackages ExistingPackage => existingPackage;
 
         /// <summary>
         /// <para>The name of the assembly included in the package.</para>
         /// <para>パッケージに含まれているアセンブリ名。</para>
         /// </summary>
-        internal static ManagedPluginList PackageAsmNames { get => packageAsmNames; }
+        internal static ManagedPluginList PackageAsmNames => packageAsmNames;
 
-        public static ReadOnlyControlledPackages ControlledPackages { get => controlledPackages.Clone(); }
+        public static ReadOnlyControlledPackages ControlledPackages => controlledPackages.Clone();
 
-        public static IReadOnlyDictionary<string, Catalog> InstalledCatalog { get => installedCatalog; }
+        public static IReadOnlyDictionary<string, Catalog> InstalledCatalog => installedCatalog;
 
         /// <summary>
         /// <para>Thread-safe Application.dataPath.</para>
         /// <para>スレッドセーフなApplication.dataPath。</para>
         /// </summary>
-        public static string DataPath { get => dataPath; }
+        public static string DataPath { get; private set; }
 
         /// <summary>
         /// <para>Save the package installation information.</para>
@@ -136,10 +135,8 @@ namespace kumaS.NuGetImporter.Editor
         {
             if (File.Exists(PackagePath))
             {
-                using (var file = new StreamReader(PackagePath))
-                {
-                    installed = (InstalledPackages)serializer.Deserialize(file);
-                }
+                using var file = new StreamReader(PackagePath);
+                installed = (InstalledPackages)serializer.Deserialize(file);
             }
 
             // Unity2019 is below C# 8.0, so we don't use the compound assignment operator now.
@@ -148,86 +145,69 @@ namespace kumaS.NuGetImporter.Editor
             {
                 installed = new InstalledPackages();
             }
-            if (installed.package == null)
+
+            if (installed.Package == null)
             {
-                installed.package = new List<Package>();
+                installed.Package = new List<Package>();
             }
 
-            if (File.Exists(Path.Combine(dataPath, "rootPackages.xml")))
+            if (File.Exists(Path.Combine(DataPath, "rootPackages.xml")))
             {
-                using (var file = new StreamReader(Path.Combine(dataPath, "rootPackages.xml")))
+                using (var file = new StreamReader(Path.Combine(DataPath, "rootPackages.xml")))
                 {
                     rootPackage = (InstalledPackages)serializer.Deserialize(file);
                 }
+
                 try
                 {
-                    File.Move(Path.Combine(dataPath, "rootPackages.xml"), RootPackagePath);
-                    File.Delete(Path.Combine(dataPath, "rootPackages.xml.meta"));
+                    File.Move(Path.Combine(DataPath, "rootPackages.xml"), RootPackagePath);
+                    File.Delete(Path.Combine(DataPath, "rootPackages.xml.meta"));
                 }
-                catch (Exception) { }
+                catch (Exception)
+                {
+                    // ignore move/delete result
+                }
             }
             else if (File.Exists(RootPackagePath))
             {
-                using (var file = new StreamReader(RootPackagePath))
-                {
-                    rootPackage = (InstalledPackages)serializer.Deserialize(file);
-                }
+                using var file = new StreamReader(RootPackagePath);
+                rootPackage = (InstalledPackages)serializer.Deserialize(file);
             }
 
-            if (rootPackage == null)
-            {
-                rootPackage = new InstalledPackages();
-            }
-            if (rootPackage.package == null)
-            {
-                rootPackage.package = new List<Package>();
-            }
+            rootPackage ??= new InstalledPackages();
+            rootPackage.Package ??= new List<Package>();
 
             if (File.Exists(ExistingPackagePath))
             {
-                using (var file = new StreamReader(ExistingPackagePath))
-                {
-                    existingPackage = (InstalledPackages)serializer.Deserialize(file);
-                }
+                using var file = new StreamReader(ExistingPackagePath);
+                existingPackage = (InstalledPackages)serializer.Deserialize(file);
             }
 
-            if (existingPackage == null)
-            {
-                existingPackage = new InstalledPackages();
-            }
-            if (existingPackage.package == null)
-            {
-                existingPackage.package = new List<Package>();
-            }
+            existingPackage ??= new InstalledPackages();
+            existingPackage.Package ??= new List<Package>();
 
             if (File.Exists(PackageAsmNamesPath))
             {
                 packageAsmNames = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(PackageAsmNamesPath));
             }
 
-            if (packageAsmNames == null)
-            {
-                packageAsmNames = new ManagedPluginList();
-            }
+            packageAsmNames ??= new ManagedPluginList();
 
-            if (packageAsmNames.managedList == null)
-            {
-                packageAsmNames.managedList = new List<PackageManagedPluginList>();
-            }
+            packageAsmNames.managedList ??= new List<PackageManagedPluginList>();
 
             controlledPackages = new ReadOnlyControlledPackages(installed, rootPackage, existingPackage);
         }
 
         [InitializeOnLoadMethod]
-        public static async Task Boot()
+        public static async void Boot()
         {
-            dataPath = Application.dataPath;
+            DataPath = Application.dataPath;
 
             await RebootProcessAsync();
 
-            if (installed.package != null)
+            if (installed.Package != null)
             {
-                IEnumerable<Task<Catalog>> tasks = installed.package.Select(pkg => NuGet.GetCatalog(pkg.id));
+                IEnumerable<Task<Catalog>> tasks = installed.Package.Select(pkg => NuGet.GetCatalog(pkg.ID));
                 Catalog[] catalogs = await Task.WhenAll(tasks);
                 lock (installedCatalog)
                 {
@@ -266,7 +246,12 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         if (await IsNeedToFix())
                         {
-                            if (EditorUtility.DisplayDialog("NuGet importer", "We find packages that are not installed. Do you install these packages?", "Yes", "No"))
+                            if (EditorUtility.DisplayDialog(
+                                    "NuGet importer",
+                                    "We find packages that are not installed. Do you install these packages?",
+                                    "Yes",
+                                    "No"
+                                ))
                             {
                                 OperationResult fixResult = await FixPackagesAsync(false);
                                 EditorUtility.DisplayDialog("NuGet importer", fixResult.Message, "OK");
@@ -280,7 +265,9 @@ namespace kumaS.NuGetImporter.Editor
                 Load();
                 return;
             }
-            (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) = GetRestartInfo();
+
+            (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) =
+                GetRestartInfo();
             await Task.Delay(1000);
             var operation = new RebootProcess(willInstall, willRoot, rollbackPackages);
             OperationResult result = await operation.Execute();
@@ -292,9 +279,10 @@ namespace kumaS.NuGetImporter.Editor
 
             if (result.State == OperationState.Success)
             {
-                rootPackage.package.Clear();
-                rootPackage.package.AddRange(willRoot.package);
+                rootPackage.Package.Clear();
+                rootPackage.Package.AddRange(willRoot.Package);
             }
+
             Save();
 
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
@@ -308,79 +296,71 @@ namespace kumaS.NuGetImporter.Editor
         private static (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) GetRestartInfo()
         {
             InstalledPackages willInstall;
-            using (var file = new StreamReader(dataPath.Replace("Assets", "WillInstall.xml")))
+            using (var file = new StreamReader(DataPath.Replace("Assets", "WillInstall.xml")))
             {
                 willInstall = (InstalledPackages)serializer.Deserialize(file);
             }
 
-            if (willInstall == null || willInstall.package == null || !willInstall.package.Any())
+            if (willInstall == null || willInstall.Package == null || !willInstall.Package.Any())
             {
-                File.Delete(dataPath.Replace("Assets", "WillInstall.xml"));
-                File.Delete(dataPath.Replace("Assets", "WillPackage.xml"));
-                File.Delete(dataPath.Replace("Assets", "WillRoot.xml"));
-                if (File.Exists(dataPath.Replace("Assets", "RollBackPackage.xml")))
+                File.Delete(DataPath.Replace("Assets", "WillInstall.xml"));
+                File.Delete(DataPath.Replace("Assets", "WillPackage.xml"));
+                File.Delete(DataPath.Replace("Assets", "WillRoot.xml"));
+                if (File.Exists(DataPath.Replace("Assets", "RollBackPackage.xml")))
                 {
-                    File.Delete(dataPath.Replace("Assets", "RollBackPackage.xml"));
-                    File.Delete(dataPath.Replace("Assets", "RollBackRoot.xml"));
+                    File.Delete(DataPath.Replace("Assets", "RollBackPackage.xml"));
+                    File.Delete(DataPath.Replace("Assets", "RollBackRoot.xml"));
                 }
+
                 return (willInstall, willInstall, willInstall);
             }
 
             InstalledPackages willRoot;
-            using (var file = new StreamReader(dataPath.Replace("Assets", "WillRoot.xml")))
+            using (var file = new StreamReader(DataPath.Replace("Assets", "WillRoot.xml")))
             {
                 willRoot = (InstalledPackages)serializer.Deserialize(file);
             }
 
-            if (willRoot == null)
-            {
-                willRoot = new InstalledPackages();
-            }
-            if (willRoot.package == null)
-            {
-                willRoot.package = new List<Package>();
-            }
+            willRoot ??= new InstalledPackages();
+            willRoot.Package ??= new List<Package>();
 
-            File.Delete(dataPath.Replace("Assets", "WillInstall.xml"));
-            File.Delete(dataPath.Replace("Assets", "WillPackage.xml"));
-            File.Delete(dataPath.Replace("Assets", "WillRoot.xml"));
+            File.Delete(DataPath.Replace("Assets", "WillInstall.xml"));
+            File.Delete(DataPath.Replace("Assets", "WillPackage.xml"));
+            File.Delete(DataPath.Replace("Assets", "WillRoot.xml"));
 
             InstalledPackages rollBackPackage = default;
-            if (File.Exists(dataPath.Replace("Assets", "RollBackPackage.xml")))
+            if (File.Exists(DataPath.Replace("Assets", "RollBackPackage.xml")))
             {
-                using (var file = new StreamReader(dataPath.Replace("Assets", "RollBackPackage.xml")))
+                using (var file = new StreamReader(DataPath.Replace("Assets", "RollBackPackage.xml")))
                 {
                     rollBackPackage = (InstalledPackages)serializer.Deserialize(file);
                 }
-                File.Delete(dataPath.Replace("Assets", "RollBackPackage.xml"));
 
-                if (rollBackPackage == null)
-                {
-                    rollBackPackage = new InstalledPackages();
-                }
-                if (rollBackPackage.package == null)
-                {
-                    rollBackPackage.package = new List<Package>();
-                }
+                File.Delete(DataPath.Replace("Assets", "RollBackPackage.xml"));
+
+                rollBackPackage ??= new InstalledPackages();
+                rollBackPackage.Package ??= new List<Package>();
                 installed = rollBackPackage;
             }
 
-            if (File.Exists(dataPath.Replace("Assets", "RollBackRoot.xml")))
+            if (File.Exists(DataPath.Replace("Assets", "RollBackRoot.xml")))
             {
                 InstalledPackages rollBackRoot;
-                using (var file = new StreamReader(dataPath.Replace("Assets", "RollBackRoot.xml")))
+                using (var file = new StreamReader(DataPath.Replace("Assets", "RollBackRoot.xml")))
                 {
                     rollBackRoot = (InstalledPackages)serializer.Deserialize(file);
                 }
-                File.Delete(dataPath.Replace("Assets", "RollBackRoot.xml"));
+
+                File.Delete(DataPath.Replace("Assets", "RollBackRoot.xml"));
 
                 if (rollBackRoot == null)
                 {
                     rollBackRoot = new InstalledPackages();
                 }
-                if (rollBackRoot.package == null)
+
+                if (rollBackRoot.Package == null)
                 {
-                    rollBackRoot.package = new List<Package>();
+                    rollBackRoot.Package = new List<Package>();
                 }
 
                 rootPackage = rollBackRoot;
@@ -399,14 +379,19 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     return;
                 }
+
                 if (dirs.Length != 0 && Path.GetFileName(dirs[0]) != "Plugins")
                 {
                     return;
                 }
+
                 Directory.Delete(Path.Combine(DataPath, "Packages"), true);
                 File.Delete(Path.Combine(DataPath, "Packages.meta"));
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                // ignore delete result
+            }
         }
 
         /// <summary>
@@ -433,18 +418,25 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Operation result.</para>
         /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<OperationResult> InstallPackageAsync(string packageId, string version, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<OperationResult> InstallPackageAsync(
+            string packageId,
+            string version,
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
             var operation = new InstallPackage(packageId, version, onlyStable, method);
             OperationResult result = await operation.Execute();
-            if (result.State == OperationState.Success)
+            if (result.State != OperationState.Success)
             {
-                rootPackage.package.Add(installed.package.First(pkg => pkg.id == packageId));
-                var rootId = rootPackage.package.Select(pkg => pkg.id).ToArray();
-                rootPackage.package.Clear();
-                rootPackage.package.AddRange(installed.package.Where(pkg => rootId.Contains(pkg.id)));
-                Save();
+                return result;
             }
+
+            rootPackage.Package.Add(installed.Package.First(pkg => pkg.ID == packageId));
+            var rootId = rootPackage.Package.Select(pkg => pkg.ID).ToArray();
+            rootPackage.Package.Clear();
+            rootPackage.Package.AddRange(installed.Package.Where(pkg => rootId.Contains(pkg.ID)));
+            Save();
             return result;
         }
 
@@ -466,8 +458,8 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static Task<OperationResult> FixPackageAsync(string packageId, bool confirm = true)
         {
-            var operateion = new FixSpecifiedPackage(packageId, confirm);
-            return operateion.Execute();
+            var operation = new FixSpecifiedPackage(packageId, confirm);
+            return operation.Execute();
         }
 
         /// <summary>
@@ -484,8 +476,8 @@ namespace kumaS.NuGetImporter.Editor
         /// </returns>
         public static Task<OperationResult> FixPackagesAsync(bool confirm = true)
         {
-            var operateion = new FixPackages(confirm);
-            return operateion.Execute();
+            var operation = new FixPackages(confirm);
+            return operation.Execute();
         }
 
         /// <summary>
@@ -508,15 +500,20 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Operation result.</para>
         /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<OperationResult> UninstallPackagesAsync(string packageId, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<OperationResult> UninstallPackagesAsync(
+            string packageId,
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
             var operation = new UninstallPackages(packageId, onlyStable, method);
             OperationResult result = await operation.Execute();
             if (result.State == OperationState.Success)
             {
-                rootPackage.package.RemoveAll(pkg => pkg.id == packageId);
+                rootPackage.Package.RemoveAll(pkg => pkg.ID == packageId);
                 Save();
             }
+
             return result;
         }
 
@@ -544,17 +541,24 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Operation result.</para>
         /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<OperationResult> ChangePackageVersionAsync(string packageId, string newVersion, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<OperationResult> ChangePackageVersionAsync(
+            string packageId,
+            string newVersion,
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
-            var operateion = new ChangePackageVersion(packageId, newVersion, onlyStable, method);
-            OperationResult result = await operateion.Execute();
-            if (result.State == OperationState.Success)
+            var operation = new ChangePackageVersion(packageId, newVersion, onlyStable, method);
+            OperationResult result = await operation.Execute();
+            if (result.State != OperationState.Success)
             {
-                var rootId = rootPackage.package.Select(pkg => pkg.id).ToArray();
-                rootPackage.package.Clear();
-                rootPackage.package.AddRange(installed.package.Where(pkg => rootId.Contains(pkg.id)));
-                Save();
+                return result;
             }
+
+            var rootId = rootPackage.Package.Select(pkg => pkg.ID).ToArray();
+            rootPackage.Package.Clear();
+            rootPackage.Package.AddRange(installed.Package.Where(pkg => rootId.Contains(pkg.ID)));
+            Save();
             return result;
         }
 
@@ -580,21 +584,17 @@ namespace kumaS.NuGetImporter.Editor
             {
                 throw new InvalidOperationException("Now other processes are in progress.");
             }
+
             working = true;
 
             try
             {
                 Load();
-                var installed = await Task.WhenAll(Installed.package.Select(async pkg =>
-                {
-                    return await IsPackageCorrectlyInstalled(pkg);
-                }));
+                var correctlyInstalled = await Task.WhenAll(
+                    Installed.Package.Select(async pkg => await IsPackageCorrectlyInstalled(pkg))
+                );
 
-                return !installed.All(b => b);
-            }
-            catch (Exception)
-            {
-                throw;
+                return !correctlyInstalled.All(b => b);
             }
             finally
             {
@@ -614,16 +614,15 @@ namespace kumaS.NuGetImporter.Editor
         {
             var operation = new ConvertToUPM();
             OperationResult result = await operation.Execute();
-            if (result.State == OperationState.Success)
+            if (result.State != OperationState.Success) return result;
+            try
             {
-                try
-                {
-                    File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json"));
-                    File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json.meta"));
-                }
-                catch (Exception) { }
-                DeleteAsAssetDirectory();
+                File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json"));
+                File.Delete(Path.Combine(DataPath, "Packages", "managedPluginList.json.meta"));
             }
+            catch (Exception) { }
+
+            DeleteAsAssetDirectory();
             return result;
         }
 
@@ -645,11 +644,13 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     Directory.CreateDirectory(Path.Combine(DataPath, "Packages"));
                 }
+
                 if (!File.Exists(Path.Combine(DataPath, "Packages", "managedPluginList.json")))
                 {
                     File.WriteAllText(Path.Combine(DataPath, "Packages", "managedPluginList.json"), "");
                 }
             }
+
             return result;
         }
 
@@ -669,17 +670,21 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Operation result.</para>
         /// <para>操作結果。</para>
         /// </returns>
-        public static async Task<OperationResult> ReInstallAllPackages(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<OperationResult> ReInstallAllPackages(
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
             var operation = new ReInstallAllPackages(onlyStable, method);
             OperationResult result = await operation.Execute();
             if (result.State == OperationState.Success)
             {
-                var rootId = rootPackage.package.Select(pkg => pkg.id).ToArray();
-                rootPackage.package.Clear();
-                rootPackage.package.AddRange(installed.package.Where(pkg => rootId.Contains(pkg.id)));
+                var rootId = rootPackage.Package.Select(pkg => pkg.ID).ToArray();
+                rootPackage.Package.Clear();
+                rootPackage.Package.AddRange(installed.Package.Where(pkg => rootId.Contains(pkg.ID)));
                 Save();
             }
+
             return result;
         }
 
@@ -690,12 +695,12 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<OperationResult> CleanUp()
         {
             packageAsmNames.managedList.Clear();
-            existingPackage.package.Clear();
+            existingPackage.Package.Clear();
             Save();
             var operation = new CleanUp();
             OperationResult result = await operation.Execute();
-            installed.package.Clear();
-            rootPackage.package.Clear();
+            installed.Package.Clear();
+            rootPackage.Package.Clear();
             Save();
             return result;
         }
@@ -739,22 +744,21 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown if an invalid lock is given.</para>
         /// <para>不正なロックが与えられた場合発生する。</para>
         /// </exception>
-        internal static async Task<IEnumerable<Package>> InstallSelectPackages(IEnumerable<Package> packages, IEnumerable<string> loadAssembliesFullName, OperateLock operateLock, PackageControllerBase controller = default)
+        internal static async Task<ICollection<Package>> InstallSelectPackages(
+            IEnumerable<Package> packages,
+            IEnumerable<string> loadAssembliesFullName,
+            OperateLock operateLock,
+            PackageControllerBase controller = default
+        )
         {
             if (operateLock.IsInvalid)
             {
                 throw new InvalidOperationException("You operate with invalid operator lock.");
             }
 
-            if (controller == default)
-            {
-                controller = GetPackageController();
-            }
-            var tasks = new List<Task<(bool isSkipped, Package package, PackageManagedPluginList asm)>>();
-            foreach (Package package in packages)
-            {
-                tasks.Add(controller.InstallPackageAsync(package, loadAssembliesFullName));
-            }
+            controller ??= GetPackageController();
+            var tasks = packages.Select(package => controller.InstallPackageAsync(package, loadAssembliesFullName))
+                                .ToList();
             (bool isSkipped, Package package, PackageManagedPluginList asm)[] result = await Task.WhenAll(tasks);
             var ret = new List<Package>();
             foreach ((var isSkipped, Package package, PackageManagedPluginList asm) in result)
@@ -765,14 +769,14 @@ namespace kumaS.NuGetImporter.Editor
                 }
                 else
                 {
-                    Catalog catalog = await NuGet.GetCatalog(package.id);
-                    installedCatalog[package.id] = catalog;
+                    Catalog catalog = await NuGet.GetCatalog(package.ID);
+                    installedCatalog[package.ID] = catalog;
                     packageAsmNames.managedList.Add(asm);
                 }
             }
 
-            installed.package.AddRange(result.Where(value => !value.isSkipped).Select(value => value.package));
-            existingPackage.package.AddRange(ret.Select(r => new Package() { id = r.id, version = "0.0.0" }));
+            installed.Package.AddRange(result.Where(value => !value.isSkipped).Select(value => value.package));
+            existingPackage.Package.AddRange(ret.Select(r => new Package() { ID = r.ID, Version = "0.0.0" }));
 
             return ret;
         }
@@ -817,17 +821,22 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown if an invalid lock is given.</para>
         /// <para>不正なロックが与えられた場合発生する。</para>
         /// </exception>
-        internal static async Task<Process> OperateWithNativeAsync(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root, OperateLock operateLock, PackageControllerBase controller = default)
+        internal static async Task<Process> OperateWithNativeAsync(
+            IEnumerable<Package> installs,
+            ICollection<Package> manageds,
+            ICollection<Package> natives,
+            IEnumerable<Package> allInstalled,
+            IEnumerable<Package> root,
+            OperateLock operateLock,
+            PackageControllerBase controller = default
+        )
         {
             if (operateLock.IsInvalid)
             {
                 throw new InvalidOperationException("You operate with invalid operator lock.");
             }
 
-            if (controller == default)
-            {
-                controller = GetPackageController();
-            }
+            controller ??= GetPackageController();
 
             using (var file = new StreamWriter(DataPath.Replace("Assets", "RollBackPackage.xml")))
             {
@@ -840,9 +849,18 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             Process process = await controller.OperateWithNativeAsync(installs, manageds, natives, allInstalled, root);
-            installed.package.RemoveAll(package => manageds.Any(manage => manage.id == package.id) || natives.Any(native => native.id == package.id));
-            rootPackage.package.RemoveAll(package => !installed.package.Any(installed => installed.id == package.id));
-            packageAsmNames.managedList = packageAsmNames.managedList.Where(pkg => installed.package.Any(installed => installed.id == pkg.packageName)).ToList();
+            installed.Package.RemoveAll(
+                package => manageds.Any(manage => manage.ID == package.ID)
+                           || natives.Any(native => native.ID == package.ID)
+            );
+            rootPackage.Package.RemoveAll(package => !installed.Package.Any(installed => installed.ID == package.ID));
+            packageAsmNames.managedList = packageAsmNames.managedList
+                                                         .Where(
+                                                             pkg => installed.Package.Any(
+                                                                 installed => installed.ID == pkg.packageName
+                                                             )
+                                                         )
+                                                         .ToList();
             Save();
             return process;
         }
@@ -867,7 +885,11 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown if an invalid lock is given.</para>
         /// <para>不正なロックが与えられた場合発生する。</para>
         /// </exception>
-        internal static async Task UninstallSelectedPackages(IEnumerable<Package> packages, OperateLock operateLock, PackageControllerBase controller = default)
+        internal static async Task UninstallSelectedPackages(
+            ICollection<Package> packages,
+            OperateLock operateLock,
+            PackageControllerBase controller = default
+        )
         {
             if (operateLock.IsInvalid)
             {
@@ -888,9 +910,9 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         foreach (Package package in packages)
                         {
-                            installed.package.RemoveAll(pkg => pkg.id == package.id);
-                            installedCatalog.Remove(package.id);
-                            packageAsmNames.managedList.RemoveAll(names => names.packageName == package.id);
+                            installed.Package.RemoveAll(pkg => pkg.ID == package.ID);
+                            installedCatalog.Remove(package.ID);
+                            packageAsmNames.managedList.RemoveAll(names => names.packageName == package.ID);
                         }
                     }
                 }
@@ -925,26 +947,31 @@ namespace kumaS.NuGetImporter.Editor
 
         internal static async Task<bool> HasNativeAsync(Package package, PackageControllerBase controller = default)
         {
-            if (controller == default)
-            {
-                controller = GetPackageController();
-            }
+            controller ??= GetPackageController();
             var path = await controller.pathSolver.InstallPath(package);
             var packageId = "";
             if (controller is PackageControllerAsUPM)
             {
-                var jsonPath = Path.Combine(path, "package.json");
-                if (File.Exists(jsonPath))
-                {
-                    var jsonString = File.ReadAllText(jsonPath);
-                    try
-                    {
-                        PackageJson json = JsonUtility.FromJson<PackageJson>(jsonString);
-                        packageId = json.name;
-                    }
-                    catch (Exception) { }
-                }
+                return HasNative(path, packageId);
             }
+
+            var jsonPath = Path.Combine(path, "package.json");
+            if (!File.Exists(jsonPath))
+            {
+                return HasNative(path, packageId);
+            }
+
+            var jsonString = File.ReadAllText(jsonPath);
+            try
+            {
+                PackageJson json = JsonUtility.FromJson<PackageJson>(jsonString);
+                packageId = json.name;
+            }
+            catch (Exception)
+            {
+                // ignore json parse error
+            }
+
             return HasNative(path, packageId);
         }
 
@@ -966,6 +993,7 @@ namespace kumaS.NuGetImporter.Editor
                     splited[1] = packageId;
                     filePath = string.Join("/", splited);
                 }
+
                 var plugin = AssetImporter.GetAtPath(filePath) as PluginImporter;
                 if (plugin != null)
                 {
@@ -976,18 +1004,10 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
-            foreach (var directory in Directory.GetDirectories(path))
-            {
-                if (HasNative(directory, packageId))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Directory.GetDirectories(path).Any(directory => HasNative(directory, packageId));
         }
 
-        internal static async Task DownloadProgress(float startPos, IEnumerable<string> packageNames)
+        internal static async Task DownloadProgress(float startPos, ICollection<string> packageNames)
         {
             var allPackageSize = new Dictionary<string, long>();
             var downloadedSumSizeLog = new LinkedList<long>();
@@ -1005,9 +1025,9 @@ namespace kumaS.NuGetImporter.Editor
                     else
                     {
                         finishedCount++;
-                        if (allPackageSize.ContainsKey(packageName))
+                        if (allPackageSize.TryGetValue(packageName, out var value))
                         {
-                            downloadedSumSize += allPackageSize[packageName];
+                            downloadedSumSize += value;
                         }
                     }
                 }
@@ -1023,15 +1043,25 @@ namespace kumaS.NuGetImporter.Editor
                     packageSumSize += packageSize.Value;
                 }
 
-                var downloadSpead = 0L;
+                var downloadSpeed = 0L;
                 if (downloadedSumSizeLog.Count == 10)
                 {
-                    downloadSpead = downloadedSumSize - downloadedSumSizeLog.First.Value;
+                    downloadSpeed = downloadedSumSize - downloadedSumSizeLog.First.Value;
                 }
 
                 if (working)
                 {
-                    EditorUtility.DisplayProgressBar("NuGet importer", "Downloading packages. " + ToReadableSizeString(downloadedSumSize) + " / " + ToReadableSizeString(packageSumSize) + "    " + ToReadableSizeString(downloadSpead) + "/s", startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize);
+                    EditorUtility.DisplayProgressBar(
+                        "NuGet importer",
+                        "Downloading packages. "
+                        + ToReadableSizeString(downloadedSumSize)
+                        + " / "
+                        + ToReadableSizeString(packageSumSize)
+                        + "    "
+                        + ToReadableSizeString(downloadSpeed)
+                        + "/s",
+                        startPos + (1 - startPos) * 5 / 6 * downloadedSumSize / packageSumSize
+                    );
                 }
 
                 downloadedSumSizeLog.AddLast(downloadedSumSize);
@@ -1049,7 +1079,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        private static readonly string[] unit = new string[] { "B", "KB", "MB", "GB", "TB" };
+        private static readonly string[] unit = { "B", "KB", "MB", "GB", "TB" };
 
         private static string ToReadableSizeString(long size)
         {
@@ -1075,6 +1105,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     return;
                 }
+
                 EditorApplication.LockReloadAssemblies();
                 AssetDatabase.StartAssetEditing();
                 Load();
@@ -1087,6 +1118,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     return;
                 }
+
                 working = false;
                 IsInvalid = true;
                 EditorUtility.ClearProgressBar();
@@ -1094,6 +1126,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     Save();
                 }
+
                 AssetDatabase.StopAssetEditing();
                 if (result != OperationState.Cancel)
                 {
@@ -1102,12 +1135,16 @@ namespace kumaS.NuGetImporter.Editor
                     Client.Resolve();
 #endif
                 }
+
                 EditorApplication.RepaintProjectWindow();
                 EditorApplication.UnlockReloadAssemblies();
                 if (result == OperationState.Progress)
                 {
-                    throw new InvalidOperationException("Operation result is not set. However, you are finishing operation.");
+                    throw new InvalidOperationException(
+                        "Operation result is not set. However, you are finishing operation."
+                    );
                 }
+
                 if (result != OperationState.Cancel)
                 {
                     CompilationPipeline.RequestScriptCompilation();

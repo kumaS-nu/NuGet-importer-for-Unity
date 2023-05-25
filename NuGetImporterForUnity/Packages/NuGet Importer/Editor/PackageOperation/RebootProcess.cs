@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,30 +17,47 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         private readonly InstalledPackages root;
         private readonly InstalledPackages rPackages;
 
-        public RebootProcess(InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages)
+        public RebootProcess(
+            InstalledPackages willInstall,
+            InstalledPackages willRoot,
+            InstalledPackages rollbackPackages
+        )
         {
-            isConfirmToUser = false;
+            IsConfirmToUser = false;
             install = willInstall;
             root = willRoot;
             rPackages = rollbackPackages;
         }
 
         /// <inheritdoc/>
-        protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
+        protected override async Task<OperationResult> Operate(
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock
+        )
         {
-            if (!install.package.Any())
+            if (!install.Package.Any())
             {
                 return new OperationResult(OperationState.Success, "Uninstallation finished.");
             }
 
-            var deletePackages = new Package[0];
+            var deletePackages = Array.Empty<Package>();
 
             if (rPackages != null)
             {
-                deletePackages = rPackages.package.Where(rollback => !controlledPackages.installed.Any(pkg => pkg.id == rollback.id)).ToArray();
+                deletePackages = rPackages.Package
+                                          .Where(
+                                              rollback => controlledPackages.Installed.All(pkg => pkg.ID != rollback.ID)
+                                          )
+                                          .ToArray();
             }
 
-            return await ManipulatePackages(root.package, install.package, deletePackages, controlledPackages, operateLock);
+            return await ManipulatePackages(
+                root.Package,
+                install.Package,
+                deletePackages,
+                controlledPackages,
+                operateLock
+            );
         }
     }
 }

@@ -9,57 +9,57 @@ namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
     /// <para>Base class for resolving package paths.</para>
-    /// <para>ƒpƒbƒP[ƒW‚ÌƒpƒX‚ğ‰ğŒˆ‚·‚é‚½‚ß‚ÌŠî’êƒNƒ‰ƒXB</para>
+    /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ãƒ‘ã‚¹ã‚’è§£æ±ºã™ã‚‹ãŸã‚ã®åŸºåº•ã‚¯ãƒ©ã‚¹ã€‚</para>
     /// </summary>
     internal abstract class PackagePathSolverBase
     {
         /// <summary>
         /// <para>Get the path to the installation location.</para>
-        /// <para>ƒCƒ“ƒXƒg[ƒ‹æ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å…ˆã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="package">
         /// <para>Target package.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWB</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path.</para>
-        /// <para>ƒpƒXB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚</para>
         /// </returns>
         internal abstract Task<string> InstallPath(Package package);
 
         /// <summary>
         /// <para>Get the path to the installation location.</para>
-        /// <para>ƒCƒ“ƒXƒg[ƒ‹æ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å…ˆã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="packageName">
         /// <para>Target package name.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒW–¼B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã€‚</para>
         /// </param>
         /// <param name="version">
         /// <para>Target package version.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWƒo[ƒWƒ‡ƒ“B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path.</para>
-        /// <para>ƒpƒXB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚</para>
         /// </returns>
         internal abstract Task<string> InstallPath(string packageName, string version);
 
         /// <summary>
         /// <para>Get the path to the top directory of the analyzer.</para>
-        /// <para>ƒAƒiƒ‰ƒCƒU[‚ÌƒgƒbƒvƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ã‚¢ãƒŠãƒ©ã‚¤ã‚¶ãƒ¼ã®ãƒˆãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="package">
         /// <para>Target package.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWB</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path. However, if the analyzer does not exist, an empty string is returned.</para>
-        /// <para>ƒpƒXB‚½‚¾‚µƒAƒiƒ‰ƒCƒU[‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚Í‹ó•¶š—ñ‚ª•Ô‚éB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚ãŸã ã—ã‚¢ãƒŠãƒ©ã‚¤ã‚¶ãƒ¼ãŒå­˜åœ¨ã—ãªã„ã¨ãã¯ç©ºæ–‡å­—åˆ—ãŒè¿”ã‚‹ã€‚</para>
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// <para>Thrown when a package is not installed.</para>
-        /// <para>ƒpƒbƒP[ƒW‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚É“Š‚°‚ç‚ê‚éB</para>
+        /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨ãã«æŠ•ã’ã‚‰ã‚Œã‚‹ã€‚</para>
         /// </exception>
         internal async Task<string> AnalyzerPath(Package package)
         {
@@ -69,23 +69,23 @@ namespace kumaS.NuGetImporter.Editor
 
         /// <summary>
         /// <para>Get the path to the top directory of the analyzer.</para>
-        /// <para>ƒAƒiƒ‰ƒCƒU[‚ÌƒgƒbƒvƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ã‚¢ãƒŠãƒ©ã‚¤ã‚¶ãƒ¼ã®ãƒˆãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="packageName">
         /// <para>Target package name.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒW–¼B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã€‚</para>
         /// </param>
         /// <param name="version">
         /// <para>Target package version.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWƒo[ƒWƒ‡ƒ“B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path. However, if the analyzer does not exist, an empty string is returned.</para>
-        /// <para>ƒpƒXB‚½‚¾‚µƒAƒiƒ‰ƒCƒU[‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚Í‹ó•¶š—ñ‚ª•Ô‚éB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚ãŸã ã—ã‚¢ãƒŠãƒ©ã‚¤ã‚¶ãƒ¼ãŒå­˜åœ¨ã—ãªã„ã¨ãã¯ç©ºæ–‡å­—åˆ—ãŒè¿”ã‚‹ã€‚</para>
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// <para>Thrown when a package is not installed.</para>
-        /// <para>ƒpƒbƒP[ƒW‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚É“Š‚°‚ç‚ê‚éB</para>
+        /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨ãã«æŠ•ã’ã‚‰ã‚Œã‚‹ã€‚</para>
         /// </exception>
         internal async Task<string> AnalyzerPath(string packageName, string version)
         {
@@ -123,19 +123,19 @@ namespace kumaS.NuGetImporter.Editor
 
         /// <summary>
         /// <para>Get the path to the top directory of the library.</para>
-        /// <para>ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒgƒbƒvƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒˆãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="package">
         /// <para>Target package.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWB</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path. However, if the managed library does not exist, an empty string is returned.</para>
-        /// <para>ƒpƒXB‚½‚¾‚µƒ}ƒl[ƒWƒhƒ‰ƒCƒuƒ‰ƒŠ‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚Í‹ó•¶š—ñ‚ª•Ô‚éB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚ãŸã ã—ãƒãƒãƒ¼ã‚¸ãƒ‰ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒå­˜åœ¨ã—ãªã„ã¨ãã¯ç©ºæ–‡å­—åˆ—ãŒè¿”ã‚‹ã€‚</para>
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// <para>Thrown when a package is not installed.</para>
-        /// <para>ƒpƒbƒP[ƒW‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚É“Š‚°‚ç‚ê‚éB</para>
+        /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨ãã«æŠ•ã’ã‚‰ã‚Œã‚‹ã€‚</para>
         /// </exception>
         internal async Task<string> LibraryPath(Package package)
         {
@@ -145,23 +145,23 @@ namespace kumaS.NuGetImporter.Editor
 
         /// <summary>
         /// <para>Get the path to the top directory of the library.</para>
-        /// <para>ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒgƒbƒvƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒˆãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="packageName">
         /// <para>Target package name.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒW–¼B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã€‚</para>
         /// </param>
         /// <param name="version">
         /// <para>Target package version.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWƒo[ƒWƒ‡ƒ“B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path. However, if the managed library does not exist, an empty string is returned.</para>
-        /// <para>ƒpƒXB‚½‚¾‚µƒ}ƒl[ƒWƒhƒ‰ƒCƒuƒ‰ƒŠ‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚Í‹ó•¶š—ñ‚ª•Ô‚éB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚ãŸã ã—ãƒãƒãƒ¼ã‚¸ãƒ‰ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒå­˜åœ¨ã—ãªã„ã¨ãã¯ç©ºæ–‡å­—åˆ—ãŒè¿”ã‚‹ã€‚</para>
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// <para>Thrown when a package is not installed.</para>
-        /// <para>ƒpƒbƒP[ƒW‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚É“Š‚°‚ç‚ê‚éB</para>
+        /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨ãã«æŠ•ã’ã‚‰ã‚Œã‚‹ã€‚</para>
         /// </exception>
         internal async Task<string> LibraryPath(string packageName, string version)
         {
@@ -182,29 +182,24 @@ namespace kumaS.NuGetImporter.Editor
                 return "";
             }
             var frameworkPath = Directory.EnumerateDirectories(managedPath);
-            if (!frameworkPath.Any())
-            {
-                return "";
-            }
-
-            return frameworkPath.First();
+            return frameworkPath.FirstOrDefault() ?? "";
         }
 
         /// <summary>
         /// <para>Get the path to the Unity Editor directory of the library.</para>
-        /// <para>ƒ‰ƒCƒuƒ‰ƒŠ‚ÌUnity EditorƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®Unity Editorãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="package">
         /// <para>Target package.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWB</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path. However, if the directory for Unity Editor does not exist, an empty string is returned.</para>
-        /// <para>ƒpƒXB‚½‚¾‚µUnity Editor—p‚ÌƒfƒBƒŒƒNƒgƒŠ‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚Í‹ó•¶š—ñ‚ª•Ô‚éB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚ãŸã ã—Unity Editorç”¨ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ãªã„ã¨ãã¯ç©ºæ–‡å­—åˆ—ãŒè¿”ã‚‹ã€‚</para>
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// <para>Thrown when a package is not installed.</para>
-        /// <para>ƒpƒbƒP[ƒW‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚É“Š‚°‚ç‚ê‚éB</para>
+        /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨ãã«æŠ•ã’ã‚‰ã‚Œã‚‹ã€‚</para>
         /// </exception>
         internal async Task<string> UnityEditorPath(Package package)
         {
@@ -214,23 +209,23 @@ namespace kumaS.NuGetImporter.Editor
 
         /// <summary>
         /// <para>Get the path to the Unity Editor directory of the library.</para>
-        /// <para>ƒ‰ƒCƒuƒ‰ƒŠ‚ÌUnity EditorƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX‚ğæ“¾B</para>
+        /// <para>ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®Unity Editorãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’å–å¾—ã€‚</para>
         /// </summary>
         /// <param name="packageName">
         /// <para>Target package name.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒW–¼B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã€‚</para>
         /// </param>
         /// <param name="version">
         /// <para>Target package version.</para>
-        /// <para>‘ÎÛ‚ÌƒpƒbƒP[ƒWƒo[ƒWƒ‡ƒ“B</para>
+        /// <para>å¯¾è±¡ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã€‚</para>
         /// </param>
         /// <returns>
         /// <para>Path. However, if the directory for Unity Editor does not exist, an empty string is returned.</para>
-        /// <para>ƒpƒXB‚½‚¾‚µUnity Editor—p‚ÌƒfƒBƒŒƒNƒgƒŠ‚ª‘¶İ‚µ‚È‚¢‚Æ‚«‚Í‹ó•¶š—ñ‚ª•Ô‚éB</para>
+        /// <para>ãƒ‘ã‚¹ã€‚ãŸã ã—Unity Editorç”¨ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ãªã„ã¨ãã¯ç©ºæ–‡å­—åˆ—ãŒè¿”ã‚‹ã€‚</para>
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// <para>Thrown when a package is not installed.</para>
-        /// <para>ƒpƒbƒP[ƒW‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚É“Š‚°‚ç‚ê‚éB</para>
+        /// <para>ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨ãã«æŠ•ã’ã‚‰ã‚Œã‚‹ã€‚</para>
         /// </exception>
         internal async Task<string> UnityEditorPath(string packageName, string version)
         {
@@ -246,11 +241,7 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             var editorPath = Path.Combine(installPath, "Unity", "Editor");
-            if (!Directory.Exists(editorPath))
-            {
-                return "";
-            }
-            return editorPath;
+            return !Directory.Exists(editorPath) ? "" : editorPath;
         }
     }
 }

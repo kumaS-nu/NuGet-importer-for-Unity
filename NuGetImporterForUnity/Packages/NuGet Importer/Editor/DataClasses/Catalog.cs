@@ -22,8 +22,8 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <para>CatalogEntryがこの中に入っている。</para>
         /// </value>
         public Item[] items;
-        [NonSerialized]
-        public Texture2D icon;
+
+        [NonSerialized] public Texture2D icon;
     }
 
     [Serializable]
@@ -40,6 +40,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <para>CatalogEntryがこの中に入っている。</para>
         /// </value>
         public Item1[] items;
+
         public string parent;
         public string lower;
         public string upper;
@@ -58,6 +59,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <para>CatalogEntryがこの中に入っている。</para>
         /// </value>
         public Catalogentry catalogEntry;
+
         public string packageContent;
         public string registration;
     }

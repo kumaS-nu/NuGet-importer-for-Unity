@@ -81,10 +81,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         public static void WrapedLabel(string text, int fontSize = -1, GUIStyle style = null, params GUILayoutOption[] options)
         {
-            if (style == null)
-            {
-                style = new GUIStyle(EditorStyles.wordWrappedLabel);
-            }
+            style ??= new GUIStyle(EditorStyles.wordWrappedLabel);
 
             if (fontSize < 0)
             {

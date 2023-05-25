@@ -26,6 +26,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <para>APIのエントリーポイント。URL。</para>
         /// </value>
         public string nuget_id;
+
         public string nuget_type;
 
         /// <value>
@@ -33,6 +34,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <para>APIについてのコメント。説明が書いてある。</para>
         /// </value>
         public string comment;
+
         public string clientVersion;
     }
 }

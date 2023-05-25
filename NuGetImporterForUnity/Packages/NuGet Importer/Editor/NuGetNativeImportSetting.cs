@@ -14,28 +14,43 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class NuGetNativeImportSetting : AssetPostprocessor
     {
-        private static BuildTarget[] allTarget = default;
+        private static BuildTarget[] _allTarget;
 
         private static void SetAllTarget()
         {
-            if (allTarget != default)
+            if (_allTarget != default)
             {
                 return;
             }
 
-            System.Collections.Generic.IEnumerable<(Enum val, string name)> all = Enum.GetValues(typeof(BuildTarget)).Cast<Enum>().ToArray()
-                            .Zip(Enum.GetNames(typeof(BuildTarget)), (val, name) => (val, name));
+            System.Collections.Generic.IEnumerable<(Enum val, string name)> all = Enum.GetValues(typeof(BuildTarget))
+                .Cast<Enum>()
+                .ToArray()
+                .Zip(Enum.GetNames(typeof(BuildTarget)), (val, name) => (val, name));
 
-            BuildTarget[] nonObsolete = all.Where(platform => !typeof(BuildTarget).GetMember(platform.name).First()
-                                                .GetCustomAttributes(typeof(ObsoleteAttribute), false)
-                                                .Any(attr => attr is ObsoleteAttribute))
-                                .Select(platform => platform.val).Cast<BuildTarget>().ToArray();
-            allTarget = nonObsolete.Where(platform => platform > 0).ToArray();
+            BuildTarget[] nonObsolete = all.Where(
+                                               platform => !typeof(BuildTarget).GetMember(platform.name)
+                                                                               .First()
+                                                                               .GetCustomAttributes(
+                                                                                   typeof(ObsoleteAttribute),
+                                                                                   false
+                                                                               )
+                                                                               .Any(attr => attr is ObsoleteAttribute)
+                                           )
+                                           .Select(platform => platform.val)
+                                           .Cast<BuildTarget>()
+                                           .ToArray();
+            _allTarget = nonObsolete.Where(platform => platform > 0).ToArray();
         }
 
         // I don't know why, but I can't set it up in OnPreprocessAsset().
 
-        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        private static void OnPostprocessAllAssets(
+            string[] importedAssets,
+            string[] deletedAssets,
+            string[] movedAssets,
+            string[] movedFromAssetPaths
+        )
         {
             SetAllTarget();
 
@@ -52,14 +67,17 @@ namespace kumaS.NuGetImporter.Editor
                     continue;
                 }
 
-                (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) current = GetImportSettings(native);
+                (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) current =
+                    GetImportSettings(native);
                 (bool enableOnEditor, BuildTarget target, string architecture) target = GetPluginSetting(imported);
                 if (current.isNoTarget && !current.enableOnEditor && target.target == BuildTarget.NoTarget)
                 {
                     continue;
                 }
 
-                if (current.target == target.target && current.enableOnEditor == target.enableOnEditor && current.architecture == target.architecture)
+                if (current.target == target.target
+                    && current.enableOnEditor == target.enableOnEditor
+                    && current.architecture == target.architecture)
                 {
                     continue;
                 }
@@ -80,10 +98,11 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Is there a target? Is it valid on the editor? Target. Architecture.</para>
         /// <para>ターゲットが無いか。エディタ上で有効か。ターゲット。アーキテクチャ。</para>
         /// </returns>
-        private static (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture) GetImportSettings(PluginImporter pluginImporter)
+        private static (bool isNoTarget, bool enableOnEditor, BuildTarget target, string architecture)
+            GetImportSettings(PluginImporter pluginImporter)
         {
             var enableOnEditor = pluginImporter.GetCompatibleWithEditor();
-            BuildTarget[] enableTarget = allTarget.Where(t => pluginImporter.GetCompatibleWithPlatform(t)).ToArray();
+            BuildTarget[] enableTarget = _allTarget.Where(pluginImporter.GetCompatibleWithPlatform).ToArray();
             BuildTarget target = enableTarget.Length == 1 ? enableTarget[0] : BuildTarget.NoTarget;
             var architecture = target == BuildTarget.NoTarget ? "" : pluginImporter.GetPlatformData(target, "CPU");
             return (!enableTarget.Any(), enableOnEditor, target, architecture);
@@ -101,61 +120,55 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Is it valid on the editor? Target. Architecture.</para>
         /// <para>エディタ上で有効か。ターゲット。アーキテクチャ。</para>
         /// </returns>
-        private static (bool enableOnEditor, BuildTarget target, string architecture) GetPluginSetting(string pluginPath)
+        private static (bool enableOnEditor, BuildTarget target, string architecture) GetPluginSetting(
+            string pluginPath
+        )
         {
             BuildTarget target = BuildTarget.NoTarget;
             var architecture = "";
             var enableOnEditor = false;
             var platformPath = pluginPath;
-            while (platformPath.Contains("native"))
+            while (platformPath!.Contains("native"))
             {
                 platformPath = Path.GetDirectoryName(platformPath);
             }
-            var platform = new NativePlatform(platformPath);
-            switch (platform.architecture)
-            {
-                case nameof(ArchitectureType.x64):
-                    architecture = platform.os == nameof(OSType.ios) ? "X64" : "x86_64";
-                    break;
-                case nameof(ArchitectureType.x86):
-                    architecture = "x86";
-                    break;
-                case nameof(ArchitectureType.arm64):
-                    architecture = "ARM64";
-                    break;
-                case nameof(ArchitectureType.arm):
-                    architecture = "ARMv7";
-                    break;
-            }
 
-            switch (platform.os)
+            var platform = new NativePlatform(platformPath);
+            architecture = platform.Architecture switch
             {
-                case nameof(OSType.win):
+                nameof(ArchitectureType.X64) => platform.OS == nameof(OSType.IOS) ? "X64" : "x86_64",
+                nameof(ArchitectureType.X86) => "x86",
+                nameof(ArchitectureType.ARM64) => "ARM64",
+                nameof(ArchitectureType.ARM) => "ARMv7",
+                _ => architecture
+            };
+
+            switch (platform.OS)
+            {
+                case nameof(OSType.Win):
                     target = WindowsProcess(platform);
                     enableOnEditor = true;
                     break;
-                case nameof(OSType.osx):
+                case nameof(OSType.OSX):
                     target = OSXProcess(platform);
                     enableOnEditor = true;
                     break;
-                case nameof(OSType.android):
+                case nameof(OSType.Android):
                     target = AndroidProcess(platform);
-                    enableOnEditor = false;
                     break;
-                case nameof(OSType.ios):
+                case nameof(OSType.IOS):
                     target = IOSProcess(platform);
-                    enableOnEditor = false;
                     break;
-                case nameof(OSType.linux):
-                case nameof(OSType.ubuntu):
-                case nameof(OSType.debian):
-                case nameof(OSType.fedora):
-                case nameof(OSType.centos):
-                case nameof(OSType.alpine):
-                case nameof(OSType.rhel):
-                case nameof(OSType.arch):
-                case nameof(OSType.opensuse):
-                case nameof(OSType.gentoo):
+                case nameof(OSType.Linux):
+                case nameof(OSType.Ubuntu):
+                case nameof(OSType.Debian):
+                case nameof(OSType.Fedora):
+                case nameof(OSType.Centos):
+                case nameof(OSType.Alpine):
+                case nameof(OSType.Rhel):
+                case nameof(OSType.Arch):
+                case nameof(OSType.Opensuse):
+                case nameof(OSType.Gentoo):
                     target = LinuxProcess(platform);
                     enableOnEditor = true;
                     break;
@@ -164,7 +177,12 @@ namespace kumaS.NuGetImporter.Editor
             return (enableOnEditor, target, architecture);
         }
 
-        private static void SetImportSetting(PluginImporter pluginImporter, bool enableOnEditor, BuildTarget target, string architecture)
+        private static void SetImportSetting(
+            PluginImporter pluginImporter,
+            bool enableOnEditor,
+            BuildTarget target,
+            string architecture
+        )
         {
             pluginImporter.SetCompatibleWithAnyPlatform(false);
             pluginImporter.SetCompatibleWithEditor(enableOnEditor);
@@ -186,7 +204,7 @@ namespace kumaS.NuGetImporter.Editor
                     break;
             }
 
-            foreach (BuildTarget tar in allTarget)
+            foreach (BuildTarget tar in _allTarget)
             {
                 if (tar != target)
                 {
@@ -219,14 +237,14 @@ namespace kumaS.NuGetImporter.Editor
 
         private static BuildTarget WindowsProcess(NativePlatform platform)
         {
-            switch (platform.architecture)
+            switch (platform.Architecture)
             {
-                case nameof(ArchitectureType.x64):
+                case nameof(ArchitectureType.X64):
                     return BuildTarget.StandaloneWindows64;
-                case nameof(ArchitectureType.x86):
+                case nameof(ArchitectureType.X86):
                     return BuildTarget.StandaloneWindows;
-                case nameof(ArchitectureType.arm64):
-                case nameof(ArchitectureType.arm):
+                case nameof(ArchitectureType.ARM64):
+                case nameof(ArchitectureType.ARM):
                     return BuildTarget.WSAPlayer;
                 default:
                     return BuildTarget.NoTarget;
@@ -235,12 +253,12 @@ namespace kumaS.NuGetImporter.Editor
 
         private static BuildTarget OSXProcess(NativePlatform platform)
         {
-            switch (platform.architecture)
+            switch (platform.Architecture)
             {
-                case nameof(ArchitectureType.x64):
+                case nameof(ArchitectureType.X64):
                     return BuildTarget.StandaloneOSX;
 #if UNITY_2020_2_OR_NEWER
-                case nameof(ArchitectureType.arm64):
+                case nameof(ArchitectureType.ARM64):
                     return BuildTarget.StandaloneOSX;
 #endif
                 default:
@@ -250,9 +268,9 @@ namespace kumaS.NuGetImporter.Editor
 
         private static BuildTarget LinuxProcess(NativePlatform platform)
         {
-            switch (platform.architecture)
+            switch (platform.Architecture)
             {
-                case nameof(ArchitectureType.x64):
+                case nameof(ArchitectureType.X64):
                     return BuildTarget.StandaloneLinux64;
                 default:
                     return BuildTarget.NoTarget;
@@ -261,12 +279,12 @@ namespace kumaS.NuGetImporter.Editor
 
         private static BuildTarget AndroidProcess(NativePlatform platform)
         {
-            switch (platform.architecture)
+            switch (platform.Architecture)
             {
-                case nameof(ArchitectureType.x64):
-                case nameof(ArchitectureType.x86):
-                case nameof(ArchitectureType.arm64):
-                case nameof(ArchitectureType.arm):
+                case nameof(ArchitectureType.X64):
+                case nameof(ArchitectureType.X86):
+                case nameof(ArchitectureType.ARM64):
+                case nameof(ArchitectureType.ARM):
                     return BuildTarget.Android;
                 default:
                     return BuildTarget.NoTarget;
@@ -275,10 +293,10 @@ namespace kumaS.NuGetImporter.Editor
 
         private static BuildTarget IOSProcess(NativePlatform platform)
         {
-            switch (platform.architecture)
+            switch (platform.Architecture)
             {
-                case nameof(ArchitectureType.arm64):
-                case nameof(ArchitectureType.arm):
+                case nameof(ArchitectureType.ARM64):
+                case nameof(ArchitectureType.ARM):
                     return BuildTarget.iOS;
                 default:
                     return BuildTarget.NoTarget;

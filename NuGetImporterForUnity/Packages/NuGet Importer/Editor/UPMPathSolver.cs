@@ -8,14 +8,14 @@ namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
     /// <para>Class for resolving the path of packages to be installed in UPM.</para>
-    /// <para>UPM‚ÉƒCƒ“ƒXƒg[ƒ‹‚·‚éƒpƒbƒP[ƒW‚ÌƒpƒX‚ğ‰ğŒˆ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB</para>
+    /// <para>UPMã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ãƒ‘ã‚¹ã‚’è§£æ±ºã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚</para>
     /// </summary>
     internal class UPMPathSolver : PackagePathSolverBase
     {
         /// <inheritdoc/>
         internal override Task<string> InstallPath(Package package)
         {
-            return InstallPath(package.id, package.version);
+            return InstallPath(package.ID, package.Version);
         }
 
         /// <inheritdoc/>

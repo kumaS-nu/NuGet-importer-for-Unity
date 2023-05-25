@@ -15,35 +15,40 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     /// </summary>
     public static class StandardLibraries
     {
-        private static ApiCompatibilityLevel profile = default;
+        private static ApiCompatibilityLevel _profile;
 
-        private static IList<string> packageIds = default;
+        private static IList<string> _packageIds;
+
         public static IList<string> PackageIds
         {
             get
             {
-                if (profile != PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
+                if (_profile
+                    != PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
                 {
                     GetDefaultUnityAssembly();
                 }
-                return packageIds;
+
+                return _packageIds;
             }
         }
 
         [InitializeOnLoadMethod]
         private static void GetDefaultUnityAssembly()
         {
-            var projectPath = Path.GetDirectoryName(Application.dataPath).Replace("\\", "/");
+            var projectPath = Path.GetDirectoryName(Application.dataPath)!.Replace("\\", "/");
             Assembly playerAssembly = CompilationPipeline.GetAssemblies(AssembliesType.Player).FirstOrDefault();
             if (playerAssembly != default)
             {
                 var standardRef = playerAssembly.compiledAssemblyReferences
-                                .Select(p => p.Replace("\\", "/"))
-                                .Where(p => !p.StartsWith(projectPath)).Select(p => Path.GetFileNameWithoutExtension(p))
-                                .ToList();
-                packageIds = standardRef.AsReadOnly();
+                                                .Select(p => p.Replace("\\", "/"))
+                                                .Where(p => !p.StartsWith(projectPath))
+                                                .Select(Path.GetFileNameWithoutExtension)
+                                                .ToList();
+                _packageIds = standardRef.AsReadOnly();
             }
-            profile = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
+
+            _profile = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
         }
     }
 }

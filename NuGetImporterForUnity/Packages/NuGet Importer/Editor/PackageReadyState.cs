@@ -19,12 +19,20 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         internal static void SetReady()
         {
-            var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
-            if (!symbols.Contains("NUGET_PACKAGE_READY"))
+            var symbols = PlayerSettings
+                          .GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup)
+                          .Split(';')
+                          .ToList();
+            if (symbols.Contains("NUGET_PACKAGE_READY"))
             {
-                symbols.Add("NUGET_PACKAGE_READY");
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", symbols));
+                return;
             }
+
+            symbols.Add("NUGET_PACKAGE_READY");
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(
+                EditorUserBuildSettings.selectedBuildTargetGroup,
+                string.Join(";", symbols)
+            );
         }
 
         /// <summary>
@@ -33,9 +41,15 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         internal static void SetUnReady()
         {
-            var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
+            var symbols = PlayerSettings
+                          .GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup)
+                          .Split(';')
+                          .ToList();
             symbols.Remove("NUGET_PACKAGE_READY");
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", symbols));
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(
+                EditorUserBuildSettings.selectedBuildTargetGroup,
+                string.Join(";", symbols)
+            );
         }
 
         [InitializeOnLoadMethod]
@@ -46,9 +60,15 @@ namespace kumaS.NuGetImporter.Editor
 
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
         {
-            var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(previousTarget)).Split(';').ToList();
+            var symbols = PlayerSettings
+                          .GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(previousTarget))
+                          .Split(';')
+                          .ToList();
             symbols.Remove("NUGET_PACKAGE_READY");
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(previousTarget), string.Join(";", symbols));
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(
+                BuildPipeline.GetBuildTargetGroup(previousTarget),
+                string.Join(";", symbols)
+            );
         }
     }
 }

@@ -15,7 +15,16 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public List<string> AllVersion { get; private set; }
         public List<string> StableVersion { get; private set; }
 
-        internal PackageSummary(Datum data, string installedVersion) : this(data.id, data.title, data.icon, installedVersion, data.GetAllVersion().AsEnumerable().Reverse().ToList(), installedVersion) { }
+        internal PackageSummary(Datum data, string installedVersion) : this(
+            data.id,
+            data.title,
+            data.icon,
+            installedVersion,
+            data.GetAllVersion().AsEnumerable().Reverse().ToList(),
+            installedVersion
+        )
+        { }
+
         internal PackageSummary(Catalog data, string selectedVersion)
         {
             Catalogentry catalogEntry = data.GetAllCatalogEntry().First(entry => entry.version == selectedVersion);
@@ -28,7 +37,14 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             StableVersion = AllVersion.Where(version => !version.Contains('-') && version[0] != '0').ToList();
         }
 
-        public PackageSummary(string id, string title, Texture2D image, string selectedVersion, List<string> allVersion, string installedVersion = null)
+        public PackageSummary(
+            string id,
+            string title,
+            Texture2D image,
+            string selectedVersion,
+            List<string> allVersion,
+            string installedVersion = null
+        )
         {
             PackageId = id;
             Title = title;

@@ -42,16 +42,22 @@ namespace kumaS.NuGetImporter.Editor
 
         private static async Task DeleteAsmdef(IList<Package> packages, PackagePathSolverBase pathResolver)
         {
-            IEnumerable<Task<string>> pathRequest = packages.Select(package => pathResolver.AnalyzerPath(package));
+            IEnumerable<Task<string>> pathRequest = packages.Select(pathResolver.AnalyzerPath);
             var paths = await Task.WhenAll(pathRequest);
 
-            var asmdefPath = paths.Where(path => path != "").SelectMany(path => Directory.GetFiles(path, "*-auto-gen.asmdef", SearchOption.AllDirectories)).ToList();
-            var dummyPath = asmdefPath.SelectMany(path => Directory.GetFiles(Path.GetDirectoryName(path), "*dummy.cs")).ToList();
+            var asmdefPath = paths.Where(path => path != "")
+                                  .SelectMany(
+                                      path => Directory.GetFiles(path, "*-auto-gen.asmdef", SearchOption.AllDirectories)
+                                  )
+                                  .ToList();
+            var dummyPath = asmdefPath.SelectMany(path => Directory.GetFiles(Path.GetDirectoryName(path)!, "*dummy.cs"))
+                                      .ToList();
 
             foreach (var path in asmdefPath)
             {
                 Delete(path);
             }
+
             foreach (var path in dummyPath)
             {
                 Delete(path);
@@ -60,20 +66,19 @@ namespace kumaS.NuGetImporter.Editor
 
         private static void UpdateAnalyzer(Package package, string path)
         {
-            IEnumerable<string> packageAsmdef = Directory.GetFiles(path, "*.asmdef", SearchOption.AllDirectories).Where(f => !f.EndsWith("-auto-gen.asmdef"));
-            var filePath = Path.Combine(path, package.id + "-analyzer-auto-gen.asmdef");
+            IEnumerable<string> packageAsmdef = Directory.GetFiles(path, "*.asmdef", SearchOption.AllDirectories)
+                                                         .Where(f => !f.EndsWith("-auto-gen.asmdef"));
+            var filePath = Path.Combine(path, package.ID + "-analyzer-auto-gen.asmdef");
             if (File.Exists(filePath) || packageAsmdef.Any())
             {
                 return;
             }
-            var adf = new AssemblyDefinitionFile
-            {
-                name = package.id + ".analyzer"
-            };
+
+            var adf = new AssemblyDefinitionFile { name = package.ID + ".analyzer" };
             File.WriteAllText(filePath, JsonUtility.ToJson(adf));
             if (!Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories).Any())
             {
-                File.WriteAllText(Path.Combine(path, Math.Abs(package.id.GetHashCode()).ToString() + "dummy.cs"), "");
+                File.WriteAllText(Path.Combine(path, Math.Abs(package.ID.GetHashCode()) + "dummy.cs"), "");
             }
         }
 

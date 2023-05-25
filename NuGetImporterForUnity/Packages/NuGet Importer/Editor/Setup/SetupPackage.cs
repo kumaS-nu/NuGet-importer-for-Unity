@@ -14,7 +14,7 @@ namespace kumaS.NuGetImporter.Editor.Setup
     /// </summary>
     public class SetupPackage : AssetPostprocessor
     {
-        private static List<ApiCompatibilityLevel> enableApiLevel = new List<ApiCompatibilityLevel>
+        private static readonly List<ApiCompatibilityLevel> EnableApiLevel = new List<ApiCompatibilityLevel>
         {
             ApiCompatibilityLevel.NET_4_6,
             ApiCompatibilityLevel.NET_Standard_2_0
@@ -36,7 +36,7 @@ namespace kumaS.NuGetImporter.Editor.Setup
             var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
 
             ApiCompatibilityLevel apiLevel = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup);
-            if (enableApiLevel.Contains(apiLevel))
+            if (EnableApiLevel.Contains(apiLevel))
             {
                 if (!File.Exists(Path.Combine(Application.dataPath, "csc.rsp")) || !File.ReadAllLines(Path.Combine(Application.dataPath, "csc.rsp")).Contains("-r:System.IO.Compression.FileSystem.dll"))
                 {

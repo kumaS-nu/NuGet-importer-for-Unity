@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,18 +18,33 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         public CleanUp()
         {
-            isConfirmToUser = false;
+            IsConfirmToUser = false;
         }
 
-        protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
+        protected override async Task<OperationResult> Operate(
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock
+        )
         {
-            System.Collections.Generic.IEnumerable<Task<bool>> tasks = controlledPackages.installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg));
+            System.Collections.Generic.IEnumerable<Task<bool>> tasks =
+                controlledPackages.Installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg));
             var hasNatives = await Task.WhenAll(tasks);
             if (hasNatives.Any(isNative => isNative))
             {
-                EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
+                EditorUtility.DisplayDialog(
+                    "NuGet importer",
+                    "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)",
+                    "OK"
+                );
             }
-            return await ManipulatePackages(new Package[0], new Package[0], controlledPackages.installed, controlledPackages, operateLock);
+
+            return await ManipulatePackages(
+                Array.Empty<Package>(),
+                Array.Empty<Package>(),
+                controlledPackages.Installed,
+                controlledPackages,
+                operateLock
+            );
         }
     }
 }

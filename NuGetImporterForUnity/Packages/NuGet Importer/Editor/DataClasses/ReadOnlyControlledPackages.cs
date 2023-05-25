@@ -8,27 +8,35 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     /// </summary>
     public class ReadOnlyControlledPackages
     {
-        public readonly IList<Package> installed;
-        public readonly IList<Package> root;
-        public readonly IList<Package> existing;
+        public readonly IList<Package> Installed;
+        public readonly IList<Package> Root;
+        public readonly IList<Package> Existing;
 
-        public ReadOnlyControlledPackages(InstalledPackages installedPackage, InstalledPackages rootPackage, InstalledPackages existingPackage)
+        public ReadOnlyControlledPackages(
+            InstalledPackages installedPackage,
+            InstalledPackages rootPackage,
+            InstalledPackages existingPackage
+        )
         {
-            installed = installedPackage.package.AsReadOnly();
-            root = rootPackage.package.AsReadOnly();
-            existing = existingPackage.package.AsReadOnly();
+            Installed = installedPackage.Package.AsReadOnly();
+            Root = rootPackage.Package.AsReadOnly();
+            Existing = existingPackage.Package.AsReadOnly();
         }
 
-        private ReadOnlyControlledPackages(IList<Package> installedPackage, IList<Package> rootPackage, IList<Package> existingPackage)
+        private ReadOnlyControlledPackages(
+            IEnumerable<Package> installedPackage,
+            IEnumerable<Package> rootPackage,
+            IEnumerable<Package> existingPackage
+        )
         {
-            installed = new List<Package>(installedPackage).AsReadOnly();
-            root = new List<Package>(rootPackage).AsReadOnly();
-            existing = new List<Package>(existingPackage).AsReadOnly();
+            Installed = new List<Package>(installedPackage).AsReadOnly();
+            Root = new List<Package>(rootPackage).AsReadOnly();
+            Existing = new List<Package>(existingPackage).AsReadOnly();
         }
 
         public ReadOnlyControlledPackages Clone()
         {
-            return new ReadOnlyControlledPackages(installed, root, existing);
+            return new ReadOnlyControlledPackages(Installed, Root, Existing);
         }
     }
 }

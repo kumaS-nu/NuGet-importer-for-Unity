@@ -21,26 +21,26 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public static class NuGet
     {
-        private static readonly List<string> searchQueryService = new List<string>() { "https://azuresearch-usnc.nuget.org/query" };
-        private static string packageBaseAddress = "https://api.nuget.org/v3-flatcontainer/";
-        private static string registrationsBaseUrl = "https://api.nuget.org/v3/registration5-gz-semver2/";
-        private static HttpClient client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
-        private static readonly Dictionary<string, (long packageSize, FileStream downloaded)> downloading = new Dictionary<string, (long, FileStream)>();
+        private static readonly List<string> SearchQueryService = new List<string> { "https://azuresearch-usnc.nuget.org/query" };
+        private static string _packageBaseAddress = "https://api.nuget.org/v3-flatcontainer/";
+        private static string _registrationsBaseUrl = "https://api.nuget.org/v3/registration5-gz-semver2/";
+        private static HttpClient _client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+        private static readonly Dictionary<string, (long packageSize, FileStream downloaded)> Downloading = new Dictionary<string, (long packageSize, FileStream downloaded)>();
 
-        private static List<Task> timeoutSet = new List<Task>();
-        private static Stack<TimeSpan> timeoutStack = new Stack<TimeSpan>();
-        private static Dictionary<Guid, Task> workingTask = new Dictionary<Guid, Task>();
+        private static readonly List<Task> TimeoutSet = new List<Task>();
+        private static readonly Stack<TimeSpan> TimeoutStack = new Stack<TimeSpan>();
+        private static readonly Dictionary<Guid, Task> WorkingTask = new Dictionary<Guid, Task>();
 
-        private static readonly Dictionary<string, SearchResult> searchCache = new Dictionary<string, SearchResult>();
-        private static readonly List<string> searchLog = new List<string>();
-        private static readonly Dictionary<string, Task> gettingSearchs = new Dictionary<string, Task>();
+        private static readonly Dictionary<string, SearchResult> SearchCache = new Dictionary<string, SearchResult>();
+        private static readonly List<string> SearchLog = new List<string>();
+        private static readonly Dictionary<string, Task> GettingSearches = new Dictionary<string, Task>();
 
         /// <value>
         /// <para>For test.</para>
         /// </value>
-        internal static readonly Dictionary<string, Catalog> catalogCache = new Dictionary<string, Catalog>();
-        private static readonly List<string> catalogLog = new List<string>();
-        private static readonly Dictionary<string, Task<string>> gettingCatalogs = new Dictionary<string, Task<string>>();
+        internal static readonly Dictionary<string, Catalog> CatalogCache = new Dictionary<string, Catalog>();
+        private static readonly List<string> CatalogLog = new List<string>();
+        private static readonly Dictionary<string, Task<string>> GettingCatalogs = new Dictionary<string, Task<string>>();
 
         /// <summary>
         /// <para>Initialize the API endpoint.</para>
@@ -50,10 +50,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <c>Task</c>
         /// </returns>
         [InitializeOnLoadMethod]
-        public static async Task InitializeAPIEndPoint()
+        public static async void InitializeAPIEndPoint()
         {
-            client.Timeout = TimeSpan.FromSeconds(NuGetImporterSettings.Instance.Timeout);
-            var responseText = await client.GetStringAsync("https://api.nuget.org/v3/index.json");
+            _client.Timeout = TimeSpan.FromSeconds(NuGetImporterSettings.Instance.Timeout);
+            var responseText = await _client.GetStringAsync("https://api.nuget.org/v3/index.json");
             APIList apiList = JsonUtility.FromJson<APIList>(RefineJson(responseText));
             var searchQueryServices = new List<string>();
             foreach (Resource apiInfo in apiList.resources)
@@ -71,10 +71,10 @@ namespace kumaS.NuGetImporter.Editor
                         }
                         break;
                     case "PackageBaseAddress/3.0.0":
-                        packageBaseAddress = apiInfo.nuget_id;
+                        _packageBaseAddress = apiInfo.nuget_id;
                         break;
                     case "RegistrationsBaseUrl/3.6.0":
-                        registrationsBaseUrl = apiInfo.nuget_id;
+                        _registrationsBaseUrl = apiInfo.nuget_id;
                         break;
                 }
             }
@@ -86,18 +86,18 @@ namespace kumaS.NuGetImporter.Editor
         /// </summary>
         public static void DeleteCache()
         {
-            lock (searchCache)
+            lock (SearchCache)
             {
-                searchCache.Clear();
-                searchLog.Clear();
-                gettingSearchs.Clear();
+                SearchCache.Clear();
+                SearchLog.Clear();
+                GettingSearches.Clear();
             }
 
-            lock (catalogCache)
+            lock (CatalogCache)
             {
-                catalogCache.Clear();
-                catalogLog.Clear();
-                gettingCatalogs.Clear();
+                CatalogCache.Clear();
+                CatalogLog.Clear();
+                GettingCatalogs.Clear();
             }
         }
 
@@ -109,30 +109,30 @@ namespace kumaS.NuGetImporter.Editor
         /// <returns></returns>
         public static async Task SetTimeout(TimeSpan timeout)
         {
-            lock (timeoutStack)
+            lock (TimeoutStack)
             {
-                if (timeoutStack.Any())
+                if (TimeoutStack.Any())
                 {
-                    timeoutStack.Push(timeout);
+                    TimeoutStack.Push(timeout);
                     return;
                 }
-                timeoutStack.Push(timeout);
+                TimeoutStack.Push(timeout);
             }
             Task task = SetWebClientTasks();
-            timeoutSet.Add(task);
+            TimeoutSet.Add(task);
             await task;
-            timeoutSet.Clear();
+            TimeoutSet.Clear();
         }
 
         private static async Task SetWebClientTasks()
         {
-            await Task.WhenAll(workingTask.Values.ToArray());
-            client.Dispose();
-            client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
-            lock (timeoutStack)
+            await Task.WhenAll(WorkingTask.Values.ToArray());
+            _client.Dispose();
+            _client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+            lock (TimeoutStack)
             {
-                client.Timeout = timeoutStack.Pop();
-                timeoutStack.Clear();
+                _client.Timeout = TimeoutStack.Pop();
+                TimeoutStack.Clear();
             }
         }
 
@@ -163,100 +163,100 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<SearchResult> SearchPackage(string q = "", int skip = -1, int take = -1, bool prerelease = false)
         {
             var query = "";
-            void concat()
+            void Concat()
             {
                 query += query == "" ? "?" : "&";
             }
 
             if (q != "")
             {
-                concat();
+                Concat();
                 query += "q=" + q;
             }
             if (skip > 0)
             {
-                concat();
+                Concat();
                 query += "skip=" + skip;
             }
             if (take > 0)
             {
-                concat();
+                Concat();
                 query += "take=" + take;
             }
-            concat();
+            Concat();
             query += "semVerLevel=2.0.0";
             if (prerelease)
             {
-                concat();
+                Concat();
                 query += "prerelease=true";
             }
 
             // The below code is the cache process.
-            lock (searchCache)
+            lock (SearchCache)
             {
-                if (searchCache.ContainsKey(query))
+                if (SearchCache.TryGetValue(query, out SearchResult package))
                 {
-                    searchLog.Remove(query);
-                    searchLog.Add(query);
-                    return searchCache[query];
+                    SearchLog.Remove(query);
+                    SearchLog.Add(query);
+                    return package;
                 }
             }
-            if (timeoutSet.Any())
+            if (TimeoutSet.Any())
             {
-                await Task.WhenAll(timeoutSet.ToArray());
+                await Task.WhenAll(TimeoutSet.ToArray());
             }
             var id = Guid.NewGuid();
             Task<SearchResult> task = GetSearchResult(query);
-            workingTask.Add(id, task);
+            WorkingTask.Add(id, task);
             SearchResult ret = await task;
-            workingTask.Remove(id);
+            WorkingTask.Remove(id);
             return ret;
         }
 
         private static async Task<SearchResult> GetSearchResult(string query)
         {
             var isGetting = false;
-            lock (gettingSearchs)
+            lock (GettingSearches)
             {
-                isGetting = gettingSearchs.ContainsKey(query);
+                isGetting = GettingSearches.ContainsKey(query);
             }
             if (isGetting)
             {
-                await gettingSearchs[query];
-                return searchCache[query];
+                await GettingSearches[query];
+                return SearchCache[query];
             }
 
             Task task = GetQueryResult(query);
-            lock (gettingSearchs)
+            lock (GettingSearches)
             {
-                gettingSearchs.Add(query, task);
+                GettingSearches.Add(query, task);
             }
             await task;
-            lock (gettingSearchs)
+            lock (GettingSearches)
             {
-                gettingSearchs.Remove(query);
+                GettingSearches.Remove(query);
             }
 
-            lock (searchCache)
+            lock (SearchCache)
             {
-                return searchCache[query];
+                return SearchCache[query];
             }
         }
 
         private static async Task GetQueryResult(string query)
         {
-            IEnumerable<Func<Task<string>>> request = searchQueryService.Select<string, Func<Task<string>>>(endpoint => { return () => client.GetStringAsync(endpoint + query); });
-            var responseText = await GetResponseWithRetry(gettingSearchs, query, request.ToArray());
+            IEnumerable<Func<Task<string>>> request = SearchQueryService.Select<string, Func<Task<string>>>(endpoint => { return () => _client.GetStringAsync(endpoint + query); });
+            var responseText = await GetResponseWithRetry(GettingSearches, query, request.ToArray());
             SearchResult result = JsonUtility.FromJson<SearchResult>(RefineJson(responseText));
-            lock (searchCache)
+            lock (SearchCache)
             {
-                searchCache[query] = result;
-                searchLog.Add(query);
-                while (searchCache.Count > NuGetImporterSettings.Instance.SearchCacheLimit && searchCache.Count > 0)
+                SearchCache[query] = result;
+                SearchLog.Add(query);
+                while (SearchCache.Count > NuGetImporterSettings.Instance.SearchCacheLimit && SearchCache.Count > 0)
                 {
-                    var delete = searchLog[0];
-                    searchLog.RemoveAt(0);
-                    searchCache.Remove(delete);
+                    var delete = SearchLog[0];
+                    SearchLog.RemoveAt(0);
+                    SearchCache.Remove(delete);
                 }
             }
         }
@@ -314,9 +314,9 @@ namespace kumaS.NuGetImporter.Editor
             using (var fileStream = new FileStream(Path.Combine(savePath, fileName + ".nupkg"), FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 // It takes much time for the header response, so set the package first.
-                lock (downloading)
+                lock (Downloading)
                 {
-                    downloading[packageName] = (0, fileStream);
+                    Downloading[packageName] = (0, fileStream);
                 }
 
                 var cachePath = Environment.OSVersion.Platform == PlatformID.Win32NT ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) : "~";
@@ -326,28 +326,28 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     using (FileStream sourceStream = File.Open(Path.Combine(cachePath, fileName + ".nupkg"), FileMode.Open))
                     {
-                        lock (downloading)
+                        lock (Downloading)
                         {
-                            downloading[packageName] = (sourceStream.Length, fileStream);
+                            Downloading[packageName] = (sourceStream.Length, fileStream);
                         }
                         await sourceStream.CopyToAsync(fileStream);
-                        lock (downloading)
+                        lock (Downloading)
                         {
-                            downloading.Remove(packageName);
+                            Downloading.Remove(packageName);
                         }
                     }
                 }
                 else
                 {
-                    if (timeoutSet.Any())
+                    if (TimeoutSet.Any())
                     {
-                        await Task.WhenAll(timeoutSet.ToArray());
+                        await Task.WhenAll(TimeoutSet.ToArray());
                     }
                     var id = Guid.NewGuid();
                     Task task = GetContent(packageName, version, fileName, fileStream);
-                    workingTask.Add(id, task);
+                    WorkingTask.Add(id, task);
                     await task;
-                    workingTask.Remove(id);
+                    WorkingTask.Remove(id);
                 }
             }
         }
@@ -359,12 +359,12 @@ namespace kumaS.NuGetImporter.Editor
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync(packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg", HttpCompletionOption.ResponseHeadersRead);
+                    HttpResponseMessage response = await _client.GetAsync(_packageBaseAddress + packageName.ToLowerInvariant() + "/" + version.ToLowerInvariant() + "/" + fileName + ".nupkg", HttpCompletionOption.ResponseHeadersRead);
                     using (Stream responseStream = await response.Content.ReadAsStreamAsync())
                     {
-                        lock (downloading)
+                        lock (Downloading)
                         {
-                            downloading[packageName] = (response.Content.Headers.ContentLength.GetValueOrDefault(), fileStream);
+                            Downloading[packageName] = (response.Content.Headers.ContentLength.GetValueOrDefault(), fileStream);
                         }
                         await responseStream.CopyToAsync(fileStream);
                     }
@@ -383,17 +383,17 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     if (i >= tryCount - 1)
                     {
-                        lock (downloading)
+                        lock (Downloading)
                         {
-                            downloading.Remove(packageName);
+                            Downloading.Remove(packageName);
                         }
                     }
                 }
             }
 
-            lock (downloading)
+            lock (Downloading)
             {
-                downloading.Remove(packageName);
+                Downloading.Remove(packageName);
             }
         }
 
@@ -415,30 +415,28 @@ namespace kumaS.NuGetImporter.Editor
         /// </exception>
         public static (long packageSize, long downloadedSize) GetDownloadingProgress(string packageName)
         {
-            lock (downloading)
+            lock (Downloading)
             {
-                return downloading.ContainsKey(packageName)
-                    ? ((long packageSize, long downloadedSize))(downloading[packageName].packageSize, downloading[packageName].downloaded.Length)
+                return Downloading.ContainsKey(packageName)
+                    ? ((long packageSize, long downloadedSize))(Downloading[packageName].packageSize, Downloading[packageName].downloaded.Length)
                     : throw new ArgumentException(packageName + " is not downloading now.");
             }
         }
 
         public static bool TryGetDownloadingProgress(string packageName, out long packageSize, out long downloadedSize)
         {
-            lock (downloading)
+            lock (Downloading)
             {
-                if (downloading.ContainsKey(packageName))
+                if (Downloading.ContainsKey(packageName))
                 {
-                    packageSize = downloading[packageName].packageSize;
-                    downloadedSize = downloading[packageName].downloaded.Length;
+                    packageSize = Downloading[packageName].packageSize;
+                    downloadedSize = Downloading[packageName].downloaded.Length;
                     return true;
                 }
-                else
-                {
-                    packageSize = -1;
-                    downloadedSize = -1;
-                    return false;
-                }
+
+                packageSize = -1;
+                downloadedSize = -1;
+                return false;
             }
         }
 
@@ -457,87 +455,85 @@ namespace kumaS.NuGetImporter.Editor
         public static async Task<Catalog> GetCatalog(string packageName)
         {
             // The below code is the cache process.
-            lock (catalogCache)
+            lock (CatalogCache)
             {
-                if (catalogCache.ContainsKey(packageName))
+                if (CatalogCache.TryGetValue(packageName, out Catalog catalog))
                 {
-                    catalogLog.Remove(packageName);
-                    catalogLog.Add(packageName);
-                    return catalogCache[packageName];
+                    CatalogLog.Remove(packageName);
+                    CatalogLog.Add(packageName);
+                    return catalog;
                 }
             }
-            if (timeoutSet.Any())
+            if (TimeoutSet.Any())
             {
-                await Task.WhenAll(timeoutSet.ToArray());
+                await Task.WhenAll(TimeoutSet.ToArray());
             }
             var id = Guid.NewGuid();
             Task<Catalog> task = GetCatalogResult(packageName);
-            workingTask.Add(id, task);
+            WorkingTask.Add(id, task);
             Catalog ret = await task;
-            workingTask.Remove(id);
+            WorkingTask.Remove(id);
             return ret;
         }
 
         private static async Task<Catalog> GetCatalogResult(string packageName)
         {
             var isGetting = false;
-            lock (gettingCatalogs)
+            lock (GettingCatalogs)
             {
-                isGetting = gettingCatalogs.ContainsKey(packageName);
+                isGetting = GettingCatalogs.ContainsKey(packageName);
             }
             if (isGetting)
             {
-                await gettingCatalogs[packageName];
-                while (gettingCatalogs.ContainsKey(packageName))
+                await GettingCatalogs[packageName];
+                while (GettingCatalogs.ContainsKey(packageName))
                 {
                     await Task.Delay(100);
                 }
-                return catalogCache[packageName];
+                return CatalogCache[packageName];
             }
 
-            using (Task<string> request = GetResponseWithRetry(gettingCatalogs, packageName, () => client.GetStringAsync(registrationsBaseUrl + packageName.ToLowerInvariant() + "/index.json")))
+            using Task<string> request = GetResponseWithRetry(GettingCatalogs, packageName, () => _client.GetStringAsync(_registrationsBaseUrl + packageName.ToLowerInvariant() + "/index.json"));
+            lock (GettingCatalogs)
             {
-                lock (gettingCatalogs)
-                {
-                    gettingCatalogs.Add(packageName, request);
-                }
+                GettingCatalogs.Add(packageName, request);
+            }
 
-                var responseText = await request;
-                Catalog catalog = JsonUtility.FromJson<Catalog>(RefineJson(responseText));
-                if (catalog.items[0].items == null)
+            var responseText = await request;
+            Catalog catalog = JsonUtility.FromJson<Catalog>(RefineJson(responseText));
+            if (catalog.items[0].items == null)
+            {
+                var tasks = new List<Task>();
+                for (var i = 0; i < catalog.items.Length; i++)
                 {
-                    var tasks = new List<Task>();
-                    for (var i = 0; i < catalog.items.Length; i++)
-                    {
-                        tasks.Add(GetItem(catalog, i));
-                    }
-                    await Task.WhenAll(tasks);
+                    tasks.Add(GetItem(catalog, i));
                 }
-                lock (catalogCache)
+                await Task.WhenAll(tasks);
+            }
+            lock (CatalogCache)
+            {
+                CatalogCache[packageName] = catalog;
+                CatalogLog.Add(packageName);
+                while (CatalogCache.Count > NuGetImporterSettings.Instance.CatalogCacheLimit && CatalogCache.Count > 0)
                 {
-                    catalogCache[packageName] = catalog;
-                    catalogLog.Add(packageName);
-                    while (catalogCache.Count > NuGetImporterSettings.Instance.CatalogCacheLimit && catalogCache.Count > 0)
-                    {
-                        var delete = catalogLog[0];
-                        catalogLog.RemoveAt(0);
-                        catalogCache.Remove(delete);
-                    }
+                    var delete = CatalogLog[0];
+                    CatalogLog.RemoveAt(0);
+                    CatalogCache.Remove(delete);
                 }
-                lock (gettingCatalogs)
-                {
-                    gettingCatalogs.Remove(packageName);
-                }
-                lock (catalogCache)
-                {
-                    return catalogCache[packageName];
-                }
+            }
+            lock (GettingCatalogs)
+            {
+                GettingCatalogs.Remove(packageName);
+            }
+            lock (CatalogCache)
+            {
+                return CatalogCache[packageName];
             }
         }
 
         private static async Task GetItem(Catalog catalog, int index)
         {
-            var itemText = await client.GetStringAsync(catalog.items[index].nuget_id);
+            var itemText = await _client.GetStringAsync(catalog.items[index].nuget_id);
             catalog.items[index] = JsonUtility.FromJson<Item>(RefineJson(itemText));
         }
 
