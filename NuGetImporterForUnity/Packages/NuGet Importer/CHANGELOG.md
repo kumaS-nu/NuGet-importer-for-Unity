@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.3.2] - 2023-05-25
+
+- Fix bug made by version 3.3.0
+
 ## [3.3.1] - 2023-05-24
 
 - Fix occasional UI bugs
