@@ -8,15 +8,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     /// </summary>
     public static class DefaultIgnorePackages
     {
-        private static readonly IReadOnlyList<string> names = new List<string>()
-        {
-            "Microsoft.CSharp"
-        };
+        private static readonly IReadOnlyList<string> _names = new List<string> { "Microsoft.CSharp" };
 
         /// <summary>
         /// <para>Package names.</para>
         /// <para>パッケージ名。</para>
         /// </summary>
-        public static IReadOnlyList<string> Names { get => names; }
+        public static IReadOnlyList<string> Names => _names;
     }
 }

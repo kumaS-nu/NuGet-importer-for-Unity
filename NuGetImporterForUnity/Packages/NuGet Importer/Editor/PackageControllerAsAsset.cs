@@ -11,9 +11,14 @@ namespace kumaS.NuGetImporter.Editor
 {
     internal sealed class PackageControllerAsAsset : PackageControllerBase
     {
-        private static ManagedPluginList managedPluginList;
-        private static readonly object managedPluginListLock = new object();
-        private static readonly string managedPluginListPath = Path.Combine(PackageManager.DataPath, "Packages", "managedPluginList.json");
+        private static ManagedPluginList _managedPluginList;
+        private static readonly object ManagedPluginListLock = new object();
+
+        private static readonly string ManagedPluginListPath = Path.Combine(
+            PackageManager.DataPath,
+            "Packages",
+            "managedPluginList.json"
+        );
 
         public PackageControllerAsAsset()
         {
@@ -23,19 +28,28 @@ namespace kumaS.NuGetImporter.Editor
         /// <inheritdoc/>
         internal override void DeletePluginsOutOfDirectory(Package package)
         {
-            lock (managedPluginListLock)
+            lock (ManagedPluginListLock)
             {
-                if (managedPluginList == null)
+                if (_managedPluginList == null)
                 {
                     LoadManagedPluginList();
                 }
             }
-            IEnumerable<PackageManagedPluginList> _managed = managedPluginList.managedList.Where(list => list.packageName == package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
-            if (!_managed.Any())
+
+            var managedPluginLists = _managedPluginList!.managedList.Where(
+                                                            list => list.packageName
+                                                                    == package.ID.ToLowerInvariant()
+                                                                    + "."
+                                                                    + package.Version
+                                                                             .ToLowerInvariant()
+                                                        )
+                                                        .ToArray();
+            if (!managedPluginLists.Any())
             {
                 return;
             }
-            PackageManagedPluginList managed = _managed.First();
+
+            var managed = managedPluginLists.First();
             try
             {
                 foreach (var file in managed.fileNames)
@@ -51,15 +65,16 @@ namespace kumaS.NuGetImporter.Editor
             }
             catch (InvalidDataException) { }
 
-            lock (managedPluginListLock)
+            lock (ManagedPluginListLock)
             {
-                managedPluginList.managedList.Remove(managed);
+                _managedPluginList.managedList.Remove(managed);
                 WriteManagedPluginList();
             }
         }
 
         /// <inheritdoc/>
-        internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
+        internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)>
+            InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
             var topDirectory = Path.Combine(PackageManager.DataPath, "Packages");
             if (!Directory.Exists(topDirectory))
@@ -70,43 +85,34 @@ namespace kumaS.NuGetImporter.Editor
             Task<string> task = pathSolver.InstallPath(package);
             await ExtractPackageAsync(package);
             var installPath = await task;
-            var asm = new PackageManagedPluginList
-            {
-                packageName = package.id,
-                fileNames = new List<string>()
-            };
+            var asm = new PackageManagedPluginList { packageName = package.ID, fileNames = new List<string>() };
             GetLoadableAsmInPackage(installPath, asm);
 
-            if (asm.fileNames.Intersect(loadedAsmName).Any())
+            if (!asm.fileNames.Intersect(loadedAsmName).Any())
             {
-                DeleteDirectory(installPath);
-                return (true, package, asm);
+                return (false, package, asm);
             }
 
-            return (false, package, asm);
+            DeleteDirectory(installPath);
+            return (true, package, asm);
+
         }
 
         private void LoadManagedPluginList()
         {
-            if (File.Exists(managedPluginListPath))
+            if (File.Exists(ManagedPluginListPath))
             {
-                managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(managedPluginListPath));
+                _managedPluginList = JsonUtility.FromJson<ManagedPluginList>(File.ReadAllText(ManagedPluginListPath));
             }
 
-            if (managedPluginList == null)
-            {
-                managedPluginList = new ManagedPluginList();
-            }
+            _managedPluginList ??= new ManagedPluginList();
 
-            if (managedPluginList.managedList == null)
-            {
-                managedPluginList.managedList = new List<PackageManagedPluginList>();
-            }
+            _managedPluginList.managedList ??= new List<PackageManagedPluginList>();
         }
 
         private void WriteManagedPluginList()
         {
-            File.WriteAllText(managedPluginListPath, JsonUtility.ToJson(managedPluginList, true));
+            File.WriteAllText(ManagedPluginListPath, JsonUtility.ToJson(_managedPluginList, true));
         }
     }
 }

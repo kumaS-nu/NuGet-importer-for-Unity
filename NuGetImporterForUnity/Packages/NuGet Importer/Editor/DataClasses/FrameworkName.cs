@@ -137,7 +137,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         {
             get
             {
-                var ret = new List<string>();
+                List<string> ret;
                 switch (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
                 {
                     case ApiCompatibilityLevel.NET_4_6:
@@ -158,9 +158,14 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         ret.AddRange(NET4_8);
                         break;
 #endif
+                    case ApiCompatibilityLevel.NET_2_0:
+                    case ApiCompatibilityLevel.NET_2_0_Subset:
+                    case ApiCompatibilityLevel.NET_Web:
+                    case ApiCompatibilityLevel.NET_Micro:
                     default:
                         throw new NotSupportedException("Now this is only suppoort .Net4.x equivalent");
                 }
+
                 return ret;
             }
         }

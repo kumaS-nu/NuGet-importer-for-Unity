@@ -16,22 +16,33 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         public FixPackages(bool confirm = true)
         {
-            isConfirmToUser = confirm;
+            IsConfirmToUser = confirm;
         }
 
         /// <inheritdoc/>
-        protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
+        protected override async Task<OperationResult> Operate(
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock
+        )
         {
-            IEnumerable<Task<(bool, Package pkg)>> isInstalled = controlledPackages.installed.Select(async pkg =>
-            {
-                return (await PackageManager.IsPackageCorrectlyInstalled(pkg), pkg);
-            });
-            (bool, Package pkg)[] isInstalled_ = await Task.WhenAll(isInstalled);
-            IEnumerable<Package> notInstalled = isInstalled_.Where(b => !b.Item1).Select(b => b.pkg);
+            IEnumerable<Task<(bool, Package pkg)>> isInstalled = controlledPackages.Installed.Select(
+                async pkg => (await PackageManager.IsPackageCorrectlyInstalled(pkg), pkg)
+            );
+            var installedToPackage = await Task.WhenAll(isInstalled);
+            var notInstalled = installedToPackage.Where(b => !b.Item1).Select(b => b.pkg).ToArray();
 
             return !notInstalled.Any()
-                ? new OperationResult(OperationState.Cancel, "No packages to repair.\n(If you want to repair the contents of a package, please repair the package individually.)")
-                : await ManipulatePackages(controlledPackages.root, notInstalled, notInstalled, controlledPackages, operateLock);
+                ? new OperationResult(
+                    OperationState.Cancel,
+                    "No packages to repair.\n(If you want to repair the contents of a package, please repair the package individually.)"
+                )
+                : await ManipulatePackages(
+                    controlledPackages.Root,
+                    notInstalled,
+                    notInstalled,
+                    controlledPackages,
+                    operateLock
+                );
         }
     }
 }

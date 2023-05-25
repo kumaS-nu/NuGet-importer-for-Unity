@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,33 +21,70 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
         public ConvertToAssets()
         {
-            isConfirmToUser = false;
+            IsConfirmToUser = false;
         }
 
-        protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
+        protected override async Task<OperationResult> Operate(
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock
+        )
         {
             var controller = new PackageControllerAsUPM();
-            IEnumerable<Task<bool>> tasks = controlledPackages.installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg, controller));
+            IEnumerable<Task<bool>> tasks =
+                controlledPackages.Installed.Select(async pkg => await PackageManager.HasNativeAsync(pkg, controller));
             var hasNatives = await Task.WhenAll(tasks);
             if (!hasNatives.Any(native => native))
             {
-                await ManipulatePackages(new Package[0], new Package[0], controlledPackages.installed, controlledPackages, operateLock, controller);
-                Task<IEnumerable<Package>> install = PackageManager.InstallSelectPackages(controlledPackages.installed, new string[0], operateLock, new PackageControllerAsAsset());
+                await ManipulatePackages(
+                    Array.Empty<Package>(),
+                    Array.Empty<Package>(),
+                    controlledPackages.Installed,
+                    controlledPackages,
+                    operateLock,
+                    controller
+                );
+                var install = PackageManager.InstallSelectPackages(
+                    controlledPackages.Installed,
+                    Array.Empty<string>(),
+                    operateLock,
+                    new PackageControllerAsAsset()
+                );
 
-                _ = PackageManager.DownloadProgress(0.5f, controlledPackages.installed.Select(package => package.id).ToArray());
+                _ = PackageManager.DownloadProgress(
+                    0.5f,
+                    controlledPackages.Installed.Select(package => package.ID).ToArray()
+                );
                 await install;
-                if (install.IsFaulted)
+                if (!install.IsFaulted)
                 {
-                    UnityEngine.Debug.LogException(install.Exception);
-                    EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + install.Exception.Message, "OK");
-                    await Rollback(controlledPackages, operateLock, controller);
-                    return new OperationResult(OperationState.Failure, "Rollback to before operation is complete.");
+                    return new OperationResult(OperationState.Success, FinishMessage);
                 }
-                return new OperationResult(OperationState.Success, FinishMessage);
+
+                UnityEngine.Debug.LogException(install.Exception);
+                EditorUtility.DisplayDialog(
+                    "NuGet importer",
+                    "Error occured!\nRolls back to before the operation.\nError :\n" + install.Exception!.Message,
+                    "OK"
+                );
+                await Rollback(controlledPackages, operateLock, controller);
+                return new OperationResult(OperationState.Failure, "Rollback to before operation is complete.");
+
             }
 
-            EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
-            Process process = await PackageManager.OperateWithNativeAsync(controlledPackages.installed, new Package[0], controlledPackages.installed, controlledPackages.installed, controlledPackages.root, operateLock, controller);
+            EditorUtility.DisplayDialog(
+                "NuGet importer",
+                "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)",
+                "OK"
+            );
+            Process process = await PackageManager.OperateWithNativeAsync(
+                controlledPackages.Installed,
+                Array.Empty<Package>(),
+                controlledPackages.Installed,
+                controlledPackages.Installed,
+                controlledPackages.Root,
+                operateLock,
+                controller
+            );
             AssetDatabase.SaveAssets();
             EditorSceneManager.SaveOpenScenes();
             operateLock.result = OperationState.Success;

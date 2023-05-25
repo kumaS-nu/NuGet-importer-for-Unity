@@ -10,13 +10,13 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     /// </summary>
     public class SemVer
     {
-        private string allowedVersion = "";
-        private List<string> selectedVersion = new List<string>();
-        private List<string> minimumVersion;
-        private bool excludeMinimum = false;
-        private List<string> maximumVersion;
-        private bool excludeMaximum = false;
-        private List<List<string>> existVersion;
+        private string _allowedVersion = "";
+        private List<string> _selectedVersion = new List<string>();
+        private List<string> _minimumVersion;
+        private bool _excludeMinimum;
+        private List<string> _maximumVersion;
+        private bool _excludeMaximum;
+        private List<List<string>> _existVersions;
         private List<string> _existVersion;
 
         /// <summary>
@@ -35,25 +35,26 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         {
             var ret = "";
             var splitedNotion = allowedVersion.Replace(" ", "").Split(',');
-            if (splitedNotion.Length == 1)
+            switch (splitedNotion.Length)
             {
-                if (allowedVersion.StartsWith("["))
-                {
+                case 1 when allowedVersion.StartsWith("["):
                     ret = "v = " + allowedVersion.Substring(1, allowedVersion.Length - 2);
-                }
-                else
-                {
+                    break;
+                case 1:
                     ret = allowedVersion;
                     ret += " <= v";
-                }
-            }
-            else if (splitedNotion.Length == 2)
-            {
-                var minimumSynbol = splitedNotion[0].StartsWith("(") ? " < " : " <= ";
-                var maximumSynbol = splitedNotion[1].EndsWith(")") ? " < " : " <= ";
-                var minimum = splitedNotion[0].Length == 1 ? "" : splitedNotion[0].Substring(1) + minimumSynbol;
-                var maximum = splitedNotion[1].Length == 1 ? "" : maximumSynbol + splitedNotion[1].Remove(splitedNotion[1].Length - 1);
-                ret = minimum + "v" + maximum;
+                    break;
+                case 2:
+                    {
+                        var minimumSymbol = splitedNotion[0].StartsWith("(") ? " < " : " <= ";
+                        var maximumSymbol = splitedNotion[1].EndsWith(")") ? " < " : " <= ";
+                        var minimum = splitedNotion[0].Length == 1 ? "" : splitedNotion[0].Substring(1) + minimumSymbol;
+                        var maximum = splitedNotion[1].Length == 1
+                            ? ""
+                            : maximumSymbol + splitedNotion[1].Remove(splitedNotion[1].Length - 1);
+                        ret = minimum + "v" + maximum;
+                        break;
+                    }
             }
 
             return ret;
@@ -73,23 +74,23 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// </returns>
         public static List<string> SortVersion(IEnumerable<string> versions)
         {
-            var SortedVersion = new List<List<string>>();
+            var sortedVersion = new List<List<string>>();
             foreach (var version in versions)
             {
-                var index = SortedVersion.Count;
+                var index = sortedVersion.Count;
                 var splitedVersion = version.Split('.').ToList();
                 for (; index > 0; index--)
                 {
-                    if (CompareVersion(SortedVersion[index - 1], splitedVersion) >= 0)
+                    if (CompareVersion(sortedVersion[index - 1], splitedVersion) >= 0)
                     {
                         break;
                     }
                 }
 
-                SortedVersion.Insert(index, splitedVersion);
+                sortedVersion.Insert(index, splitedVersion);
             }
 
-            return SortedVersion.Select(v => v.Aggregate((now, next) => now + "." + next)).ToList();
+            return sortedVersion.Select(v => v.Aggregate((now, next) => now + "." + next)).ToList();
         }
 
         /// <value>
@@ -98,33 +99,39 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// </value>
         public string AllowedVersion
         {
-            get => allowedVersion;
+            get => _allowedVersion;
             set
             {
-                allowedVersion = value;
+                _allowedVersion = value;
                 var splitedNotion = value.Replace(" ", "").Split(',');
-                if (splitedNotion.Length == 1)
-                {
-                    excludeMinimum = false;
-                    if (value.StartsWith("["))
-                    {
-                        excludeMaximum = false;
-                        var version = value.Substring(1, value.Length - 2).Split('.').ToList();
-                        minimumVersion = version;
-                        maximumVersion = version;
-                    }
-                    else
-                    {
-                        minimumVersion = value.Split('.').ToList();
-                        maximumVersion = null;
-                    }
-                }
-                else if (splitedNotion.Length == 2)
-                {
-                    excludeMinimum = splitedNotion[0].StartsWith("(");
-                    excludeMaximum = splitedNotion[1].EndsWith(")");
-                    minimumVersion = splitedNotion[0].Length == 1 ? null : splitedNotion[0].Substring(1).Split('.').ToList();
-                    maximumVersion = splitedNotion[1].Length == 1 ? null : splitedNotion[1].Remove(splitedNotion[1].Length - 1).Split('.').ToList();
+                switch (splitedNotion.Length) {
+                    case 1: {
+                            _excludeMinimum = false;
+                            if (value.StartsWith("["))
+                            {
+                                _excludeMaximum = false;
+                                var version = value.Substring(1, value.Length - 2).Split('.').ToList();
+                                _minimumVersion = version;
+                                _maximumVersion = version;
+                            }
+                            else
+                            {
+                                _minimumVersion = value.Split('.').ToList();
+                                _maximumVersion = null;
+                            }
+
+                            break;
+                        }
+                    case 2:
+                        _excludeMinimum = splitedNotion[0].StartsWith("(");
+                        _excludeMaximum = splitedNotion[1].EndsWith(")");
+                        _minimumVersion = splitedNotion[0].Length == 1
+                            ? null
+                            : splitedNotion[0].Substring(1).Split('.').ToList();
+                        _maximumVersion = splitedNotion[1].Length == 1
+                            ? null
+                            : splitedNotion[1].Remove(splitedNotion[1].Length - 1).Split('.').ToList();
+                        break;
                 }
             }
         }
@@ -143,12 +150,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// </exception>
         public string SelectedVersion
         {
-            get => selectedVersion.Aggregate((now, next) => now + "." + next);
+            get => _selectedVersion.Aggregate((now, next) => now + "." + next);
             set
             {
                 if (_existVersion == null)
                 {
-                    selectedVersion = value.Split('.').ToList();
+                    _selectedVersion = value.Split('.').ToList();
                     return;
                 }
 
@@ -158,7 +165,9 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 }
 
                 var splitedVersion = value.Split('.').ToList();
-                selectedVersion = IsAllowedVersion(splitedVersion) ? splitedVersion : throw new IndexOutOfRangeException(value + " is not in allowed version");
+                _selectedVersion = IsAllowedVersion(splitedVersion)
+                    ? splitedVersion
+                    : throw new IndexOutOfRangeException(value + " is not in allowed version");
             }
         }
 
@@ -172,7 +181,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             set
             {
                 _existVersion = value.AsEnumerable().Reverse().ToList();
-                existVersion = _existVersion.Select(version => version.Split('.').ToList()).ToList();
+                _existVersions = _existVersion.Select(version => version.Split('.').ToList()).ToList();
             }
         }
 
@@ -196,7 +205,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <para>Thrown when different exist version or no suite version.</para>
         /// <para>exist versionが違うときや最適なバージョンがないときにthrowされる。</para>
         /// </exception>
-        public SemVer Marge(SemVer newVersion, bool onlyStable = true)
+        public SemVer Merge(SemVer newVersion, bool onlyStable = true)
         {
             var ret = new SemVer();
             if (!ExistVersion.SequenceEqual(newVersion.ExistVersion))
@@ -204,38 +213,40 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 throw new ArgumentException("These version can't marge. Because exist versions are different.");
             }
 
-            ret.selectedVersion = selectedVersion;
-            ret.existVersion = existVersion;
+            ret._selectedVersion = _selectedVersion;
+            ret._existVersions = _existVersions;
             ret._existVersion = _existVersion;
 
-            if (minimumVersion == null)
+            if (_minimumVersion == null)
             {
-                ret.minimumVersion = newVersion.minimumVersion;
+                ret._minimumVersion = newVersion._minimumVersion;
             }
-            else if (newVersion.minimumVersion == null)
+            else if (newVersion._minimumVersion == null)
             {
-                ret.minimumVersion = minimumVersion;
+                ret._minimumVersion = _minimumVersion;
             }
             else
             {
-                var minDiff = CompareVersion(minimumVersion, newVersion.minimumVersion);
-                ret.minimumVersion = minDiff > 0 ? minimumVersion : newVersion.minimumVersion;
-                ret.excludeMinimum = minDiff > 0 ? excludeMinimum : minDiff == 0 ? excludeMinimum || newVersion.excludeMinimum : newVersion.excludeMinimum;
+                var minDiff = CompareVersion(_minimumVersion, newVersion._minimumVersion);
+                ret._minimumVersion = minDiff > 0 ? _minimumVersion : newVersion._minimumVersion;
+                ret._excludeMinimum = minDiff > 0 ? _excludeMinimum :
+                    minDiff == 0 ? _excludeMinimum || newVersion._excludeMinimum : newVersion._excludeMinimum;
             }
 
-            if (maximumVersion == null)
+            if (_maximumVersion == null)
             {
-                ret.maximumVersion = newVersion.maximumVersion;
+                ret._maximumVersion = newVersion._maximumVersion;
             }
-            else if (newVersion.maximumVersion == null)
+            else if (newVersion._maximumVersion == null)
             {
-                ret.maximumVersion = maximumVersion;
+                ret._maximumVersion = _maximumVersion;
             }
             else
             {
-                var maxDiff = CompareVersion(maximumVersion, newVersion.maximumVersion);
-                ret.maximumVersion = maxDiff < 0 ? maximumVersion : newVersion.maximumVersion;
-                ret.excludeMaximum = maxDiff < 0 ? excludeMaximum : maxDiff == 0 ? excludeMaximum || newVersion.excludeMaximum : newVersion.excludeMaximum;
+                var maxDiff = CompareVersion(_maximumVersion, newVersion._maximumVersion);
+                ret._maximumVersion = maxDiff < 0 ? _maximumVersion : newVersion._maximumVersion;
+                ret._excludeMaximum = maxDiff < 0 ? _excludeMaximum :
+                    maxDiff == 0 ? _excludeMaximum || newVersion._excludeMaximum : newVersion._excludeMaximum;
             }
 
             try
@@ -248,23 +259,35 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             }
 
             var allowVer = "";
-            if (ret.maximumVersion == null && ret.excludeMinimum == false)
+            if (ret._maximumVersion == null && ret._excludeMinimum == false)
             {
-                allowVer = ret.minimumVersion == null ? "" : ret.minimumVersion.Aggregate((now, next) => now + "." + next);
+                allowVer = ret._minimumVersion == null
+                    ? ""
+                    : ret._minimumVersion.Aggregate((now, next) => now + "." + next);
             }
-            else if (ret.minimumVersion != null && ret.maximumVersion != null && ret.minimumVersion.Aggregate((now, next) => now + "." + next) == ret.maximumVersion.Aggregate((now, next) => now + "." + next) && ret.excludeMinimum == false && ret.excludeMaximum == false)
+            else if (ret._minimumVersion != null
+                     && ret._maximumVersion != null
+                     && ret._minimumVersion.Aggregate((now, next) => now + "." + next)
+                     == ret._maximumVersion.Aggregate((now, next) => now + "." + next)
+                     && ret._excludeMinimum == false
+                     && ret._excludeMaximum == false)
             {
-                allowVer = "[" + ret.minimumVersion.Aggregate((now, next) => now + "." + next) + "]";
+                allowVer = "[" + ret._minimumVersion.Aggregate((now, next) => now + "." + next) + "]";
             }
             else
             {
-                allowVer += ret.excludeMinimum ? "(" : "[";
-                allowVer += ret.minimumVersion == null ? "" : ret.minimumVersion.Aggregate((now, next) => now + "." + next);
+                allowVer += ret._excludeMinimum ? "(" : "[";
+                allowVer += ret._minimumVersion == null
+                    ? ""
+                    : ret._minimumVersion.Aggregate((now, next) => now + "." + next);
                 allowVer += ",";
-                allowVer += ret.maximumVersion == null ? "" : ret.maximumVersion.Aggregate((now, next) => now + "." + next);
-                allowVer += ret.excludeMaximum ? ")" : "]";
+                allowVer += ret._maximumVersion == null
+                    ? ""
+                    : ret._maximumVersion.Aggregate((now, next) => now + "." + next);
+                allowVer += ret._excludeMaximum ? ")" : "]";
             }
-            ret.allowedVersion = allowVer;
+
+            ret._allowedVersion = allowVer;
 
             return ret;
         }
@@ -295,47 +318,48 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// </exception>
         public string GetSuitVersion(bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
         {
-            switch (method)
+            return method switch
             {
-                case VersionSelectMethod.Suit:
-                    return GetSuitVersion(onlyStable);
-                case VersionSelectMethod.Highest:
-                    return GetHighestVersion(onlyStable);
-                case VersionSelectMethod.Lowest:
-                    return GetLowestVersion(onlyStable);
-            }
-
-            throw new ArgumentException("method : " + method + " is invalid");
+                VersionSelectMethod.Suit => GetSuitVersion(onlyStable),
+                VersionSelectMethod.Highest => GetHighestVersion(onlyStable),
+                VersionSelectMethod.Lowest => GetLowestVersion(onlyStable),
+                _ => throw new ArgumentException("method : " + method + " is invalid")
+            };
         }
 
         private string GetHighestVersion(bool onlyStable)
         {
-            List<string> maxVersion = maximumVersion ?? existVersion.First();
-            foreach (List<string> version in existVersion.SkipWhile(ver => ver.Aggregate((now, next) => now + next) != maxVersion.Aggregate((now, next) => now + next)).ToArray())
+            List<string> maxVersion = _maximumVersion ?? _existVersions.First();
+            foreach (List<string> version in _existVersions.SkipWhile(
+                                                               ver => ver.Aggregate((now, next) => now + next)
+                                                                      != maxVersion.Aggregate((now, next) => now + next)
+                                                           )
+                                                           .ToArray())
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                 {
                     continue;
                 }
 
-                var maxDiff = maximumVersion != null ? CompareVersion(version, maximumVersion) : -1;
-                if (maxDiff == 0 && !excludeMaximum)
+                var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
+                if (maxDiff == 0 && !_excludeMaximum)
                 {
-                    var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                    return minDiff == 0 && !excludeMinimum
+                    var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+                    return minDiff == 0 && !_excludeMinimum
                         ? version.Aggregate((now, next) => now + "." + next)
                         : minDiff > 0
-                        ? version.Aggregate((now, next) => now + "." + next)
-                        : throw new InvalidOperationException("There is no available version.");
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : throw new InvalidOperationException("There is no available version.");
                 }
+
                 if (maxDiff < 0)
                 {
-                    var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                    return minDiff == 0 && !excludeMinimum
+                    var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+                    return minDiff == 0 && !_excludeMinimum
                         ? version.Aggregate((now, next) => now + "." + next)
                         : minDiff > 0
-                        ? version.Aggregate((now, next) => now + "." + next)
-                        : throw new InvalidOperationException("There is no available version.");
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : throw new InvalidOperationException("There is no available version.");
                 }
             }
 
@@ -344,32 +368,38 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
         private string GetLowestVersion(bool onlyStable)
         {
-            List<string> minVersion = minimumVersion ?? existVersion.Last();
-            foreach (List<string> version in existVersion.AsEnumerable().Reverse().SkipWhile(ver => ver.Aggregate((now, next) => now + next) != minVersion.Aggregate((now, next) => now + next)).ToArray())
+            List<string> minVersion = _minimumVersion ?? _existVersions.Last();
+            foreach (List<string> version in (_existVersions.AsEnumerable() ?? Array.Empty<List<string>>()).Reverse()
+                     .SkipWhile(
+                         ver => ver.Aggregate((now, next) => now + next)
+                                != minVersion.Aggregate((now, next) => now + next)
+                     )
+                     .ToArray())
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                 {
                     continue;
                 }
 
-                var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 11;
-                if (minDiff == 0 && !excludeMinimum)
+                var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 11;
+                if (minDiff == 0 && !_excludeMinimum)
                 {
-                    var maxDiff = maximumVersion != null ? CompareVersion(version, maximumVersion) : -1;
-                    return maxDiff == 0 && !excludeMaximum
+                    var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
+                    return maxDiff == 0 && !_excludeMaximum
                         ? version.Aggregate((now, next) => now + "." + next)
                         : maxDiff < 0
-                        ? version.Aggregate((now, next) => now + "." + next)
-                        : throw new InvalidOperationException("There is no available version.");
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : throw new InvalidOperationException("There is no available version.");
                 }
+
                 if (minDiff > 0)
                 {
-                    var maxDiff = maximumVersion != null ? CompareVersion(version, maximumVersion) : -1;
-                    return maxDiff == 0 && !excludeMaximum
+                    var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
+                    return maxDiff == 0 && !_excludeMaximum
                         ? version.Aggregate((now, next) => now + "." + next)
                         : maxDiff < 0
-                        ? version.Aggregate((now, next) => now + "." + next)
-                        : throw new InvalidOperationException("There is no available version.");
+                            ? version.Aggregate((now, next) => now + "." + next)
+                            : throw new InvalidOperationException("There is no available version.");
                 }
             }
 
@@ -378,42 +408,50 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
         private string GetSuitVersion(bool onlyStable)
         {
-            if (maximumVersion != null)
+            if (_maximumVersion != null)
             {
-                foreach (List<string> version in existVersion.SkipWhile(ver => ver.Aggregate((now, next) => now + next) != maximumVersion.Aggregate((now, next) => now + next)).ToArray())
+                foreach (List<string> version in _existVersions.SkipWhile(
+                                                                   ver => ver.Aggregate((now, next) => now + next)
+                                                                          != _maximumVersion.Aggregate(
+                                                                              (now, next) => now + next
+                                                                          )
+                                                               )
+                                                               .ToArray())
                 {
                     if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                     {
                         continue;
                     }
 
-                    var maxDiff = CompareVersion(version, maximumVersion);
-                    if (maxDiff == 0 && !excludeMaximum)
+                    var maxDiff = CompareVersion(version, _maximumVersion);
+                    if (maxDiff == 0 && !_excludeMaximum)
                     {
-                        var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                        return minDiff == 0 && !excludeMinimum
+                        var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+                        return minDiff == 0 && !_excludeMinimum
                             ? version.Aggregate((now, next) => now + "." + next)
                             : minDiff > 0
-                            ? version.Aggregate((now, next) => now + "." + next)
-                            : throw new InvalidOperationException("There is no available version.");
+                                ? version.Aggregate((now, next) => now + "." + next)
+                                : throw new InvalidOperationException("There is no available version.");
                     }
+
                     if (maxDiff < 0)
                     {
-                        var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-                        return minDiff == 0 && !excludeMinimum
+                        var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+                        return minDiff == 0 && !_excludeMinimum
                             ? version.Aggregate((now, next) => now + "." + next)
                             : minDiff > 0
-                            ? version.Aggregate((now, next) => now + "." + next)
-                            : throw new InvalidOperationException("There is no available version.");
+                                ? version.Aggregate((now, next) => now + "." + next)
+                                : throw new InvalidOperationException("There is no available version.");
                     }
                 }
+
                 throw new InvalidOperationException("There is no available version.");
             }
 
             var highList = new List<List<string>>();
             var majorVersion = new List<string>();
 
-            foreach (List<string> version in existVersion)
+            foreach (List<string> version in _existVersions)
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                 {
@@ -426,6 +464,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     majorVersion.Add(version[0]);
                 }
             }
+
             highList.Reverse();
 
             foreach (List<string> high in highList)
@@ -453,10 +492,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// </returns>
         internal bool IsAllowedVersion(List<string> version)
         {
-            var minDiff = minimumVersion != null ? CompareVersion(version, minimumVersion) : 1;
-            var maxDiff = maximumVersion != null ? CompareVersion(version, maximumVersion) : -1;
+            var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+            var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
 
-            return minDiff < 0 || maxDiff > 0 ? false : excludeMinimum && minDiff == 0 ? false : !excludeMaximum || maxDiff != 0;
+            return minDiff >= 0
+                   && maxDiff <= 0
+                   && ((!_excludeMinimum || minDiff != 0) && (!_excludeMaximum || maxDiff != 0));
         }
 
         /// <summary>
@@ -475,24 +516,20 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 var isNumberCompare = int.TryParse(splitedCompare.First(), out var c);
                 var isNumberBase = int.TryParse(splitedBase.First(), out var b);
 
-                if (isNumberCompare == true && isNumberBase == true)
+                switch (isNumberCompare)
                 {
-                    if (c != b)
-                    {
-                        return c - b;
-                    }
-                }
-                else if (isNumberCompare == false && isNumberBase == false)
-                {
-                    var compare = string.CompareOrdinal(splitedCompare[0], splitedBase[0]);
-                    if (compare != 0)
-                    {
-                        return compare;
-                    }
-                }
-                else
-                {
-                    return isNumberBase == true ? 1 : -1;
+                    case true when isNumberBase && c != b: return c - b;
+                    case false when isNumberBase == false:
+                        {
+                            var compare = string.CompareOrdinal(splitedCompare[0], splitedBase[0]);
+                            if (compare != 0)
+                            {
+                                return compare;
+                            }
+
+                            break;
+                        }
+                    default: return isNumberBase ? 1 : -1;
                 }
 
                 if (splitedCompare.Length >= 2 && splitedBase.Length >= 2)
@@ -509,6 +546,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     {
                         return -1;
                     }
+
                     if (splitedBase.Length >= 2)
                     {
                         return 1;

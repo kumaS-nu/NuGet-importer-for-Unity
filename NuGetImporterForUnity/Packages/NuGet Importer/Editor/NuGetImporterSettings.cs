@@ -14,21 +14,19 @@ namespace kumaS.NuGetImporter.Editor
     [Serializable]
     public class NuGetImporterSettings
     {
-        [NonSerialized]
-        private static NuGetImporterSettings instance;
+        [NonSerialized] private static NuGetImporterSettings _instance;
 
-        [NonSerialized]
-        private static string projectSettingsPath;
+        [NonSerialized] private static string _projectSettingsPath;
 
         [InitializeOnLoadMethod]
         private static void SetProjectSettingsPath()
         {
-            projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
+            _projectSettingsPath = Application.dataPath.Replace("Assets", "ProjectSettings");
         }
 
         internal static void EnsureSetProjectSettingsPath()
         {
-            if (projectSettingsPath == null)
+            if (_projectSettingsPath == null)
             {
                 SetProjectSettingsPath();
             }
@@ -38,35 +36,36 @@ namespace kumaS.NuGetImporter.Editor
         {
             get
             {
-                if (instance != null)
+                if (_instance != null)
                 {
-                    return instance;
+                    return _instance;
                 }
 
-                var path = Path.Combine(projectSettingsPath, "NuGetImporterSettings.json");
+                var path = Path.Combine(_projectSettingsPath, "NuGetImporterSettings.json");
                 if (!File.Exists(path))
                 {
-                    instance = new NuGetImporterSettings();
-                    return instance;
+                    _instance = new NuGetImporterSettings();
+                    return _instance;
                 }
+
                 var str = File.ReadAllText(path);
-                instance = JsonUtility.FromJson<NuGetImporterSettings>(str);
+                _instance = JsonUtility.FromJson<NuGetImporterSettings>(str);
                 if (!str.Contains("\"ignorePackages\""))
                 {
-                    instance.ignorePackages = default;
+                    _instance.ignorePackages = default;
                 }
-                return instance;
+
+                return _instance;
             }
         }
 
         private void Save()
         {
-            var path = Path.Combine(projectSettingsPath, "NuGetImporterSettings.json");
+            var path = Path.Combine(_projectSettingsPath, "NuGetImporterSettings.json");
             File.WriteAllText(path, JsonUtility.ToJson(this, true));
         }
 
-        [SerializeField]
-        private int searchCacheLimit = 500;
+        [SerializeField] private int searchCacheLimit = 500;
 
         /// <value>
         /// <para>Limit of search cache.</para>
@@ -86,8 +85,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private int catalogCacheLimit = 300;
+        [SerializeField] private int catalogCacheLimit = 300;
 
         /// <value>
         /// <para>Limit of catalog cache.</para>
@@ -107,8 +105,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private int iconCacheLimit = 500;
+        [SerializeField] private int iconCacheLimit = 500;
 
         /// <value>
         /// <para>Limit of icon cache.</para>
@@ -128,8 +125,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private VersionSelectMethod method = VersionSelectMethod.Suit;
+        [SerializeField] private VersionSelectMethod method = VersionSelectMethod.Suit;
 
         /// <value>
         /// <para>Method to select a version.</para>
@@ -149,8 +145,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private bool onlyStable = true;
+        [SerializeField] private bool onlyStable = true;
 
         /// <value>
         /// <para>Use the stable version only?</para>
@@ -170,8 +165,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private InstallMethod installMethod = InstallMethod.AsUPM;
+        [SerializeField] private InstallMethod installMethod = InstallMethod.AsUPM;
 
         /// <value>
         /// <para>Install method of NuGet package.</para>
@@ -191,8 +185,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private bool autoPackagePlacementCheck = true;
+        [SerializeField] private bool autoPackagePlacementCheck = true;
 
         /// <summary>
         /// <para>Is package placement checked at startup?</para>
@@ -212,8 +205,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private int retryLimit = 1;
+        [SerializeField] private int retryLimit = 1;
 
         /// <summary>
         /// <para>How many retries are allowed over a network connection.</para>
@@ -228,6 +220,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     return;
                 }
+
                 var changed = retryLimit != value;
                 retryLimit = value;
                 if (changed)
@@ -237,8 +230,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private int timeout = 100;
+        [SerializeField] private int timeout = 100;
 
         /// <summary>
         /// <para>Network timeout time.</para>
@@ -253,10 +245,11 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     return;
                 }
+
                 var changed = timeout != value;
                 timeout = value;
                 _ = NuGet.SetTimeout(TimeSpan.FromSeconds(value));
-                _ = PackageDataExtentionToGUI.SetTimeout(TimeSpan.FromSeconds(value));
+                _ = PackageDataExtensionToGUI.SetTimeout(TimeSpan.FromSeconds(value));
                 if (changed)
                 {
                     Save();
@@ -264,8 +257,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private bool isNetworkSavemode = false;
+        [SerializeField] private bool isNetworkSavemode = false;
 
         /// <summary>
         /// <para>A mode that reduces the network connections.</para>
@@ -285,8 +277,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private List<string> ignorePackages = default;
+        [SerializeField] private List<string> ignorePackages = default;
 
         /// <summary>
         /// <para>Ignore pacakges.</para>
@@ -301,6 +292,7 @@ namespace kumaS.NuGetImporter.Editor
                     ignorePackages = DefaultIgnorePackages.Names.ToList();
                     Save();
                 }
+
                 return new List<string>(ignorePackages);
             }
             set
@@ -314,8 +306,7 @@ namespace kumaS.NuGetImporter.Editor
             }
         }
 
-        [SerializeField]
-        private bool isCreateAsmdefForAnalyzer = true;
+        [SerializeField] private bool isCreateAsmdefForAnalyzer = true;
 
         public bool IsCreateAsmdefForAnalyzer
         {

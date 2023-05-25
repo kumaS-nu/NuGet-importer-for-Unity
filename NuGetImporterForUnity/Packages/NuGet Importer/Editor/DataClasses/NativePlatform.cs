@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
@@ -9,138 +8,142 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     /// </summary>
     public class NativePlatform
     {
-        private static readonly Dictionary<string, string> defaultArch = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> DefaultArch = new Dictionary<string, string>()
         {
-            { nameof(OSType.win), nameof(ArchitectureType.x64) },
-            { nameof(OSType.osx), nameof(ArchitectureType.x64) },
-            { nameof(OSType.android), nameof(ArchitectureType.arm64) },
-            { nameof(OSType.ios), nameof(ArchitectureType.arm64) },
-            { nameof(OSType.linux), nameof(ArchitectureType.x64) },
-            { nameof(OSType.ubuntu), nameof(ArchitectureType.x64) },
-            { nameof(OSType.debian), nameof(ArchitectureType.x64) },
-            { nameof(OSType.fedora), nameof(ArchitectureType.x64) },
-            { nameof(OSType.centos), nameof(ArchitectureType.x64) },
-            { nameof(OSType.alpine), nameof(ArchitectureType.x64) },
-            { nameof(OSType.rhel), nameof(ArchitectureType.x64) },
-            { nameof(OSType.arch), nameof(ArchitectureType.x64) },
-            { nameof(OSType.opensuse), nameof(ArchitectureType.x64) },
-            { nameof(OSType.gentoo), nameof(ArchitectureType.x64) }
+            { nameof(OSType.Win), nameof(ArchitectureType.X64) },
+            { nameof(OSType.OSX), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Android), nameof(ArchitectureType.ARM64) },
+            { nameof(OSType.IOS), nameof(ArchitectureType.ARM64) },
+            { nameof(OSType.Linux), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Ubuntu), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Debian), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Fedora), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Centos), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Alpine), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Rhel), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Arch), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Opensuse), nameof(ArchitectureType.X64) },
+            { nameof(OSType.Gentoo), nameof(ArchitectureType.X64) }
         };
 
-        public readonly string path;
-        public readonly string os;
-        public readonly int osPriority;
-        public readonly string architecture;
+        public readonly string Path;
+        public readonly string OS;
+        public readonly int OSPriority;
+        public readonly string Architecture;
 
         public NativePlatform(string directoryPath)
         {
-            path = directoryPath;
-            var directoryName = Path.GetFileName(directoryPath).ToLowerInvariant();
-            (os, osPriority) = GetOSInfo(directoryName);
-            architecture = GetArchInfo(directoryName);
+            Path = directoryPath;
+            var directoryName = System.IO.Path.GetFileName(directoryPath).ToLowerInvariant();
+            (OS, OSPriority) = GetOSInfo(directoryName);
+            Architecture = GetArchInfo(directoryName);
         }
 
         private (string os, int priority) GetOSInfo(string directoryName)
         {
-            if (directoryName.StartsWith(nameof(OSType.win)))
+            if (directoryName.StartsWith(nameof(OSType.Win)))
             {
-                return (nameof(OSType.win), -1);
+                return (nameof(OSType.Win), -1);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.osx)))
+            if (directoryName.StartsWith(nameof(OSType.OSX)))
             {
-                return (nameof(OSType.osx), -1);
+                return (nameof(OSType.OSX), -1);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.android)))
+            if (directoryName.StartsWith(nameof(OSType.Android)))
             {
-                return (nameof(OSType.android), -1);
+                return (nameof(OSType.Android), -1);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.ios)))
+            if (directoryName.StartsWith(nameof(OSType.IOS)))
             {
-                return (nameof(OSType.ios), -1);
+                return (nameof(OSType.IOS), -1);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.linux)))
+            if (directoryName.StartsWith(nameof(OSType.Linux)))
             {
-                return (nameof(OSType.linux), 0);
+                return (nameof(OSType.Linux), 0);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.ubuntu)))
+            if (directoryName.StartsWith(nameof(OSType.Ubuntu)))
             {
-                return (nameof(OSType.ubuntu), 1);
+                return (nameof(OSType.Ubuntu), 1);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.debian)))
+            if (directoryName.StartsWith(nameof(OSType.Debian)))
             {
-                return (nameof(OSType.debian), 2);
+                return (nameof(OSType.Debian), 2);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.fedora)))
+            if (directoryName.StartsWith(nameof(OSType.Fedora)))
             {
-                return (nameof(OSType.fedora), 3);
+                return (nameof(OSType.Fedora), 3);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.centos)))
+            if (directoryName.StartsWith(nameof(OSType.Centos)))
             {
-                return (nameof(OSType.centos), 4);
+                return (nameof(OSType.Centos), 4);
             }
 
-            if (directoryName.StartsWith(nameof(OSType.alpine)))
+            if (directoryName.StartsWith(nameof(OSType.Alpine)))
             {
-                return (nameof(OSType.alpine), 5);
+                return (nameof(OSType.Alpine), 5);
             }
 
-            return directoryName.StartsWith(nameof(OSType.rhel))
-                ? ((string os, int priority))(nameof(OSType.rhel), 6)
-                : directoryName.StartsWith(nameof(OSType.arch))
-                ? ((string os, int priority))(nameof(OSType.arch), 7)
-                : directoryName.StartsWith(nameof(OSType.opensuse))
-                ? ((string os, int priority))(nameof(OSType.opensuse), 8)
-                : directoryName.StartsWith(nameof(OSType.gentoo)) ? ((string os, int priority))(nameof(OSType.gentoo), 9) : ((string os, int priority))(directoryName.Split('-')[0], int.MaxValue);
+            return directoryName.StartsWith(nameof(OSType.Rhel))
+                ? ((string os, int priority))(nameof(OSType.Rhel), 6)
+                : directoryName.StartsWith(nameof(OSType.Arch))
+                    ? ((string os, int priority))(nameof(OSType.Arch), 7)
+                    : directoryName.StartsWith(nameof(OSType.Opensuse))
+                        ? ((string os, int priority))(nameof(OSType.Opensuse), 8)
+                        : directoryName.StartsWith(nameof(OSType.Gentoo))
+                            ? ((string os, int priority))(nameof(OSType.Gentoo), 9)
+                            : ((string os, int priority))(directoryName.Split('-')[0], int.MaxValue);
         }
 
         private string GetArchInfo(string directoryName)
         {
-            if (directoryName.EndsWith(nameof(ArchitectureType.x64)))
+            if (directoryName.EndsWith(nameof(ArchitectureType.X64)))
             {
-                return nameof(ArchitectureType.x64);
+                return nameof(ArchitectureType.X64);
             }
 
-            return directoryName.EndsWith(nameof(ArchitectureType.x86))
-                ? nameof(ArchitectureType.x86)
-                : directoryName.EndsWith(nameof(ArchitectureType.arm64))
-                ? nameof(ArchitectureType.arm64)
-                : directoryName.EndsWith(nameof(ArchitectureType.arm))
-                ? nameof(ArchitectureType.arm)
-                : defaultArch.TryGetValue(os, out var arch) ? arch : nameof(ArchitectureType.x64);
+            return directoryName.EndsWith(nameof(ArchitectureType.X86))
+                ? nameof(ArchitectureType.X86)
+                : directoryName.EndsWith(nameof(ArchitectureType.ARM64))
+                    ? nameof(ArchitectureType.ARM64)
+                    : directoryName.EndsWith(nameof(ArchitectureType.ARM))
+                        ? nameof(ArchitectureType.ARM)
+                        : DefaultArch.TryGetValue(OS, out var arch)
+                            ? arch
+                            : nameof(ArchitectureType.X64);
         }
     }
 
     public enum OSType
     {
-        win,
-        osx,
-        android,
-        ios,
-        linux,
-        ubuntu,
-        debian,
-        fedora,
-        centos,
-        alpine,
-        rhel,
-        arch,
-        opensuse,
-        gentoo
+        Win,
+        OSX,
+        Android,
+        IOS,
+        Linux,
+        Ubuntu,
+        Debian,
+        Fedora,
+        Centos,
+        Alpine,
+        Rhel,
+        Arch,
+        Opensuse,
+        Gentoo
     }
 
     public enum ArchitectureType
     {
-        x64,
-        x86,
-        arm64,
-        arm
+        X64,
+        X86,
+        ARM64,
+        ARM
     }
 }

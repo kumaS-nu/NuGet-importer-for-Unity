@@ -21,26 +21,40 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         public FixSpecifiedPackage(string packageId, bool confirm = true)
         {
             id = packageId;
-            isConfirmToUser = confirm;
+            IsConfirmToUser = confirm;
         }
 
         /// <inheritdoc/>
-        protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
+        protected override async Task<OperationResult> Operate(
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock
+        )
         {
-            IEnumerable<Package> fixPackage = controlledPackages.installed.Where(package => package.id == id).ToArray();
+            var fixPackage = controlledPackages.Installed.Where(package => package.ID == id).ToArray();
             if (!fixPackage.Any())
             {
                 return new OperationResult(OperationState.Cancel, id + " is not installed.");
             }
 
-            IEnumerable<Task<bool>> tasks = controlledPackages.installed.Where(pkg => pkg.id == id).Select(async pkg => await PackageManager.HasNativeAsync(pkg));
+            var tasks = controlledPackages.Installed.Where(pkg => pkg.ID == id)
+                                          .Select(async pkg => await PackageManager.HasNativeAsync(pkg));
             var hasNatives = await Task.WhenAll(tasks);
             if (hasNatives.Any(isNative => isNative))
             {
-                EditorUtility.DisplayDialog("NuGet importer", "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)", "OK");
+                EditorUtility.DisplayDialog(
+                    "NuGet importer",
+                    "We restart Unity, because the native plugin is included in the installed package.\n(The current project will be saved.)",
+                    "OK"
+                );
             }
 
-            return await ManipulatePackages(controlledPackages.root, fixPackage, fixPackage, controlledPackages, operateLock);
+            return await ManipulatePackages(
+                controlledPackages.Root,
+                fixPackage,
+                fixPackage,
+                controlledPackages,
+                operateLock
+            );
         }
     }
 }

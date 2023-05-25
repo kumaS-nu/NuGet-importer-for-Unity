@@ -32,7 +32,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
         {
             Task<DataClasses.SearchResult> task = NuGet.SearchPackage();
             yield return task.AsEnumerator();
-            Task task1 = PackageDataExtentionToGUI.GetIcon(task.Result.data[0]);
+            Task task1 = PackageDataExtensionToGUI.GetIcon(task.Result.data[0]);
             yield return task1.AsEnumerator();
             Assert.That(true);
         }

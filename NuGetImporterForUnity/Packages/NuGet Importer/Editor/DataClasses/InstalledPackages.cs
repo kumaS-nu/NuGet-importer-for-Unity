@@ -10,60 +10,59 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     [System.Xml.Serialization.XmlRootAttribute("packages", Namespace = "", IsNullable = false)]
     public partial class InstalledPackages
     {
-        private List<Package> packageField;
+        private List<Package> _packageField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("package")]
-        public List<Package> package
+        public List<Package> Package
         {
-            get => packageField;
-            set => packageField = value;
+            get => _packageField;
+            set => _packageField = value;
         }
     }
 
     /// <remarks/>
-    [System.SerializableAttribute()]
+    [System.SerializableAttribute]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public class Package
     {
-        private string idField;
+        private string _idField;
 
-        [System.Xml.Serialization.XmlIgnore]
-        public SemVer versionField = new SemVer();
+        [System.Xml.Serialization.XmlIgnore] public SemVer VersionField = new SemVer();
 
-        private string targetFrameworkField;
+        private string _targetFrameworkField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string id
+        public string ID
         {
-            get => idField;
-            set => idField = value;
+            get => _idField;
+            set => _idField = value;
         }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string version
+        public string Version
         {
-            get => versionField.SelectedVersion;
-            set => versionField.SelectedVersion = value;
+            get => VersionField.SelectedVersion;
+            set => VersionField.SelectedVersion = value;
         }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string targetFramework
+        public string TargetFramework
         {
-            get => targetFrameworkField;
-            set => targetFrameworkField = value;
+            get => _targetFrameworkField;
+            set => _targetFrameworkField = value;
         }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string allowedVersions
+        public string AllowedVersions
         {
-            get => versionField.AllowedVersion;
-            set => versionField.AllowedVersion = value;
+            get => VersionField.AllowedVersion;
+            set => VersionField.AllowedVersion = value;
         }
     }
 }

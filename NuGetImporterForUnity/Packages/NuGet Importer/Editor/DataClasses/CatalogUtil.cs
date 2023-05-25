@@ -28,6 +28,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             {
                 catalogCache = items.SelectMany(item => item.items).Select(item => item.catalogEntry).ToArray();
             }
+
             return catalogCache;
         }
     }
@@ -36,11 +37,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
     {
         public PackageJson ToPackageJson()
         {
-            var author = new Author()
-            {
-                name = authors,
-                url = projectUrl
-            };
+            var author = new Author() { name = authors, url = projectUrl };
 
             var splited = version.Split('.').ToList();
             while (splited.Count < 3)

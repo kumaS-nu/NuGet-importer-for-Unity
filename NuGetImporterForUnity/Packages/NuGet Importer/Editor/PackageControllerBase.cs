@@ -17,7 +17,12 @@ namespace kumaS.NuGetImporter.Editor
     internal abstract class PackageControllerBase
     {
         private readonly XmlSerializer serializer = new XmlSerializer(typeof(InstalledPackages));
-        private readonly string[] deleteDirectories = new string[] { "_rels", "package", "build", "buildMultiTargeting", "buildTransitive" };
+
+        private readonly string[] deleteDirectories =
+        {
+            "_rels", "package", "build", "buildMultiTargeting", "buildTransitive"
+        };
+
         protected internal PackagePathSolverBase pathSolver { protected set; get; }
 
         /// <summary>
@@ -28,7 +33,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Package to install.</para>
         /// <para>インストールするパッケージ。</para>
         /// </param>
-        internal abstract Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName);
+        internal abstract Task<(bool isSkipped, Package package, PackageManagedPluginList asm)> InstallPackageAsync(
+            Package package,
+            IEnumerable<string> loadedAsmName
+        );
 
         /// <summary>
         /// <para>Remove plugins outside the specified directory.</para>
@@ -55,6 +63,7 @@ namespace kumaS.NuGetImporter.Editor
             {
                 tasks.Add(UninstallManagedPackageAsync(package));
             }
+
             await Task.WhenAll(tasks);
         }
 
@@ -86,32 +95,29 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>The process of removing native plugins.</para>
         /// <para>ネイティブプラグインを削除するプロセス。</para>
         /// </returns>
-        internal async Task<Process> OperateWithNativeAsync(IEnumerable<Package> installs, IEnumerable<Package> manageds, IEnumerable<Package> natives, IEnumerable<Package> allInstalled, IEnumerable<Package> root)
+        internal async Task<Process> OperateWithNativeAsync(
+            IEnumerable<Package> installs,
+            IEnumerable<Package> manageds,
+            ICollection<Package> natives,
+            IEnumerable<Package> allInstalled,
+            IEnumerable<Package> root
+        )
         {
             using (var file = new StreamWriter(PackageManager.DataPath.Replace("Assets", "WillInstall.xml"), false))
             {
-                var write = new InstalledPackages
-                {
-                    package = installs.ToList()
-                };
+                var write = new InstalledPackages { Package = installs.ToList() };
                 serializer.Serialize(file, write);
             }
 
             using (var file = new StreamWriter(PackageManager.DataPath.Replace("Assets", "WillPackage.xml"), false))
             {
-                var write = new InstalledPackages
-                {
-                    package = allInstalled.ToList()
-                };
+                var write = new InstalledPackages { Package = allInstalled.ToList() };
                 serializer.Serialize(file, write);
             }
 
             using (var file = new StreamWriter(PackageManager.DataPath.Replace("Assets", "WillRoot.xml"), false))
             {
-                var write = new InstalledPackages
-                {
-                    package = root.ToList()
-                };
+                var write = new InstalledPackages { Package = root.ToList() };
                 serializer.Serialize(file, write);
             }
 
@@ -123,7 +129,12 @@ namespace kumaS.NuGetImporter.Editor
 
             IEnumerable<Task<string>> tasks = natives.Select(package => pathSolver.InstallPath(package));
             IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
-            IEnumerable<string> nativeNugetDirectory = natives.Select(package => Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant()));
+            IEnumerable<string> nativeNugetDirectory = natives.Select(
+                package => Path.Combine(
+                    PackageManager.DataPath.Replace("Assets", "NuGet"),
+                    package.ID.ToLowerInvariant() + "." + package.Version.ToLowerInvariant()
+                )
+            );
 
             return CreateDeleteNativeProcess(nativeDirectory.ToArray(), nativeNugetDirectory.ToArray());
         }
@@ -148,6 +159,7 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     continue;
                 }
+
                 try
                 {
                     asm.fileNames.Add(AssemblyName.GetAssemblyName(file).Name);
@@ -176,25 +188,31 @@ namespace kumaS.NuGetImporter.Editor
         protected async Task ExtractPackageAsync(Package package)
         {
             var extractPath = await pathSolver.InstallPath(package);
-            var nupkgName = package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant() + ".nupkg";
+            var nupkgName = package.ID.ToLowerInvariant() + "." + package.Version.ToLowerInvariant() + ".nupkg";
             var tempPath = PackageManager.DataPath.Replace("Assets", "Temp");
             var downloadPath = Path.Combine(tempPath, nupkgName);
             var nugetPath = PackageManager.DataPath.Replace("Assets", "NuGet");
-            var nugetPackagePath = Path.Combine(nugetPath, package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            var nugetPackagePath = Path.Combine(
+                nugetPath,
+                package.ID.ToLowerInvariant() + "." + package.Version.ToLowerInvariant()
+            );
 
             if (File.Exists(downloadPath))
             {
                 File.Delete(downloadPath);
             }
-            await NuGet.GetPackage(package.id, package.version, tempPath);
+
+            await NuGet.GetPackage(package.ID, package.Version, tempPath);
             if (!Directory.Exists(nugetPath))
             {
                 Directory.CreateDirectory(nugetPath);
             }
+
             if (Directory.Exists(nugetPackagePath))
             {
                 DeleteDirectory(nugetPackagePath);
             }
+
             Directory.CreateDirectory(nugetPackagePath);
             DeleteDirectory(extractPath);
             ZipFile.ExtractToDirectory(downloadPath, extractPath);
@@ -218,7 +236,8 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             var nativePath = Path.Combine(extractPath, "runtimes");
-            IEnumerable<string> directories = Directory.GetDirectories(extractPath).Select(path => Path.GetFileName(path).ToLowerInvariant());
+            IEnumerable<string> directories = Directory.GetDirectories(extractPath)
+                                                       .Select(path => Path.GetFileName(path).ToLowerInvariant());
             if (directories.Any(dir => dir == "unity") && Directory.Exists(nativePath))
             {
                 MoveDirectory(nativePath, extractPath, nugetPackagePath);
@@ -237,18 +256,25 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     continue;
                 }
+
                 if (NuGetAnalyzerImportSetting.HasAnalyzerSupport && dirName == "analyzers")
                 {
                     continue;
                 }
+
                 MoveDirectory(moveDir, extractPath, nugetPackagePath);
             }
         }
 
-        private void ManagedPluginProcess(Package package, string nugetPackagePath, string extractPath, string managedPath)
+        private void ManagedPluginProcess(
+            Package package,
+            string nugetPackagePath,
+            string extractPath,
+            string managedPath
+        )
         {
             List<string[]> frameworkDictionary = FrameworkName.ALLPLATFORM;
-            var targetFramework = frameworkDictionary.FirstOrDefault(f => f.Contains(package.targetFramework));
+            var targetFramework = frameworkDictionary.FirstOrDefault(f => f.Contains(package.TargetFramework));
             List<string> frameworkList = FrameworkName.TARGET;
 
             if (targetFramework == default)
@@ -257,7 +283,7 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             (var leftPath, var framework) = SelectManagedDirectory(managedPath, targetFramework, frameworkList);
-            package.targetFramework = framework;
+            package.TargetFramework = framework;
 
             LocalizeDirectoryProcess(nugetPackagePath, extractPath, leftPath);
 
@@ -287,25 +313,40 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Paths left.Just the right framework.</para>
         /// <para>残したパス。ちょうどよいフレームワーク。</para>
         /// </returns>
-        private (string path, string framework) SelectManagedDirectory(string managedPath, string[] targetFramework, List<string> frameworkList)
+        private (string path, string framework) SelectManagedDirectory(
+            string managedPath,
+            string[] targetFramework,
+            List<string> frameworkList
+        )
         {
-            IEnumerable<string> forUnityPath = Directory.GetDirectories(managedPath).Where(p => Path.GetFileName(p).ToLowerInvariant() == "unity");
+            ICollection<string> forUnityPath = Directory.GetDirectories(managedPath)
+                                                        .Where(p => Path.GetFileName(p).ToLowerInvariant() == "unity")
+                                                        .ToArray();
             if (forUnityPath.Any())
             {
-                (var suit, List<string> remove) = GetSuitFramework(forUnityPath.First(), targetFramework, frameworkList);
-                remove.AddRange(Directory.GetDirectories(managedPath).Where(p => Path.GetFileName(p).ToLowerInvariant() != "unity"));
+                (var suit, List<string> remove) = GetSuitFramework(
+                    forUnityPath.First(),
+                    targetFramework,
+                    frameworkList
+                );
+                remove.AddRange(
+                    Directory.GetDirectories(managedPath).Where(p => Path.GetFileName(p).ToLowerInvariant() != "unity")
+                );
                 foreach (var r in remove)
                 {
                     DeleteDirectory(r);
                 }
+
                 return (forUnityPath.First(), suit);
             }
+
             {
                 (var suit, List<string> remove) = GetSuitFramework(managedPath, targetFramework, frameworkList);
                 foreach (var r in remove)
                 {
                     DeleteDirectory(r);
                 }
+
                 return (Path.Combine(managedPath, suit), suit);
             }
         }
@@ -330,11 +371,16 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Just the right framework.Directory to be removed.</para>
         /// <para>ちょうどよいフレームワーク。取り除くディレクトリ。</para>
         /// </returns>
-        private (string suit, List<string> removes) GetSuitFramework(string frameworkDir, string[] targetFramework, List<string> frameworkList)
+        private (string suit, List<string> removes) GetSuitFramework(
+            string frameworkDir,
+            string[] targetFramework,
+            List<string> frameworkList
+        )
         {
             var removes = new List<string>();
             var frameworkPaths = Directory.GetDirectories(frameworkDir);
-            IEnumerable<string> target = frameworkPaths.Where(framework => targetFramework.Contains(Path.GetFileName(framework)));
+            ICollection<string> target =
+                frameworkPaths.Where(framework => targetFramework.Contains(Path.GetFileName(framework))).ToArray();
             if (target.Any())
             {
                 removes.AddRange(frameworkPaths);
@@ -357,6 +403,7 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         removes.Add(suit);
                     }
+
                     priority = frameworkList.IndexOf(frameworkName);
                     suit = framework;
                 }
@@ -365,6 +412,7 @@ namespace kumaS.NuGetImporter.Editor
                     removes.Add(framework);
                 }
             }
+
             return (Path.GetFileName(suit), removes);
         }
 
@@ -392,25 +440,30 @@ namespace kumaS.NuGetImporter.Editor
 
         private void NativeProcess(string nativePath, string nugetPackagePath, string extractPath)
         {
-            IEnumerable<NativePlatform> moveList = Directory.GetDirectories(nativePath).Select(native => new NativePlatform(native))
-                .Where(native => native.osPriority >= 0).OrderBy(native => native.osPriority).Skip(1);
+            IEnumerable<NativePlatform> moveList = Directory.GetDirectories(nativePath)
+                                                            .Select(native => new NativePlatform(native))
+                                                            .Where(native => native.OSPriority >= 0)
+                                                            .OrderBy(native => native.OSPriority)
+                                                            .Skip(1);
 
             foreach (NativePlatform move in moveList)
             {
-                MoveDirectory(move.path, extractPath, nugetPackagePath);
+                MoveDirectory(move.Path, extractPath, nugetPackagePath);
             }
 
             foreach (var directory in Directory.GetDirectories(nativePath))
             {
                 var platform = new NativePlatform(directory);
-                if (!enableArch.TryGetValue(platform.os, out List<string> _) || !enableArch[platform.os].Contains(platform.architecture))
+                if (!EnableArch.TryGetValue(platform.OS, out List<string> _)
+                    || !EnableArch[platform.OS].Contains(platform.Architecture))
                 {
-                    MoveDirectory(platform.path, extractPath, nugetPackagePath);
+                    MoveDirectory(platform.Path, extractPath, nugetPackagePath);
                 }
             }
 
             IEnumerable<string> nonNativeList = Directory.GetDirectories(nativePath)
-                .SelectMany(native => Directory.GetDirectories(native)).Where(native => !native.EndsWith("native"));
+                                                         .SelectMany(native => Directory.GetDirectories(native))
+                                                         .Where(native => !native.EndsWith("native"));
 
             foreach (var move in nonNativeList)
             {
@@ -435,6 +488,7 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         continue;
                     }
+
                     MoveDirectory(lang, extractPath, nugetPackagePath);
                 }
             }
@@ -468,7 +522,9 @@ namespace kumaS.NuGetImporter.Editor
             var localizedFileNames = new List<List<string>>();
             foreach (var localizedDir in Directory.GetDirectories(managedPath))
             {
-                var localizedFiles = Directory.GetFiles(localizedDir, "*.dll", SearchOption.AllDirectories).Select(file => Path.GetFileName(file)).ToList();
+                var localizedFiles = Directory.GetFiles(localizedDir, "*.dll", SearchOption.AllDirectories)
+                                              .Select(file => Path.GetFileName(file))
+                                              .ToList();
                 var addIndex = 0;
                 foreach (List<string> localizedFile in localizedFileNames)
                 {
@@ -476,6 +532,7 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         break;
                     }
+
                     addIndex++;
                 }
 
@@ -498,14 +555,17 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Uninstall the managed plugin package.</para>
         /// <para>マネージドプラグインのパッケージをアンインストールする。</para>
         /// </summary>
-        /// <param name="packages">
+        /// <param name="package">
         /// <para>Package to be uninstalled.</para>
         /// <para>アンインストールするパッケージ。</para>
         /// </param>
         private async Task UninstallManagedPackageAsync(Package package)
         {
             var path = await pathSolver.InstallPath(package);
-            var nugetPackagePath = Path.Combine(PackageManager.DataPath.Replace("Assets", "NuGet"), package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            var nugetPackagePath = Path.Combine(
+                PackageManager.DataPath.Replace("Assets", "NuGet"),
+                package.ID.ToLowerInvariant() + "." + package.Version.ToLowerInvariant()
+            );
             var tasks = new List<Task>
             {
                 Task.Run(() => DeleteDirectory(nugetPackagePath)),
@@ -530,7 +590,10 @@ namespace kumaS.NuGetImporter.Editor
                 Directory.Delete(path, true);
                 File.Delete(path + ".meta");
             }
-            catch (Exception e) when (e is ArgumentException || e is DirectoryNotFoundException || e is FileNotFoundException || e is NotSupportedException)
+            catch (Exception e) when (e is ArgumentException
+                                      || e is DirectoryNotFoundException
+                                      || e is FileNotFoundException
+                                      || e is NotSupportedException)
             { }
         }
 
@@ -549,7 +612,9 @@ namespace kumaS.NuGetImporter.Editor
                 File.Delete(path);
                 File.Delete(path + ".meta");
             }
-            catch (Exception e) when (e is ArgumentException || e is FileNotFoundException || e is NotSupportedException)
+            catch (Exception e) when (e is ArgumentException
+                                      || e is FileNotFoundException
+                                      || e is NotSupportedException)
             { }
         }
 
@@ -576,17 +641,22 @@ namespace kumaS.NuGetImporter.Editor
             {
                 relativePath = relativePath.Substring(1);
             }
+
             var dstPath = Path.Combine(nugetPackagePath, relativePath);
-            if (!Directory.Exists(Path.GetDirectoryName(dstPath)))
+            var directoryName = Path.GetDirectoryName(dstPath);
+            if (!Directory.Exists(directoryName))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(dstPath));
+                Directory.CreateDirectory(directoryName!);
             }
+
             try
             {
                 Directory.Move(path, dstPath);
                 File.Delete(path + ".meta");
             }
-            catch (Exception e) when (e is ArgumentException || e is FileNotFoundException || e is NotSupportedException)
+            catch (Exception e) when (e is ArgumentException
+                                      || e is FileNotFoundException
+                                      || e is NotSupportedException)
             { }
         }
 
@@ -606,7 +676,10 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>The process of removing native plugins.</para>
         /// <para>ネイティブプラグインを削除するプロセス。</para>
         /// </returns>
-        private Process CreateDeleteNativeProcess(IEnumerable<string> directoryPaths, IEnumerable<string> nugetDirectoryPaths)
+        private Process CreateDeleteNativeProcess(
+            IEnumerable<string> directoryPaths,
+            IEnumerable<string> nugetDirectoryPaths
+        )
         {
             var process = new Process();
             process.StartInfo.UseShellExecute = true;
@@ -618,7 +691,7 @@ namespace kumaS.NuGetImporter.Editor
             var command = new StringBuilder();
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                process.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec");
+                process.StartInfo.FileName = Environment.GetEnvironmentVariable("ComSpec")!;
 
                 // Wait a moment for exit the editor.
                 command.Append("/c timeout 5 && ");
@@ -634,6 +707,7 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("\"");
                     command.Append(" && ");
                 }
+
                 foreach (var path in nugetDirectoryPaths)
                 {
                     command.Append("rd /s /q \"");
@@ -641,6 +715,7 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("\"");
                     command.Append(" && ");
                 }
+
                 command.Append(Environment.CommandLine);
             }
             else
@@ -661,6 +736,7 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("'");
                     command.Append(" && ");
                 }
+
                 foreach (var path in nugetDirectoryPaths)
                 {
                     command.Append("rm -rf '");
@@ -668,105 +744,59 @@ namespace kumaS.NuGetImporter.Editor
                     command.Append("'");
                     command.Append(" && ");
                 }
+
                 command.Append(Environment.CommandLine);
                 command.Append("\"");
             }
+
             process.StartInfo.Arguments = command.ToString();
             return process;
         }
 
-        private static readonly Dictionary<string, List<string>> enableArch = new Dictionary<string, List<string>>
+        private static readonly Dictionary<string, List<string>> EnableArch = new Dictionary<string, List<string>>()
         {
             {
-                nameof(OSType.win), new List<string> {
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86),
-                    nameof(ArchitectureType.arm64),
-                    nameof(ArchitectureType.arm)
+                nameof(OSType.Win),
+                new List<string>
+                {
+                    nameof(ArchitectureType.X64),
+                    nameof(ArchitectureType.X86),
+                    nameof(ArchitectureType.ARM64),
+                    nameof(ArchitectureType.ARM)
                 }
             },
             {
-                nameof(OSType.osx), new List<string> {
-                    nameof(ArchitectureType.x64),
+                nameof(OSType.OSX), new List<string>
+                {
+                    nameof(ArchitectureType.X64),
 #if UNITY_2020_2_OR_NEWER
-                    nameof(ArchitectureType.arm64),
-#endif         
+                    nameof(ArchitectureType.ARM64),
+#endif
                 }
             },
             {
-                nameof(OSType.android), new List<string>{
-                    nameof(ArchitectureType.arm64),
-                    nameof(ArchitectureType.arm),
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
+                nameof(OSType.Android),
+                new List<string>
+                {
+                    nameof(ArchitectureType.ARM64),
+                    nameof(ArchitectureType.ARM),
+                    nameof(ArchitectureType.X64),
+                    nameof(ArchitectureType.X86)
                 }
             },
+            { nameof(OSType.IOS), new List<string> { nameof(ArchitectureType.ARM64), nameof(ArchitectureType.ARM) } },
+            { nameof(OSType.Linux), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
+            { nameof(OSType.Ubuntu), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
+            { nameof(OSType.Debian), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
+            { nameof(OSType.Fedora), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
+            { nameof(OSType.Centos), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
+            { nameof(OSType.Alpine), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
+            { nameof(OSType.Rhel), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
+            { nameof(OSType.Arch), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
             {
-                nameof(OSType.ios), new List<string>{
-                    nameof(ArchitectureType.arm64),
-                    nameof(ArchitectureType.arm)
-                }
+                nameof(OSType.Opensuse), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) }
             },
-            {
-                nameof(OSType.linux), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.ubuntu), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.debian), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.fedora), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.centos), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.alpine), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.rhel), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.arch), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.opensuse), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
-            {
-                nameof(OSType.gentoo), new List<string>{
-                    nameof(ArchitectureType.x64),
-                    nameof(ArchitectureType.x86)
-                }
-            },
+            { nameof(OSType.Gentoo), new List<string> { nameof(ArchitectureType.X64), nameof(ArchitectureType.X86) } },
         };
     }
 }

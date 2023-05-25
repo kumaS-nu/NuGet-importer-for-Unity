@@ -16,7 +16,7 @@ namespace kumaS.NuGetImporter.Editor
     /// </summary>
     public class NuGetImporterSettingWindow : EditorWindow
     {
-        private Vector2 scrollPos;
+        private Vector2 _scrollPos;
 
         [MenuItem("NuGet Importer/NuGet importer settings", false, 4)]
         private static void ShowWindow()
@@ -24,7 +24,12 @@ namespace kumaS.NuGetImporter.Editor
             var isAssets = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsAssets;
             if (isAssets != File.Exists(Path.Combine(Application.dataPath, "Packages", "managedPluginList.json")))
             {
-                if (EditorUtility.DisplayDialog("NuGet importer", "The installation method setting does not match the current installation method: UPM (recommended) or Assets ?", "UPM", "Assets"))
+                if (EditorUtility.DisplayDialog(
+                        "NuGet importer",
+                        "The installation method setting does not match the current installation method: UPM (recommended) or Assets ?",
+                        "UPM",
+                        "Assets"
+                    ))
                 {
                     NuGetImporterSettings.Instance.InstallMethod = InstallMethod.AsUPM;
                     _ = Operate(PackageManager.ConvertToUPM());
@@ -34,6 +39,7 @@ namespace kumaS.NuGetImporter.Editor
                     NuGetImporterSettings.Instance.InstallMethod = InstallMethod.AsAssets;
                     _ = Operate(PackageManager.ConvertToAssets());
                 }
+
                 return;
             }
 
@@ -49,7 +55,8 @@ namespace kumaS.NuGetImporter.Editor
                     InstallMethod before = NuGetImporterSettings.Instance.InstallMethod;
                     EditorGUILayout.LabelField("install method");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.InstallMethod = (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
+                    NuGetImporterSettings.Instance.InstallMethod =
+                        (InstallMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.InstallMethod);
                     if (before != NuGetImporterSettings.Instance.InstallMethod)
                     {
                         _ = NuGetImporterSettings.Instance.InstallMethod == InstallMethod.AsUPM
@@ -63,35 +70,40 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     EditorGUILayout.LabelField("Method to select a version");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.Method = (VersionSelectMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.Method);
+                    NuGetImporterSettings.Instance.Method =
+                        (VersionSelectMethod)EditorGUILayout.EnumPopup(NuGetImporterSettings.Instance.Method);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Auto package placement check");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.AutoPackagePlacementCheck = EditorGUILayout.Toggle(NuGetImporterSettings.Instance.AutoPackagePlacementCheck);
+                    NuGetImporterSettings.Instance.AutoPackagePlacementCheck =
+                        EditorGUILayout.Toggle(NuGetImporterSettings.Instance.AutoPackagePlacementCheck);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("search cache count");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.SearchCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.SearchCacheLimit);
+                    NuGetImporterSettings.Instance.SearchCacheLimit =
+                        EditorGUILayout.IntField(NuGetImporterSettings.Instance.SearchCacheLimit);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("catalog cache count");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.CatalogCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.CatalogCacheLimit);
+                    NuGetImporterSettings.Instance.CatalogCacheLimit =
+                        EditorGUILayout.IntField(NuGetImporterSettings.Instance.CatalogCacheLimit);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("icon cache count");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.IconCacheLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.IconCacheLimit);
+                    NuGetImporterSettings.Instance.IconCacheLimit =
+                        EditorGUILayout.IntField(NuGetImporterSettings.Instance.IconCacheLimit);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
@@ -99,10 +111,14 @@ namespace kumaS.NuGetImporter.Editor
                     var before = NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer;
                     EditorGUILayout.LabelField("Create asmdef for analyzer");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer = EditorGUILayout.Toggle(NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer);
+                    NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer =
+                        EditorGUILayout.Toggle(NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer);
                     if (before != NuGetImporterSettings.Instance.IsCreateAsmdefForAnalyzer)
                     {
-                        _ = AsmdefController.UpdateAsmdef(PackageManager.ControlledPackages.installed, PackageManager.GetPackagePathSolver());
+                        _ = AsmdefController.UpdateAsmdef(
+                            PackageManager.ControlledPackages.Installed,
+                            PackageManager.GetPackagePathSolver()
+                        );
                         AssetDatabase.Refresh();
                         GUIUtility.ExitGUI();
                     }
@@ -114,21 +130,24 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     EditorGUILayout.LabelField("network save mode");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.IsNetworkSavemode = EditorGUILayout.Toggle(NuGetImporterSettings.Instance.IsNetworkSavemode);
+                    NuGetImporterSettings.Instance.IsNetworkSavemode =
+                        EditorGUILayout.Toggle(NuGetImporterSettings.Instance.IsNetworkSavemode);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("retry limit");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.RetryLimit = EditorGUILayout.IntField(NuGetImporterSettings.Instance.RetryLimit);
+                    NuGetImporterSettings.Instance.RetryLimit =
+                        EditorGUILayout.IntField(NuGetImporterSettings.Instance.RetryLimit);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("timeout seconds");
                     GUILayout.FlexibleSpace();
-                    NuGetImporterSettings.Instance.Timeout = EditorGUILayout.IntField(NuGetImporterSettings.Instance.Timeout);
+                    NuGetImporterSettings.Instance.Timeout =
+                        EditorGUILayout.IntField(NuGetImporterSettings.Instance.Timeout);
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
@@ -140,9 +159,9 @@ namespace kumaS.NuGetImporter.Editor
                 using (new EditorGUILayout.VerticalScope("Box"))
                 {
                     List<string> ignorePackages = NuGetImporterSettings.Instance.IgnorePackages;
-                    using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos))
+                    using (var scrollView = new EditorGUILayout.ScrollViewScope(_scrollPos))
                     {
-                        scrollPos = scrollView.scrollPosition;
+                        _scrollPos = scrollView.scrollPosition;
                         for (var i = 0; i < ignorePackages.Count; i++)
                         {
                             ignorePackages[i] = GUILayout.TextField(ignorePackages[i]);
@@ -162,6 +181,7 @@ namespace kumaS.NuGetImporter.Editor
                             ignorePackages.RemoveAt(ignorePackages.Count - 1);
                         }
                     }
+
                     NuGetImporterSettings.Instance.IgnorePackages = ignorePackages;
                 }
             }

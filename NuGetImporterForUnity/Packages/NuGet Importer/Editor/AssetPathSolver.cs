@@ -7,7 +7,7 @@ namespace kumaS.NuGetImporter.Editor
 {
     /// <summary>
     /// <para>Class for resolving the path of packages to be installed in Assets.</para>
-    /// <para>Assets‚ÉƒCƒ“ƒXƒg[ƒ‹‚·‚éƒpƒbƒP[ƒW‚ÌƒpƒX‚ğ‰ğŒˆ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒXB</para>
+    /// <para>Assetsã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ãƒ‘ã‚¹ã‚’è§£æ±ºã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚</para>
     /// </summary>
     internal class AssetPathSolver : PackagePathSolverBase
     {
@@ -15,7 +15,7 @@ namespace kumaS.NuGetImporter.Editor
         /// <inheritdoc/>
         internal override async Task<string> InstallPath(Package package)
         {
-            return Path.Combine(PackageManager.DataPath, "Packages", package.id.ToLowerInvariant() + "." + package.version.ToLowerInvariant());
+            return Path.Combine(PackageManager.DataPath, "Packages", package.ID.ToLowerInvariant() + "." + package.Version.ToLowerInvariant());
         }
 
         /// <inheritdoc/>

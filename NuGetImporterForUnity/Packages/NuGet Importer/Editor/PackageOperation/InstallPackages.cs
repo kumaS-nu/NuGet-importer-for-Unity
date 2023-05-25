@@ -12,31 +12,68 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
     /// </summary>
     internal sealed class InstallPackage : OperatePackage
     {
-        private readonly string id;
-        private readonly string version;
-        private readonly bool onlyStable = true;
-        private readonly VersionSelectMethod method = VersionSelectMethod.Suit;
+        private readonly string _id;
+        private readonly string _version;
+        private readonly bool _onlyStable;
+        private readonly VersionSelectMethod _method;
 
         protected override string FinishMessage { get => "Installation finished."; }
 
-        public InstallPackage(string packageId, string installVersion, bool isOnlyStable = true, VersionSelectMethod versionSelect = VersionSelectMethod.Suit)
+        public InstallPackage(
+            string packageId,
+            string installVersion,
+            bool isOnlyStable = true,
+            VersionSelectMethod versionSelect = VersionSelectMethod.Suit
+        )
         {
-            onlyStable = isOnlyStable;
-            method = versionSelect;
-            id = packageId;
-            version = installVersion;
+            _onlyStable = isOnlyStable;
+            _method = versionSelect;
+            _id = packageId;
+            _version = installVersion;
         }
 
-        protected override async Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock)
+        protected override async Task<OperationResult> Operate(
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock
+        )
         {
-            IEnumerable<Package> requiredPackages = await DependencySolver.FindRequiredPackages(id, version, controlledPackages, onlyStable, method);
-            requiredPackages = requiredPackages.Where(package => !controlledPackages.existing.Any(exist => package.id == exist.id)).ToArray();
+            IEnumerable<Package> requiredPackages = await DependencySolver.FindRequiredPackages(
+                _id,
+                _version,
+                controlledPackages,
+                _onlyStable,
+                _method
+            );
+            requiredPackages = requiredPackages
+                               .Where(package => controlledPackages.Existing.All(exist => package.ID != exist.ID))
+                               .ToArray();
 
-            Package[] rootPackages = requiredPackages.Where(req => controlledPackages.root.Any(root => root.id == req.id)).Concat(requiredPackages.Where(req => req.id == id)).ToArray();
-            Package[] installPackages = requiredPackages.Where(package => !controlledPackages.installed.Any(install => install.id == package.id && install.version == package.version)).ToArray();
-            Package[] deletePackages = controlledPackages.installed.Where(install => requiredPackages.Any(dep => dep.id == install.id && dep.version != install.version)).ToArray();
+            var rootPackages = requiredPackages
+                               .Where(req => controlledPackages.Root.Any(root => root.ID == req.ID))
+                               .Concat(requiredPackages.Where(req => req.ID == _id))
+                               .ToArray();
+            var installPackages = requiredPackages.Where(
+                                                      package => !controlledPackages.Installed.Any(
+                                                          install => install.ID == package.ID
+                                                                     && install.Version == package.Version
+                                                      )
+                                                  )
+                                                  .ToArray();
+            var deletePackages = controlledPackages.Installed.Where(
+                                                       install => requiredPackages.Any(
+                                                           dep => dep.ID == install.ID
+                                                                  && dep.Version != install.Version
+                                                       )
+                                                   )
+                                                   .ToArray();
 
-            return await ManipulatePackages(rootPackages, installPackages, deletePackages, controlledPackages, operateLock);
+            return await ManipulatePackages(
+                rootPackages,
+                installPackages,
+                deletePackages,
+                controlledPackages,
+                operateLock
+            );
         }
     }
 }

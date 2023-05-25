@@ -113,7 +113,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "[1.0.0]" };
             var rightSemVer = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "[1.0.0]" };
 
-            SemVer marged = semVer1.Marge(semVer2, false);
+            SemVer marged = semVer1.Merge(semVer2, false);
 
             Assert.That(marged.ExistVersion, Is.EqualTo(rightSemVer.ExistVersion));
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
@@ -126,7 +126,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "2.0.0" };
             var rightSemVer = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "2.0.0" };
 
-            SemVer marged = semVer1.Marge(semVer2, false);
+            SemVer marged = semVer1.Merge(semVer2, false);
 
             Assert.That(marged.ExistVersion, Is.EqualTo(rightSemVer.ExistVersion));
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
@@ -139,7 +139,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "1.0.0" };
             var rightSemVer = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "2.0.0" };
 
-            SemVer marged = semVer1.Marge(semVer2, false);
+            SemVer marged = semVer1.Merge(semVer2, false);
 
             Assert.That(marged.ExistVersion, Is.EqualTo(rightSemVer.ExistVersion));
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
@@ -152,7 +152,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "(,1.0.0]" };
             var rightSemVer = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "[,1.0.0]" };
 
-            SemVer marged = semVer1.Marge(semVer2, false);
+            SemVer marged = semVer1.Merge(semVer2, false);
 
             Assert.That(marged.ExistVersion, Is.EqualTo(rightSemVer.ExistVersion));
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
@@ -165,7 +165,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "[1.0.0-rc.1,2.1.0]" };
             var rightSemVer = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "[1.0.0-rc.1,2.0.0]" };
 
-            SemVer marged = semVer1.Marge(semVer2, false);
+            SemVer marged = semVer1.Merge(semVer2, false);
 
             Assert.That(marged.ExistVersion, Is.EqualTo(rightSemVer.ExistVersion));
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
@@ -178,7 +178,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "(1.0.0-rc.1,2.1.0)" };
             var rightSemVer = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "(1.0.0-rc.1,2.0.0)" };
 
-            SemVer marged = semVer1.Marge(semVer2, false);
+            SemVer marged = semVer1.Merge(semVer2, false);
 
             Assert.That(marged.ExistVersion, Is.EqualTo(rightSemVer.ExistVersion));
             Assert.That(marged.AllowedVersion, Is.EqualTo(rightSemVer.AllowedVersion));
@@ -190,7 +190,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer1 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "(1.0.0-alpha,1.0.0)" };
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "2.0.0" };
 
-            Assert.Throws<ArgumentException>(() => semVer1.Marge(semVer2, false));
+            Assert.Throws<ArgumentException>(() => semVer1.Merge(semVer2, false));
         }
 
         [Test]
@@ -199,7 +199,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer1 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "(1.0.0-alpha,1.0.0)" };
             var semVer2 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "(1.0.0-beta,2.0.0)" };
 
-            Assert.Throws<ArgumentException>(() => semVer1.Marge(semVer2, true));
+            Assert.Throws<ArgumentException>(() => semVer1.Merge(semVer2, true));
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace kumaS.NuGetImporter.Editor.Tests
             var semVer1 = new SemVer() { ExistVersion = setVersion.ToList(), AllowedVersion = "(1.0.0-alpha,1.0.0)" };
             var semVer2 = new SemVer() { ExistVersion = new List<string>() { "1.0.0" }, AllowedVersion = "(1.0.0-beta,2.0.0)" };
 
-            Assert.Throws<ArgumentException>(() => semVer1.Marge(semVer2, false));
+            Assert.Throws<ArgumentException>(() => semVer1.Merge(semVer2, false));
         }
 
         #endregion

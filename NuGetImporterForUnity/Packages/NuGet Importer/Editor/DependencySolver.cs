@@ -49,11 +49,19 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> FindRequiredPackages(string packageId, string version, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> FindRequiredPackages(
+            string packageId,
+            string version,
+            ReadOnlyControlledPackages controlledPackages,
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
-            IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>() { (packageId, version) };
-            packageList = packageList.Concat(controlledPackages.root.Select(package => (package.id, package.version)));
-            IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable, method);
+            IEnumerable<(string packageId, string version)> packageList =
+                new List<(string packageId, string version)>() { (packageId, version) };
+            packageList = packageList.Concat(controlledPackages.Root.Select(package => (id: package.ID, version: package.Version)));
+            IEnumerable<Package> requiredPackages =
+                await GetInputedRequiredPackageList(packageList, onlyStable, method);
             return requiredPackages.ToList();
         }
 
@@ -93,12 +101,20 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> FindRequiredPackagesWhenChangeVersion(string packageId, string version, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> FindRequiredPackagesWhenChangeVersion(
+            string packageId,
+            string version,
+            ReadOnlyControlledPackages controlledPackages,
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
-            IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
-            packageList = controlledPackages.root.Where(package => package.id != packageId).Select(package => (package.id, package.version));
+            IEnumerable<(string packageId, string version)> packageList = controlledPackages.Root
+                .Where(package => package.ID != packageId)
+                .Select(package => (id: package.ID, version: package.Version));
             packageList = packageList.Append((packageId, version)).ToArray();
-            IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable, method);
+            IEnumerable<Package> requiredPackages =
+                await GetInputedRequiredPackageList(packageList, onlyStable, method);
             return requiredPackages.ToList();
         }
 
@@ -130,11 +146,16 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> CheckAllPackage(ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> CheckAllPackage(
+            ReadOnlyControlledPackages controlledPackages,
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
-            IEnumerable<(string packageId, string version)> packageList = new List<(string packageId, string version)>();
-            packageList = controlledPackages.root.Select(package => (package.id, package.version)).ToArray();
-            IEnumerable<Package> requiredPackages = await GetInputedRequiredPackageList(packageList, onlyStable, method);
+            IEnumerable<(string packageId, string version)> packageList =
+                controlledPackages.Root.Select(package => (id: package.ID, version: package.Version)).ToArray();
+            IEnumerable<Package> requiredPackages =
+                await GetInputedRequiredPackageList(packageList, onlyStable, method);
             return requiredPackages.ToList();
         }
 
@@ -170,31 +191,48 @@ namespace kumaS.NuGetImporter.Editor
         /// <para>Thrown when there is a circular reference or there is no version of package.</para>
         /// <para>循環参照があるときまたはパッケージのバージョンがないときthrowされる。</para>
         /// </exception>
-        public static async Task<List<Package>> FindRemovablePackages(string removePackageId, ReadOnlyControlledPackages controlledPackages, bool onlyStable = true, VersionSelectMethod method = VersionSelectMethod.Suit)
+        public static async Task<List<Package>> FindRemovablePackages(
+            string removePackageId,
+            ReadOnlyControlledPackages controlledPackages,
+            bool onlyStable = true,
+            VersionSelectMethod method = VersionSelectMethod.Suit
+        )
         {
-            IEnumerable<(string packageId, string version)> installed = new List<(string packageId, string version)>();
-            installed = controlledPackages.root.Where(package => removePackageId != package.id).Select(package => { return (package.id, package.version); }).ToArray();
+            IEnumerable<(string packageId, string version)> installed = controlledPackages.Root
+                .Where(package => removePackageId != package.ID)
+                .Select(package => (id: package.ID, version: package.Version))
+                .ToArray();
             IEnumerable<DependencyNode> allPackages = await GetInputedDependencyList(installed, onlyStable, method);
             IEnumerable<string> allPackagesName = allPackages.Select(package => package.PackageName);
-            return PackageManager.Installed.package.Where(pkg => !allPackagesName.Contains(pkg.id)).ToList();
+            return PackageManager.Installed.Package.Where(pkg => !allPackagesName.Contains(pkg.ID)).ToList();
         }
 
-        private static async Task<IEnumerable<Package>> GetInputedRequiredPackageList(IEnumerable<(string, string)> packages, bool onlyStable, VersionSelectMethod method)
+        private static async Task<IEnumerable<Package>> GetInputedRequiredPackageList(
+            IEnumerable<(string, string)> packages,
+            bool onlyStable,
+            VersionSelectMethod method
+        )
         {
             IEnumerable<DependencyNode> dependency = await GetInputedDependencyList(packages, onlyStable, method);
-            return dependency.Select(package =>
-            {
-                var pkg = new Package
+            return dependency.Select(
+                package =>
                 {
-                    id = package.PackageName,
-                    targetFramework = package.TragetFramework,
-                    versionField = package.Version
-                };
-                return pkg;
-            });
+                    var pkg = new Package
+                    {
+                        ID = package.PackageName,
+                        TargetFramework = package.TargetFramework,
+                        VersionField = package.Version
+                    };
+                    return pkg;
+                }
+            );
         }
 
-        private static async Task<IEnumerable<DependencyNode>> GetInputedDependencyList(IEnumerable<(string, string)> packages, bool onlyStable, VersionSelectMethod method)
+        private static async Task<IEnumerable<DependencyNode>> GetInputedDependencyList(
+            IEnumerable<(string, string)> packages,
+            bool onlyStable,
+            VersionSelectMethod method
+        )
         {
             var confirmedNode = new List<DependencyNode>();
             var tasks = new List<Task>();
@@ -202,7 +240,7 @@ namespace kumaS.NuGetImporter.Editor
             List<string> targetFramework = FrameworkName.TARGET;
 
             // First, search for packages that may be necessary.
-            foreach ((var packageId, var version) in packages)
+            foreach (var (packageId, version) in packages)
             {
                 var node = new DependencyNode(packageId, "[" + version + "]");
                 lock (tasks)
@@ -210,12 +248,13 @@ namespace kumaS.NuGetImporter.Editor
                     tasks.Add(FindDependency(node, targetFramework, allNode, onlyStable, method));
                 }
             }
+
             await Task.WhenAll(tasks);
 
             // Find the package with the top-level dependency.
             foreach (KeyValuePair<string, List<DependencyNode>> dic in allNode)
             {
-                if (dic.Value.Count == 1 && dic.Value[0].dependedNode.Count == 0)
+                if (dic.Value.Count == 1 && dic.Value[0].DependedNode.Count == 0)
                 {
                     confirmedNode.Add(dic.Value[0]);
                 }
@@ -224,16 +263,24 @@ namespace kumaS.NuGetImporter.Editor
             // NuGet does not allow circular references, so we can always determine the package from the top-level dependency.
             while (confirmedNode.Count != allNode.Count)
             {
-                IEnumerable<string> confirmedPackage = confirmedNode.Select(package => package.PackageName);
-                var topNodes = confirmedNode.SelectMany(node => node.dependingNode).GroupBy(node => node.PackageName).Select(group => group.First()).Where(node =>
-                {
-                    IEnumerable<string> topParent = node.dependedNode.Select(parent => parent.PackageName).Except(confirmedPackage);
-                    return topParent == null || !topParent.Any() ? !confirmedPackage.Contains(node.PackageName) : false;
-                }).ToList();
+                ICollection<string> confirmedPackage = confirmedNode.Select(package => package.PackageName).ToList();
+                var topNodes = confirmedNode.SelectMany(node => node.DependingNode)
+                                            .GroupBy(node => node.PackageName)
+                                            .Select(group => group.First())
+                                            .Where(
+                                                node =>
+                                                {
+                                                    IEnumerable<string> topParent = node.DependedNode
+                                                        .Select(parent => parent.PackageName)
+                                                        .Except(confirmedPackage);
+                                                    return !topParent.Any()
+                                                           && !confirmedPackage.Contains(node.PackageName);
+                                                }
+                                            )
+                                            .ToList();
 
-                for (var i = 0; i < topNodes.Count; i++)
+                foreach (List<DependencyNode> topNode in topNodes.Select(node => allNode[node.PackageName]))
                 {
-                    List<DependencyNode> topNode = allNode[topNodes[i].PackageName];
                     if (topNode.Count == 1)
                     {
                         confirmedNode.Add(topNode[0]);
@@ -241,27 +288,39 @@ namespace kumaS.NuGetImporter.Editor
                     else
                     {
                         var dependedPackage = new List<DependencyNode>();
-                        SemVer margedVersion = topNode[0].Version;
-                        dependedPackage.AddRange(topNode[0].dependedNode);
+                        SemVer mergedVersion = topNode[0].Version;
+                        dependedPackage.AddRange(topNode[0].DependedNode);
                         foreach (DependencyNode top in topNode)
                         {
-                            dependedPackage.AddRange(top.dependedNode);
+                            dependedPackage.AddRange(top.DependedNode);
                             try
                             {
-                                margedVersion = margedVersion.Marge(top.Version, onlyStable);
+                                mergedVersion = mergedVersion.Merge(top.Version, onlyStable);
                             }
                             catch (ArgumentException)
                             {
-                                throw new InvalidOperationException("Found dependency conflict. At\n" + string.Join("\n", topNode.SelectMany(node => node.dependedNode).Select(depended => depended.PackageName + " " + depended.Version.SelectedVersion)));
+                                throw new InvalidOperationException(
+                                    "Found dependency conflict. At\n"
+                                    + string.Join(
+                                        "\n",
+                                        topNode.SelectMany(node => node.DependedNode)
+                                               .Select(
+                                                   depended => depended.PackageName
+                                                               + " "
+                                                               + depended.Version.SelectedVersion
+                                               )
+                                    )
+                                );
                             }
                         }
-                        var margeNode = new DependencyNode(topNode[0].PackageName, margedVersion.AllowedVersion);
-                        while (topNode != null && topNode.Count != 0)
+
+                        var margeNode = new DependencyNode(topNode[0].PackageName, mergedVersion.AllowedVersion);
+                        while (topNode.Count != 0)
                         {
                             DeleteDependency(topNode[0], allNode);
                         }
 
-                        margeNode.dependedNode.AddRange(dependedPackage);
+                        margeNode.DependedNode.AddRange(dependedPackage);
                         await FindDependency(margeNode, targetFramework, allNode, onlyStable, method);
                         confirmedNode.Add(margeNode);
                     }
@@ -271,12 +330,20 @@ namespace kumaS.NuGetImporter.Editor
             return confirmedNode;
         }
 
-        private static async Task FindDependency(DependencyNode node, List<string> targetFramework, Dictionary<string, List<DependencyNode>> allNode, bool onlyStable, VersionSelectMethod method)
+        private static async Task FindDependency(
+            DependencyNode node,
+            List<string> targetFramework,
+            Dictionary<string, List<DependencyNode>> allNode,
+            bool onlyStable,
+            VersionSelectMethod method
+        )
         {
             var tasks = new List<Task>();
             var isInstalled = false;
             isInstalled = PackageManager.InstalledCatalog.ContainsKey(node.PackageName);
-            Catalog catalog = isInstalled ? PackageManager.InstalledCatalog[node.PackageName] : await NuGet.GetCatalog(node.PackageName);
+            Catalog catalog = isInstalled
+                ? PackageManager.InstalledCatalog[node.PackageName]
+                : await NuGet.GetCatalog(node.PackageName);
             node.Version.ExistVersion = catalog.GetAllVersion();
             node.Version.SelectedVersion = node.Version.GetSuitVersion(onlyStable, method);
             lock (allNode)
@@ -291,7 +358,8 @@ namespace kumaS.NuGetImporter.Editor
                 }
             }
 
-            Catalogentry catalogEntry = catalog.GetAllCatalogEntry().FirstOrDefault(entry => entry.version == node.Version.SelectedVersion);
+            Catalogentry catalogEntry = catalog.GetAllCatalogEntry()
+                                               .FirstOrDefault(entry => entry.version == node.Version.SelectedVersion);
 
             if (catalogEntry == default)
             {
@@ -301,34 +369,44 @@ namespace kumaS.NuGetImporter.Editor
             Dependencygroup[] dependencyGroup = catalogEntry.dependencyGroups;
             if (dependencyGroup == null)
             {
-                node.TragetFramework = targetFramework.First();
+                node.TargetFramework = targetFramework.First();
                 return;
             }
-            IEnumerable<Dependencygroup> dependencyGroups = dependencyGroup.Where(group => group.targetFramework == null || group.targetFramework == "" || targetFramework.Contains(group.targetFramework));
+
+            IEnumerable<Dependencygroup> dependencyGroups = dependencyGroup.Where(
+                group => group.targetFramework == null
+                         || group.targetFramework == ""
+                         || targetFramework.Contains(group.targetFramework)
+            );
             if (dependencyGroups == null || !dependencyGroups.Any())
             {
-                node.TragetFramework = targetFramework.First();
+                node.TargetFramework = targetFramework.First();
             }
             else
             {
                 var dependencies = new List<Dependency>();
-                IEnumerable<Dependencygroup> dependAllGroup = dependencyGroups.Where(depend => depend.targetFramework == null || depend.targetFramework == "");
+                IEnumerable<Dependencygroup> dependAllGroup = dependencyGroups.Where(
+                    depend => depend.targetFramework == null || depend.targetFramework == ""
+                );
                 if (dependAllGroup.Any())
                 {
                     dependencies.AddRange(dependAllGroup.First().dependencies);
-                    node.TragetFramework = targetFramework.First();
+                    node.TargetFramework = targetFramework.First();
                 }
 
-                IOrderedEnumerable<Dependencygroup> dependGroups = dependencyGroups.Except(dependAllGroup).OrderBy(depend =>
-                {
-                    var ret = targetFramework.IndexOf(depend.targetFramework);
-                    return ret < 0 ? int.MaxValue : ret;
-                });
+                IOrderedEnumerable<Dependencygroup> dependGroups = dependencyGroups.Except(dependAllGroup)
+                    .OrderBy(
+                        depend =>
+                        {
+                            var ret = targetFramework.IndexOf(depend.targetFramework);
+                            return ret < 0 ? int.MaxValue : ret;
+                        }
+                    );
 
                 if (dependGroups.Any())
                 {
                     Dependencygroup dependGroup = dependGroups.First();
-                    node.TragetFramework = dependGroup.targetFramework;
+                    node.TargetFramework = dependGroup.targetFramework;
                     if (dependGroups.First().dependencies != null)
                     {
                         dependencies.AddRange(dependGroup.dependencies);
@@ -342,29 +420,51 @@ namespace kumaS.NuGetImporter.Editor
                 {
                     foreach (Dependency dependency in dependencies)
                     {
-                        tasks.Add(FindChildDependency(dependency.id, dependency.range, node, targetFramework, allNode, onlyStable, method));
+                        tasks.Add(
+                            FindChildDependency(
+                                dependency.id,
+                                dependency.range,
+                                node,
+                                targetFramework,
+                                allNode,
+                                onlyStable,
+                                method
+                            )
+                        );
                     }
                 }
 
-                if (node.TragetFramework == null || node.TragetFramework == "")
+                if (node.TargetFramework == null || node.TargetFramework == "")
                 {
-                    node.TragetFramework = targetFramework.First();
+                    node.TargetFramework = targetFramework.First();
                 }
             }
 
             await Task.WhenAll(tasks);
         }
 
-        private static async Task FindChildDependency(string packageName, string allowedVersion, DependencyNode parent, List<string> targetFramework, Dictionary<string, List<DependencyNode>> allNode, bool onlyStable, VersionSelectMethod method)
+        private static async Task FindChildDependency(
+            string packageName,
+            string allowedVersion,
+            DependencyNode parent,
+            List<string> targetFramework,
+            Dictionary<string, List<DependencyNode>> allNode,
+            bool onlyStable,
+            VersionSelectMethod method
+        )
         {
             var childNode = new DependencyNode(packageName, allowedVersion);
-            parent.dependingNode.Add(childNode);
-            childNode.dependedNode.Add(parent);
+            parent.DependingNode.Add(childNode);
+            childNode.DependedNode.Add(parent);
             EnsureNoCircularReference(childNode);
             await FindDependency(childNode, targetFramework, allNode, onlyStable, method);
         }
 
-        private static void EnsureNoCircularReference(DependencyNode node, string targetName = "", List<string> log = null)
+        private static void EnsureNoCircularReference(
+            DependencyNode node,
+            string targetName = "",
+            List<string> log = null
+        )
         {
             if (targetName == "")
             {
@@ -376,14 +476,16 @@ namespace kumaS.NuGetImporter.Editor
                 log = new List<string>() { targetName };
             }
 
-            foreach (DependencyNode depended in node.dependedNode)
+            foreach (DependencyNode depended in node.DependedNode)
             {
                 log.Add(depended.PackageName);
 
                 if (depended.PackageName == targetName)
                 {
                     log.Reverse();
-                    throw new ArgumentException("Find circular reference." + log.Aggregate((now, next) => now + " -> " + next));
+                    throw new ArgumentException(
+                        "Find circular reference." + log.Aggregate((now, next) => now + " -> " + next)
+                    );
                 }
 
                 EnsureNoCircularReference(depended, targetName, log);
@@ -392,9 +494,9 @@ namespace kumaS.NuGetImporter.Editor
 
         private static void DeleteDependency(DependencyNode node, Dictionary<string, List<DependencyNode>> allNode)
         {
-            foreach (DependencyNode parent in node.dependedNode)
+            foreach (DependencyNode parent in node.DependedNode)
             {
-                parent.dependingNode.Remove(node);
+                parent.DependingNode.Remove(node);
             }
 
             lock (allNode)
@@ -407,13 +509,13 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             // Delete in reverse order so that the index doesn't change.
-            for (var i = node.dependingNode.Count - 1; i >= 0; i--)
+            for (var i = node.DependingNode.Count - 1; i >= 0; i--)
             {
-                DeleteDependency(node.dependingNode[i], allNode);
+                DeleteDependency(node.DependingNode[i], allNode);
             }
 
-            node.dependedNode.Clear();
-            node.dependingNode.Clear();
+            node.DependedNode.Clear();
+            node.DependingNode.Clear();
         }
     }
 }
