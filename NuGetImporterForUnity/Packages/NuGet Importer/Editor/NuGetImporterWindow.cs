@@ -52,11 +52,13 @@ namespace kumaS.NuGetImporter.Editor
             get => _inputText;
             set
             {
-                if (_inputText != value)
+                if (_inputText == value)
                 {
-                    _inputText = value;
-                    _dataUpdateRequest.Push(DateTime.Now);
+                    return;
                 }
+
+                _inputText = value;
+                _dataUpdateRequest.Push(DateTime.Now);
             }
         }
 

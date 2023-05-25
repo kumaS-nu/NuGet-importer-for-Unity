@@ -934,15 +934,12 @@ namespace kumaS.NuGetImporter.Editor
 
         private static PackageControllerBase GetPackageController()
         {
-            switch (NuGetImporterSettings.Instance.InstallMethod)
+            return NuGetImporterSettings.Instance.InstallMethod switch
             {
-                case InstallMethod.AsUPM:
-                    return new PackageControllerAsUPM();
-                case InstallMethod.AsAssets:
-                    return new PackageControllerAsAsset();
-                default:
-                    throw new InvalidDataException();
-            }
+                InstallMethod.AsUPM => new PackageControllerAsUPM(),
+                InstallMethod.AsAssets => new PackageControllerAsAsset(),
+                _ => throw new InvalidDataException()
+            };
         }
 
         internal static async Task<bool> HasNativeAsync(Package package, PackageControllerBase controller = default)
@@ -950,7 +947,7 @@ namespace kumaS.NuGetImporter.Editor
             controller ??= GetPackageController();
             var path = await controller.pathSolver.InstallPath(package);
             var packageId = "";
-            if (controller is PackageControllerAsUPM)
+            if (controller is PackageControllerAsAsset)
             {
                 return HasNative(path, packageId);
             }

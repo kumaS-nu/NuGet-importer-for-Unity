@@ -216,7 +216,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         /// <para>Return true when the user agrees.</para>
         /// <para>ユーザーが了解したか。</para>
         /// </returns>
-        private async Task<bool> ConfirmToUser(ICollection<Package> installPackages, ICollection<Package> uninstallPackages, IEnumerable<Package> nativePackages, ReadOnlyControlledPackages controlledPackages)
+        private static async Task<bool> ConfirmToUser(ICollection<Package> installPackages, ICollection<Package> uninstallPackages, IEnumerable<Package> nativePackages, ReadOnlyControlledPackages controlledPackages)
         {
             var builder = new StringBuilder();
             if (uninstallPackages.Any())
@@ -230,11 +230,14 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 builder.AppendLine();
             }
 
-            builder.AppendLine("Install or upgrade / downgrade below packages");
-            builder.AppendLine();
-            builder.AppendLine(
-                string.Join("\n", installPackages.Select(package => $"{package.ID} {package.Version}"))
-            );
+            if (installPackages.Any())
+            {
+                builder.AppendLine("Install or upgrade / downgrade below packages");
+                builder.AppendLine();
+                builder.AppendLine(
+                    string.Join("\n", installPackages.Select(package => $"{package.ID} {package.Version}"))
+                );
+            }
 
             if (!EditorUtility.DisplayDialog(builder.ToString(), "OK", "Cancel"))
             {
