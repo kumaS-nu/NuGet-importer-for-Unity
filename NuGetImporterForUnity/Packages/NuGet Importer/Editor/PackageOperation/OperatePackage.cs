@@ -58,6 +58,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                     EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
                     OperationResult result = await Operate(controlledPackages, operatorLock);
                     ret = result.State;
+                    await AsmdefController.UpdateAsmdef(PackageManager.ControlledPackages.installed, PackageManager.GetPackagePathSolver());
                     return result;
                 }
                 catch (Exception e)
@@ -70,7 +71,6 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 }
                 finally
                 {
-                    await AsmdefController.UpdateAsmdef(PackageManager.ControlledPackages.installed, PackageManager.GetPackagePathSolver());
                     operatorLock.result = ret;
                     isOperated = true;
                 }

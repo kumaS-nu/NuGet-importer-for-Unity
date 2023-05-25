@@ -102,9 +102,15 @@ namespace kumaS.NuGetImporter.Editor
 
             var analyzerRootPath = Path.Combine(installPath, "analyzers", "dotnet");
             var analyzerLanguagePath = Path.Combine(analyzerRootPath, "cs");
+
             if (Directory.Exists(analyzerLanguagePath))
             {
                 return analyzerLanguagePath;
+            }
+
+            if (!Directory.Exists(analyzerRootPath))
+            {
+                return "";
             }
 
             if (Directory.EnumerateFiles(analyzerRootPath).Where(path => !path.EndsWith(".meta")).Any())
