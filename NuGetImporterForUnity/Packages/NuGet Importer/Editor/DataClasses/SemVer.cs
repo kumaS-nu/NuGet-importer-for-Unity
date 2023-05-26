@@ -341,7 +341,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
                 var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
                 var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
-                var stringVersion = string.Join(".", version);
+                var stringVersion =  version.Aggregate((prev, curr) => $"{prev}.{curr}");
                 if (maxDiff == 0 && !_excludeMaximum)
                 {
                     return minDiff == 0 && !_excludeMinimum
@@ -349,7 +349,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         : minDiff > 0
                             ? stringVersion
                             : throw new InvalidOperationException(
-                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                $@"There is no available version. Version: {stringVersion} Min: {
+                                    _minimumVersion?.Aggregate(
+                                        (prev, curr) => $"{prev}.{curr}"
+                                    )} Max: {_maximumVersion?.Aggregate(
+                                    (prev, curr) => $"{prev}.{curr}"
+                                )}"
                             );
                 }
 
@@ -360,13 +365,23 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         : minDiff > 0
                             ? stringVersion
                             : throw new InvalidOperationException(
-                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                $@"There is no available version. Version: {stringVersion} Min: {
+                                    _minimumVersion?.Aggregate(
+                                        (prev, curr) => $"{prev}.{curr}"
+                                    )} Max: {_maximumVersion?.Aggregate(
+                                    (prev, curr) => $"{prev}.{curr}"
+                                )}"
                             );
                 }
             }
 
+
             throw new InvalidOperationException(
-                $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+                $@"There is no available version. Versions: {
+                    _existVersions.Select(it => it?.Aggregate((prev, curr) => $"{prev}.{curr}"))
+                                  .Aggregate((prev, curr) => $"{prev}, {curr}")} Min: {
+                                  _minimumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")} Max: {
+                                      _maximumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")}"
             );
         }
 
@@ -383,7 +398,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
                 var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
                 var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
-                var stringVersion = string.Join(".", version);
+                var stringVersion =  version.Aggregate((prev, curr) => $"{prev}.{curr}");
                 if (minDiff == 0 && !_excludeMinimum)
                 {
                     return maxDiff == 0 && !_excludeMaximum
@@ -391,7 +406,12 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         : maxDiff < 0
                             ? stringVersion
                             : throw new InvalidOperationException(
-                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                $@"There is no available version. Version: {stringVersion} Min: {
+                                    _minimumVersion?.Aggregate(
+                                        (prev, curr) => $"{prev}.{curr}"
+                                    )} Max: {_maximumVersion?.Aggregate(
+                                    (prev, curr) => $"{prev}.{curr}"
+                                )}"
                             );
                 }
 
@@ -402,13 +422,23 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                         : maxDiff < 0
                             ? stringVersion
                             : throw new InvalidOperationException(
-                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                $@"There is no available version. Version: {stringVersion} Min: {
+                                    _minimumVersion?.Aggregate(
+                                        (prev, curr) => $"{prev}.{curr}"
+                                    )} Max: {_maximumVersion?.Aggregate(
+                                    (prev, curr) => $"{prev}.{curr}"
+                                )}"
                             );
                 }
             }
 
+
             throw new InvalidOperationException(
-                $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+                $@"There is no available version. Versions: {
+                    _existVersions?.Select(it => it?.Aggregate((prev, curr) => $"{prev}.{curr}"))
+                                  .Aggregate((prev, curr) => $"{prev}, {curr}")} Min: {
+                                  _minimumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")} Max: {
+                                      _maximumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")}"
             );
         }
 
@@ -427,7 +457,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
                     var maxDiff = CompareVersion(version, _maximumVersion);
                     var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
-                    var stringVersion = string.Join(".", version);
+                    var stringVersion = version.Aggregate((prev, curr) => $"{prev}.{curr}");
                     if (maxDiff == 0 && !_excludeMaximum)
                     {
                         return minDiff == 0 && !_excludeMinimum
@@ -435,7 +465,9 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                             : minDiff > 0
                                 ? stringVersion
                                 : throw new InvalidOperationException(
-                                    $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                    $@"There is no available version. Version: {stringVersion} Min: {
+                                        _minimumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")} Max: {
+                                            _maximumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")}"
                                 );
                     }
 
@@ -446,14 +478,20 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                             : minDiff > 0
                                 ? stringVersion
                                 : throw new InvalidOperationException(
-                                    $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                    $@"There is no available version. Version: {stringVersion} Min: {
+                                        _minimumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")} Max: {
+                                            _maximumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")}"
                                 );
                     }
                 }
 
 
                 throw new InvalidOperationException(
-                    $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+                    $@"There is no available version. Versions: {
+                        _existVersions.Select(it => it?.Aggregate((prev, curr) => $"{prev}.{curr}"))
+                                      .Aggregate((prev, curr) => $"{prev}, {curr}")} Min: {
+                                      _minimumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")} Max: {
+                                          _maximumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")}"
                 );
             }
 
@@ -479,7 +517,11 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             }
 
             throw new InvalidOperationException(
-                $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+                $@"There is no available version. Versions: {
+                    _existVersions.Select(it => it?.Aggregate((prev, curr) => $"{prev}.{curr}"))
+                                  .Aggregate((prev, curr) => $"{prev}, {curr}")} Min: {
+                                  _minimumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")} Max: {
+                                      _maximumVersion?.Aggregate((prev, curr) => $"{prev}.{curr}")}"
             );
         }
 
