@@ -104,8 +104,10 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             {
                 _allowedVersion = value;
                 var splitedNotion = value.Replace(" ", "").Split(',');
-                switch (splitedNotion.Length) {
-                    case 1: {
+                switch (splitedNotion.Length)
+                {
+                    case 1:
+                        {
                             _excludeMinimum = false;
                             if (value.StartsWith("["))
                             {
@@ -198,7 +200,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <para>安定版のみつかうか。</para>
         /// </param>
         /// <returns>
-        /// <para>Marged Semantic Versioning.</para>
+        /// <para>Merged Semantic Versioning.</para>
         /// <para>マージされたセマンティックバージョニング。</para>
         /// </returns>
         /// <exception cref="System.ArgumentException">
@@ -210,7 +212,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             var ret = new SemVer();
             if (!ExistVersion.SequenceEqual(newVersion.ExistVersion))
             {
-                throw new ArgumentException("These version can't marge. Because exist versions are different.");
+                throw new ArgumentException("These version can't merge. Because exist versions are different.");
             }
 
             ret._selectedVersion = _selectedVersion;
@@ -253,9 +255,9 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             {
                 ret.GetSuitVersion(onlyStable);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
-                throw new ArgumentException("These version can't marge. Because there is no suitable version.");
+                throw new ArgumentException("These version can't merge. Because there is no suitable version.", e);
             }
 
             var allowVer = "";
@@ -330,11 +332,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         private string GetHighestVersion(bool onlyStable)
         {
             List<string> maxVersion = _maximumVersion ?? _existVersions.First();
-            foreach (List<string> version in _existVersions.SkipWhile(
-                                                               ver => ver.Aggregate((now, next) => now + next)
-                                                                      != maxVersion.Aggregate((now, next) => now + next)
-                                                           )
-                                                           .ToArray())
+            foreach (List<string> version in _existVersions.SkipWhile(ver => ver.SequenceEqual(maxVersion)))
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                 {
@@ -342,68 +340,76 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 }
 
                 var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
+                var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+                var stringVersion = string.Join(".", version);
                 if (maxDiff == 0 && !_excludeMaximum)
                 {
-                    var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
                     return minDiff == 0 && !_excludeMinimum
-                        ? version.Aggregate((now, next) => now + "." + next)
+                        ? stringVersion
                         : minDiff > 0
-                            ? version.Aggregate((now, next) => now + "." + next)
-                            : throw new InvalidOperationException("There is no available version.");
+                            ? stringVersion
+                            : throw new InvalidOperationException(
+                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                            );
                 }
 
                 if (maxDiff < 0)
                 {
-                    var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
                     return minDiff == 0 && !_excludeMinimum
-                        ? version.Aggregate((now, next) => now + "." + next)
+                        ? stringVersion
                         : minDiff > 0
-                            ? version.Aggregate((now, next) => now + "." + next)
-                            : throw new InvalidOperationException("There is no available version.");
+                            ? stringVersion
+                            : throw new InvalidOperationException(
+                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                            );
                 }
             }
 
-            throw new InvalidOperationException("There is no available version.");
+            throw new InvalidOperationException(
+                $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+            );
         }
 
         private string GetLowestVersion(bool onlyStable)
         {
             List<string> minVersion = _minimumVersion ?? _existVersions.Last();
-            foreach (List<string> version in (_existVersions.AsEnumerable() ?? Array.Empty<List<string>>()).Reverse()
-                     .SkipWhile(
-                         ver => ver.Aggregate((now, next) => now + next)
-                                != minVersion.Aggregate((now, next) => now + next)
-                     )
-                     .ToArray())
+            foreach (List<string> version in _existVersions.AsEnumerable()!.Reverse()
+                                                           .SkipWhile(ver => ver.SequenceEqual(minVersion)))
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                 {
                     continue;
                 }
 
-                var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 11;
+                var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+                var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
+                var stringVersion = string.Join(".", version);
                 if (minDiff == 0 && !_excludeMinimum)
                 {
-                    var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
                     return maxDiff == 0 && !_excludeMaximum
-                        ? version.Aggregate((now, next) => now + "." + next)
+                        ? stringVersion
                         : maxDiff < 0
-                            ? version.Aggregate((now, next) => now + "." + next)
-                            : throw new InvalidOperationException("There is no available version.");
+                            ? stringVersion
+                            : throw new InvalidOperationException(
+                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                            );
                 }
 
                 if (minDiff > 0)
                 {
-                    var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
                     return maxDiff == 0 && !_excludeMaximum
-                        ? version.Aggregate((now, next) => now + "." + next)
+                        ? stringVersion
                         : maxDiff < 0
-                            ? version.Aggregate((now, next) => now + "." + next)
-                            : throw new InvalidOperationException("There is no available version.");
+                            ? stringVersion
+                            : throw new InvalidOperationException(
+                                $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                            );
                 }
             }
 
-            throw new InvalidOperationException("There is no available version.");
+            throw new InvalidOperationException(
+                $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+            );
         }
 
         private string GetSuitVersion(bool onlyStable)
@@ -411,12 +417,8 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             if (_maximumVersion != null)
             {
                 foreach (List<string> version in _existVersions.SkipWhile(
-                                                                   ver => ver.Aggregate((now, next) => now + next)
-                                                                          != _maximumVersion.Aggregate(
-                                                                              (now, next) => now + next
-                                                                          )
-                                                               )
-                                                               .ToArray())
+                             ver => ver.SequenceEqual(_maximumVersion)
+                         ))
                 {
                     if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                     {
@@ -424,58 +426,61 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     }
 
                     var maxDiff = CompareVersion(version, _maximumVersion);
+                    var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
+                    var stringVersion = string.Join(".", version);
                     if (maxDiff == 0 && !_excludeMaximum)
                     {
-                        var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
                         return minDiff == 0 && !_excludeMinimum
-                            ? version.Aggregate((now, next) => now + "." + next)
+                            ? stringVersion
                             : minDiff > 0
-                                ? version.Aggregate((now, next) => now + "." + next)
-                                : throw new InvalidOperationException("There is no available version.");
+                                ? stringVersion
+                                : throw new InvalidOperationException(
+                                    $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                );
                     }
 
                     if (maxDiff < 0)
                     {
-                        var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
                         return minDiff == 0 && !_excludeMinimum
-                            ? version.Aggregate((now, next) => now + "." + next)
+                            ? stringVersion
                             : minDiff > 0
-                                ? version.Aggregate((now, next) => now + "." + next)
-                                : throw new InvalidOperationException("There is no available version.");
+                                ? stringVersion
+                                : throw new InvalidOperationException(
+                                    $"There is no available version. Version: {stringVersion} Min: {_minimumVersion} Max: {_maximumVersion}"
+                                );
                     }
                 }
 
-                throw new InvalidOperationException("There is no available version.");
+
+                throw new InvalidOperationException(
+                    $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+                );
             }
 
             var highList = new List<List<string>>();
             var majorVersion = new List<string>();
 
-            foreach (List<string> version in _existVersions)
+            foreach (var version in _existVersions
+                                    .Where(
+                                        version => !onlyStable
+                                                   || (!version.Any(v => v.Contains('-')) && version[0][0] != '0')
+                                    )
+                                    .Where(version => !majorVersion.Contains(version[0])))
             {
-                if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
-                {
-                    continue;
-                }
-
-                if (!majorVersion.Contains(version[0]))
-                {
-                    highList.Add(version);
-                    majorVersion.Add(version[0]);
-                }
+                highList.Add(version);
+                majorVersion.Add(version[0]);
             }
 
             highList.Reverse();
 
-            foreach (List<string> high in highList)
+            foreach (var high in highList.Where(IsAllowedVersion))
             {
-                if (IsAllowedVersion(high))
-                {
-                    return high.Aggregate((now, next) => now + "." + next);
-                }
+                return high.Aggregate((now, next) => now + "." + next);
             }
 
-            throw new InvalidOperationException("There is no available version.");
+            throw new InvalidOperationException(
+                $"There is no available version. Versions: {_existVersions} Min: {_minimumVersion} Max: {_maximumVersion}"
+            );
         }
 
         /// <summary>
@@ -506,7 +511,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         /// <param name="compareVersion">compare version</param>
         /// <param name="baseVersion">base version</param>
         /// <returns>If compareVersion is newer version than baseVersion, return positive number. If baseVersion is newer version than compareVersion, return negative number. If both are same version, return 0.</returns>
-        private static int CompareVersion(List<string> compareVersion, List<string> baseVersion)
+        private static int CompareVersion(IReadOnlyList<string> compareVersion, IReadOnlyList<string> baseVersion)
         {
             var minLength = compareVersion.Count < baseVersion.Count ? compareVersion.Count : baseVersion.Count;
             for (var i = 0; i < minLength; i++)
