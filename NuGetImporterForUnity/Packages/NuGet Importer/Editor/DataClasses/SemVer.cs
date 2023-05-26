@@ -332,7 +332,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         private string GetHighestVersion(bool onlyStable)
         {
             List<string> maxVersion = _maximumVersion ?? _existVersions.First();
-            foreach (List<string> version in _existVersions.SkipWhile(ver => ver.SequenceEqual(maxVersion)))
+            foreach (List<string> version in _existVersions.SkipWhile(ver => !ver.SequenceEqual(maxVersion)))
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                 {
@@ -389,7 +389,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         {
             List<string> minVersion = _minimumVersion ?? _existVersions.Last();
             foreach (List<string> version in _existVersions.AsEnumerable()!.Reverse()
-                                                           .SkipWhile(ver => ver.SequenceEqual(minVersion)))
+                                                           .SkipWhile(ver => !ver.SequenceEqual(minVersion)))
             {
                 if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
                 {
@@ -447,7 +447,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             if (_maximumVersion != null)
             {
                 foreach (List<string> version in _existVersions.SkipWhile(
-                             ver => ver.SequenceEqual(_maximumVersion)
+                             ver => !ver.SequenceEqual(_maximumVersion)
                          ))
                 {
                     if (onlyStable && (version.Any(v => v.Contains('-')) || version[0][0] == '0'))
