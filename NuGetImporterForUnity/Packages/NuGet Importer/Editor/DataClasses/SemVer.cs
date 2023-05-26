@@ -341,7 +341,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
                 var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
                 var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
-                var stringVersion =  version.Aggregate((prev, curr) => $"{prev}.{curr}");
+                var stringVersion = version.Aggregate((prev, curr) => $"{prev}.{curr}");
                 if (maxDiff == 0 && !_excludeMaximum)
                 {
                     return minDiff == 0 && !_excludeMinimum
@@ -398,7 +398,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
                 var minDiff = _minimumVersion != null ? CompareVersion(version, _minimumVersion) : 1;
                 var maxDiff = _maximumVersion != null ? CompareVersion(version, _maximumVersion) : -1;
-                var stringVersion =  version.Aggregate((prev, curr) => $"{prev}.{curr}");
+                var stringVersion = version.Aggregate((prev, curr) => $"{prev}.{curr}");
                 if (minDiff == 0 && !_excludeMinimum)
                 {
                     return maxDiff == 0 && !_excludeMaximum
@@ -565,8 +565,16 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
                 switch (isNumberCompare)
                 {
-                    case true when isNumberBase && c != b: return c - b;
-                    case false when isNumberBase == false:
+                    case true when isNumberBase:
+                        {
+                            if (c != b)
+                            {
+                                return c - b;
+                            }
+
+                            break;
+                        }
+                    case false when !isNumberBase:
                         {
                             var compare = string.CompareOrdinal(splitedCompare[0], splitedBase[0]);
                             if (compare != 0)

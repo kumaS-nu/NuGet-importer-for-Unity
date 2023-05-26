@@ -65,9 +65,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 EditorUtility.DisplayDialog(
                     "NuGet importer",
                     "Error occured!\nRolls back to before the operation.\nError :\n"
-                    + install.Exception!.Message
-                    + "\n"
-                    + install.Exception!.StackTrace,
+                    + install.Exception!.Message,
                     "OK"
                 );
                 await Rollback(controlledPackages, operateLock, controller);
