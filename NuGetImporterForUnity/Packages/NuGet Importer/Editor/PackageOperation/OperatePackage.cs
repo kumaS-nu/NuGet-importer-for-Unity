@@ -248,12 +248,12 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
 #if UNITY_2021_2_OR_NEWER
             if(PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard){
-                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.targetFramework));
+                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.TargetFramework)).ToArray();
             }
 #else
             if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
             {
-                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.TargetFramework)).ToList();
+                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.TargetFramework)).ToArray();
             }
 #endif
             if (warningPackages.Any())
