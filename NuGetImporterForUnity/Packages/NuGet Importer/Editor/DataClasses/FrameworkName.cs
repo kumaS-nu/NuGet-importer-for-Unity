@@ -140,15 +140,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 List<string> ret;
                 switch (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup))
                 {
-                    case ApiCompatibilityLevel.NET_4_6:
-                        ret = NET4_6;
-                        ret.AddRange(STANDARD2_0);
-                        break;
-                    case ApiCompatibilityLevel.NET_Standard_2_0:
-                        ret = STANDARD2_0;
-                        ret.AddRange(NET4_6);
-                        break;
-#if UNITY_2021_2_1_OR_NEWER
+#if UNITY_2021_2_OR_NEWER
                     case ApiCompatibilityLevel.NET_Unity_4_8:
                         ret = NET4_8;
                         ret.AddRange(STANDARD2_1);
@@ -156,6 +148,15 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                     case ApiCompatibilityLevel.NET_Standard:
                         ret = STANDARD2_1;
                         ret.AddRange(NET4_8);
+                        break;
+#else
+                    case ApiCompatibilityLevel.NET_4_6:
+                        ret = NET4_6;
+                        ret.AddRange(STANDARD2_0);
+                        break;
+                    case ApiCompatibilityLevel.NET_Standard_2_0:
+                        ret = STANDARD2_0;
+                        ret.AddRange(NET4_6);
                         break;
 #endif
                     case ApiCompatibilityLevel.NET_2_0:
