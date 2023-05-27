@@ -174,12 +174,8 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             var text = await response.Content.ReadAsStringAsync();
-            MatchCollection matchs = Regex.Matches(text, @"NuGetImporterForUnity\.(?<version>\d+\.\d+\.\d+)\.zip");
-            var versions = new List<string>();
-            foreach (Match match in matchs)
-            {
-                versions.Add(match.Groups["version"].Value);
-            }
+            var matches = Regex.Matches(text, @"NuGetImporterForUnity\.(?<version>\d+\.\d+\.\d+)\.zip");
+            var versions = (from Match match in matches select match.Groups["version"].Value).ToList();
 
             var latestVersion = SemVer.SortVersion(versions)[0];
             Version thisVersion = typeof(NuGetImporterWindow).Assembly.GetName().Version;
@@ -356,7 +352,8 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             var package =
-                PackageManager.Installed.Package.Where(package => package.ID == data.items[0].items[0].catalogEntry.id).ToList();
+                PackageManager.Installed.Package.Where(package => package.ID == data.items[0].items[0].catalogEntry.id)
+                              .ToArray();
             if (package.Any())
             {
                 _summary = new PackageSummary(data, package.First().Version);
@@ -480,8 +477,10 @@ namespace kumaS.NuGetImporter.Editor
                     {
                         _catalogs.Add(catalog.Value);
                         var package = PackageManager.Installed.Package.Where(
-                            package => package.ID == catalog.Value.items[0].items[0].catalogEntry.id
-                        ).ToList();
+                                                        package => package.ID
+                                                                   == catalog.Value.items[0].items[0].catalogEntry.id
+                                                    )
+                                                    .ToList();
                         if (package.Any())
                         {
                             tasks.Add(catalog.Value.GetIcon(package.First().Version));

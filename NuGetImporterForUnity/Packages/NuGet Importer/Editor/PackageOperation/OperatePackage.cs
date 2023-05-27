@@ -58,14 +58,21 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 EditorUtility.DisplayProgressBar("NuGet importer", "Solving dependency", 0);
                 OperationResult result = await Operate(controlledPackages, operatorLock);
                 ret = result.State;
-                await AsmdefController.UpdateAsmdef(PackageManager.ControlledPackages.Installed, PackageManager.GetPackagePathSolver());
+                await AsmdefController.UpdateAsmdef(
+                    PackageManager.ControlledPackages.Installed,
+                    PackageManager.GetPackagePathSolver()
+                );
                 return result;
             }
             catch (Exception e)
             {
                 ret = OperationState.Failure;
                 UnityEngine.Debug.LogException(e);
-                EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + e.Message, "OK");
+                EditorUtility.DisplayDialog(
+                    "NuGet importer",
+                    "Error occured!\nRolls back to before the operation.\nError :\n" + e.Message + "\n" + e.StackTrace,
+                    "OK"
+                );
                 await Rollback(controlledPackages, operatorLock);
                 return new OperationResult(ret, "Rollback to before operation is complete.");
             }
@@ -108,14 +115,32 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         /// <para>Manipulate result.</para>
         /// <para>操作結果。</para>
         /// </returns>
-        protected async Task<OperationResult> ManipulatePackages(ICollection<Package> rootPackages, ICollection<Package> installPackages, ICollection<Package> deletePackages, ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock, PackageControllerBase controller = default)
+        protected async Task<OperationResult> ManipulatePackages(
+            ICollection<Package> rootPackages,
+            ICollection<Package> installPackages,
+            ICollection<Package> deletePackages,
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock,
+            PackageControllerBase controller = default
+        )
         {
             OperationState ret;
 
             InstallingPackages.AddRange(installPackages);
-            Package[] uninstallPackages = deletePackages.Where(package => installPackages.All(install => install.ID != package.ID)).ToArray();
-            Package[] changePackages = deletePackages.Where(package => installPackages.Any(install => install.ID == package.ID)).ToArray();
-            Package[] installedPackages = controlledPackages.Installed.Where(package => deletePackages.All(uninstall => uninstall.ID != package.ID)).Concat(installPackages).ToArray();
+            Package[] uninstallPackages = deletePackages
+                                          .Where(package => installPackages.All(install => install.ID != package.ID))
+                                          .ToArray();
+            Package[] changePackages = deletePackages
+                                       .Where(package => installPackages.Any(install => install.ID == package.ID))
+                                       .ToArray();
+            Package[] installedPackages = controlledPackages.Installed
+                                                            .Where(
+                                                                package => deletePackages.All(
+                                                                    uninstall => uninstall.ID != package.ID
+                                                                )
+                                                            )
+                                                            .Concat(installPackages)
+                                                            .ToArray();
 
             var nativePackages = new List<Package>();
             var managedPackages = new List<Package>();
@@ -146,7 +171,15 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
                 if (nativePackages.Any())
                 {
-                    Process process = await PackageManager.OperateWithNativeAsync(installPackages, managedPackages, nativePackages, installedPackages, rootPackages, operateLock, controller);
+                    Process process = await PackageManager.OperateWithNativeAsync(
+                        installPackages,
+                        managedPackages,
+                        nativePackages,
+                        installedPackages,
+                        rootPackages,
+                        operateLock,
+                        controller
+                    );
                     ret = OperationState.Success;
                     operateLock.result = ret;
                     AssetDatabase.SaveAssets();
@@ -161,8 +194,11 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 }
             }
 
-            IEnumerable<string> loadedAsmNames = AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
-            loadedAsmNames = loadedAsmNames.Except(PackageManager.PackageAsmNames.managedList.SelectMany(pkg => pkg.fileNames)).ToArray();
+            IEnumerable<string> loadedAsmNames =
+                AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name);
+            loadedAsmNames = loadedAsmNames
+                             .Except(PackageManager.PackageAsmNames.managedList.SelectMany(pkg => pkg.fileNames))
+                             .ToArray();
 
             if (changePackages.Any())
             {
@@ -172,7 +208,12 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
             ICollection<Package> skipped = new List<Package>();
             if (installPackages.Any())
             {
-                Task<ICollection<Package>> tasks = PackageManager.InstallSelectPackages(installPackages, loadedAsmNames, operateLock, controller);
+                Task<ICollection<Package>> tasks = PackageManager.InstallSelectPackages(
+                    installPackages,
+                    loadedAsmNames,
+                    operateLock,
+                    controller
+                );
 
                 _ = PackageManager.DownloadProgress(0.5f, installPackages.Select(package => package.ID).ToArray());
                 skipped = await tasks;
@@ -180,7 +221,11 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 {
                     ret = OperationState.Failure;
                     UnityEngine.Debug.LogException(tasks.Exception);
-                    EditorUtility.DisplayDialog("NuGet importer", "Error occured!\nRolls back to before the operation.\nError :\n" + tasks.Exception!.Message, "OK");
+                    EditorUtility.DisplayDialog(
+                        "NuGet importer",
+                        "Error occured!\nRolls back to before the operation.\nError :\n" + tasks.Exception!.Message,
+                        "OK"
+                    );
                     await Rollback(controlledPackages, operateLock, controller);
                     return new OperationResult(ret, "Rollback to before operation is complete.");
                 }
@@ -188,8 +233,12 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
             if (skipped.Any())
             {
-                EditorUtility.DisplayDialog("NuGet importer", "The below packages are existing in your project so we skipped installing them.\n\n" +
-                    skipped.Select(pkg => pkg.ID).Aggregate((now, next) => now + "\n" + next), "OK");
+                EditorUtility.DisplayDialog(
+                    "NuGet importer",
+                    "The below packages are existing in your project so we skipped installing them.\n\n"
+                    + skipped.Select(pkg => pkg.ID).Aggregate((now, next) => now + "\n" + next),
+                    "OK"
+                );
             }
 
             ret = OperationState.Success;
@@ -216,7 +265,12 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         /// <para>Return true when the user agrees.</para>
         /// <para>ユーザーが了解したか。</para>
         /// </returns>
-        private static async Task<bool> ConfirmToUser(ICollection<Package> installPackages, ICollection<Package> uninstallPackages, IEnumerable<Package> nativePackages, ReadOnlyControlledPackages controlledPackages)
+        private static async Task<bool> ConfirmToUser(
+            ICollection<Package> installPackages,
+            ICollection<Package> uninstallPackages,
+            IEnumerable<Package> nativePackages,
+            ReadOnlyControlledPackages controlledPackages
+        )
         {
             var builder = new StringBuilder();
             if (uninstallPackages.Any())
@@ -248,19 +302,31 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
 
 #if UNITY_2021_2_OR_NEWER
             if(PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard){
-                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.targetFramework));
+                warningPackages =
+ installPackages.Where(package => !FrameworkName.STANDARD2_1.Contains(package.TargetFramework)).ToArray();
             }
 #else
-            if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup) == ApiCompatibilityLevel.NET_Standard_2_0)
+            if (PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup)
+                == ApiCompatibilityLevel.NET_Standard_2_0)
             {
-                warningPackages = installPackages.Where(package => !FrameworkName.STANDARD2_0.Contains(package.TargetFramework)).ToList();
+                warningPackages = installPackages
+                                  .Where(package => !FrameworkName.STANDARD2_0.Contains(package.TargetFramework))
+                                  .ToArray();
             }
 #endif
             if (warningPackages.Any())
             {
-                if (!EditorUtility.DisplayDialog("Warning from NuGet importer", "Now the api compatibility level for this project is " +
-                    PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup).ToString() +
-                    ". But below packages are builded for .NETFramework. Do you install them?" + "\n\n" + string.Join("\n", warningPackages.Select(package => package.ID + " " + package.Version)), "Install", "Cancel"))
+                if (!EditorUtility.DisplayDialog(
+                        "Warning from NuGet importer",
+                        "Now the api compatibility level for this project is "
+                        + PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup)
+                                        .ToString()
+                        + ". But below packages are builded for .NETFramework. Do you install them?"
+                        + "\n\n"
+                        + string.Join("\n", warningPackages.Select(package => package.ID + " " + package.Version)),
+                        "Install",
+                        "Cancel"
+                    ))
                 {
                     return false;
                 }
@@ -284,11 +350,25 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 {
                     isInstalled = PackageManager.InstalledCatalog.ContainsKey(installPackage.ID);
                 }
-                Catalog catalog = isInstalled ? PackageManager.InstalledCatalog[installPackage.ID] : await NuGet.GetCatalog(installPackage.ID);
-                Catalogentry catalogEntry = catalog.GetAllCatalogEntry().First(entry => entry.version == installPackage.Version);
+
+                Catalog catalog = isInstalled
+                    ? PackageManager.InstalledCatalog[installPackage.ID]
+                    : await NuGet.GetCatalog(installPackage.ID);
+                Catalogentry catalogEntry =
+                    catalog.GetAllCatalogEntry().First(entry => entry.version == installPackage.Version);
                 if (catalogEntry.requireLicenseAcceptance)
                 {
-                    var option = EditorUtility.DisplayDialogComplex("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel", "Go url");
+                    var option = EditorUtility.DisplayDialogComplex(
+                        "NuGet importer",
+                        catalogEntry.id
+                        + " "
+                        + catalogEntry.version
+                        + " need agree license.\nUrl : "
+                        + catalogEntry.licenseUrl,
+                        "Agree",
+                        "Cancel",
+                        "Go url"
+                    );
                     switch (option)
                     {
                         case 0:
@@ -297,16 +377,32 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                             return false;
                         case 2:
                             Help.BrowseURL(catalogEntry.licenseUrl);
-                            if (!EditorUtility.DisplayDialog("NuGet importer", catalogEntry.id + " " + catalogEntry.version + " need agree license.\nUrl : " + catalogEntry.licenseUrl, "Agree", "Cancel"))
+                            if (!EditorUtility.DisplayDialog(
+                                    "NuGet importer",
+                                    catalogEntry.id
+                                    + " "
+                                    + catalogEntry.version
+                                    + " need agree license.\nUrl : "
+                                    + catalogEntry.licenseUrl,
+                                    "Agree",
+                                    "Cancel"
+                                ))
                             {
                                 return false;
                             }
+
                             break;
                     }
                 }
             }
 
-            return !nativePackages.Any() || EditorUtility.DisplayDialog("NuGet importer", "Native plugins were found in the modifying package. You need to restart the editor to modify packages.\n(The current project will be saved and modify packages will be resumed after a restart.)", "Restart", "Cancel");
+            return !nativePackages.Any()
+                   || EditorUtility.DisplayDialog(
+                       "NuGet importer",
+                       "Native plugins were found in the modifying package. You need to restart the editor to modify packages.\n(The current project will be saved and modify packages will be resumed after a restart.)",
+                       "Restart",
+                       "Cancel"
+                   );
         }
 
         /// <summary>
@@ -353,6 +449,9 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
         /// <para>Operation result</para>
         /// <para>操作結果。</para>
         /// </returns>
-        protected abstract Task<OperationResult> Operate(ReadOnlyControlledPackages controlledPackages, PackageManager.OperateLock operateLock);
+        protected abstract Task<OperationResult> Operate(
+            ReadOnlyControlledPackages controlledPackages,
+            PackageManager.OperateLock operateLock
+        );
     }
 }

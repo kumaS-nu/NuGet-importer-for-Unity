@@ -10,9 +10,6 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [
-        "ZIP_AVAILABLE"
-    ],
     "versionDefines": [
         {
             "name": "com.unity.ide.vscode",
