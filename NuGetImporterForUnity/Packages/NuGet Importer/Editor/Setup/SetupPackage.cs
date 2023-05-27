@@ -16,11 +16,12 @@ namespace kumaS.NuGetImporter.Editor.Setup
     {
         private static readonly List<ApiCompatibilityLevel> EnableApiLevel = new List<ApiCompatibilityLevel>
         {
+#if UNITY_2021_2_OR_NEWER
+            ApiCompatibilityLevel.NET_Unity_4_8,
+            ApiCompatibilityLevel.NET_Standard
+#else
             ApiCompatibilityLevel.NET_4_6,
             ApiCompatibilityLevel.NET_Standard_2_0
-#if UNITY_2021_2_OR_NEWER
-            ,ApiCompatibilityLevel.NET_Unity_4_8
-            ,ApiCompatibilityLevel.NET_Standard
 #endif
         };
 

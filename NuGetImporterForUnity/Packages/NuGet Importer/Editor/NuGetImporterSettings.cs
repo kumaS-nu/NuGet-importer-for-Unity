@@ -41,6 +41,7 @@ namespace kumaS.NuGetImporter.Editor
                     return _instance;
                 }
 
+                EnsureSetProjectSettingsPath();
                 var path = Path.Combine(_projectSettingsPath, "NuGetImporterSettings.json");
                 if (!File.Exists(path))
                 {
