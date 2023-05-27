@@ -46,7 +46,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 );
                 var install = PackageManager.InstallSelectPackages(
                     controlledPackages.Installed,
-                    new string[0],
+                    Array.Empty<string>(),
                     operateLock,
                     new PackageControllerAsUPM()
                 );
@@ -56,19 +56,20 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                     controlledPackages.Installed.Select(package => package.ID).ToArray()
                 );
                 await install;
-                if (install.IsFaulted)
+                if (!install.IsFaulted)
                 {
-                    UnityEngine.Debug.LogException(install.Exception);
-                    EditorUtility.DisplayDialog(
-                        "NuGet importer",
-                        "Error occured!\nRolls back to before the operation.\nError :\n" + install.Exception!.Message,
-                        "OK"
-                    );
-                    await Rollback(controlledPackages, operateLock, controller);
-                    return new OperationResult(OperationState.Failure, "Rollback to before operation is complete.");
+                    return new OperationResult(OperationState.Success, FinishMessage);
                 }
 
-                return new OperationResult(OperationState.Success, FinishMessage);
+                UnityEngine.Debug.LogException(install.Exception);
+                EditorUtility.DisplayDialog(
+                    "NuGet importer",
+                    "Error occured!\nRolls back to before the operation.\nError :\n"
+                    + install.Exception!.Message,
+                    "OK"
+                );
+                await Rollback(controlledPackages, operateLock, controller);
+                return new OperationResult(OperationState.Failure, "Rollback to before operation is complete.");
             }
 
             EditorUtility.DisplayDialog(

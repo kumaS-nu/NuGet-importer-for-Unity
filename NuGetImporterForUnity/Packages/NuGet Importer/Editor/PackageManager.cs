@@ -776,7 +776,7 @@ namespace kumaS.NuGetImporter.Editor
             }
 
             installed.Package.AddRange(result.Where(value => !value.isSkipped).Select(value => value.package));
-            existingPackage.Package.AddRange(ret.Select(r => new Package() { ID = r.ID, Version = "0.0.0" }));
+            existingPackage.Package.AddRange(ret.Select(r => new Package { ID = r.ID, Version = "0.0.0" }));
 
             return ret;
         }
