@@ -13,7 +13,7 @@ namespace kumaS.NuGetImporter.Editor
     {
         public PackageControllerAsUPM()
         {
-            pathSolver = new UPMPathSolver();
+            PathSolver = new UPMPathSolver();
         }
 
         /// <inheritdoc/>
@@ -23,7 +23,7 @@ namespace kumaS.NuGetImporter.Editor
         internal override async Task<(bool isSkipped, Package package, PackageManagedPluginList asm)>
             InstallPackageAsync(Package package, IEnumerable<string> loadedAsmName)
         {
-            Task<string> task = pathSolver.InstallPath(package);
+            Task<string> task = PathSolver.InstallPath(package);
             Task<Catalog> task2 = NuGet.GetCatalog(package.ID);
             await ExtractPackageAsync(package);
             var installPath = await task;

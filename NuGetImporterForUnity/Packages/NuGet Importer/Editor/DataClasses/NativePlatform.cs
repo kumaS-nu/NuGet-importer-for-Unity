@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
@@ -26,6 +28,24 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             { nameof(OSType.Gentoo), nameof(ArchitectureType.X64) }
         };
 
+        private static readonly List<(string, int)> PriorityTable = new List<(string, int)>()
+        {
+            (nameof(OSType.Win), -1),
+            (nameof(OSType.OSX), -1),
+            (nameof(OSType.Android), -1),
+            (nameof(OSType.IOS), -1),
+            (nameof(OSType.Linux), -1),
+            (nameof(OSType.Ubuntu), 1),
+            (nameof(OSType.Debian), 2),
+            (nameof(OSType.Fedora), 3),
+            (nameof(OSType.Centos), 4),
+            (nameof(OSType.Alpine), 5),
+            (nameof(OSType.Rhel), 6),
+            (nameof(OSType.Arch), 7),
+            (nameof(OSType.Opensuse), 8),
+            (nameof(OSType.Gentoo), 9)
+        };
+
         public readonly string Path;
         public readonly string OS;
         public readonly int OSPriority;
@@ -41,83 +61,27 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
         private (string os, int priority) GetOSInfo(string directoryName)
         {
-            if (directoryName.StartsWith(nameof(OSType.Win)))
+            var matchedPriority = PriorityTable.Where(table => directoryName.StartsWith(table.Item1.ToLowerInvariant()));
+            if (matchedPriority.Any())
             {
-                return (nameof(OSType.Win), -1);
+                return matchedPriority.First();
             }
 
-            if (directoryName.StartsWith(nameof(OSType.OSX)))
-            {
-                return (nameof(OSType.OSX), -1);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.Android)))
-            {
-                return (nameof(OSType.Android), -1);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.IOS)))
-            {
-                return (nameof(OSType.IOS), -1);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.Linux)))
-            {
-                return (nameof(OSType.Linux), 0);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.Ubuntu)))
-            {
-                return (nameof(OSType.Ubuntu), 1);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.Debian)))
-            {
-                return (nameof(OSType.Debian), 2);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.Fedora)))
-            {
-                return (nameof(OSType.Fedora), 3);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.Centos)))
-            {
-                return (nameof(OSType.Centos), 4);
-            }
-
-            if (directoryName.StartsWith(nameof(OSType.Alpine)))
-            {
-                return (nameof(OSType.Alpine), 5);
-            }
-
-            return directoryName.StartsWith(nameof(OSType.Rhel))
-                ? ((string os, int priority))(nameof(OSType.Rhel), 6)
-                : directoryName.StartsWith(nameof(OSType.Arch))
-                    ? ((string os, int priority))(nameof(OSType.Arch), 7)
-                    : directoryName.StartsWith(nameof(OSType.Opensuse))
-                        ? ((string os, int priority))(nameof(OSType.Opensuse), 8)
-                        : directoryName.StartsWith(nameof(OSType.Gentoo))
-                            ? ((string os, int priority))(nameof(OSType.Gentoo), 9)
-                            : ((string os, int priority))(directoryName.Split('-')[0], int.MaxValue);
+            return (directoryName.Split('-')[0], int.MaxValue);
         }
 
         private string GetArchInfo(string directoryName)
         {
-            if (directoryName.EndsWith(nameof(ArchitectureType.X64)))
+            var matchedArch = Enum.GetNames(typeof(ArchitectureType)).Where(table => directoryName.EndsWith(table.ToLowerInvariant()));
+            if (matchedArch.Any())
             {
-                return nameof(ArchitectureType.X64);
+                return matchedArch.First();
             }
 
-            return directoryName.EndsWith(nameof(ArchitectureType.X86))
-                ? nameof(ArchitectureType.X86)
-                : directoryName.EndsWith(nameof(ArchitectureType.ARM64))
-                    ? nameof(ArchitectureType.ARM64)
-                    : directoryName.EndsWith(nameof(ArchitectureType.ARM))
-                        ? nameof(ArchitectureType.ARM)
-                        : DefaultArch.TryGetValue(OS, out var arch)
+            return DefaultArch.TryGetValue(OS, out var arch)
                             ? arch
                             : nameof(ArchitectureType.X64);
+
         }
     }
 

@@ -261,7 +261,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             }
 
             var allowVer = "";
-            if (ret._maximumVersion == null && ret._excludeMinimum == false)
+            if (ret._maximumVersion == null && !ret._excludeMinimum)
             {
                 allowVer = ret._minimumVersion == null
                     ? ""
@@ -271,8 +271,8 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                      && ret._maximumVersion != null
                      && ret._minimumVersion.Aggregate((now, next) => now + "." + next)
                      == ret._maximumVersion.Aggregate((now, next) => now + "." + next)
-                     && ret._excludeMinimum == false
-                     && ret._excludeMaximum == false)
+                     && !ret._excludeMinimum
+                     && !ret._excludeMaximum)
             {
                 allowVer = "[" + ret._minimumVersion.Aggregate((now, next) => now + "." + next) + "]";
             }

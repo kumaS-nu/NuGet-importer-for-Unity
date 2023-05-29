@@ -113,7 +113,7 @@ namespace kumaS.NuGetImporter.Editor
                 return "";
             }
 
-            if (Directory.EnumerateFiles(analyzerRootPath).Where(path => !path.EndsWith(".meta")).Any())
+            if (Directory.EnumerateFiles(analyzerRootPath).Any(path => !path.EndsWith(".meta")))
             {
                 return analyzerRootPath;
             }

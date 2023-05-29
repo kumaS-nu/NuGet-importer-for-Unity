@@ -23,7 +23,7 @@ namespace kumaS.NuGetImporter.Editor
             "_rels", "package", "build", "buildMultiTargeting", "buildTransitive"
         };
 
-        protected internal PackagePathSolverBase pathSolver { protected set; get; }
+        protected internal PackagePathSolverBase PathSolver { protected set; get; }
 
         /// <summary>
         /// <para>Install the specified package.</para>
@@ -127,7 +127,7 @@ namespace kumaS.NuGetImporter.Editor
                 DeletePluginsOutOfDirectory(native);
             }
 
-            IEnumerable<Task<string>> tasks = natives.Select(package => pathSolver.InstallPath(package));
+            IEnumerable<Task<string>> tasks = natives.Select(package => PathSolver.InstallPath(package));
             IEnumerable<string> nativeDirectory = await Task.WhenAll(tasks);
             IEnumerable<string> nativeNugetDirectory = natives.Select(
                 package => Path.Combine(
@@ -187,7 +187,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </exception>
         protected async Task ExtractPackageAsync(Package package)
         {
-            var extractPath = await pathSolver.InstallPath(package);
+            var extractPath = await PathSolver.InstallPath(package);
             var nupkgName = package.ID.ToLowerInvariant() + "." + package.Version.ToLowerInvariant() + ".nupkg";
             var tempPath = PackageManager.DataPath.Replace("Assets", "Temp");
             var downloadPath = Path.Combine(tempPath, nupkgName);
@@ -440,11 +440,11 @@ namespace kumaS.NuGetImporter.Editor
 
         private void NativeProcess(string nativePath, string nugetPackagePath, string extractPath)
         {
-            IEnumerable<NativePlatform> moveList = Directory.GetDirectories(nativePath)
+            ICollection<NativePlatform> moveList = Directory.GetDirectories(nativePath)
                                                             .Select(native => new NativePlatform(native))
                                                             .Where(native => native.OSPriority >= 0)
                                                             .OrderBy(native => native.OSPriority)
-                                                            .Skip(1);
+                                                            .Skip(1).ToArray();
 
             foreach (NativePlatform move in moveList)
             {
@@ -561,7 +561,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         private async Task UninstallManagedPackageAsync(Package package)
         {
-            var path = await pathSolver.InstallPath(package);
+            var path = await PathSolver.InstallPath(package);
             var nugetPackagePath = Path.Combine(
                 PackageManager.DataPath.Replace("Assets", "NuGet"),
                 package.ID.ToLowerInvariant() + "." + package.Version.ToLowerInvariant()

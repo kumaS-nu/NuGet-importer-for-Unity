@@ -113,7 +113,6 @@ namespace kumaS.NuGetImporter.Editor
             XElement project = xDoc.Root;
             XNamespace xNamespace = project!.Name.Namespace;
 
-            var baseDir = Path.GetDirectoryName(path);
             ICollection<XElement> analyzer = project.Descendants(xNamespace + "Analyzer").ToArray();
             var analyzersInCsproj = new HashSet<string>(analyzer.Select(x => x.Attribute("Include")?.Value).Where(x => x != null));
             ICollection<string> addingAnalyzer = analyzersPath.Where(x => !analyzersInCsproj.Contains(x)).ToArray();

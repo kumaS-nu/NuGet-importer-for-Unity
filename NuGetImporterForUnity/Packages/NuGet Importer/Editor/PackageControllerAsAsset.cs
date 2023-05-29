@@ -22,7 +22,7 @@ namespace kumaS.NuGetImporter.Editor
 
         public PackageControllerAsAsset()
         {
-            pathSolver = new AssetPathSolver();
+            PathSolver = new AssetPathSolver();
         }
 
         /// <inheritdoc/>
@@ -82,7 +82,7 @@ namespace kumaS.NuGetImporter.Editor
                 Directory.CreateDirectory(topDirectory);
             }
 
-            Task<string> task = pathSolver.InstallPath(package);
+            Task<string> task = PathSolver.InstallPath(package);
             await ExtractPackageAsync(package);
             var installPath = await task;
             var asm = new PackageManagedPluginList { packageName = package.ID, fileNames = new List<string>() };

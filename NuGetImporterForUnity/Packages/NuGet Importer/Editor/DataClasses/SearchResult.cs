@@ -42,7 +42,7 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public string projectUrl;
         public string[] tags;
         public string[] authors;
-        public int totalDownloads;
+        public long totalDownloads;
         public bool verified;
         public Packagetype[] packageTypes;
         public PackageVersionInformation[] versions;
