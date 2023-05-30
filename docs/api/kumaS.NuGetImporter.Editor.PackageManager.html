@@ -127,30 +127,6 @@
   </table>
   
   
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_dataPath" data-uid="kumaS.NuGetImporter.Editor.PackageManager.dataPath">dataPath</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static string dataPath</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <h4 id="kumaS_NuGetImporter_Editor_PackageManager_existingPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.existingPackage">existingPackage</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -206,7 +182,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static Dictionary&lt;string, Catalog&gt; installedCatalog</code></pre>
+    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, Catalog&gt; installedCatalog</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -429,15 +405,15 @@
   </table>
   
   
-  <a id="kumaS_NuGetImporter_Editor_PackageManager_ExiestingPackage_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExiestingPackage*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ExiestingPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExiestingPackage">ExiestingPackage</h4>
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_ExistingPackage_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExistingPackage*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_ExistingPackage" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ExistingPackage">ExistingPackage</h4>
   <div class="markdown level1 summary"><p>Packages that are not under control within a project.</p>
 <p>プロジェクト内で監理外にあるパッケージ。</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static InstalledPackages ExiestingPackage { }</code></pre>
+    <pre><code class="lang-csharp hljs">static InstalledPackages ExistingPackage { }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -721,23 +697,8 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[InitializeOnLoadMethod]
-public static async Task Boot()</code></pre>
+public static async void Boot()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_ChangePackageVersionAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.ChangePackageVersionAsync*"></a>
@@ -904,13 +865,23 @@ public static async Task Boot()</code></pre>
   </div>
   
   
-  <a id="kumaS_NuGetImporter_Editor_PackageManager_DownloadProgress_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DownloadProgress*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_DownloadProgress_System_Single_System_Collections_Generic_IEnumerable_System_String__" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DownloadProgress(System.Single,System.Collections.Generic.IEnumerable{System.String})">DownloadProgress(Single, IEnumerable&lt;String&gt;)</h4>
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_DeleteRebootFile_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DeleteRebootFile*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_DeleteRebootFile" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DeleteRebootFile">DeleteRebootFile()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static async Task DownloadProgress(float startPos, IEnumerable&lt;string&gt; packageNames)</code></pre>
+    <pre><code class="lang-csharp hljs">static void DeleteRebootFile()</code></pre>
+  </div>
+  
+  
+  <a id="kumaS_NuGetImporter_Editor_PackageManager_DownloadProgress_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DownloadProgress*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_DownloadProgress_System_Single_System_Collections_Generic_ICollection_System_String__" data-uid="kumaS.NuGetImporter.Editor.PackageManager.DownloadProgress(System.Single,System.Collections.Generic.ICollection{System.String})">DownloadProgress(Single, ICollection&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">static async Task DownloadProgress(float startPos, ICollection&lt;string&gt; packageNames)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -928,7 +899,7 @@ public static async Task Boot()</code></pre>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">packageNames</span></td>
         <td></td>
       </tr>
@@ -1300,7 +1271,7 @@ public static async Task Boot()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static async Task&lt;IEnumerable&lt;Package&gt;&gt; InstallSelectPackages(IEnumerable&lt;Package&gt; packages, IEnumerable&lt;string&gt; loadAssembliesFullName, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
+    <pre><code class="lang-csharp hljs">static async Task&lt;ICollection&lt;Package&gt;&gt; InstallSelectPackages(IEnumerable&lt;Package&gt; packages, IEnumerable&lt;string&gt; loadAssembliesFullName, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1352,7 +1323,7 @@ public static async Task Boot()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;&gt;</td>
         <td><p>Packages that were not installed.</p>
 <p>インストールを行わなかったパッケージ。</p>
 </td>
@@ -1489,12 +1460,12 @@ public static async Task Boot()</code></pre>
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_OperateWithNativeAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.OperateWithNativeAsync*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_OperateWithNativeAsync_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__kumaS_NuGetImporter_Editor_PackageManager_OperateLock_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.OperateWithNativeAsync(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},kumaS.NuGetImporter.Editor.PackageManager.OperateLock,kumaS.NuGetImporter.Editor.PackageControllerBase)">OperateWithNativeAsync(IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, PackageManager.OperateLock, PackageControllerBase)</h4>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_OperateWithNativeAsync_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_ICollection_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_ICollection_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__kumaS_NuGetImporter_Editor_PackageManager_OperateLock_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.OperateWithNativeAsync(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.ICollection{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.ICollection{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},kumaS.NuGetImporter.Editor.PackageManager.OperateLock,kumaS.NuGetImporter.Editor.PackageControllerBase)">OperateWithNativeAsync(IEnumerable&lt;Package&gt;, ICollection&lt;Package&gt;, ICollection&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, PackageManager.OperateLock, PackageControllerBase)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static async Task&lt;Process&gt; OperateWithNativeAsync(IEnumerable&lt;Package&gt; installs, IEnumerable&lt;Package&gt; manageds, IEnumerable&lt;Package&gt; natives, IEnumerable&lt;Package&gt; allInstalled, IEnumerable&lt;Package&gt; root, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
+    <pre><code class="lang-csharp hljs">static async Task&lt;Process&gt; OperateWithNativeAsync(IEnumerable&lt;Package&gt; installs, ICollection&lt;Package&gt; manageds, ICollection&lt;Package&gt; natives, IEnumerable&lt;Package&gt; allInstalled, IEnumerable&lt;Package&gt; root, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1512,12 +1483,12 @@ public static async Task Boot()</code></pre>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
         <td><span class="parametername">manageds</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
         <td><span class="parametername">natives</span></td>
         <td></td>
       </tr>
@@ -1757,14 +1728,14 @@ public static async Task Boot()</code></pre>
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageManager_UninstallSelectedPackages_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallSelectedPackages*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_UninstallSelectedPackages_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__kumaS_NuGetImporter_Editor_PackageManager_OperateLock_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallSelectedPackages(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},kumaS.NuGetImporter.Editor.PackageManager.OperateLock,kumaS.NuGetImporter.Editor.PackageControllerBase)">UninstallSelectedPackages(IEnumerable&lt;Package&gt;, PackageManager.OperateLock, PackageControllerBase)</h4>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageManager_UninstallSelectedPackages_System_Collections_Generic_ICollection_kumaS_NuGetImporter_Editor_DataClasses_Package__kumaS_NuGetImporter_Editor_PackageManager_OperateLock_kumaS_NuGetImporter_Editor_PackageControllerBase_" data-uid="kumaS.NuGetImporter.Editor.PackageManager.UninstallSelectedPackages(System.Collections.Generic.ICollection{kumaS.NuGetImporter.Editor.DataClasses.Package},kumaS.NuGetImporter.Editor.PackageManager.OperateLock,kumaS.NuGetImporter.Editor.PackageControllerBase)">UninstallSelectedPackages(ICollection&lt;Package&gt;, PackageManager.OperateLock, PackageControllerBase)</h4>
   <div class="markdown level1 summary"><p>Uninstalls the specified package. Operation results are not automatically saved. (Low-level API.)</p>
 <p>指定したパッケージをアンインストールする。操作結果は自動的に保存されない。（低レベルAPI。）</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static async Task UninstallSelectedPackages(IEnumerable&lt;Package&gt; packages, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
+    <pre><code class="lang-csharp hljs">static async Task UninstallSelectedPackages(ICollection&lt;Package&gt; packages, PackageManager.OperateLock operateLock, PackageControllerBase controller = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1777,7 +1748,7 @@ public static async Task Boot()</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
         <td><span class="parametername">packages</span></td>
         <td><p>Packages to uninstall.</p>
 <p>アンインストールするパッケージ。</p>

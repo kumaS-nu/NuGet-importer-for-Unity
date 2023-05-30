@@ -1,6 +1,6 @@
 {
     "name": "org.kumas.nuget-importer",
-    "version": "3.3.2",
+    "version": "4.0.0",
     "displayName": "NuGet Importer",
     "description": "Editor extension for importing NuGet packages.",
     "unity": "2020.3",

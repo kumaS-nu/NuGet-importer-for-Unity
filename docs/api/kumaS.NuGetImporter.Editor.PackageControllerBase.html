@@ -126,12 +126,12 @@
   </table>
   
   
-  <h4 id="kumaS_NuGetImporter_Editor_PackageControllerBase_enableArch" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.enableArch">enableArch</h4>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageControllerBase_EnableArch" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.EnableArch">EnableArch</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, List&lt;string&gt;&gt; enableArch</code></pre>
+    <pre><code class="lang-csharp hljs">static readonly Dictionary&lt;string, List&lt;string&gt;&gt; EnableArch</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -176,13 +176,13 @@
   </h3>
   
   
-  <a id="kumaS_NuGetImporter_Editor_PackageControllerBase_pathSolver_" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.pathSolver*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageControllerBase_pathSolver" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.pathSolver">pathSolver</h4>
+  <a id="kumaS_NuGetImporter_Editor_PackageControllerBase_PathSolver_" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.PathSolver*"></a>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageControllerBase_PathSolver" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.PathSolver">PathSolver</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected PackagePathSolverBase pathSolver { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected PackagePathSolverBase PathSolver { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -807,14 +807,14 @@
   
   
   <a id="kumaS_NuGetImporter_Editor_PackageControllerBase_OperateWithNativeAsync_" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.OperateWithNativeAsync*"></a>
-  <h4 id="kumaS_NuGetImporter_Editor_PackageControllerBase_OperateWithNativeAsync_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.OperateWithNativeAsync(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package})">OperateWithNativeAsync(IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;)</h4>
+  <h4 id="kumaS_NuGetImporter_Editor_PackageControllerBase_OperateWithNativeAsync_System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_ICollection_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__System_Collections_Generic_IEnumerable_kumaS_NuGetImporter_Editor_DataClasses_Package__" data-uid="kumaS.NuGetImporter.Editor.PackageControllerBase.OperateWithNativeAsync(System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.ICollection{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package},System.Collections.Generic.IEnumerable{kumaS.NuGetImporter.Editor.DataClasses.Package})">OperateWithNativeAsync(IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;, ICollection&lt;Package&gt;, IEnumerable&lt;Package&gt;, IEnumerable&lt;Package&gt;)</h4>
   <div class="markdown level1 summary"><p>Operate with remove native plugins.</p>
 <p>ネイティブプラグインの削除を含む操作を行う。</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">async Task&lt;Process&gt; OperateWithNativeAsync(IEnumerable&lt;Package&gt; installs, IEnumerable&lt;Package&gt; manageds, IEnumerable&lt;Package&gt; natives, IEnumerable&lt;Package&gt; allInstalled, IEnumerable&lt;Package&gt; root)</code></pre>
+    <pre><code class="lang-csharp hljs">async Task&lt;Process&gt; OperateWithNativeAsync(IEnumerable&lt;Package&gt; installs, IEnumerable&lt;Package&gt; manageds, ICollection&lt;Package&gt; natives, IEnumerable&lt;Package&gt; allInstalled, IEnumerable&lt;Package&gt; root)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -841,7 +841,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a>&gt;</td>
         <td><span class="parametername">natives</span></td>
         <td><p>Packages that contain native plugins to be removed.</p>
 <p>削除するネイティブプラグインを含むパッケージ。</p>
@@ -967,7 +967,9 @@
       <tr>
         <td><a class="xref" href="kumaS.NuGetImporter.Editor.DataClasses.Package.html">Package</a></td>
         <td><span class="parametername">package</span></td>
-        <td></td>
+        <td><p>Package to be uninstalled.</p>
+<p>アンインストールするパッケージ。</p>
+</td>
       </tr>
     </tbody>
   </table>
