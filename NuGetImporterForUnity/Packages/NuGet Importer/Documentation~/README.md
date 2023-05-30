@@ -99,6 +99,9 @@ Therefore, if you want to use CI/CD with the packages out of git's tracking, you
 
 NuGet-importer-for-Unity install files not required at runtime (e.g., rulesets, documentation, etc.) are installed to `(your project)/NuGet`. If you want to reference them, add them reference manually.
 
+This package works with Unity2020.3 or later, but compile errors occur once with Unity2020.3 due to Unity's compile pipline issues.
+To use this, you restart Unity and open with ignore the compile error. If you are using an earlier version of Unity, use version 3.3.2.
+
 When importing this package into your project, this package makes the following changes.
 - Turn off `PlayerSettings -> assemblyVersionValidation`. (To make Unity not check the assembly version as NuGet does.)
 - Add reference `System.IO.Compression.FileSystem.dll`. (NuGet importer for Unity handles Zip files.)
