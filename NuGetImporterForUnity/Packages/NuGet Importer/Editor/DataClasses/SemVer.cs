@@ -375,7 +375,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 }
             }
 
-
             throw new InvalidOperationException(
                 $@"There is no available version. Versions: {
                     _existVersions.Select(it => it?.Aggregate((prev, curr) => $"{prev}.{curr}"))
@@ -432,7 +431,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                 }
             }
 
-
             throw new InvalidOperationException(
                 $@"There is no available version. Versions: {
                     _existVersions?.Select(it => it?.Aggregate((prev, curr) => $"{prev}.{curr}"))
@@ -484,7 +482,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
                                 );
                     }
                 }
-
 
                 throw new InvalidOperationException(
                     $@"There is no available version. Versions: {

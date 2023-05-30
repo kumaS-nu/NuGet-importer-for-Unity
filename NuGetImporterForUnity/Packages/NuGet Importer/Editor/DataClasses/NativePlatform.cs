@@ -81,7 +81,6 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
             return DefaultArch.TryGetValue(OS, out var arch)
                             ? arch
                             : nameof(ArchitectureType.X64);
-
         }
     }
 
