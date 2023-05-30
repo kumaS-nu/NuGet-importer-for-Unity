@@ -86,8 +86,10 @@ namespace kumaS.NuGetImporter.Editor.Setup
         [InitializeOnLoadMethod]
         private static void SetAssemblyVersionValidation()
         {
-            PlayerSettings.assemblyVersionValidation = false;
             EditorApplication.quitting += SetUnReady;
+#if !UNITY_2022_2_OR_NEWER
+            PlayerSettings.assemblyVersionValidation = false;
+#endif
         }
 
         /// <summary>
