@@ -637,10 +637,7 @@ namespace kumaS.NuGetImporter.Editor
                             )
                         );
 
-                        if (_detail != null)
-                        {
-                            _detail.ToDetailGUI(bold, _summary.SelectedVersion);
-                        }
+                        _detail?.ToDetailGUI(bold, _summary.SelectedVersion);
                     }
                 }
             }

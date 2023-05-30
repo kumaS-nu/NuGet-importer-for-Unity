@@ -36,10 +36,7 @@ namespace kumaS.NuGetImporter.Editor
         /// </param>
         public static void UrlLabel(string text, string url, int fontSize = -1, GUIStyle style = null, params GUILayoutOption[] options)
         {
-            if (style == null)
-            {
-                style = new GUIStyle(EditorStyles.linkLabel);
-            }
+            style ??= new GUIStyle(EditorStyles.linkLabel);
             if (fontSize < 0)
             {
                 fontSize = GUI.skin.label.fontSize;

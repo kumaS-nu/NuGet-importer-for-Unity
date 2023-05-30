@@ -139,17 +139,8 @@ namespace kumaS.NuGetImporter.Editor
                 installed = (InstalledPackages)serializer.Deserialize(file);
             }
 
-            // Unity2019 is below C# 8.0, so we don't use the compound assignment operator now.
-
-            if (installed == null)
-            {
-                installed = new InstalledPackages();
-            }
-
-            if (installed.Package == null)
-            {
-                installed.Package = new List<Package>();
-            }
+            installed ??= new InstalledPackages();
+            installed.Package ??= new List<Package>();
 
             if (File.Exists(Path.Combine(DataPath, "rootPackages.xml")))
             {
@@ -283,6 +274,11 @@ namespace kumaS.NuGetImporter.Editor
                 rootPackage.Package.AddRange(willRoot.Package);
             }
 
+            if (result.State != OperationState.Progress)
+            {
+                DeleteRebootFile();
+            }
+
             Save();
 
             EditorUtility.DisplayDialog("NuGet importer", result.Message, "OK");
@@ -295,14 +291,12 @@ namespace kumaS.NuGetImporter.Editor
 
         private static (InstalledPackages willInstall, InstalledPackages willRoot, InstalledPackages rollbackPackages) GetRestartInfo()
         {
-            InstalledPackages willInstall;
-            using (var file = new StreamReader(DataPath.Replace("Assets", "WillInstall.xml")))
-            {
-                willInstall = (InstalledPackages)serializer.Deserialize(file);
-            }
+            using var installFile = new StreamReader(DataPath.Replace("Assets", "WillInstall.xml"));
+            var willInstall = (InstalledPackages)serializer.Deserialize(installFile);
 
             if (willInstall == null || willInstall.Package == null || !willInstall.Package.Any())
             {
+                installFile.Close();
                 File.Delete(DataPath.Replace("Assets", "WillInstall.xml"));
                 File.Delete(DataPath.Replace("Assets", "WillPackage.xml"));
                 File.Delete(DataPath.Replace("Assets", "WillRoot.xml"));
@@ -315,28 +309,17 @@ namespace kumaS.NuGetImporter.Editor
                 return (willInstall, willInstall, willInstall);
             }
 
-            InstalledPackages willRoot;
-            using (var file = new StreamReader(DataPath.Replace("Assets", "WillRoot.xml")))
-            {
-                willRoot = (InstalledPackages)serializer.Deserialize(file);
-            }
+            using var rootFile = new StreamReader(DataPath.Replace("Assets", "WillRoot.xml"));
+            var willRoot = (InstalledPackages)serializer.Deserialize(rootFile);
 
             willRoot ??= new InstalledPackages();
             willRoot.Package ??= new List<Package>();
 
-            File.Delete(DataPath.Replace("Assets", "WillInstall.xml"));
-            File.Delete(DataPath.Replace("Assets", "WillPackage.xml"));
-            File.Delete(DataPath.Replace("Assets", "WillRoot.xml"));
-
             InstalledPackages rollBackPackage = default;
             if (File.Exists(DataPath.Replace("Assets", "RollBackPackage.xml")))
             {
-                using (var file = new StreamReader(DataPath.Replace("Assets", "RollBackPackage.xml")))
-                {
-                    rollBackPackage = (InstalledPackages)serializer.Deserialize(file);
-                }
-
-                File.Delete(DataPath.Replace("Assets", "RollBackPackage.xml"));
+                using var rollbackFile = new StreamReader(DataPath.Replace("Assets", "RollBackPackage.xml"));
+                rollBackPackage = (InstalledPackages)serializer.Deserialize(rollbackFile);
 
                 rollBackPackage ??= new InstalledPackages();
                 rollBackPackage.Package ??= new List<Package>();
@@ -345,28 +328,25 @@ namespace kumaS.NuGetImporter.Editor
 
             if (File.Exists(DataPath.Replace("Assets", "RollBackRoot.xml")))
             {
-                InstalledPackages rollBackRoot;
-                using (var file = new StreamReader(DataPath.Replace("Assets", "RollBackRoot.xml")))
-                {
-                    rollBackRoot = (InstalledPackages)serializer.Deserialize(file);
-                }
+                using var rollbackFile = new StreamReader(DataPath.Replace("Assets", "RollBackRoot.xml"));
+                var rollBackRoot = (InstalledPackages)serializer.Deserialize(rollbackFile);
 
-                File.Delete(DataPath.Replace("Assets", "RollBackRoot.xml"));
-
-                if (rollBackRoot == null)
-                {
-                    rollBackRoot = new InstalledPackages();
-                }
-
-                if (rollBackRoot.Package == null)
-                {
-                    rollBackRoot.Package = new List<Package>();
-                }
+                rollBackRoot ??= new InstalledPackages();
+                rollBackRoot.Package ??= new List<Package>();
 
                 rootPackage = rollBackRoot;
             }
 
             return (willInstall, willRoot, rollBackPackage);
+        }
+
+        private static void DeleteRebootFile()
+        {
+            File.Delete(DataPath.Replace("Assets", "WillInstall.xml"));
+            File.Delete(DataPath.Replace("Assets", "WillPackage.xml"));
+            File.Delete(DataPath.Replace("Assets", "WillRoot.xml"));
+            File.Delete(DataPath.Replace("Assets", "RollBackPackage.xml"));
+            File.Delete(DataPath.Replace("Assets", "RollBackRoot.xml"));
         }
 
         private static void DeleteAsAssetDirectory()
@@ -945,7 +925,7 @@ namespace kumaS.NuGetImporter.Editor
         internal static async Task<bool> HasNativeAsync(Package package, PackageControllerBase controller = default)
         {
             controller ??= GetPackageController();
-            var path = await controller.pathSolver.InstallPath(package);
+            var path = await controller.PathSolver.InstallPath(package);
             var packageId = "";
             if (controller is PackageControllerAsAsset)
             {
@@ -1029,7 +1009,7 @@ namespace kumaS.NuGetImporter.Editor
                     }
                 }
 
-                if (finishedCount == packageNames.Count())
+                if (finishedCount == packageNames.Count)
                 {
                     break;
                 }

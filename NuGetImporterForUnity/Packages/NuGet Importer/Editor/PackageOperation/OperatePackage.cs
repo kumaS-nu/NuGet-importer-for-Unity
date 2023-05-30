@@ -293,7 +293,7 @@ namespace kumaS.NuGetImporter.Editor.PackageOperation
                 );
             }
 
-            if (!EditorUtility.DisplayDialog(builder.ToString(), "OK", "Cancel"))
+            if (!EditorUtility.DisplayDialog("NuGet importer", builder.ToString(), "OK", "Cancel"))
             {
                 return false;
             }

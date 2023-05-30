@@ -25,7 +25,7 @@ namespace kumaS.NuGetImporter.Editor
 
     /// <summary>
     /// <para>Version defines of asmdef.</para>
-    /// <para>asmdef偺Version defines丅</para>
+    /// <para>asmdefのVersion defines。</para>
     /// </summary>
     [Serializable]
     public class VersionDefine

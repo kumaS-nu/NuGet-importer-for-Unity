@@ -21,7 +21,9 @@ This package also fully supports native plugins.
 
 ## Environment
 
- This works with Unity2020 and later. This even works with Unity2019, but it is not recommended due to some specification issues.
+ Version 4 series works with Unity2020.3 or later, but compile errors occur once with Unity2020.3 due to Unity's compile pipline issues.
+To use NuGet importer for Unity, you restart Unity and open with ignore the compile error. If you are using an earlier version of Unity, use version 3.3.2.
+ Version 3 series and below works with Unity2020 and later. This even works with Unity2019, but it is not recommended due to some specification issues.
 
 ## API
 
@@ -69,7 +71,9 @@ Each package in NuGet is governed by the terms included with the package. For mo
 
 ## 動作環境
 
- Unity2020以降であれば動きます。Unity2019でも動作しますが、仕様上の問題より推奨しません。
+ バージョン4系はUnity2020.3以降であれば動作します。しかし、Unity2020.3では仕様上の問題より一度コンパイルエラーが発生します。
+Unityを再起動しコンパイルエラーを無視して開けば動作するようになります。それ以前のUnityであればバージョン3.3.2を使用してください。
+ バージョン3系以下はUnity2020以降であれば動きます。Unity2019でも動作しますが、仕様上の問題より推奨しません。
 
 ## API
 

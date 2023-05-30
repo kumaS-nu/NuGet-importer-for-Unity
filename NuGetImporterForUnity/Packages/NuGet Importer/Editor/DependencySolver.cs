@@ -471,10 +471,7 @@ namespace kumaS.NuGetImporter.Editor
                 targetName = node.PackageName;
             }
 
-            if (log == null)
-            {
-                log = new List<string>() { targetName };
-            }
+            log ??= new List<string>() { targetName };
 
             foreach (DependencyNode depended in node.DependedNode)
             {
