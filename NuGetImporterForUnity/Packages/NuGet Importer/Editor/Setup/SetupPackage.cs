@@ -14,6 +14,8 @@ namespace kumaS.NuGetImporter.Editor.Setup
     /// </summary>
     public class SetupPackage : AssetPostprocessor
     {
+        private static bool _isQuitting = false;
+
         private static readonly List<ApiCompatibilityLevel> EnableApiLevel = new List<ApiCompatibilityLevel>
         {
 #if UNITY_2021_2_OR_NEWER
@@ -33,6 +35,11 @@ namespace kumaS.NuGetImporter.Editor.Setup
         [InitializeOnLoadMethod]
         private static void SetCorrectDefine()
         {
+            if (_isQuitting)
+            {
+                return;
+            }
+
             var haveChange = false;
             var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
 
@@ -89,6 +96,7 @@ namespace kumaS.NuGetImporter.Editor.Setup
         /// </summary>
         internal static void SetUnReady()
         {
+            _isQuitting = true;
             var symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';').ToList();
             symbols.Remove("ZIP_AVAILABLE");
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", symbols));
