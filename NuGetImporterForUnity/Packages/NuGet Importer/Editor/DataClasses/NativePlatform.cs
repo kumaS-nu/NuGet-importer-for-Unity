@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
@@ -62,14 +63,14 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
 
         private static string GetRidFrom(string path)
         { // https://learn.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders
-            // assumes right path is like "Packages/project/runtimes/RID" or +"/native/..."
+            // assumes right path is like "Packages/project/runtimes/RID/native/..." or somthing
             path = path.Replace('\\', '/'); // in case of '\'(windows)
             var pattern = "/?runtimes/(.+?)/?";
-            var matched = System.Text.RegularExpressions.Regex.Match(
+            var matched = Regex.Match(
                 path,
                 pattern,
-                System.Text.RegularExpressions.RegexOptions.RightToLeft | // to choose last
-                System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                RegexOptions.RightToLeft | // to choose last
+                RegexOptions.IgnoreCase);
             if (!matched.Success)
                 return string.Empty; // failed to find
             return matched.Groups[1].Value.Split('/')[0];

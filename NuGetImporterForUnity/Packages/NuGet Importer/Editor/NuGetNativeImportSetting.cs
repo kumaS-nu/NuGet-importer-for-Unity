@@ -127,13 +127,8 @@ namespace kumaS.NuGetImporter.Editor
             BuildTarget target = BuildTarget.NoTarget;
             var architecture = "";
             var enableOnEditor = false;
-            var platformPath = pluginPath;
-            while (platformPath!.Contains("native"))
-            {
-                platformPath = Path.GetDirectoryName(platformPath);
-            }
 
-            var directoryPath = System.IO.Path.GetDirectoryName(pluginPath);
+            var directoryPath = Path.GetDirectoryName(pluginPath);
             var platform = new NativePlatform(directoryPath);
             architecture = platform.Architecture switch
             {
