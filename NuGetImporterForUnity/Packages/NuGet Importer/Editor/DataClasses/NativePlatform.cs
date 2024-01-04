@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace kumaS.NuGetImporter.Editor.DataClasses
 {
@@ -54,25 +55,41 @@ namespace kumaS.NuGetImporter.Editor.DataClasses
         public NativePlatform(string directoryPath)
         {
             Path = directoryPath;
-            var directoryName = System.IO.Path.GetFileName(directoryPath).ToLowerInvariant();
-            (OS, OSPriority) = GetOSInfo(directoryName);
-            Architecture = GetArchInfo(directoryName);
+            // https://learn.microsoft.com/en-us/dotnet/core/rid-catalog
+            var rid = GetRidFrom(directoryPath);
+            (OS, OSPriority) = GetOSInfo(rid);
+            Architecture = GetArchInfo(rid);
         }
 
-        private (string os, int priority) GetOSInfo(string directoryName)
+        private static string GetRidFrom(string path)
+        { // https://learn.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders
+            // assumes right path is like "Packages/project/runtimes/RID/native/..." or somthing
+            path = path.Replace('\\', '/'); // in case of '\'(windows)
+            var pattern = "/?runtimes/(.+?)/?";
+            var matched = Regex.Match(
+                path,
+                pattern,
+                RegexOptions.RightToLeft | // to choose last
+                RegexOptions.IgnoreCase);
+            if (!matched.Success)
+                return string.Empty; // failed to find
+            return matched.Groups[1].Value.Split('/')[0];
+        }
+
+        private (string os, int priority) GetOSInfo(string rid)
         {
-            var matchedPriority = PriorityTable.Where(table => directoryName.StartsWith(table.Item1.ToLowerInvariant()));
+            var matchedPriority = PriorityTable.Where(table => rid.StartsWith(table.Item1.ToLowerInvariant()));
             if (matchedPriority.Any())
             {
                 return matchedPriority.First();
             }
 
-            return (directoryName.Split('-')[0], int.MaxValue);
+            return (rid.Split('-')[0], int.MaxValue);
         }
 
-        private string GetArchInfo(string directoryName)
+        private string GetArchInfo(string rid)
         {
-            var matchedArch = Enum.GetNames(typeof(ArchitectureType)).Where(table => directoryName.EndsWith(table.ToLowerInvariant()));
+            var matchedArch = Enum.GetNames(typeof(ArchitectureType)).Where(table => rid.EndsWith(table.ToLowerInvariant()));
             if (matchedArch.Any())
             {
                 return matchedArch.First();

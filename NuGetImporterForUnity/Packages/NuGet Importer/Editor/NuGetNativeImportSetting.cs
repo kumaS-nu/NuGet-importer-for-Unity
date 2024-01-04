@@ -127,13 +127,9 @@ namespace kumaS.NuGetImporter.Editor
             BuildTarget target = BuildTarget.NoTarget;
             var architecture = "";
             var enableOnEditor = false;
-            var platformPath = pluginPath;
-            while (platformPath!.Contains("native"))
-            {
-                platformPath = Path.GetDirectoryName(platformPath);
-            }
 
-            var platform = new NativePlatform(platformPath);
+            var directoryPath = Path.GetDirectoryName(pluginPath);
+            var platform = new NativePlatform(directoryPath);
             architecture = platform.Architecture switch
             {
                 nameof(ArchitectureType.X64) => platform.OS == nameof(OSType.IOS) ? "X64" : "x86_64",
