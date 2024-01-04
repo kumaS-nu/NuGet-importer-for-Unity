@@ -9,6 +9,7 @@
 /NuGetImporterForUnity/[Bb]uilds/
 /NuGetImporterForUnity/[Ll]ogs/
 /NuGetImporterForUnity/[Mm]emoryCaptures/
+/NuGetImporterForUnity/[Uu]ser[Ss]ettings/
 /Packager/[Ll]ibrary/
 /Packager/[Tt]emp/
 /Packager/[Oo]bj/
@@ -90,3 +91,9 @@ crashlytics-build.properties
 
 /NuGetImporterForUnity/[Pp]ackages/*/
 !/NuGetImporterForUnity/[Pp]ackages/[Nn]u[Gg]et [Ii]mporter/
+
+# MacOS attribute file
+.DS_Store
+
+# VS Code meta files
+.vscode
