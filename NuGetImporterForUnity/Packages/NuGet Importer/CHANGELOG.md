@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.0.1] - 2024-01-05
+
+- Fix invalid architecture information from native runtimes
+
+## [4.0.0] - 2023-05-30
+
+- Change the target version of C# to 8.0 or later
+- Stop support for Unity 2020.2 and below
+- Support for Unity2022
+- Fix a bug caused by lazy evaluation
+- Fix the wrong alert when installing
+- Fix the overflow download number
+
 ## [3.3.2] - 2023-05-25
 
 - Fix bug made by version 3.3.0
